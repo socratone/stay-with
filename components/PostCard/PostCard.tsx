@@ -1,11 +1,14 @@
 import styled from '@emotion/styled';
-import { Avatar, Box, Typography } from '@mui/material';
+import { Avatar, Box, IconButton, Typography } from '@mui/material';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 interface PostCardProps {
   name: string;
   profileImageUrl?: string;
   phrase: string;
   content: string;
+  isLiked: boolean;
 }
 
 const StyledPostCard = styled.article``;
@@ -15,6 +18,7 @@ const PostCard: React.FC<PostCardProps> = ({
   profileImageUrl,
   phrase,
   content,
+  isLiked,
 }) => {
   return (
     <StyledPostCard>
@@ -35,6 +39,12 @@ const PostCard: React.FC<PostCardProps> = ({
         {/* content */}
         <Box>
           <Typography sx={{ whiteSpace: 'pre-line' }}>{content}</Typography>
+        </Box>
+        {/* footer */}
+        <Box>
+          <IconButton size="small">
+            {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+          </IconButton>
         </Box>
       </Box>
     </StyledPostCard>
