@@ -44,7 +44,6 @@ const NavigationFooter = () => {
         position="fixed"
         width="100vw"
         bottom={0}
-        bgcolor="white"
         zIndex={1}
         borderTop={1}
         borderColor="grey.200"
