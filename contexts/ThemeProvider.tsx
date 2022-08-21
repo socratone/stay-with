@@ -28,7 +28,7 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       createTheme({
         palette: {
           paper: {
-            main: prefersDarkMode ? 'rgb(55 40 14)' : 'rgb(255, 249, 238)',
+            main: prefersDarkMode ? 'rgb(55, 40, 14)' : 'rgb(255, 249, 238)',
           },
         },
       }),
