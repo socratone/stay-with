@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { Avatar, Box, IconButton, Typography, useTheme } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShareIcon from '@mui/icons-material/Share';
 
 interface PostCardProps {
   name: string;
@@ -45,9 +46,12 @@ const PostCard: React.FC<PostCardProps> = ({
       </Box>
 
       {/* footer */}
-      <Box px={1}>
+      <Box display="flex" justifyContent="space-between" px={1}>
         <IconButton size="small">
           {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+        </IconButton>
+        <IconButton size="small">
+          <ShareIcon />
         </IconButton>
       </Box>
     </StyledPostCard>
