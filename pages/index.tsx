@@ -19,6 +19,17 @@ type Item = {
 
 const items: Item[] = [
   {
+    id: '0',
+    name: '손오공',
+    book: '창세',
+    isLiked: true,
+    startedChapter: 1,
+    startedVerse: 1,
+    text: '한처음에 하느님께서 하늘과 땅을 창조하셨다.',
+    content:
+      'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Placeat dolor unde amet ex! Voluptatum, laboriosam. Soluta totam, facilis error, unde pariatur sapiente eligendi ea blanditiis tempore culpa iste itaque natus corporis quam ipsum sequi incidunt harum fugit voluptate distinctio praesentium, suscipit doloribus atque vero? Quam pariatur, atque a nihil molestiae nostrum corporis explicabo repellendus optio porro mollitia harum laudantium ab esse adipisci deleniti. Excepturi aliquam repellendus numquam cupiditate temporibus accusamus reprehenderit ex, fugiat accusantium delectus ut unde molestiae aut tempora asperiores ipsum iste perspiciatis inventore soluta? Vel, eligendi natus! Eveniet aliquam illum delectus? Ea, veritatis repudiandae odit impedit praesentium at dolorum voluptatem alias delectus asperiores cumque libero neque fuga quos suscipit perferendis rem laborum fugiat vitae deserunt iusto, magnam dolor. Itaque, libero consectetur harum esse, laboriosam voluptatum qui temporibus velit dolore praesentium odio modi distinctio fugiat. Odit maiores quia consequatur, neque quo iure dolorum dignissimos tempore numquam pariatur perspiciatis modi provident ad obcaecati a unde nemo reprehenderit doloremque reiciendis autem ullam ipsum voluptatem, quasi sequi. Inventore nulla quia tempora temporibus eos provident assumenda consequuntur, vero eius placeat voluptatibus odit harum cum dolor vel. Voluptates optio animi quia ullam, neque nulla impedit veritatis aut minus omnis, vitae eum aliquid, odio voluptatem.',
+  },
+  {
     id: '1',
     name: '사오정',
     book: '창세',

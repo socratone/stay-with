@@ -1,8 +1,11 @@
 import styled from '@emotion/styled';
-import { Avatar, Box, IconButton, Typography, useTheme } from '@mui/material';
+import { Avatar, Box, IconButton, Typography } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { useState } from 'react';
+import CirclePagination from './CirclePagination';
 
 interface PostCardProps {
   name: string;
@@ -21,6 +24,22 @@ const PostCard: React.FC<PostCardProps> = ({
   content,
   isLiked,
 }) => {
+  const [page, setPage] = useState(0);
+
+  const getPartialContents = (content: string) => {
+    const contents = [];
+
+    while (content.length > 0) {
+      const partialContent = content.substring(0, 500);
+      contents.push(partialContent);
+      content = content.substring(500);
+    }
+
+    return contents;
+  };
+
+  const partialContents = getPartialContents(content);
+
   return (
     <StyledPostCard>
       {/* header */}
@@ -41,8 +60,22 @@ const PostCard: React.FC<PostCardProps> = ({
       </Box>
 
       {/* content */}
-      <Box px={2} pt={2} pb={1}>
-        <Typography sx={{ whiteSpace: 'pre-line' }}>{content}</Typography>
+      <Box>
+        <Swiper
+          slidesPerView={1}
+          onSlideChange={(swiper) => setPage(swiper.activeIndex)}
+          tabIndex={1}
+        >
+          {partialContents.map((partialContent, index) => (
+            <SwiperSlide key={index}>
+              <Box px={2} pt={2} pb={1}>
+                <Typography sx={{ whiteSpace: 'pre-line' }}>
+                  {partialContent}
+                </Typography>
+              </Box>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </Box>
 
       {/* footer */}
@@ -50,6 +83,7 @@ const PostCard: React.FC<PostCardProps> = ({
         <IconButton size="small">
           {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         </IconButton>
+        <CirclePagination page={page} length={partialContents.length} />
         <IconButton size="small">
           <ShareIcon />
         </IconButton>
