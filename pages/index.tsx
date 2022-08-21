@@ -1,5 +1,8 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import NavigationFooter from '../components/NavigationFooter';
 import PostCard from '../components/PostCard';
 
 type Book = '창세';
@@ -54,6 +57,12 @@ const items: Item[] = [
 ];
 
 const Home: NextPage = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.prefetch('/public');
+  }, [router]);
+
   const getPhrase = (
     text: string,
     book: Book,
@@ -80,6 +89,7 @@ const Home: NextPage = () => {
         <meta name="description" content="머물음 웹" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <main>
         {items.map((item) => (
           <PostCard
@@ -98,6 +108,8 @@ const Home: NextPage = () => {
           />
         ))}
       </main>
+
+      <NavigationFooter />
     </div>
   );
 };
