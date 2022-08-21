@@ -80,11 +80,11 @@ const PostCard: React.FC<PostCardProps> = ({
 
       {/* footer */}
       <Box display="flex" justifyContent="space-between" px={1}>
-        <IconButton size="small">
+        <IconButton>
           {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         </IconButton>
         <CirclePagination page={page} length={partialContents.length} />
-        <IconButton size="small">
+        <IconButton>
           <ShareIcon />
         </IconButton>
       </Box>
