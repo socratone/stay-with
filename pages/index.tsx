@@ -1,3 +1,4 @@
+import { Container } from '@mui/system';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -91,22 +92,24 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
-        {items.map((item) => (
-          <PostCard
-            key={item.id}
-            name={item.name}
-            phrase={getPhrase(
-              item.text,
-              item.book,
-              item.startedChapter,
-              item.startedVerse,
-              item?.endedChapter,
-              item?.endedVerse
-            )}
-            content={item.content}
-            isLiked={item.isLiked}
-          />
-        ))}
+        <Container maxWidth="sm" sx={{ px: 0 }}>
+          {items.map((item) => (
+            <PostCard
+              key={item.id}
+              name={item.name}
+              phrase={getPhrase(
+                item.text,
+                item.book,
+                item.startedChapter,
+                item.startedVerse,
+                item?.endedChapter,
+                item?.endedVerse
+              )}
+              content={item.content}
+              isLiked={item.isLiked}
+            />
+          ))}
+        </Container>
       </main>
 
       <NavigationFooter />
