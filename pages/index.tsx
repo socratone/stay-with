@@ -84,36 +84,34 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div>
+    <>
       <Head>
         <title>머물음</title>
         <meta name="description" content="머물음 웹" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <Container maxWidth="sm" sx={{ px: 0 }}>
-          {items.map((item) => (
-            <PostCard
-              key={item.id}
-              name={item.name}
-              phrase={getPhrase(
-                item.text,
-                item.book,
-                item.startedChapter,
-                item.startedVerse,
-                item?.endedChapter,
-                item?.endedVerse
-              )}
-              content={item.content}
-              isLiked={item.isLiked}
-            />
-          ))}
-        </Container>
-      </main>
+      <Container component="main" maxWidth="sm" sx={{ px: 0 }}>
+        {items.map((item) => (
+          <PostCard
+            key={item.id}
+            name={item.name}
+            phrase={getPhrase(
+              item.text,
+              item.book,
+              item.startedChapter,
+              item.startedVerse,
+              item?.endedChapter,
+              item?.endedVerse
+            )}
+            content={item.content}
+            isLiked={item.isLiked}
+          />
+        ))}
+      </Container>
 
       <NavigationFooter />
-    </div>
+    </>
   );
 };
 
