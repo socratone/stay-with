@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import NavigationFooter from '../components/NavigationFooter';
 import PostCard from '../components/PostCard';
+import { getPosts } from '../libs/firebase/apis';
 
 type Book = '창세';
 
@@ -63,6 +64,12 @@ const Home: NextPage = () => {
   useEffect(() => {
     router.prefetch('/public');
   }, [router]);
+
+  useEffect(() => {
+    getPosts()
+      .then((posts) => console.log('posts:', posts))
+      .catch();
+  }, []);
 
   const getPhrase = (
     text: string,
