@@ -18,6 +18,8 @@ const Create: NextPage = () => {
   const [verse, setVerse] = useState('1');
   const [content, setContent] = useState('');
 
+  const [isRequesting, setIsRequesting] = useState(false);
+
   const handlePhraseChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -39,6 +41,7 @@ const Create: NextPage = () => {
   };
 
   const handleSubmit = async () => {
+    setIsRequesting(true);
     // TODO: error handling
     const response = await addPost({
       bible,
@@ -117,7 +120,11 @@ const Create: NextPage = () => {
           </Box>
           <Box display="flex" justifyContent="flex-end" gap={1}>
             <Button onClick={handleCancel}>취소</Button>
-            <Button onClick={handleSubmit} variant="contained">
+            <Button
+              onClick={handleSubmit}
+              variant="contained"
+              disabled={isRequesting}
+            >
               저장
             </Button>
           </Box>
