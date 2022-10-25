@@ -1,14 +1,19 @@
-import { Box, InputLabel, TextField } from '@mui/material';
+import { Box, Button, InputLabel, TextField } from '@mui/material';
 import { Container } from '@mui/system';
 import { NextPage } from 'next';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Select from '../components/common/Select';
 import NavigationFooter from '../components/NavigationFooter';
+import { addPost } from '../libs/firebase/apis';
+import { Bible, bibleOptions } from '../libs/firebase/constants';
 
 const Create: NextPage = () => {
+  const router = useRouter();
+
   const [phrase, setPhrase] = useState('');
-  const [book, setBook] = useState('genesis');
+  const [bible, setBible] = useState<Bible>(Bible.Genesis);
   const [chapter, setChapter] = useState('1');
   const [verse, setVerse] = useState('1');
   const [content, setContent] = useState('');
@@ -18,13 +23,33 @@ const Create: NextPage = () => {
   ) => {
     setPhrase(event.target.value);
   };
-  const handleBookChange = (value: string) => setBook(value);
-  const handleChapterChange = (value: string) => setChapter(value);
-  const handleVerseChange = (value: string) => setVerse(value);
+  const handleBibleChange = (value: string) => setBible(value as Bible);
+  const handleChapterChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setChapter(event.target.value);
+  const handleVerseChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setVerse(event.target.value);
   const handleContentChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setContent(event.target.value);
+  };
+
+  const handleCancel = () => {
+    router.back();
+  };
+
+  const handleSubmit = async () => {
+    // TODO: error handling
+    const response = await addPost({
+      bible,
+      content,
+      name: '김기원', // TODO: user name
+      phrase,
+      startedChapter: Number(chapter),
+      startedVerse: Number(verse),
+    });
+
+    router.push('/');
   };
 
   return (
@@ -52,51 +77,27 @@ const Create: NextPage = () => {
           <Box display="flex" gap={2}>
             <Box flexGrow={1}>
               <Select
-                value={book}
-                onChange={handleBookChange}
-                options={[
-                  // TODO: option을 더 늘려야
-                  {
-                    value: 'genesis',
-                    label: '창세기',
-                  },
-                  {
-                    value: 'exodus',
-                    label: '탈출기',
-                  },
-                ]}
+                value={bible}
+                onChange={handleBibleChange}
+                options={bibleOptions}
               />
             </Box>
             <Box flexGrow={1}>
-              <Select
+              <TextField
                 value={chapter}
                 onChange={handleChapterChange}
-                options={[
-                  {
-                    value: '1',
-                    label: '1',
-                  },
-                  {
-                    value: '2',
-                    label: '2',
-                  },
-                ]}
+                fullWidth
+                size="small"
+                type="number"
               />
             </Box>
             <Box flexGrow={1}>
-              <Select
+              <TextField
                 value={verse}
                 onChange={handleVerseChange}
-                options={[
-                  {
-                    value: '1',
-                    label: '1',
-                  },
-                  {
-                    value: '2',
-                    label: '2',
-                  },
-                ]}
+                fullWidth
+                size="small"
+                type="number"
               />
             </Box>
           </Box>
@@ -113,6 +114,12 @@ const Create: NextPage = () => {
               value={content}
               onChange={handleContentChange}
             />
+          </Box>
+          <Box display="flex" justifyContent="flex-end" gap={1}>
+            <Button onClick={handleCancel}>취소</Button>
+            <Button onClick={handleSubmit} variant="contained">
+              저장
+            </Button>
           </Box>
         </Box>
       </Container>

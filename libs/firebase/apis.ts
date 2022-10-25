@@ -1,4 +1,9 @@
-import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  addDoc,
+} from 'firebase/firestore/lite';
 import { app } from './configs';
 import { Post } from './interfaces';
 
@@ -11,4 +16,8 @@ export const getPosts = async () => {
     posts.push({ id: doc.id, ...doc.data() } as Post);
   });
   return posts;
+};
+
+export const addPost = async (payload: Omit<Post, 'id'>) => {
+  return addDoc(collection(db, 'posts'), payload);
 };

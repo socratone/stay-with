@@ -1,8 +1,10 @@
+import { Bible } from './constants';
+
 export interface Post {
   id: string;
   name: string;
   phrase: string;
-  book: string;
+  bible: Bible;
   startedChapter: number;
   startedVerse: number;
   endedChapter?: number;

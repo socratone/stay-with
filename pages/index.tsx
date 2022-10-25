@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import NavigationFooter from '../components/NavigationFooter';
 import PostCard from '../components/PostCard';
 import usePosts from '../hooks/api/usePosts';
+import { Bible, bibleLabel } from '../libs/firebase/constants';
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -17,8 +18,8 @@ const Home: NextPage = () => {
   const { posts } = usePosts();
 
   const getPhrase = (
-    text: string,
-    book: string,
+    phrase: string,
+    bible: string,
     startedChapter: number,
     startedVerse: number,
     endedChapter?: number,
@@ -26,13 +27,13 @@ const Home: NextPage = () => {
   ) => {
     if (endedChapter && endedVerse) {
       if (startedChapter === endedChapter) {
-        return `${text} (${book} ${startedChapter},${startedVerse}-${endedVerse})`;
+        return `${phrase} (${bible} ${startedChapter},${startedVerse}-${endedVerse})`;
       }
 
-      return `${text} (${book} ${startedChapter},${startedVerse}-${endedChapter},${endedVerse})`;
+      return `${phrase} (${bible} ${startedChapter},${startedVerse}-${endedChapter},${endedVerse})`;
     }
 
-    return `${text} (${book} ${startedChapter},${startedVerse})`;
+    return `${phrase} (${bible} ${startedChapter},${startedVerse})`;
   };
 
   return (
@@ -50,7 +51,7 @@ const Home: NextPage = () => {
             name={item.name}
             phrase={getPhrase(
               item.phrase,
-              item.book,
+              bibleLabel[item.bible],
               item.startedChapter,
               item.startedVerse,
               item?.endedChapter,
