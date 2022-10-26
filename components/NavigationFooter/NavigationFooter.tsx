@@ -66,7 +66,7 @@ const NavigationFooter = () => {
             disableRipple
           />
           <BottomNavigationAction
-            onClick={() => router.push('/create')}
+            onClick={() => router.push('/form')}
             icon={<AddIcon />}
             disableRipple
           />

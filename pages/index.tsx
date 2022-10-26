@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import NavigationFooter from '../components/NavigationFooter';
 import PostCard from '../components/PostCard';
 import usePosts from '../hooks/api/usePosts';
-import { Bible, bibleLabel } from '../libs/firebase/constants';
+import { bibleLabel } from '../libs/firebase/constants';
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -36,6 +36,13 @@ const Home: NextPage = () => {
     return `${phrase} (${bible} ${startedChapter},${startedVerse})`;
   };
 
+  const handleEdit = (id: string) => {
+    router.push({
+      pathname: '/form',
+      query: { id },
+    });
+  };
+
   return (
     <>
       <Head>
@@ -59,6 +66,7 @@ const Home: NextPage = () => {
             )}
             content={item.content}
             isLiked={false}
+            onEdit={() => handleEdit(item.id)}
           />
         ))}
       </Container>

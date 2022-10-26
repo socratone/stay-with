@@ -12,6 +12,7 @@ export enum Bible {
   Acts = 'acts',
 }
 
+// TODO: 나머지 성경 채우기
 export const bibleLabel = {
   [Bible.Genesis]: '창세',
   [Bible.Exodus]: '탈출',

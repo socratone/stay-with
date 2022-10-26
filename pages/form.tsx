@@ -7,12 +7,13 @@ import {
   TextField,
 } from '@mui/material';
 import { Container } from '@mui/system';
-import { NextPage } from 'next';
+import { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import NavigationFooter from '../components/NavigationFooter';
-import { addPost } from '../libs/firebase/apis';
+import { addPost, getPost, updatePost } from '../libs/firebase/apis';
 import { Bible, bibleOptions } from '../libs/firebase/constants';
 
 interface IFormInput {
@@ -23,17 +24,52 @@ interface IFormInput {
   content: string;
 }
 
-const Create: NextPage = () => {
+interface FormProps {
+  defaultValues?: IFormInput;
+}
+
+export const getServerSideProps: GetServerSideProps<FormProps> = async (
+  context
+) => {
+  const id = context.query?.id;
+
+  if (typeof id === 'string') {
+    const post = await getPost(id);
+
+    return {
+      props: {
+        defaultValues: {
+          phrase: post.phrase,
+          bible: post.bible,
+          chapter: String(post.startedChapter),
+          verse: String(post.startedVerse),
+          content: post.content,
+        },
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
+
+const Form: NextPage<FormProps> = ({ defaultValues }) => {
   const router = useRouter();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<IFormInput>({
-    defaultValues: {
-      bible: Bible.Genesis,
-    },
+    defaultValues: defaultValues
+      ? defaultValues
+      : {
+          bible: Bible.Genesis,
+        },
   });
+
+  const [isRequested, setIsRequested] = useState(false);
 
   const handleCancel = () => {
     router.back();
@@ -46,19 +82,35 @@ const Create: NextPage = () => {
     chapter,
     verse,
   }) => {
+    setIsRequested(true);
     try {
-      await addPost({
-        bible,
-        content,
-        name: '김기원', // TODO: user name
-        phrase,
-        startedChapter: Number(chapter),
-        startedVerse: Number(verse),
-      });
+      const id = router.query?.id;
+
+      if (typeof id === 'string') {
+        await updatePost(id, {
+          bible,
+          content,
+          name: '김기원', // TODO: user name
+          phrase,
+          startedChapter: Number(chapter),
+          startedVerse: Number(verse),
+        });
+      } else {
+        await addPost({
+          bible,
+          content,
+          name: '김기원', // TODO: user name
+          phrase,
+          startedChapter: Number(chapter),
+          startedVerse: Number(verse),
+        });
+      }
 
       router.push('/');
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsRequested(false);
     }
   };
 
@@ -150,7 +202,7 @@ const Create: NextPage = () => {
           </Box>
           <Box display="flex" justifyContent="flex-end" gap={1}>
             <Button onClick={handleCancel}>취소</Button>
-            <Button type="submit" variant="contained">
+            <Button type="submit" variant="contained" disabled={isRequested}>
               저장
             </Button>
           </Box>
@@ -162,4 +214,4 @@ const Create: NextPage = () => {
   );
 };
 
-export default Create;
+export default Form;
