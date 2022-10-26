@@ -17,6 +17,7 @@
     "next": "12.2.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.38.0",
     "swiper": "6.8.4",
     "swiper-react": "1.0.0",
     "swr": "^1.3.0"
