@@ -2,14 +2,20 @@ import { Container } from '@mui/system';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useSWRConfig } from 'swr';
+import AlertDialog from '../components/AlertDialog';
 import NavigationFooter from '../components/NavigationFooter';
 import PostCard from '../components/PostCard';
 import usePosts from '../hooks/api/usePosts';
+import { deletePost } from '../libs/firebase/apis';
 import { bibleLabel } from '../libs/firebase/constants';
 
 const Home: NextPage = () => {
   const router = useRouter();
+  const { mutate } = useSWRConfig();
+
+  const [deleteId, setDeleteId] = useState<string | null>(null);
 
   useEffect(() => {
     router.prefetch('/public');
@@ -43,6 +49,19 @@ const Home: NextPage = () => {
     });
   };
 
+  const handleDelete = async () => {
+    if (!deleteId) return;
+
+    try {
+      await deletePost(deleteId);
+      mutate('/posts');
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setDeleteId(null);
+    }
+  };
+
   return (
     <>
       <Head>
@@ -67,9 +86,18 @@ const Home: NextPage = () => {
             content={item.content}
             isLiked={false}
             onEdit={() => handleEdit(item.id)}
+            onDelete={() => setDeleteId(item.id)}
           />
         ))}
       </Container>
+
+      <AlertDialog
+        open={!!deleteId}
+        onClose={() => setDeleteId(null)}
+        onSubmit={handleDelete}
+        title="삭제 확인"
+        description="정말로 삭제하시겠습니까?"
+      />
 
       <NavigationFooter />
     </>

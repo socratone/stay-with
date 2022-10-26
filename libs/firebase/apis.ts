@@ -6,6 +6,7 @@ import {
   doc,
   getDoc,
   updateDoc,
+  deleteDoc,
 } from 'firebase/firestore/lite';
 import { app } from './configs';
 import { Post } from './interfaces';
@@ -35,4 +36,9 @@ export const getPost = async (id: string) => {
 export const updatePost = async (id: string, payload: Omit<Post, 'id'>) => {
   const docRef = doc(db, 'posts', id);
   return await updateDoc(docRef, payload);
+};
+
+export const deletePost = async (id: string) => {
+  const docRef = doc(db, 'posts', id);
+  return await deleteDoc(docRef);
 };

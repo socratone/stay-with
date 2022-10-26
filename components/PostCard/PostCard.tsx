@@ -20,6 +20,7 @@ interface PostCardProps {
   content: string;
   isLiked: boolean;
   onEdit: () => void;
+  onDelete: () => void;
 }
 
 const ITEM_HEIGHT = 48;
@@ -31,6 +32,7 @@ const PostCard: React.FC<PostCardProps> = ({
   content,
   isLiked,
   onEdit,
+  onDelete,
 }) => {
   const [page, setPage] = useState(0);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -57,6 +59,11 @@ const PostCard: React.FC<PostCardProps> = ({
   const handleEdit = () => {
     setAnchorEl(null);
     onEdit();
+  };
+
+  const handleDelete = () => {
+    setAnchorEl(null);
+    onDelete();
   };
 
   const handleClose = () => {
@@ -100,6 +107,7 @@ const PostCard: React.FC<PostCardProps> = ({
             }}
           >
             <MenuItem onClick={handleEdit}>수정</MenuItem>
+            <MenuItem onClick={handleDelete}>삭제</MenuItem>
           </Menu>
         </Box>
       </Box>
