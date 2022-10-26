@@ -99,11 +99,13 @@ const PostCard: React.FC<PostCardProps> = ({
             anchorEl={anchorEl}
             open={open}
             onClose={handleClose}
-            PaperProps={{
-              style: {
-                maxHeight: ITEM_HEIGHT * 4.5,
-                width: '20ch',
-              },
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
             }}
           >
             <MenuItem onClick={handleEdit}>수정</MenuItem>
