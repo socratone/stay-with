@@ -1,58 +1,65 @@
-import { Box, Button, InputLabel, TextField } from '@mui/material';
+import {
+  Box,
+  Button,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from '@mui/material';
 import { Container } from '@mui/system';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
-import Select from '../components/common/Select';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import NavigationFooter from '../components/NavigationFooter';
 import { addPost } from '../libs/firebase/apis';
 import { Bible, bibleOptions } from '../libs/firebase/constants';
 
+interface IFormInput {
+  phrase: string;
+  bible: Bible;
+  chapter: string;
+  verse: string;
+  content: string;
+}
+
 const Create: NextPage = () => {
   const router = useRouter();
-
-  const [phrase, setPhrase] = useState('');
-  const [bible, setBible] = useState<Bible>(Bible.Genesis);
-  const [chapter, setChapter] = useState('1');
-  const [verse, setVerse] = useState('1');
-  const [content, setContent] = useState('');
-
-  const [isRequesting, setIsRequesting] = useState(false);
-
-  const handlePhraseChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setPhrase(event.target.value);
-  };
-  const handleBibleChange = (value: string) => setBible(value as Bible);
-  const handleChapterChange = (event: React.ChangeEvent<HTMLInputElement>) =>
-    setChapter(event.target.value);
-  const handleVerseChange = (event: React.ChangeEvent<HTMLInputElement>) =>
-    setVerse(event.target.value);
-  const handleContentChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setContent(event.target.value);
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormInput>({
+    defaultValues: {
+      bible: Bible.Genesis,
+    },
+  });
 
   const handleCancel = () => {
     router.back();
   };
 
-  const handleSubmit = async () => {
-    setIsRequesting(true);
-    // TODO: error handling
-    const response = await addPost({
-      bible,
-      content,
-      name: '김기원', // TODO: user name
-      phrase,
-      startedChapter: Number(chapter),
-      startedVerse: Number(verse),
-    });
+  const onSubmit: SubmitHandler<IFormInput> = async ({
+    bible,
+    content,
+    phrase,
+    chapter,
+    verse,
+  }) => {
+    try {
+      await addPost({
+        bible,
+        content,
+        name: '김기원', // TODO: user name
+        phrase,
+        startedChapter: Number(chapter),
+        startedVerse: Number(verse),
+      });
 
-    router.push('/');
+      router.push('/');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -64,43 +71,64 @@ const Create: NextPage = () => {
       </Head>
 
       <Container component="main" maxWidth="sm">
-        <Box display="flex" flexDirection="column" gap={2}>
+        <Box
+          component="form"
+          display="flex"
+          flexDirection="column"
+          gap={2}
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <Box>
             <InputLabel shrink htmlFor="phrase-input">
               마음에 와닿은 구절
             </InputLabel>
             <TextField
+              {...register('phrase', {
+                required: true,
+              })}
               id="phrase-input"
               size="small"
               fullWidth
-              value={phrase}
-              onChange={handlePhraseChange}
+              error={!!errors.phrase}
             />
           </Box>
           <Box display="flex" gap={2}>
             <Box flexGrow={1}>
               <Select
-                value={bible}
-                onChange={handleBibleChange}
-                options={bibleOptions}
+                {...register('bible', {
+                  required: true,
+                })}
+                defaultValue={Bible.Genesis}
+                fullWidth
+                size="small"
+              >
+                {bibleOptions.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Box>
+            <Box flexGrow={1}>
+              <TextField
+                {...register('chapter', {
+                  required: true,
+                })}
+                fullWidth
+                size="small"
+                type="number"
+                error={!!errors.chapter}
               />
             </Box>
             <Box flexGrow={1}>
               <TextField
-                value={chapter}
-                onChange={handleChapterChange}
+                {...register('verse', {
+                  required: true,
+                })}
                 fullWidth
                 size="small"
                 type="number"
-              />
-            </Box>
-            <Box flexGrow={1}>
-              <TextField
-                value={verse}
-                onChange={handleVerseChange}
-                fullWidth
-                size="small"
-                type="number"
+                error={!!errors.verse}
               />
             </Box>
           </Box>
@@ -109,22 +137,20 @@ const Create: NextPage = () => {
               구절을 통해 느낀점
             </InputLabel>
             <TextField
+              {...register('content', {
+                required: true,
+              })}
               id="content-input"
               size="small"
               fullWidth
               multiline
               rows={10}
-              value={content}
-              onChange={handleContentChange}
+              error={!!errors.content}
             />
           </Box>
           <Box display="flex" justifyContent="flex-end" gap={1}>
             <Button onClick={handleCancel}>취소</Button>
-            <Button
-              onClick={handleSubmit}
-              variant="contained"
-              disabled={isRequesting}
-            >
+            <Button type="submit" variant="contained">
               저장
             </Button>
           </Box>
