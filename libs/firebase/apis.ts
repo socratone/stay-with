@@ -9,6 +9,7 @@ import {
   deleteDoc,
   query,
   where,
+  orderBy,
 } from 'firebase/firestore/lite';
 import { app } from './configs';
 import { Post, User } from './interfaces';
@@ -23,9 +24,9 @@ const USERS = 'users';
 export const getPosts = async () => {
   const posts: Post[] = [];
   const postsRef = collection(db, POSTS);
-  const querySnapshot = await getDocs(postsRef);
+  const q = query(postsRef, orderBy('createdAt', 'desc'));
+  const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
-    // TODO: created at 등을 추가해서 order
     posts.push({ id: doc.id, ...doc.data() } as Post);
   });
   return posts;
@@ -42,7 +43,10 @@ export const getPost = async (id: string) => {
   return docSnap.data() as Omit<Post, 'id'>;
 };
 
-export const updatePost = async (id: string, payload: Omit<Post, 'id'>) => {
+export const updatePost = async (
+  id: string,
+  payload: Omit<Post, 'id' | 'createdAt'>
+) => {
   const docRef = doc(db, POSTS, id);
   return await updateDoc(docRef, payload);
 };

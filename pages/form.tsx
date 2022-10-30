@@ -114,6 +114,7 @@ const Form: NextPage<FormProps> = ({ defaultValues }) => {
     setIsRequested(true);
     try {
       const id = router.query?.id;
+      const now = new Date().getTime();
 
       if (typeof id === 'string') {
         await updatePost(id, {
@@ -123,6 +124,7 @@ const Form: NextPage<FormProps> = ({ defaultValues }) => {
           phrase,
           startedChapter: Number(chapter),
           startedVerse: Number(verse),
+          updatedAt: now,
         });
       } else {
         await addPost({
@@ -132,6 +134,8 @@ const Form: NextPage<FormProps> = ({ defaultValues }) => {
           phrase,
           startedChapter: Number(chapter),
           startedVerse: Number(verse),
+          createdAt: now,
+          updatedAt: now,
         });
       }
 

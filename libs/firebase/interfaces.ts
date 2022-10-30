@@ -17,4 +17,6 @@ export interface Post {
   endedChapter?: number;
   endedVerse?: number;
   content: string;
+  createdAt: number;
+  updatedAt: number;
 }
