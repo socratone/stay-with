@@ -34,6 +34,7 @@ export const getServerSideProps: GetServerSideProps<FormProps> = async (
 ) => {
   const id = context.query?.id;
 
+  // 생성하는 경우
   if (!id) {
     return {
       props: {},
@@ -41,7 +42,10 @@ export const getServerSideProps: GetServerSideProps<FormProps> = async (
   }
 
   try {
+    // 수정하는 경우
     if (typeof id === 'string') {
+      // TODO: user가 생성한 postId가 아닌 경우 => 404
+
       const post = await getPost(id);
 
       return {

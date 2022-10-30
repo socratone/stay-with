@@ -10,16 +10,23 @@ import PostCard from '../components/PostCard';
 import usePosts from '../hooks/api/usePosts';
 import { deletePost } from '../libs/firebase/apis';
 import { bibleLabel } from '../libs/firebase/constants';
+import { User } from '../libs/firebase/interfaces';
 
 const Home: NextPage = () => {
   const router = useRouter();
   const { mutate } = useSWRConfig();
 
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
+  // TODO: token으로 바꿔야 함
   useEffect(() => {
-    router.prefetch('/public');
-  }, [router]);
+    const stringifyUser = localStorage.getItem('user');
+    if (stringifyUser) {
+      const user = JSON.parse(stringifyUser);
+      setUser(user);
+    }
+  }, []);
 
   const { posts } = usePosts();
 
@@ -86,6 +93,7 @@ const Home: NextPage = () => {
               item?.endedVerse
             )}
             content={item.content}
+            isMine={item.user.id === user?.id}
             isLiked={false}
             onEdit={() => handleEdit(item.id)}
             onDelete={() => setDeleteId(item.id)}

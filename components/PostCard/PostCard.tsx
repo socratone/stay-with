@@ -19,11 +19,10 @@ interface PostCardProps {
   phrase: string;
   content: string;
   isLiked: boolean;
+  isMine: boolean;
   onEdit: () => void;
   onDelete: () => void;
 }
-
-const ITEM_HEIGHT = 48;
 
 const PostCard: React.FC<PostCardProps> = ({
   nickname,
@@ -31,6 +30,7 @@ const PostCard: React.FC<PostCardProps> = ({
   phrase,
   content,
   isLiked,
+  isMine,
   onEdit,
   onDelete,
 }) => {
@@ -92,25 +92,29 @@ const PostCard: React.FC<PostCardProps> = ({
           </Box>
         </Box>
         <Box display="flex" alignItems="center">
-          <IconButton onClick={handleClick} sx={{ m: -1 }}>
-            <MoreVertIcon />
-          </IconButton>
-          <Menu
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-          >
-            <MenuItem onClick={handleEdit}>수정</MenuItem>
-            <MenuItem onClick={handleDelete}>삭제</MenuItem>
-          </Menu>
+          {isMine ? (
+            <>
+              <IconButton onClick={handleClick} sx={{ m: -1 }}>
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+              >
+                <MenuItem onClick={handleEdit}>수정</MenuItem>
+                <MenuItem onClick={handleDelete}>삭제</MenuItem>
+              </Menu>
+            </>
+          ) : null}
         </Box>
       </Box>
 
