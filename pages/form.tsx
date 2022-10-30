@@ -160,6 +160,7 @@ const Form: NextPage<FormProps> = ({ defaultValues }) => {
           flexDirection="column"
           gap={2}
           onSubmit={handleSubmit(onSubmit)}
+          py={2}
         >
           <Box>
             <InputLabel shrink htmlFor="phrase-input">
