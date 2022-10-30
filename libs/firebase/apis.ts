@@ -10,6 +10,8 @@ import {
   query,
   where,
   orderBy,
+  limit,
+  startAfter,
 } from 'firebase/firestore/lite';
 import { app } from './configs';
 import { Post, User } from './interfaces';
@@ -21,16 +23,33 @@ const USERS = 'users';
 
 // posts
 
-export const getPosts = async () => {
+export const getPostsInfinite = async (createdAt = Infinity) => {
   const posts: Post[] = [];
   const postsRef = collection(db, POSTS);
-  const q = query(postsRef, orderBy('createdAt', 'desc'));
+  const q = query(
+    postsRef,
+    orderBy('createdAt', 'desc'),
+    startAfter(createdAt),
+    limit(10) // 한 번에 불러오는 수
+  );
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
     posts.push({ id: doc.id, ...doc.data() } as Post);
   });
   return posts;
 };
+
+// TODO: 참고 후 삭제
+// export const getPosts = async () => {
+//   const posts: Post[] = [];
+//   const postsRef = collection(db, POSTS);
+//   const q = query(postsRef, orderBy('createdAt', 'desc'));
+//   const querySnapshot = await getDocs(q);
+//   querySnapshot.forEach((doc) => {
+//     posts.push({ id: doc.id, ...doc.data() } as Post);
+//   });
+//   return posts;
+// };
 
 export const addPost = async (payload: Omit<Post, 'id'>) => {
   const postsRef = collection(db, POSTS);

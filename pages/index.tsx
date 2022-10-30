@@ -7,10 +7,11 @@ import { useSWRConfig } from 'swr';
 import AlertDialog from '../components/AlertDialog';
 import GlobalHeader from '../components/GlobalHeader';
 import PostCard from '../components/PostCard';
-import usePosts from '../hooks/api/usePosts';
 import { deletePost } from '../libs/firebase/apis';
 import { bibleLabel } from '../libs/firebase/constants';
 import { User } from '../libs/firebase/interfaces';
+import { Box, Button } from '@mui/material';
+import usePostsInfinite from '../hooks/api/usePostsInfinite';
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -28,7 +29,7 @@ const Home: NextPage = () => {
     }
   }, []);
 
-  const { posts } = usePosts();
+  const { posts, size, setSize } = usePostsInfinite();
 
   const getPhrase = (
     phrase: string,
@@ -79,7 +80,7 @@ const Home: NextPage = () => {
 
       <GlobalHeader />
 
-      <Container component="main" maxWidth="sm" sx={{ px: 0 }}>
+      <Container component="main" maxWidth="sm" sx={{ px: 0, pb: 2 }}>
         {posts?.map((item) => (
           <PostCard
             key={item.id}
@@ -99,6 +100,9 @@ const Home: NextPage = () => {
             onDelete={() => setDeleteId(item.id)}
           />
         ))}
+        <Box display="flex" justifyContent="center">
+          <Button onClick={() => setSize(size + 1)}>더 보기</Button>
+        </Box>
       </Container>
 
       <AlertDialog
