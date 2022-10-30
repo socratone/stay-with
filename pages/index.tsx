@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useSWRConfig } from 'swr';
 import AlertDialog from '../components/AlertDialog';
-import NavigationFooter from '../components/NavigationFooter';
+import GlobalHeader from '../components/GlobalHeader';
 import PostCard from '../components/PostCard';
 import usePosts from '../hooks/api/usePosts';
 import { deletePost } from '../libs/firebase/apis';
@@ -70,11 +70,13 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <GlobalHeader />
+
       <Container component="main" maxWidth="sm" sx={{ px: 0 }}>
         {posts?.map((item) => (
           <PostCard
             key={item.id}
-            name={item.name}
+            nickname={item.user.nickname}
             phrase={getPhrase(
               item.phrase,
               bibleLabel[item.bible],
@@ -98,8 +100,6 @@ const Home: NextPage = () => {
         title="삭제 확인"
         description="정말로 삭제하시겠습니까?"
       />
-
-      <NavigationFooter />
     </>
   );
 };

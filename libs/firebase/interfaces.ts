@@ -1,9 +1,15 @@
 import { Bible } from './constants';
 
+export interface User {
+  id: string;
+  nickname: string;
+  email: string;
+  password: string;
+}
+
 export interface Post {
   id: string;
-  // TODO: user id로 해야하지 않나? data structure 숙고
-  name: string;
+  user: Omit<User, 'password' | 'email'>;
   phrase: string;
   bible: Bible;
   startedChapter: number;

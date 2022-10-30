@@ -10,11 +10,12 @@ import { Container } from '@mui/system';
 import { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import NavigationFooter from '../components/NavigationFooter';
+import GlobalHeader from '../components/GlobalHeader';
 import { addPost, getPost, updatePost } from '../libs/firebase/apis';
 import { Bible, bibleOptions } from '../libs/firebase/constants';
+import { User } from '../libs/firebase/interfaces';
 
 interface IFormInput {
   phrase: string;
@@ -33,24 +34,34 @@ export const getServerSideProps: GetServerSideProps<FormProps> = async (
 ) => {
   const id = context.query?.id;
 
-  if (typeof id === 'string') {
-    const post = await getPost(id);
-
+  if (!id) {
     return {
-      props: {
-        defaultValues: {
-          phrase: post.phrase,
-          bible: post.bible,
-          chapter: String(post.startedChapter),
-          verse: String(post.startedVerse),
-          content: post.content,
-        },
-      },
+      props: {},
     };
   }
 
+  try {
+    if (typeof id === 'string') {
+      const post = await getPost(id);
+
+      return {
+        props: {
+          defaultValues: {
+            phrase: post.phrase,
+            bible: post.bible,
+            chapter: String(post.startedChapter),
+            verse: String(post.startedVerse),
+            content: post.content,
+          },
+        },
+      };
+    }
+  } catch (error) {
+    console.error(error);
+  }
+
   return {
-    props: {},
+    notFound: true,
   };
 };
 
@@ -70,6 +81,18 @@ const Form: NextPage<FormProps> = ({ defaultValues }) => {
   });
 
   const [isRequested, setIsRequested] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+
+  // TODO: token으로 바꿔야 함
+  useEffect(() => {
+    const stringifyUser = localStorage.getItem('user');
+    if (stringifyUser) {
+      const user = JSON.parse(stringifyUser);
+      setUser(user);
+    } else {
+      router.back();
+    }
+  }, [router]);
 
   const handleCancel = () => {
     router.back();
@@ -82,6 +105,8 @@ const Form: NextPage<FormProps> = ({ defaultValues }) => {
     chapter,
     verse,
   }) => {
+    if (!user) return;
+
     setIsRequested(true);
     try {
       const id = router.query?.id;
@@ -90,7 +115,7 @@ const Form: NextPage<FormProps> = ({ defaultValues }) => {
         await updatePost(id, {
           bible,
           content,
-          name: '김기원', // TODO: user name
+          user,
           phrase,
           startedChapter: Number(chapter),
           startedVerse: Number(verse),
@@ -99,7 +124,7 @@ const Form: NextPage<FormProps> = ({ defaultValues }) => {
         await addPost({
           bible,
           content,
-          name: '김기원', // TODO: user name
+          user,
           phrase,
           startedChapter: Number(chapter),
           startedVerse: Number(verse),
@@ -121,6 +146,8 @@ const Form: NextPage<FormProps> = ({ defaultValues }) => {
         <meta name="description" content="머물음 웹" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <GlobalHeader />
 
       <Container component="main" maxWidth="sm">
         <Box
@@ -208,8 +235,6 @@ const Form: NextPage<FormProps> = ({ defaultValues }) => {
           </Box>
         </Box>
       </Container>
-
-      <NavigationFooter />
     </>
   );
 };

@@ -14,7 +14,7 @@ import CirclePagination from './CirclePagination';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 interface PostCardProps {
-  name: string;
+  nickname: string;
   profileImageUrl?: string;
   phrase: string;
   content: string;
@@ -26,7 +26,7 @@ interface PostCardProps {
 const ITEM_HEIGHT = 48;
 
 const PostCard: React.FC<PostCardProps> = ({
-  name,
+  nickname,
   profileImageUrl,
   phrase,
   content,
@@ -85,10 +85,10 @@ const PostCard: React.FC<PostCardProps> = ({
           {profileImageUrl ? (
             <Avatar alt="Profile" src={profileImageUrl} />
           ) : (
-            <Avatar sx={{ width: 32, height: 32 }}>{name[0]}</Avatar>
+            <Avatar sx={{ width: 32, height: 32 }}>{nickname[0]}</Avatar>
           )}
           <Box display="flex" alignItems="center">
-            <Typography>{name}</Typography>
+            <Typography>{nickname}</Typography>
           </Box>
         </Box>
         <Box display="flex" alignItems="center">
