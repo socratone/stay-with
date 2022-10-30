@@ -94,7 +94,7 @@ const Form: NextPage<FormProps> = ({ defaultValues }) => {
       const user = JSON.parse(stringifyUser);
       setUser(user);
     } else {
-      router.back();
+      router.push('/login');
     }
   }, [router]);
 
