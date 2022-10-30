@@ -43,6 +43,12 @@ const GlobalHeader = () => {
       borderColor="gainsboro"
       height={50}
       px={2}
+      sx={{
+        position: 'sticky',
+        top: 0,
+        bgcolor: 'white',
+        zIndex: 10,
+      }}
     >
       <Box display="flex" height="100%" gap={1}>
         <HeaderLink href="/">홈</HeaderLink>
