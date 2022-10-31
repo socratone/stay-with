@@ -2,7 +2,6 @@ import {
   Avatar,
   Box,
   IconButton,
-  Menu,
   MenuItem,
   Paper,
   Typography,
@@ -14,6 +13,7 @@ import { useState } from 'react';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { PRIMARY_BOX_SHADOW } from '../../theme/boxShadow';
 import { Bible, bibleLabel } from '../../libs/firebase/constants';
+import SmallMenu from '../SmallMenu';
 
 interface PostCardProps {
   nickname: string;
@@ -102,22 +102,10 @@ const PostCard: React.FC<PostCardProps> = ({
               >
                 <MoreHorizIcon />
               </IconButton>
-              <Menu
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right',
-                }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-              >
+              <SmallMenu anchorEl={anchorEl} open={open} onClose={handleClose}>
                 <MenuItem onClick={handleEdit}>수정</MenuItem>
                 <MenuItem onClick={handleDelete}>삭제</MenuItem>
-              </Menu>
+              </SmallMenu>
             </>
           ) : null}
         </Box>

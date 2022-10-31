@@ -202,6 +202,7 @@ const Form: NextPage<FormProps> = ({ defaultValues }) => {
                 {...register('chapter', {
                   required: true,
                 })}
+                placeholder="장"
                 fullWidth
                 size="small"
                 type="number"
@@ -213,6 +214,7 @@ const Form: NextPage<FormProps> = ({ defaultValues }) => {
                 {...register('verse', {
                   required: true,
                 })}
+                placeholder="절"
                 fullWidth
                 size="small"
                 type="number"
@@ -232,7 +234,7 @@ const Form: NextPage<FormProps> = ({ defaultValues }) => {
               size="small"
               fullWidth
               multiline
-              rows={10}
+              minRows={15}
               error={!!errors.content}
             />
           </Box>

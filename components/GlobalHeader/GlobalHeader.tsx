@@ -1,15 +1,9 @@
-import {
-  Avatar,
-  Box,
-  ButtonBase,
-  Menu,
-  MenuItem,
-  useTheme,
-} from '@mui/material';
+import { Avatar, Box, ButtonBase, MenuItem, useTheme } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { User } from '../../libs/firebase/interfaces';
 import { PRIMARY_BOX_SHADOW } from '../../theme/boxShadow';
+import SmallMenu from '../SmallMenu';
 import HeaderLink from './HeaderLink';
 
 const GlobalHeader = () => {
@@ -59,8 +53,7 @@ const GlobalHeader = () => {
       }}
     >
       <Box display="flex" height="100%" gap={1}>
-        <HeaderLink href="/">홈</HeaderLink>
-        <HeaderLink href="/form">글쓰기</HeaderLink>
+        <HeaderLink href="/">MMM</HeaderLink>
       </Box>
       <Box display="flex" alignItems="center" height="100%" gap={1}>
         {user ? (
@@ -68,21 +61,10 @@ const GlobalHeader = () => {
             <ButtonBase onClick={handleClick} sx={{ borderRadius: '50%' }}>
               <Avatar sx={{ width: 32, height: 32 }}>{user.nickname[0]}</Avatar>
             </ButtonBase>
-            <Menu
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-            >
+            <SmallMenu anchorEl={anchorEl} open={open} onClose={handleClose}>
+              <MenuItem onClick={() => router.push('/form')}>글쓰기</MenuItem>
               <MenuItem onClick={handleSignOut}>로그아웃</MenuItem>
-            </Menu>
+            </SmallMenu>
           </>
         ) : (
           <>

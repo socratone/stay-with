@@ -12,6 +12,7 @@ import { User } from '../libs/firebase/interfaces';
 import { Box, CircularProgress } from '@mui/material';
 import usePostsInfinite from '../hooks/api/usePostsInfinite';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import GlobalFooter from '../components/GlobalFooter';
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -112,6 +113,8 @@ const Home: NextPage = () => {
           ))}
         </InfiniteScroll>
       </Container>
+
+      <GlobalFooter />
 
       <AlertDialog
         open={!!deleteId}
