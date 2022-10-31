@@ -1,9 +1,7 @@
 import '../styles/globals.css';
-// swiper
-import 'swiper/swiper.scss';
 
 import type { AppProps } from 'next/app';
-import ThemeProvider from '../contexts/ThemeProvider';
+import ThemeProvider from '../theme/ThemeProvider';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

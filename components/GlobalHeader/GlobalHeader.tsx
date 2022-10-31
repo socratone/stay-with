@@ -1,10 +1,19 @@
-import { Avatar, Box, ButtonBase, Menu, MenuItem } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  ButtonBase,
+  Menu,
+  MenuItem,
+  useTheme,
+} from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { User } from '../../libs/firebase/interfaces';
+import { PRIMARY_BOX_SHADOW } from '../../theme/boxShadow';
 import HeaderLink from './HeaderLink';
 
 const GlobalHeader = () => {
+  const theme = useTheme();
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -39,15 +48,14 @@ const GlobalHeader = () => {
       component="header"
       display="flex"
       justifyContent="space-between"
-      borderBottom={1}
-      borderColor="gainsboro"
+      boxShadow={PRIMARY_BOX_SHADOW}
       height={50}
       px={2}
       sx={{
         position: 'sticky',
         top: 0,
-        bgcolor: 'white',
         zIndex: 10,
+        bgcolor: theme.palette.paper?.main,
       }}
     >
       <Box display="flex" height="100%" gap={1}>

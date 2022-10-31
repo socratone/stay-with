@@ -8,9 +8,8 @@ import AlertDialog from '../components/AlertDialog';
 import GlobalHeader from '../components/GlobalHeader';
 import PostCard from '../components/PostCard';
 import { deletePost } from '../libs/firebase/apis';
-import { bibleLabel } from '../libs/firebase/constants';
 import { User } from '../libs/firebase/interfaces';
-import { Box, Button, CircularProgress } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 import usePostsInfinite from '../hooks/api/usePostsInfinite';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
@@ -81,7 +80,11 @@ const Home: NextPage = () => {
 
       <GlobalHeader />
 
-      <Container component="main" maxWidth="sm" sx={{ px: 0, pb: 2 }}>
+      <Container
+        component="main"
+        maxWidth="sm"
+        sx={{ px: { xs: 0, sm: 0, md: 0 }, pt: 2 }}
+      >
         <InfiniteScroll
           dataLength={posts.length}
           next={() => setSize(size + 1)}
@@ -93,23 +96,19 @@ const Home: NextPage = () => {
           }
         >
           {posts?.map((item) => (
-            <PostCard
-              key={item.id}
-              nickname={item.user.nickname}
-              phrase={getPhrase(
-                item.phrase,
-                bibleLabel[item.bible],
-                item.startedChapter,
-                item.startedVerse,
-                item?.endedChapter,
-                item?.endedVerse
-              )}
-              content={item.content}
-              isMine={item.user.id === user?.id}
-              isLiked={false}
-              onEdit={() => handleEdit(item.id)}
-              onDelete={() => setDeleteId(item.id)}
-            />
+            <Box key={item.id} pb={1} px={2}>
+              <PostCard
+                nickname={item.user.nickname}
+                phrase={item.phrase}
+                bible={item.bible}
+                started={`${item.startedChapter},${item.startedVerse}`}
+                content={item.content}
+                isMine={item.user.id === user?.id}
+                isLiked={false}
+                onEdit={() => handleEdit(item.id)}
+                onDelete={() => setDeleteId(item.id)}
+              />
+            </Box>
           ))}
         </InfiniteScroll>
       </Container>

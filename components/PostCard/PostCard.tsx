@@ -4,19 +4,23 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  Paper,
   Typography,
+  useTheme,
 } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import { useState } from 'react';
-import CirclePagination from './CirclePagination';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import { PRIMARY_BOX_SHADOW } from '../../theme/boxShadow';
+import { Bible, bibleLabel } from '../../libs/firebase/constants';
 
 interface PostCardProps {
   nickname: string;
   profileImageUrl?: string;
   phrase: string;
+  bible: Bible;
+  started: string;
   content: string;
   isLiked: boolean;
   isMine: boolean;
@@ -28,29 +32,18 @@ const PostCard: React.FC<PostCardProps> = ({
   nickname,
   profileImageUrl,
   phrase,
+  bible,
+  started,
   content,
   isLiked,
   isMine,
   onEdit,
   onDelete,
 }) => {
-  const [page, setPage] = useState(0);
+  const theme = useTheme();
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-
-  const getPartialContents = (content: string) => {
-    const contents = [];
-
-    while (content.length > 0) {
-      const partialContent = content.substring(0, 500);
-      contents.push(partialContent);
-      content = content.substring(500);
-    }
-
-    return contents;
-  };
-
-  const partialContents = getPartialContents(content);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -71,7 +64,10 @@ const PostCard: React.FC<PostCardProps> = ({
   };
 
   return (
-    <Box component="article">
+    <Paper
+      component="article"
+      sx={{ borderRadius: 6, boxShadow: PRIMARY_BOX_SHADOW }}
+    >
       {/* header */}
       <Box
         display="flex"
@@ -79,23 +75,32 @@ const PostCard: React.FC<PostCardProps> = ({
         alignContent="center"
         gap={1}
         px={2}
-        py={1}
+        py={2}
       >
         <Box display="flex" alignItems="center" gap={1}>
           {profileImageUrl ? (
             <Avatar alt="Profile" src={profileImageUrl} />
           ) : (
-            <Avatar sx={{ width: 32, height: 32 }}>{nickname[0]}</Avatar>
+            <Avatar sx={{ width: 34, height: 34 }}>{nickname[0]}</Avatar>
           )}
           <Box display="flex" alignItems="center">
-            <Typography>{nickname}</Typography>
+            <Typography fontWeight={500} color={theme.palette.grey[900]}>
+              {nickname}
+            </Typography>
           </Box>
         </Box>
-        <Box display="flex" alignItems="center">
+        <Box display="flex" alignItems="center" gap={1}>
+          <Typography fontSize={14} color={theme.palette.grey[600]}>
+            {bibleLabel[bible]} {started}
+          </Typography>
           {isMine ? (
             <>
-              <IconButton onClick={handleClick} sx={{ m: -1 }}>
-                <MoreVertIcon />
+              <IconButton
+                onClick={handleClick}
+                size="small"
+                sx={{ boxShadow: PRIMARY_BOX_SHADOW }}
+              >
+                <MoreHorizIcon />
               </IconButton>
               <Menu
                 anchorEl={anchorEl}
@@ -119,37 +124,33 @@ const PostCard: React.FC<PostCardProps> = ({
       </Box>
 
       {/* phrase */}
-      <Box px={2} bgcolor="paper.main" p={2}>
+      <Typography
+        fontSize={18}
+        color={theme.palette.grey[900]}
+        px={2}
+        sx={{ whiteSpace: 'pre-line' }}
+        fontWeight={600}
+        mb={2}
+      >
         {phrase}
-      </Box>
+      </Typography>
 
       {/* content */}
-      <Box>
-        <Swiper
-          slidesPerView={1}
-          onSlideChange={(swiper) => setPage(swiper.activeIndex)}
-          tabIndex={1}
-        >
-          {partialContents.map((partialContent, index) => (
-            <SwiperSlide key={index}>
-              <Box px={2} pt={2} pb={1}>
-                <Typography sx={{ whiteSpace: 'pre-line' }}>
-                  {partialContent}
-                </Typography>
-              </Box>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </Box>
+      <Typography
+        color={theme.palette.grey[600]}
+        px={2}
+        sx={{ whiteSpace: 'pre-line' }}
+      >
+        {content}
+      </Typography>
 
       {/* footer */}
-      <Box display="flex" justifyContent="space-between" px={1}>
+      <Box display="flex" justifyContent="space-between" p={1}>
         <IconButton>
           {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         </IconButton>
-        <CirclePagination page={page} length={partialContents.length} />
       </Box>
-    </Box>
+    </Paper>
   );
 };
 
