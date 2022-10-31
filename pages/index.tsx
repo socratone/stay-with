@@ -10,8 +10,9 @@ import PostCard from '../components/PostCard';
 import { deletePost } from '../libs/firebase/apis';
 import { bibleLabel } from '../libs/firebase/constants';
 import { User } from '../libs/firebase/interfaces';
-import { Box, Button } from '@mui/material';
+import { Box, Button, CircularProgress } from '@mui/material';
 import usePostsInfinite from '../hooks/api/usePostsInfinite';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -29,7 +30,7 @@ const Home: NextPage = () => {
     }
   }, []);
 
-  const { posts, size, setSize } = usePostsInfinite();
+  const { posts, size, setSize, isEnded } = usePostsInfinite();
 
   const getPhrase = (
     phrase: string,
@@ -81,28 +82,36 @@ const Home: NextPage = () => {
       <GlobalHeader />
 
       <Container component="main" maxWidth="sm" sx={{ px: 0, pb: 2 }}>
-        {posts?.map((item) => (
-          <PostCard
-            key={item.id}
-            nickname={item.user.nickname}
-            phrase={getPhrase(
-              item.phrase,
-              bibleLabel[item.bible],
-              item.startedChapter,
-              item.startedVerse,
-              item?.endedChapter,
-              item?.endedVerse
-            )}
-            content={item.content}
-            isMine={item.user.id === user?.id}
-            isLiked={false}
-            onEdit={() => handleEdit(item.id)}
-            onDelete={() => setDeleteId(item.id)}
-          />
-        ))}
-        <Box display="flex" justifyContent="center">
-          <Button onClick={() => setSize(size + 1)}>더 보기</Button>
-        </Box>
+        <InfiniteScroll
+          dataLength={posts.length}
+          next={() => setSize(size + 1)}
+          hasMore={!isEnded}
+          loader={
+            <Box pt={3} pb={3} textAlign="center">
+              <CircularProgress />
+            </Box>
+          }
+        >
+          {posts?.map((item) => (
+            <PostCard
+              key={item.id}
+              nickname={item.user.nickname}
+              phrase={getPhrase(
+                item.phrase,
+                bibleLabel[item.bible],
+                item.startedChapter,
+                item.startedVerse,
+                item?.endedChapter,
+                item?.endedVerse
+              )}
+              content={item.content}
+              isMine={item.user.id === user?.id}
+              isLiked={false}
+              onEdit={() => handleEdit(item.id)}
+              onDelete={() => setDeleteId(item.id)}
+            />
+          ))}
+        </InfiniteScroll>
       </Container>
 
       <AlertDialog

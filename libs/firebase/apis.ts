@@ -30,7 +30,7 @@ export const getPostsInfinite = async (createdAt = Infinity) => {
     postsRef,
     orderBy('createdAt', 'desc'),
     startAfter(createdAt),
-    limit(10) // 한 번에 불러오는 수
+    limit(20) // 한 번에 불러오는 수
   );
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {

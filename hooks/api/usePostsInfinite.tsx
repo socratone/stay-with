@@ -1,6 +1,7 @@
 import { getPostsInfinite } from '../../libs/firebase/apis';
 import useSWRInfinite from 'swr/infinite';
 import { Post } from '../../libs/firebase/interfaces';
+import { useEffect, useState } from 'react';
 
 const getKey = (pageIndex: number, previousPageData: Post[]) => {
   if (previousPageData && !previousPageData.length) return null; // 끝에 도달
@@ -9,10 +10,20 @@ const getKey = (pageIndex: number, previousPageData: Post[]) => {
 };
 
 const usePostsInfinite = () => {
+  const [isEnded, setIsEnded] = useState(false);
+
   const { data, error, size, setSize } = useSWRInfinite(
     getKey,
     getPostsInfinite
   );
+
+  useEffect(() => {
+    if (data?.[data.length - 1].length === 0) {
+      setIsEnded(true);
+    } else {
+      setIsEnded(false);
+    }
+  }, [data]);
 
   const getPosts = () => {
     if (!data) return [];
@@ -27,6 +38,7 @@ const usePostsInfinite = () => {
     setSize,
     isLoading: !error && !data,
     isError: error,
+    isEnded,
   };
 };
 
