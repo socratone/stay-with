@@ -15,12 +15,10 @@ const usePostsInfinite = () => {
   );
 
   const getPosts = () => {
-    let results: Post[] = [];
     if (!data) return [];
-    data.forEach((posts) => {
-      results = results.concat(posts);
-    });
-    return results;
+    return data.reduce((previous, current) => {
+      return previous.concat(current);
+    }, []);
   };
 
   return {
