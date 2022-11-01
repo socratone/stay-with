@@ -1,6 +1,7 @@
 import {
   Avatar,
   Box,
+  Chip,
   IconButton,
   MenuItem,
   Paper,
@@ -90,9 +91,7 @@ const PostCard: React.FC<PostCardProps> = ({
           </Box>
         </Box>
         <Box display="flex" alignItems="center" gap={1}>
-          <Typography fontSize={14} color={theme.palette.grey[600]}>
-            {bibleLabel[bible]} {started}
-          </Typography>
+          <Chip label={`${bibleLabel[bible]} ${started}`} color="primary" />
           {isMine ? (
             <>
               <IconButton
