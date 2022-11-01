@@ -3,11 +3,19 @@ import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import { Box, useTheme } from '@mui/material';
 import { PRIMARY_BOX_SHADOW } from '../../theme/boxShadow';
 import { useState } from 'react';
-import SearchIcon from './SearchIcon';
 
 interface GlobalFooterProps {
   hidden: boolean;
 }
+
+const bottomNavigationActionSx = {
+  '.MuiBottomNavigationAction-label': {
+    fontSize: 18,
+  },
+  '.Mui-selected': {
+    fontSize: 20,
+  },
+};
 
 const GlobalFooter: React.FC<GlobalFooterProps> = ({ hidden }) => {
   const theme = useTheme();
@@ -35,40 +43,14 @@ const GlobalFooter: React.FC<GlobalFooterProps> = ({ hidden }) => {
         sx={{ height: 50 }}
       >
         <BottomNavigationAction
-          icon={<SearchIcon />}
-          sx={{
-            svg: {
-              width: 30,
-              height: 30,
-            },
-          }}
+          showLabel
+          label="나눔"
+          sx={bottomNavigationActionSx}
         />
         <BottomNavigationAction
-          icon={<SearchIcon />}
-          sx={{
-            svg: {
-              width: 30,
-              height: 30,
-            },
-          }}
-        />
-        <BottomNavigationAction
-          icon={<SearchIcon />}
-          sx={{
-            svg: {
-              width: 30,
-              height: 30,
-            },
-          }}
-        />
-        <BottomNavigationAction
-          icon={<SearchIcon />}
-          sx={{
-            svg: {
-              width: 30,
-              height: 30,
-            },
-          }}
+          showLabel
+          label="기도"
+          sx={bottomNavigationActionSx}
         />
       </BottomNavigation>
     </Box>

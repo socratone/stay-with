@@ -62,7 +62,9 @@ const GlobalHeader = () => {
               <Avatar sx={{ width: 32, height: 32 }}>{user.nickname[0]}</Avatar>
             </ButtonBase>
             <SmallMenu anchorEl={anchorEl} open={open} onClose={handleClose}>
-              <MenuItem onClick={() => router.push('/form')}>글쓰기</MenuItem>
+              <MenuItem onClick={() => router.push('/form')}>
+                나눔 글쓰기
+              </MenuItem>
               <MenuItem onClick={handleSignOut}>로그아웃</MenuItem>
             </SmallMenu>
           </>
