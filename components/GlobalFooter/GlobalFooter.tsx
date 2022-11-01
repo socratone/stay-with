@@ -1,32 +1,20 @@
-import BottomNavigation from '@mui/material/BottomNavigation';
-import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import { Box, useTheme } from '@mui/material';
+import { Box, ButtonBase, Typography, useTheme } from '@mui/material';
 import { PRIMARY_BOX_SHADOW } from '../../theme/boxShadow';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 interface GlobalFooterProps {
   hidden: boolean;
 }
 
 const GlobalFooter: React.FC<GlobalFooterProps> = ({ hidden }) => {
-  const router = useRouter();
   const theme = useTheme();
-  const [value, setValue] = useState(0);
-
-  useEffect(() => {
-    if (router.pathname === '/pray') {
-      setValue(1);
-    } else {
-      setValue(0);
-    }
-  }, [router]);
 
   return (
     <Box
       component="footer"
       boxShadow={PRIMARY_BOX_SHADOW}
       sx={{
+        display: 'flex',
         transition: 'all 0.3s ease',
         position: 'fixed',
         bottom: hidden ? -50 : 0,
@@ -34,26 +22,19 @@ const GlobalFooter: React.FC<GlobalFooterProps> = ({ hidden }) => {
         width: '100%',
         zIndex: 10,
         bgcolor: theme.palette.paper?.main,
+        height: 50,
       }}
     >
-      <BottomNavigation
-        value={value}
-        onChange={(event, newValue) => {
-          setValue(newValue);
-        }}
-        sx={{ height: 50 }}
-      >
-        <BottomNavigationAction
-          showLabel
-          label="나눔"
-          onClick={() => router.push('/')}
-        />
-        <BottomNavigationAction
-          showLabel
-          label="기도"
-          onClick={() => router.push('/pray')}
-        />
-      </BottomNavigation>
+      <Link href="/">
+        <ButtonBase sx={{ height: '100%', flexGrow: 1 }}>
+          <Typography>나눔</Typography>
+        </ButtonBase>
+      </Link>
+      <Link href="/pray">
+        <ButtonBase sx={{ height: '100%', flexGrow: 1 }}>
+          <Typography>기도</Typography>
+        </ButtonBase>
+      </Link>
     </Box>
   );
 };
