@@ -2,24 +2,25 @@ import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import { Box, useTheme } from '@mui/material';
 import { PRIMARY_BOX_SHADOW } from '../../theme/boxShadow';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 interface GlobalFooterProps {
   hidden: boolean;
 }
 
-const bottomNavigationActionSx = {
-  '.MuiBottomNavigationAction-label': {
-    fontSize: 18,
-  },
-  '.Mui-selected': {
-    fontSize: 20,
-  },
-};
-
 const GlobalFooter: React.FC<GlobalFooterProps> = ({ hidden }) => {
+  const router = useRouter();
   const theme = useTheme();
   const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    if (router.pathname === '/pray') {
+      setValue(1);
+    } else {
+      setValue(0);
+    }
+  }, [router]);
 
   return (
     <Box
@@ -45,12 +46,12 @@ const GlobalFooter: React.FC<GlobalFooterProps> = ({ hidden }) => {
         <BottomNavigationAction
           showLabel
           label="나눔"
-          sx={bottomNavigationActionSx}
+          onClick={() => router.push('/')}
         />
         <BottomNavigationAction
           showLabel
           label="기도"
-          sx={bottomNavigationActionSx}
+          onClick={() => router.push('/pray')}
         />
       </BottomNavigation>
     </Box>
