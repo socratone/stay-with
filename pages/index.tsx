@@ -13,6 +13,7 @@ import { Box, CircularProgress } from '@mui/material';
 import usePostsInfinite from '../hooks/api/usePostsInfinite';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import GlobalFooter from '../components/GlobalFooter';
+import useScrollDirection from '../hooks/dom/useScrollDirection';
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -32,24 +33,7 @@ const Home: NextPage = () => {
 
   const { posts, size, setSize, isEnded } = usePostsInfinite();
 
-  const getPhrase = (
-    phrase: string,
-    bible: string,
-    startedChapter: number,
-    startedVerse: number,
-    endedChapter?: number,
-    endedVerse?: number
-  ) => {
-    if (endedChapter && endedVerse) {
-      if (startedChapter === endedChapter) {
-        return `${phrase} (${bible} ${startedChapter},${startedVerse}-${endedVerse})`;
-      }
-
-      return `${phrase} (${bible} ${startedChapter},${startedVerse}-${endedChapter},${endedVerse})`;
-    }
-
-    return `${phrase} (${bible} ${startedChapter},${startedVerse})`;
-  };
+  const { scrollDirection } = useScrollDirection();
 
   const handleEdit = (id: string) => {
     router.push({
@@ -84,7 +68,7 @@ const Home: NextPage = () => {
       <Container
         component="main"
         maxWidth="sm"
-        sx={{ px: { xs: 0, sm: 0, md: 0 }, pt: 2 }}
+        sx={{ px: { xs: 0, sm: 0, md: 0 }, pt: 1 }}
       >
         <InfiniteScroll
           dataLength={posts.length}
@@ -97,7 +81,7 @@ const Home: NextPage = () => {
           }
         >
           {posts?.map((item) => (
-            <Box key={item.id} pb={1} px={2}>
+            <Box key={item.id} pt={1} pb={1} px={2}>
               <PostCard
                 nickname={item.user.nickname}
                 phrase={item.phrase}
@@ -114,7 +98,7 @@ const Home: NextPage = () => {
         </InfiniteScroll>
       </Container>
 
-      <GlobalFooter />
+      <GlobalFooter hidden={scrollDirection === 'down'} />
 
       <AlertDialog
         open={!!deleteId}

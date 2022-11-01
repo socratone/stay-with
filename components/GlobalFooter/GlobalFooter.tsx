@@ -5,7 +5,11 @@ import { PRIMARY_BOX_SHADOW } from '../../theme/boxShadow';
 import { useState } from 'react';
 import SearchIcon from './SearchIcon';
 
-const GlobalFooter = () => {
+interface GlobalFooterProps {
+  hidden: boolean;
+}
+
+const GlobalFooter: React.FC<GlobalFooterProps> = ({ hidden }) => {
   const theme = useTheme();
   const [value, setValue] = useState(0);
 
@@ -14,8 +18,9 @@ const GlobalFooter = () => {
       component="footer"
       boxShadow={PRIMARY_BOX_SHADOW}
       sx={{
+        transition: 'all 0.3s ease',
         position: 'fixed',
-        bottom: 0,
+        bottom: hidden ? -50 : 0,
         left: 0,
         width: '100%',
         zIndex: 10,
@@ -23,14 +28,13 @@ const GlobalFooter = () => {
       }}
     >
       <BottomNavigation
-        showLabels
         value={value}
         onChange={(event, newValue) => {
           setValue(newValue);
         }}
+        sx={{ height: 50 }}
       >
         <BottomNavigationAction
-          label="찾기"
           icon={<SearchIcon />}
           sx={{
             svg: {
@@ -40,7 +44,6 @@ const GlobalFooter = () => {
           }}
         />
         <BottomNavigationAction
-          label="찾기"
           icon={<SearchIcon />}
           sx={{
             svg: {
@@ -50,7 +53,6 @@ const GlobalFooter = () => {
           }}
         />
         <BottomNavigationAction
-          label="찾기"
           icon={<SearchIcon />}
           sx={{
             svg: {
@@ -60,7 +62,6 @@ const GlobalFooter = () => {
           }}
         />
         <BottomNavigationAction
-          label="찾기"
           icon={<SearchIcon />}
           sx={{
             svg: {

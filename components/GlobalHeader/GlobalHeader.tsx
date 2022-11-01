@@ -69,7 +69,7 @@ const GlobalHeader = () => {
         ) : (
           <>
             <HeaderLink href="/login">로그인</HeaderLink>
-            <HeaderLink href="/signup">회원 가입</HeaderLink>
+            <HeaderLink href="/signup">회원가입</HeaderLink>
           </>
         )}
       </Box>
