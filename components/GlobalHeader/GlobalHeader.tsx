@@ -65,6 +65,7 @@ const GlobalHeader = () => {
               <MenuItem onClick={() => router.push('/form')}>
                 나눔 글쓰기
               </MenuItem>
+              <MenuItem onClick={() => router.push('/setting')}>설정</MenuItem>
               <MenuItem onClick={handleSignOut}>로그아웃</MenuItem>
             </SmallMenu>
           </>
