@@ -1,4 +1,5 @@
 import { Box, Button, TextField } from '@mui/material';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -71,6 +72,9 @@ const Login = () => {
           <Button type="submit" variant="contained" disabled={isRequested}>
             로그인
           </Button>
+          <Link href="/signup">
+            <Button>회원가입</Button>
+          </Link>
         </Box>
       </Box>
     </Box>

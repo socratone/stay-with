@@ -70,10 +70,7 @@ const GlobalHeader = () => {
             </SmallMenu>
           </>
         ) : (
-          <>
-            <HeaderLink href="/login">로그인</HeaderLink>
-            <HeaderLink href="/signup">회원가입</HeaderLink>
-          </>
+          <HeaderLink href="/login">Login</HeaderLink>
         )}
       </Box>
     </Box>
