@@ -1,19 +1,12 @@
-import {
-  Box,
-  Container,
-  FormControlLabel,
-  FormGroup,
-  Switch,
-} from '@mui/material';
-import { useState } from 'react';
+import { Container, FormControlLabel, FormGroup, Switch } from '@mui/material';
 import GlobalFooter from '../components/GlobalFooter';
 import GlobalHeader from '../components/GlobalHeader';
+import useColorMode from '../hooks/context/useDarkMode';
 import useScrollDirection from '../hooks/dom/useScrollDirection';
 
 const Setting = () => {
   const { scrollDirection } = useScrollDirection();
-
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { colorMode, setColorMode } = useColorMode();
 
   return (
     <>
@@ -24,8 +17,10 @@ const Setting = () => {
           <FormControlLabel
             control={
               <Switch
-                checked={isDarkMode}
-                onChange={(event, checked) => setIsDarkMode(checked)}
+                checked={colorMode === 'dark'}
+                onChange={(event, checked) =>
+                  setColorMode(checked ? 'dark' : 'light')
+                }
               />
             }
             label="다크모드"
