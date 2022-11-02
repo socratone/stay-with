@@ -4,7 +4,8 @@ import {
 } from '@mui/material';
 
 import { createTheme } from '@mui/material';
-import { createContext, useMemo, useState } from 'react';
+import { blue, grey } from '@mui/material/colors';
+import { createContext, useEffect, useMemo, useState } from 'react';
 import { PRIMARY_BOX_SHADOW } from './boxShadow';
 
 // https://stackoverflow.com/questions/60424596/cant-customize-color-palette-types-on-material-ui-theme-in-typescript
@@ -36,14 +37,40 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     prefersDarkMode ? 'dark' : 'light'
   );
 
+  useEffect(() => {
+    if (colorMode === 'light') {
+      document.body.style.backgroundColor = '#fff';
+    } else {
+      document.body.style.backgroundColor = '#000';
+    }
+  }, [colorMode]);
+
   const theme = useMemo(
     () =>
       createTheme({
         palette: {
           mode: colorMode,
-          paper: {
-            main: colorMode === 'dark' ? 'rgb(52, 51, 64)' : '#fff',
-          },
+          ...(colorMode === 'light'
+            ? {
+                // palette values for light mode
+                paper: {
+                  main: '#fff',
+                },
+                text: {
+                  primary: grey[900],
+                  secondary: grey[600],
+                },
+              }
+            : {
+                // palette values for dark mode
+                paper: {
+                  main: grey[900],
+                },
+                text: {
+                  primary: grey[100],
+                  secondary: grey[300],
+                },
+              }),
         },
         typography: {
           fontFamily: [

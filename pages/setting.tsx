@@ -1,4 +1,10 @@
-import { Container, FormControlLabel, FormGroup, Switch } from '@mui/material';
+import {
+  Container,
+  FormControlLabel,
+  FormGroup,
+  Switch,
+  Typography,
+} from '@mui/material';
 import GlobalFooter from '../components/GlobalFooter';
 import GlobalHeader from '../components/GlobalHeader';
 import useColorMode from '../hooks/context/useDarkMode';
@@ -23,7 +29,7 @@ const Setting = () => {
                 }
               />
             }
-            label="다크모드"
+            label={<Typography color="text.primary">다크모드</Typography>}
           />
         </FormGroup>
       </Container>

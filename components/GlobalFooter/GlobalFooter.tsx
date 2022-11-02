@@ -27,12 +27,12 @@ const GlobalFooter: React.FC<GlobalFooterProps> = ({ hidden }) => {
     >
       <Link href="/">
         <ButtonBase sx={{ height: '100%', flexGrow: 1 }}>
-          <Typography>나눔</Typography>
+          <Typography color="text.primary">나눔</Typography>
         </ButtonBase>
       </Link>
       <Link href="/pray">
         <ButtonBase sx={{ height: '100%', flexGrow: 1 }}>
-          <Typography>기도</Typography>
+          <Typography color="text.primary">기도</Typography>
         </ButtonBase>
       </Link>
     </Box>

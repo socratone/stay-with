@@ -113,7 +113,7 @@ const PostCard: React.FC<PostCardProps> = ({
       {/* phrase */}
       <Typography
         fontSize={18}
-        color={theme.palette.grey[900]}
+        color="text.primary"
         px={2}
         sx={{ whiteSpace: 'pre-line' }}
         fontWeight={600}
@@ -124,7 +124,8 @@ const PostCard: React.FC<PostCardProps> = ({
 
       {/* content */}
       <Typography
-        color={theme.palette.grey[600]}
+        color="text.secondary"
+        // color={theme.palette.grey[600]}
         px={2}
         sx={{ whiteSpace: 'pre-line' }}
       >
