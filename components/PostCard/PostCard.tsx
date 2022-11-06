@@ -21,8 +21,10 @@ interface PostCardProps {
   profileImageUrl?: string;
   phrase: string;
   bible: Bible;
-  started: string;
-  ended?: string;
+  startedChapter: number;
+  startedVerse: number;
+  endedChapter?: number;
+  endedVerse?: number;
   content: string;
   isLiked: boolean;
   isMine: boolean;
@@ -35,8 +37,10 @@ const PostCard: React.FC<PostCardProps> = ({
   profileImageUrl,
   phrase,
   bible,
-  started,
-  ended,
+  startedChapter,
+  startedVerse,
+  endedChapter,
+  endedVerse,
   content,
   isLiked,
   isMine,
@@ -67,11 +71,15 @@ const PostCard: React.FC<PostCardProps> = ({
   };
 
   const getChipLabel = () => {
-    if (!ended) {
-      return `${bibleLabel[bible]} ${started}`;
+    if (!endedChapter && !endedVerse) {
+      return `${bibleLabel[bible]} ${startedChapter},${startedVerse}`;
     }
 
-    return `${bibleLabel[bible]} ${started}-${ended}`;
+    if (startedChapter === endedChapter) {
+      return `${bibleLabel[bible]} ${startedChapter},${startedVerse}-${endedVerse}`;
+    }
+
+    return `${bibleLabel[bible]} ${startedChapter},${startedVerse}-${endedChapter},${endedVerse}`;
   };
 
   return (
