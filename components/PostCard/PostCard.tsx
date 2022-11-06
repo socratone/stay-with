@@ -22,6 +22,7 @@ interface PostCardProps {
   phrase: string;
   bible: Bible;
   started: string;
+  ended?: string;
   content: string;
   isLiked: boolean;
   isMine: boolean;
@@ -35,6 +36,7 @@ const PostCard: React.FC<PostCardProps> = ({
   phrase,
   bible,
   started,
+  ended,
   content,
   isLiked,
   isMine,
@@ -64,6 +66,14 @@ const PostCard: React.FC<PostCardProps> = ({
     setAnchorEl(null);
   };
 
+  const getChipLabel = () => {
+    if (!ended) {
+      return `${bibleLabel[bible]} ${started}`;
+    }
+
+    return `${bibleLabel[bible]} ${started}-${ended}`;
+  };
+
   return (
     <Paper
       component="article"
@@ -91,7 +101,7 @@ const PostCard: React.FC<PostCardProps> = ({
           </Box>
         </Box>
         <Box display="flex" alignItems="center" gap={1}>
-          <Chip label={`${bibleLabel[bible]} ${started}`} color="primary" />
+          <Chip label={getChipLabel()} color="primary" />
           {isMine ? (
             <>
               <IconButton

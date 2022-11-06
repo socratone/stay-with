@@ -87,6 +87,11 @@ const Home: NextPage = () => {
                 phrase={item.phrase}
                 bible={item.bible}
                 started={`${item.startedChapter},${item.startedVerse}`}
+                ended={
+                  item.endedChapter && item.endedVerse
+                    ? `${item.endedChapter},${item.endedVerse}`
+                    : undefined
+                }
                 content={item.content}
                 isMine={item.user.id === user?.id}
                 isLiked={false}
