@@ -177,6 +177,8 @@ const Form: NextPage<FormProps> = ({ defaultValues }) => {
               id="phrase-input"
               size="small"
               fullWidth
+              multiline
+              minRows={2}
               error={!!errors.phrase}
             />
           </Box>
