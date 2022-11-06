@@ -1,10 +1,12 @@
 import {
   Box,
   Button,
+  IconButton,
   InputLabel,
   MenuItem,
   Select,
   TextField,
+  Typography,
 } from '@mui/material';
 import { Container } from '@mui/system';
 import { GetServerSideProps, NextPage } from 'next';
@@ -15,13 +17,17 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import GlobalHeader from '../components/GlobalHeader';
 import { addPost, getPost, updatePost } from '../libs/firebase/apis';
 import { Bible, bibleOptions } from '../libs/firebase/constants';
-import { User } from '../libs/firebase/interfaces';
+import { User, Post } from '../libs/firebase/interfaces';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
 interface IFormInput {
   phrase: string;
   bible: Bible;
-  chapter: string;
-  verse: string;
+  startedChapter: string;
+  startedVerse: string;
+  endedChapter?: string;
+  endedVerse?: string;
   content: string;
 }
 
@@ -48,15 +54,24 @@ export const getServerSideProps: GetServerSideProps<FormProps> = async (
 
       const post = await getPost(id);
 
+      let defaultValues: IFormInput = {
+        phrase: post.phrase,
+        bible: post.bible,
+        startedChapter: String(post.startedChapter),
+        startedVerse: String(post.startedVerse),
+        content: post.content,
+      };
+
+      if (post.endedChapter && post.endedVerse) {
+        defaultValues = {
+          ...defaultValues,
+          endedChapter: String(post.endedChapter),
+          endedVerse: String(post.endedVerse),
+        };
+      }
       return {
         props: {
-          defaultValues: {
-            phrase: post.phrase,
-            bible: post.bible,
-            chapter: String(post.startedChapter),
-            verse: String(post.startedVerse),
-            content: post.content,
-          },
+          defaultValues,
         },
       };
     }
@@ -75,6 +90,8 @@ const Form: NextPage<FormProps> = ({ defaultValues }) => {
   const {
     register,
     handleSubmit,
+    getValues,
+    setValue,
     formState: { errors },
   } = useForm<IFormInput>({
     defaultValues: defaultValues
@@ -86,6 +103,7 @@ const Form: NextPage<FormProps> = ({ defaultValues }) => {
 
   const [isRequested, setIsRequested] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [isExpanded, setIsExpanded] = useState(!!defaultValues?.endedChapter);
 
   // TODO: token으로 바꿔야 함
   useEffect(() => {
@@ -106,8 +124,10 @@ const Form: NextPage<FormProps> = ({ defaultValues }) => {
     bible,
     content,
     phrase,
-    chapter,
-    verse,
+    startedChapter,
+    startedVerse,
+    endedChapter,
+    endedVerse,
   }) => {
     if (!user) return;
 
@@ -116,26 +136,24 @@ const Form: NextPage<FormProps> = ({ defaultValues }) => {
       const id = router.query?.id;
       const now = new Date().getTime();
 
+      let payload: Omit<Post, 'id' | 'createdAt'> = {
+        bible,
+        content,
+        user,
+        phrase,
+        startedChapter: Number(startedChapter),
+        startedVerse: Number(startedVerse),
+        endedChapter: endedChapter ? Number(endedChapter) : 0,
+        endedVerse: endedVerse ? Number(endedVerse) : 0,
+        updatedAt: now,
+      };
+
       if (typeof id === 'string') {
-        await updatePost(id, {
-          bible,
-          content,
-          user,
-          phrase,
-          startedChapter: Number(chapter),
-          startedVerse: Number(verse),
-          updatedAt: now,
-        });
+        await updatePost(id, payload);
       } else {
         await addPost({
-          bible,
-          content,
-          user,
-          phrase,
-          startedChapter: Number(chapter),
-          startedVerse: Number(verse),
+          ...payload,
           createdAt: now,
-          updatedAt: now,
         });
       }
 
@@ -145,6 +163,16 @@ const Form: NextPage<FormProps> = ({ defaultValues }) => {
     } finally {
       setIsRequested(false);
     }
+  };
+
+  const handleClickPlusButton = () => {
+    setIsExpanded(true);
+  };
+
+  const handleClickMinusButton = () => {
+    setIsExpanded(false);
+    setValue('endedChapter', '');
+    setValue('endedVerse', '');
   };
 
   return (
@@ -182,8 +210,9 @@ const Form: NextPage<FormProps> = ({ defaultValues }) => {
               error={!!errors.phrase}
             />
           </Box>
-          <Box display="flex" gap={2}>
-            <Box flexGrow={1}>
+
+          <Box display="grid" gridTemplateColumns="1fr 1fr 1fr auto" gap={2}>
+            <Box>
               <Select
                 {...register('bible', {
                   required: true,
@@ -199,31 +228,106 @@ const Form: NextPage<FormProps> = ({ defaultValues }) => {
                 ))}
               </Select>
             </Box>
-            <Box flexGrow={1}>
+            <Box>
               <TextField
-                {...register('chapter', {
+                {...register('startedChapter', {
                   required: true,
+                  validate: {
+                    moreThanOne: (value) => Number(value) > 0,
+                  },
                 })}
                 placeholder="장"
                 fullWidth
                 size="small"
                 type="number"
-                error={!!errors.chapter}
+                error={!!errors.startedChapter}
               />
             </Box>
-            <Box flexGrow={1}>
+            <Box>
               <TextField
-                {...register('verse', {
+                {...register('startedVerse', {
                   required: true,
+                  validate: {
+                    moreThanOne: (value) => Number(value) > 0,
+                  },
                 })}
                 placeholder="절"
                 fullWidth
                 size="small"
                 type="number"
-                error={!!errors.verse}
+                error={!!errors.startedVerse}
               />
             </Box>
+            <Box ml={-1.5} alignSelf="center">
+              {isExpanded ? (
+                <Typography color="text.primary" textAlign="end">
+                  에서
+                </Typography>
+              ) : (
+                <IconButton onClick={handleClickPlusButton}>
+                  <AddCircleOutlineIcon />
+                </IconButton>
+              )}
+            </Box>
+
+            {isExpanded ? (
+              <>
+                <Box justifySelf="flex-end" mr={-1.5}>
+                  <IconButton onClick={handleClickMinusButton}>
+                    <RemoveCircleOutlineIcon />
+                  </IconButton>
+                </Box>
+                <Box>
+                  <TextField
+                    {...register('endedChapter', {
+                      validate: {
+                        onlyPlus: (value) => !value || Number(value) >= 1,
+                        moreThanStartedChapter: (value) =>
+                          !value ||
+                          Number(value) >= Number(getValues('startedChapter')),
+                        haveBoth: (value) =>
+                          (!!value && !!getValues('endedVerse')) ||
+                          (!value && !getValues('endedVerse')),
+                      },
+                    })}
+                    placeholder="장"
+                    fullWidth
+                    size="small"
+                    type="number"
+                    error={!!errors.endedChapter}
+                  />
+                </Box>
+                <Box>
+                  <TextField
+                    {...register('endedVerse', {
+                      validate: {
+                        onlyPlus: (value) => !value || Number(value) >= 1,
+                        moreThanStarted: (value) =>
+                          !value ||
+                          Number(getValues('startedChapter')) <
+                            Number(getValues('endedChapter')) ||
+                          Number(value) > Number(getValues('startedVerse')),
+                        haveBoth: (value) =>
+                          (!!value && !!getValues('endedChapter')) ||
+                          (!value && !getValues('endedChapter')),
+                      },
+                    })}
+                    placeholder="절"
+                    fullWidth
+                    size="small"
+                    type="number"
+                    error={!!errors.endedVerse}
+                  />
+                </Box>
+                <Box alignSelf="center">
+                  <Typography color="text.primary" textAlign="end">
+                    까지
+                  </Typography>
+                </Box>
+              </>
+            ) : null}
           </Box>
+
           <Box>
             <InputLabel shrink htmlFor="content-input">
               구절을 통해 느낀점
