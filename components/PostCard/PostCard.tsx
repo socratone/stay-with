@@ -85,7 +85,7 @@ const PostCard: React.FC<PostCardProps> = ({
             <Avatar sx={{ width: 34, height: 34 }}>{nickname[0]}</Avatar>
           )}
           <Box display="flex" alignItems="center">
-            <Typography fontWeight={500} color={theme.palette.grey[900]}>
+            <Typography color="text.primary" fontWeight={500}>
               {nickname}
             </Typography>
           </Box>
