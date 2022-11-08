@@ -1,15 +1,14 @@
 import { Bible } from './constants';
 
 export interface User {
-  id: string;
-  nickname: string;
+  name: string;
   email: string;
-  password: string;
+  image?: string;
 }
 
 export interface Post {
   id: string;
-  user: Omit<User, 'password' | 'email'>;
+  user: User;
   phrase: string;
   bible: Bible;
   startedChapter: number;

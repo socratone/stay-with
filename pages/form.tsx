@@ -12,14 +12,16 @@ import { Container } from '@mui/system';
 import { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import GlobalHeader from '../components/GlobalHeader';
 import { addPost, getPost, updatePost } from '../libs/firebase/apis';
 import { Bible, bibleOptions } from '../libs/firebase/constants';
-import { User, Post } from '../libs/firebase/interfaces';
+import { Post } from '../libs/firebase/interfaces';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import { unstable_getServerSession } from 'next-auth';
+import { authOptions } from './api/auth/[...nextauth]';
 
 interface IFormInput {
   phrase: string;
@@ -32,18 +34,41 @@ interface IFormInput {
 }
 
 interface FormProps {
+  user: {
+    name: string;
+    email: string;
+    image?: string;
+  };
   defaultValues?: IFormInput;
 }
 
-export const getServerSideProps: GetServerSideProps<FormProps> = async (
-  context
-) => {
-  const id = context.query?.id;
+export const getServerSideProps: GetServerSideProps<FormProps> = async ({
+  query,
+  req,
+  res,
+}) => {
+  const session = await unstable_getServerSession(req, res, authOptions);
+
+  if (!session?.user?.name || !session?.user.email) {
+    return {
+      notFound: true,
+    };
+  }
+
+  const user = {
+    name: session.user.name,
+    email: session.user.email,
+    image: session?.user?.image ?? undefined,
+  };
+
+  const id = query?.id;
 
   // 생성하는 경우
   if (!id) {
     return {
-      props: {},
+      props: {
+        user,
+      },
     };
   }
 
@@ -71,6 +96,7 @@ export const getServerSideProps: GetServerSideProps<FormProps> = async (
       }
       return {
         props: {
+          user,
           defaultValues,
         },
       };
@@ -84,7 +110,7 @@ export const getServerSideProps: GetServerSideProps<FormProps> = async (
   };
 };
 
-const Form: NextPage<FormProps> = ({ defaultValues }) => {
+const Form: NextPage<FormProps> = ({ user, defaultValues }) => {
   const router = useRouter();
 
   const {
@@ -102,19 +128,7 @@ const Form: NextPage<FormProps> = ({ defaultValues }) => {
   });
 
   const [isRequested, setIsRequested] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
   const [isExpanded, setIsExpanded] = useState(!!defaultValues?.endedChapter);
-
-  // TODO: token으로 바꿔야 함
-  useEffect(() => {
-    const stringifyUser = localStorage.getItem('user');
-    if (stringifyUser) {
-      const user = JSON.parse(stringifyUser);
-      setUser(user);
-    } else {
-      router.push('/login');
-    }
-  }, [router]);
 
   const handleCancel = () => {
     router.back();
@@ -129,8 +143,6 @@ const Form: NextPage<FormProps> = ({ defaultValues }) => {
     endedChapter,
     endedVerse,
   }) => {
-    if (!user) return;
-
     setIsRequested(true);
     try {
       const id = router.query?.id;

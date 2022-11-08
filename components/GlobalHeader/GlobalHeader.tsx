@@ -1,7 +1,7 @@
 import { Avatar, Box, ButtonBase, MenuItem, useTheme } from '@mui/material';
+import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { User } from '../../libs/firebase/interfaces';
+import { useState } from 'react';
 import { PRIMARY_BOX_SHADOW } from '../../theme/boxShadow';
 import SmallMenu from '../SmallMenu';
 import HeaderLink from './HeaderLink';
@@ -9,19 +9,10 @@ import HeaderLink from './HeaderLink';
 const GlobalHeader = () => {
   const theme = useTheme();
   const router = useRouter();
+  const { data: session } = useSession();
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-
-  const [user, setUser] = useState<User | null>(null);
-
-  // TODO: token으로 바꿔야 함
-  useEffect(() => {
-    const stringifyUser = localStorage.getItem('user');
-    if (stringifyUser) {
-      const user = JSON.parse(stringifyUser);
-      setUser(user);
-    }
-  }, []);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -32,9 +23,7 @@ const GlobalHeader = () => {
   };
 
   const handleSignOut = () => {
-    localStorage.removeItem('user');
-    setAnchorEl(null);
-    router.reload();
+    signOut();
   };
 
   return (
@@ -56,10 +45,15 @@ const GlobalHeader = () => {
         <HeaderLink href="/">MMM</HeaderLink>
       </Box>
       <Box display="flex" alignItems="center" height="100%" gap={1}>
-        {user ? (
+        {session ? (
           <>
             <ButtonBase onClick={handleClick} sx={{ borderRadius: '50%' }}>
-              <Avatar sx={{ width: 32, height: 32 }}>{user.nickname[0]}</Avatar>
+              <Avatar
+                sx={{ width: 32, height: 32 }}
+                src={session.user?.image ?? undefined}
+              >
+                P
+              </Avatar>
             </ButtonBase>
             <SmallMenu anchorEl={anchorEl} open={open} onClose={handleClose}>
               <MenuItem onClick={() => router.push('/form')}>

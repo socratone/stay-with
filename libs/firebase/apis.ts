@@ -8,18 +8,16 @@ import {
   updateDoc,
   deleteDoc,
   query,
-  where,
   orderBy,
   limit,
   startAfter,
 } from 'firebase/firestore/lite';
 import { app } from './configs';
-import { Post, User } from './interfaces';
+import { Post } from './interfaces';
 
 const db = getFirestore(app);
 
 const POSTS = 'posts';
-const USERS = 'users';
 
 // posts
 
@@ -73,35 +71,4 @@ export const updatePost = async (
 export const deletePost = async (id: string) => {
   const docRef = doc(db, POSTS, id);
   return await deleteDoc(docRef);
-};
-
-// users
-
-export const addUser = async (payload: Omit<User, 'id'>) => {
-  const usersRef = collection(db, USERS);
-  return addDoc(usersRef, payload);
-};
-
-export const getUser = async (id: string) => {
-  const docRef = doc(db, USERS, id);
-  const docSnap = await getDoc(docRef);
-  return docSnap.data() as Omit<User, 'id'>;
-};
-
-export const getUserByEmail = async (email: string) => {
-  const users: User[] = [];
-  const usersRef = collection(db, USERS);
-  const q = query(usersRef, where('email', '==', email));
-  const querySnapshot = await getDocs(q);
-  querySnapshot.forEach((doc) => {
-    users.push({ id: doc.id, ...doc.data() } as User);
-  });
-  const mappedUsers = users.map((user) => {
-    return {
-      id: user.id,
-      nickname: user.nickname,
-      email: user.email,
-    };
-  });
-  return mappedUsers?.[0];
 };

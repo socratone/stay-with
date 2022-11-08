@@ -6,7 +6,6 @@ import {
   MenuItem,
   Paper,
   Typography,
-  useTheme,
 } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -17,7 +16,7 @@ import { Bible, bibleLabel } from '../../libs/firebase/constants';
 import SmallMenu from '../SmallMenu';
 
 interface PostCardProps {
-  nickname: string;
+  name: string;
   profileImageUrl?: string;
   phrase: string;
   bible: Bible;
@@ -33,7 +32,7 @@ interface PostCardProps {
 }
 
 const PostCard: React.FC<PostCardProps> = ({
-  nickname,
+  name,
   profileImageUrl,
   phrase,
   bible,
@@ -47,8 +46,6 @@ const PostCard: React.FC<PostCardProps> = ({
   onEdit,
   onDelete,
 }) => {
-  const theme = useTheme();
-
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -100,11 +97,11 @@ const PostCard: React.FC<PostCardProps> = ({
           {profileImageUrl ? (
             <Avatar alt="Profile" src={profileImageUrl} />
           ) : (
-            <Avatar sx={{ width: 34, height: 34 }}>{nickname[0]}</Avatar>
+            <Avatar sx={{ width: 34, height: 34 }}>{name?.[0] ?? 'P'}</Avatar>
           )}
           <Box display="flex" alignItems="center">
             <Typography color="text.primary" fontWeight={500}>
-              {nickname}
+              {name}
             </Typography>
           </Box>
         </Box>
@@ -141,12 +138,7 @@ const PostCard: React.FC<PostCardProps> = ({
       </Typography>
 
       {/* content */}
-      <Typography
-        color="text.secondary"
-        // color={theme.palette.grey[600]}
-        px={2}
-        sx={{ whiteSpace: 'pre-line' }}
-      >
+      <Typography color="text.secondary" px={2} sx={{ whiteSpace: 'pre-line' }}>
         {content}
       </Typography>
 

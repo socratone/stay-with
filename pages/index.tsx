@@ -2,34 +2,26 @@ import { Container } from '@mui/system';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSWRConfig } from 'swr';
 import AlertDialog from '../components/AlertDialog';
 import GlobalHeader from '../components/GlobalHeader';
 import PostCard from '../components/PostCard';
 import { deletePost } from '../libs/firebase/apis';
-import { User } from '../libs/firebase/interfaces';
 import { Box, CircularProgress } from '@mui/material';
 import usePostsInfinite from '../hooks/api/usePostsInfinite';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import GlobalFooter from '../components/GlobalFooter';
 import useScrollDirection from '../hooks/dom/useScrollDirection';
+import { useSession } from 'next-auth/react';
 
 const Home: NextPage = () => {
   const router = useRouter();
   const { mutate } = useSWRConfig();
+  const { data: session } = useSession();
+  const user = session?.user;
 
   const [deleteId, setDeleteId] = useState<string | null>(null);
-  const [user, setUser] = useState<User | null>(null);
-
-  // TODO: token으로 바꿔야 함
-  useEffect(() => {
-    const stringifyUser = localStorage.getItem('user');
-    if (stringifyUser) {
-      const user = JSON.parse(stringifyUser);
-      setUser(user);
-    }
-  }, []);
 
   const { posts, size, setSize, isEnded } = usePostsInfinite();
 
@@ -83,7 +75,8 @@ const Home: NextPage = () => {
           {posts?.map((item) => (
             <Box key={item.id} pt={1} pb={1} px={2}>
               <PostCard
-                nickname={item.user.nickname}
+                name={item.user.name}
+                profileImageUrl={item.user.image}
                 phrase={item.phrase}
                 bible={item.bible}
                 startedChapter={item.startedChapter}
@@ -91,7 +84,8 @@ const Home: NextPage = () => {
                 endedChapter={item.endedChapter}
                 endedVerse={item.endedVerse}
                 content={item.content}
-                isMine={item.user.id === user?.id}
+                isMine={item.user.email === user?.email}
+                // TODO
                 isLiked={false}
                 onEdit={() => handleEdit(item.id)}
                 onDelete={() => setDeleteId(item.id)}

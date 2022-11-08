@@ -1,38 +1,37 @@
-import { Box, Button, TextField } from '@mui/material';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Box, Button } from '@mui/material';
 import GlobalHeader from '../components/GlobalHeader';
-import { getUserByEmail } from '../libs/firebase/apis';
+import {
+  useSession,
+  signIn,
+  signOut,
+  getProviders,
+  LiteralUnion,
+  ClientSafeProvider,
+} from 'next-auth/react';
+import { GetServerSideProps, NextPage } from 'next';
+import { BuiltInProviderType } from 'next-auth/providers';
+import Image from 'next/image';
+import kakaoLoginSrc from '../public/images/kakao_login_medium_narrow.png';
 
-interface IFormInput {
-  email: string;
-  password: string;
+interface LoginProps {
+  providers: Record<
+    LiteralUnion<BuiltInProviderType, string>,
+    ClientSafeProvider
+  >;
 }
 
-const Login = () => {
-  const router = useRouter();
+export const getServerSideProps: GetServerSideProps = async () => {
+  const providers = await getProviders();
+  return {
+    props: { providers },
+  };
+};
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<IFormInput>();
+const Login: NextPage<LoginProps> = ({ providers }) => {
+  const { data: session } = useSession();
 
-  const [isRequested, setIsRequested] = useState(false);
-
-  const onSubmit: SubmitHandler<IFormInput> = async ({ email, password }) => {
-    setIsRequested(true);
-    try {
-      const user = await getUserByEmail(email);
-      localStorage.setItem('user', JSON.stringify(user));
-      router.push('/');
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsRequested(false);
-    }
+  const handleSignOut = () => {
+    signOut();
   };
 
   return (
@@ -44,38 +43,22 @@ const Login = () => {
         justifyContent="center"
         alignItems="center"
       >
-        <Box
-          component="form"
-          display="flex"
-          flexDirection="column"
-          gap={2}
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <TextField
-            {...register('email', {
-              required: true,
-            })}
-            placeholder="이메일"
-            fullWidth
-            size="small"
-            error={!!errors.email}
-          />
-          <TextField
-            {...register('password', {
-              required: true,
-            })}
-            placeholder="비밀번호"
-            fullWidth
-            size="small"
-            error={!!errors.password}
-          />
-          <Button type="submit" variant="contained" disabled={isRequested}>
-            로그인
+        {session ? (
+          <Button variant="contained" onClick={handleSignOut}>
+            로그아웃
           </Button>
-          <Link href="/signup">
-            <Button>회원가입</Button>
-          </Link>
-        </Box>
+        ) : (
+          Object.values(providers).map((provider) => (
+            <Box key={provider.name}>
+              <Image
+                src={kakaoLoginSrc}
+                alt="kakao login"
+                onClick={() => signIn(provider.id)}
+                style={{ cursor: 'pointer' }}
+              />
+            </Box>
+          ))
+        )}
       </Box>
     </Box>
   );
