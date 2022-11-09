@@ -29,7 +29,7 @@ const SmallMenu = styled((props: MenuProps) => (
       minHeight: 40,
       paddingTop: 0,
       paddingBottom: 0,
-      fontSize: 14,
+      fontSize: 15,
       '& .MuiSvgIcon-root': {
         fontSize: 18,
         color: theme.palette.text.secondary,
