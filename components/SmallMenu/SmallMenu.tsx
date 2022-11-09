@@ -23,12 +23,13 @@ const SmallMenu = styled((props: MenuProps) => (
         : theme.palette.grey[300],
     boxShadow: PRIMARY_BOX_SHADOW,
     '& .MuiMenu-list': {
-      padding: '4px 0',
+      padding: 0,
     },
     '& .MuiMenuItem-root': {
       minHeight: 40,
       paddingTop: 0,
       paddingBottom: 0,
+      fontSize: 14,
       '& .MuiSvgIcon-root': {
         fontSize: 18,
         color: theme.palette.text.secondary,
