@@ -49,6 +49,7 @@ export const getServerSideProps: GetServerSideProps<FormProps> = async ({
 }) => {
   const session = await unstable_getServerSession(req, res, authOptions);
 
+  // 로그인 하지 않은 경우
   if (!session?.user?.name || !session?.user.email) {
     return {
       notFound: true,
@@ -75,9 +76,14 @@ export const getServerSideProps: GetServerSideProps<FormProps> = async ({
   try {
     // 수정하는 경우
     if (typeof id === 'string') {
-      // TODO: user가 생성한 postId가 아닌 경우 => 404
-
       const post = await getPost(id);
+
+      // 사용자가 작성한 post가 아닌 경우
+      if (user.email !== post.user.email) {
+        return {
+          notFound: true,
+        };
+      }
 
       let defaultValues: IFormInput = {
         phrase: post.phrase,
