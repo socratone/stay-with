@@ -23,7 +23,9 @@ const GlobalHeader = () => {
   };
 
   const handleSignOut = () => {
-    signOut();
+    signOut({
+      callbackUrl: '/',
+    });
   };
 
   return (
