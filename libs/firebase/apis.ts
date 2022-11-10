@@ -12,6 +12,7 @@ import {
   limit,
   startAfter,
   where,
+  deleteField,
 } from 'firebase/firestore/lite';
 import { app } from './configs';
 import { Post, User } from './interfaces';
@@ -21,7 +22,9 @@ const db = getFirestore(app);
 const USERS = 'users';
 const POSTS = 'posts';
 
-// users
+/**
+ * users
+ */
 
 export const addUser = async (payload: Omit<User, 'id'>) => {
   const usersRef = collection(db, USERS);
@@ -40,7 +43,9 @@ export const getUserByEmail = async (email: string) => {
   return users[0] ?? null;
 };
 
-// posts
+/**
+ * posts
+ */
 
 export const getPostsInfinite = async (createdAt = Infinity) => {
   const posts: Post[] = [];
@@ -57,18 +62,6 @@ export const getPostsInfinite = async (createdAt = Infinity) => {
   });
   return posts;
 };
-
-// TODO: 참고 후 삭제
-// export const getPosts = async () => {
-//   const posts: Post[] = [];
-//   const postsRef = collection(db, POSTS);
-//   const q = query(postsRef, orderBy('createdAt', 'desc'));
-//   const querySnapshot = await getDocs(q);
-//   querySnapshot.forEach((doc) => {
-//     posts.push({ id: doc.id, ...doc.data() } as Post);
-//   });
-//   return posts;
-// };
 
 export const addPost = async (payload: Omit<Post, 'id'>) => {
   const postsRef = collection(db, POSTS);
@@ -97,6 +90,7 @@ export const deletePost = async (id: string) => {
 export const addLikeToPost = async (id: string, payload: User) => {
   const docRef = doc(db, POSTS, id);
 
+  // https://firebase.google.com/docs/firestore/manage-data/add-data#update_elements_in_an_array
   const data = {
     [`likedUsers.${payload.id}.name`]: payload.name,
     [`likedUsers.${payload.id}.email`]: payload.email,
@@ -106,7 +100,6 @@ export const addLikeToPost = async (id: string, payload: User) => {
     data[`likedUsers.${payload.id}.image`] = payload.image;
   }
 
-  // https://firebase.google.com/docs/firestore/manage-data/add-data#update_elements_in_an_array
   return await updateDoc(docRef, data);
 };
 
@@ -114,5 +107,10 @@ export const deleteLikeInPost = async (
   id: string,
   payload: Pick<User, 'id'>
 ) => {
-  // TODO: 지우는 방법 찾기
+  const docRef = doc(db, POSTS, id);
+
+  // https://firebase.google.com/docs/firestore/manage-data/delete-data
+  return await updateDoc(docRef, {
+    [`likedUsers.${payload.id}`]: deleteField(),
+  });
 };
