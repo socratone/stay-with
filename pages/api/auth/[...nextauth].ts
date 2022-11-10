@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth';
 import KakaoProvider from 'next-auth/providers/kakao';
 
+// https://next-auth.js.org/getting-started/example
 export const authOptions = {
   // Configure one or more authentication providers
   providers: [
@@ -10,4 +11,5 @@ export const authOptions = {
     }),
   ],
 };
+
 export default NextAuth(authOptions);

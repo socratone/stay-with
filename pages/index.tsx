@@ -7,23 +7,25 @@ import { useSWRConfig } from 'swr';
 import AlertDialog from '../components/AlertDialog';
 import GlobalHeader from '../components/GlobalHeader';
 import PostCard from '../components/PostCard';
-import { deletePost } from '../libs/firebase/apis';
+import {
+  addLikeToPost,
+  deleteLikeInPost,
+  deletePost,
+} from '../libs/firebase/apis';
 import { Box, CircularProgress } from '@mui/material';
 import usePostsInfinite from '../hooks/api/usePostsInfinite';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import GlobalFooter from '../components/GlobalFooter';
 import useScrollDirection from '../hooks/dom/useScrollDirection';
-import { useSession } from 'next-auth/react';
+import useAuthenticated from '../hooks/context/useAuthenticated';
 
 const Home: NextPage = () => {
   const router = useRouter();
-  const { mutate } = useSWRConfig();
-  const { data: session } = useSession();
-  const user = session?.user;
+  const { user } = useAuthenticated();
 
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
-  const { posts, size, setSize, isEnded } = usePostsInfinite();
+  const { posts, size, setSize, isEnded, mutate } = usePostsInfinite();
 
   const { scrollDirection } = useScrollDirection();
 
@@ -39,11 +41,40 @@ const Home: NextPage = () => {
 
     try {
       await deletePost(deleteId);
-      mutate('/posts');
+      mutate();
     } catch (error) {
       console.error(error);
     } finally {
       setDeleteId(null);
+    }
+  };
+
+  const handleLike = async (id: string) => {
+    if (!user) return;
+
+    try {
+      await addLikeToPost(id, {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        image: user.image ?? undefined,
+      });
+      mutate();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleUnlike = async (id: string) => {
+    if (!user) return;
+
+    try {
+      await deleteLikeInPost(id, {
+        id: user.id,
+      });
+      mutate();
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -86,9 +117,12 @@ const Home: NextPage = () => {
                 content={item.content}
                 isMine={item.user.email === user?.email}
                 // TODO
-                isLiked={false}
+                isLiked={!!item.likedUsers[user?.id ?? '']}
                 onEdit={() => handleEdit(item.id)}
                 onDelete={() => setDeleteId(item.id)}
+                onLike={() => handleLike(item.id)}
+                onUnlike={() => handleUnlike(item.id)}
+                likedCount={Object.keys(item.likedUsers ?? {}).length}
               />
             </Box>
           ))}

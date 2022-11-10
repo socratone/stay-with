@@ -1,6 +1,7 @@
 import { Bible } from './constants';
 
 export interface User {
+  id: string;
   name: string;
   email: string;
   image?: string;
@@ -18,4 +19,7 @@ export interface Post {
   content: string;
   createdAt: number;
   updatedAt: number;
+  likedUsers: {
+    [id: string]: Omit<User, 'id'>;
+  };
 }

@@ -29,6 +29,9 @@ interface PostCardProps {
   isMine: boolean;
   onEdit: () => void;
   onDelete: () => void;
+  onLike: () => void;
+  onUnlike: () => void;
+  likedCount: number;
 }
 
 const PostCard: React.FC<PostCardProps> = ({
@@ -45,6 +48,9 @@ const PostCard: React.FC<PostCardProps> = ({
   isMine,
   onEdit,
   onDelete,
+  onLike,
+  onUnlike,
+  likedCount,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -143,10 +149,13 @@ const PostCard: React.FC<PostCardProps> = ({
       </Typography>
 
       {/* footer */}
-      <Box display="flex" justifyContent="space-between" p={1}>
-        <IconButton>
+      <Box display="flex" alignItems="center" p={1}>
+        <IconButton onClick={isLiked ? onUnlike : onLike}>
           {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         </IconButton>
+        {likedCount ? (
+          <Typography fontSize={14}>{likedCount}명이 좋아해요</Typography>
+        ) : null}
       </Box>
     </Paper>
   );

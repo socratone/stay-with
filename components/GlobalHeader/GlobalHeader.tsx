@@ -1,7 +1,8 @@
 import { Avatar, Box, ButtonBase, MenuItem, useTheme } from '@mui/material';
-import { signOut, useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import useAuthenticated from '../../hooks/context/useAuthenticated';
 import { PRIMARY_BOX_SHADOW } from '../../theme/boxShadow';
 import SmallMenu from '../SmallMenu';
 import HeaderLink from './HeaderLink';
@@ -9,7 +10,8 @@ import HeaderLink from './HeaderLink';
 const GlobalHeader = () => {
   const theme = useTheme();
   const router = useRouter();
-  const { data: session } = useSession();
+
+  const { status, user } = useAuthenticated();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -47,12 +49,12 @@ const GlobalHeader = () => {
         <HeaderLink href="/">MMM</HeaderLink>
       </Box>
       <Box display="flex" alignItems="center" height="100%" gap={1}>
-        {session ? (
+        {status === 'authenticated' ? (
           <>
             <ButtonBase onClick={handleClick} sx={{ borderRadius: '50%' }}>
               <Avatar
                 sx={{ width: 32, height: 32 }}
-                src={session.user?.image ?? undefined}
+                src={user?.image ?? undefined}
               >
                 P
               </Avatar>

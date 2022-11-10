@@ -12,7 +12,7 @@ const getKey = (pageIndex: number, previousPageData: Post[]) => {
 const usePostsInfinite = () => {
   const [isEnded, setIsEnded] = useState(false);
 
-  const { data, error, size, setSize } = useSWRInfinite(
+  const { data, error, size, setSize, mutate } = useSWRInfinite(
     getKey,
     getPostsInfinite
   );
@@ -39,6 +39,7 @@ const usePostsInfinite = () => {
     isLoading: !error && !data,
     isError: error,
     isEnded,
+    mutate,
   };
 };
 

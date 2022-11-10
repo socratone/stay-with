@@ -4,7 +4,7 @@ import {
 } from '@mui/material';
 
 import { createTheme } from '@mui/material';
-import { blue, grey } from '@mui/material/colors';
+import { grey } from '@mui/material/colors';
 import { createContext, useEffect, useMemo, useState } from 'react';
 import { PRIMARY_BOX_SHADOW } from './boxShadow';
 
