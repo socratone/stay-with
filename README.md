@@ -2,7 +2,7 @@
 
 가톨릭 묵상 노트
 
-# Stacks
+## Stacks
 
 - NextJS
 - Material UI
