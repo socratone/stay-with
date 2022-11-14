@@ -1,6 +1,6 @@
 import { Box, ButtonBase, Typography, useTheme } from '@mui/material';
-import { PRIMARY_BOX_SHADOW } from '../../theme/boxShadow';
 import Link from 'next/link';
+import { PRIMARY_SHADOW } from '../../theme/shadows';
 
 interface GlobalFooterProps {
   hidden: boolean;
@@ -12,7 +12,7 @@ const GlobalFooter: React.FC<GlobalFooterProps> = ({ hidden }) => {
   return (
     <Box
       component="footer"
-      boxShadow={PRIMARY_BOX_SHADOW}
+      boxShadow={PRIMARY_SHADOW}
       sx={{
         display: 'flex',
         transition: 'all 0.3s ease',

@@ -1,6 +1,6 @@
-import type { ThemeOptions } from '@mui/material';
+import { TypographyOptions } from '@mui/material/styles/createTypography';
 
-export const typography: ThemeOptions['typography'] = {
+export const typography: TypographyOptions = {
   fontFamily: [
     'Pretendard',
     '-apple-system',

@@ -11,9 +11,9 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useState } from 'react';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import { PRIMARY_BOX_SHADOW } from '../../theme/boxShadow';
 import { Bible, bibleLabel } from '../../libs/firebase/constants';
 import SmallMenu from '../SmallMenu';
+import { PRIMARY_SHADOW } from '../../theme/shadows';
 
 interface PostCardProps {
   name: string;
@@ -88,7 +88,7 @@ const PostCard: React.FC<PostCardProps> = ({
   return (
     <Paper
       component="article"
-      sx={{ borderRadius: 6, boxShadow: PRIMARY_BOX_SHADOW }}
+      sx={{ borderRadius: 6, boxShadow: PRIMARY_SHADOW }}
     >
       {/* header */}
       <Box
@@ -118,7 +118,7 @@ const PostCard: React.FC<PostCardProps> = ({
               <IconButton
                 onClick={handleClick}
                 size="small"
-                sx={{ boxShadow: PRIMARY_BOX_SHADOW }}
+                sx={{ boxShadow: PRIMARY_SHADOW }}
               >
                 <MoreHorizIcon />
               </IconButton>

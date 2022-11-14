@@ -1,5 +1,5 @@
 import { Menu, MenuProps, styled } from '@mui/material';
-import { PRIMARY_BOX_SHADOW } from '../../theme/boxShadow';
+import { PRIMARY_SHADOW } from '../../theme/shadows';
 
 const SmallMenu = styled((props: MenuProps) => (
   <Menu
@@ -21,7 +21,7 @@ const SmallMenu = styled((props: MenuProps) => (
       theme.palette.mode === 'light'
         ? 'rgb(55, 65, 81)'
         : theme.palette.grey[300],
-    boxShadow: PRIMARY_BOX_SHADOW,
+    boxShadow: PRIMARY_SHADOW,
     '& .MuiMenu-list': {
       padding: 0,
     },

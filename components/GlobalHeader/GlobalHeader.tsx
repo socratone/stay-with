@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import useAuthenticated from '../../hooks/context/useAuthenticated';
 import useColorMode from '../../hooks/context/useDarkMode';
-import { PRIMARY_BOX_SHADOW } from '../../theme/boxShadow';
+import { PRIMARY_SHADOW } from '../../theme/shadows';
 import DarkModeSwitch from '../DarkModeSwitch';
 import SmallMenu from '../SmallMenu';
 import HeaderLink from './HeaderLink';
@@ -44,7 +44,7 @@ const GlobalHeader = () => {
       component="header"
       display="flex"
       justifyContent="space-between"
-      boxShadow={PRIMARY_BOX_SHADOW}
+      boxShadow={PRIMARY_SHADOW}
       height={50}
       px={2}
       sx={{
