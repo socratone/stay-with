@@ -70,8 +70,8 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
                   main: grey[900],
                 },
                 text: {
-                  primary: grey[100],
-                  secondary: grey[300],
+                  primary: grey[300],
+                  secondary: grey[400],
                 },
               }),
         },
