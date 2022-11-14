@@ -27,6 +27,9 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { unstable_getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]';
+import Image from 'next/image';
+import candleImage from '../public/images/candle.png';
+import YoutubePlayer from '../components/YoutubePlayer';
 
 interface IFormInput {
   phrase: string;
@@ -209,19 +212,7 @@ const Form: NextPage<FormProps> = ({ user, defaultValues }) => {
       <GlobalHeader />
 
       <Container component="main" maxWidth="sm">
-        <Box
-          sx={{
-            aspectRatio: '1920 / 1080',
-          }}
-        >
-          <iframe
-            width="100%"
-            height="100%"
-            id="ytplayer"
-            src="https://www.youtube.com/embed/f742p7mQ0Ic?autoplay=1"
-            frameBorder="0"
-          />
-        </Box>
+        <Image src={candleImage} alt="candle" width={552} height={311} />
 
         <Typography
           variant="h5"
@@ -249,7 +240,8 @@ const Form: NextPage<FormProps> = ({ user, defaultValues }) => {
           flexDirection="column"
           gap={2}
           onSubmit={handleSubmit(onSubmit)}
-          py={2}
+          pt={2}
+          pb={20}
         >
           <Box>
             <InputLabel shrink htmlFor="phrase-input">
@@ -409,6 +401,8 @@ const Form: NextPage<FormProps> = ({ user, defaultValues }) => {
           </Box>
         </Box>
       </Container>
+
+      <YoutubePlayer videoId="f742p7mQ0Ic" />
     </>
   );
 };
