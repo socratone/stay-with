@@ -17,11 +17,7 @@ const useScrollDirection = () => {
     const requestUpdate = () => {
       const previousScrollY = previousScrollYRef.current;
 
-      if (previousScrollY > window.scrollY) {
-        setDirection('up');
-      } else {
-        setDirection('down');
-      }
+      setDirection(previousScrollY > window.scrollY ? 'up' : 'down');
 
       previousScrollYRef.current = window.scrollY;
 
