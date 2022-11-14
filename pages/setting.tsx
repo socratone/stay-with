@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import GlobalFooter from '../components/GlobalFooter';
 import GlobalHeader from '../components/GlobalHeader';
-import useColorMode from '../hooks/context/useDarkMode';
+import useColorMode from '../hooks/context/useColorMode';
 import useScrollDirection from '../hooks/dom/useScrollDirection';
 
 const Setting = () => {

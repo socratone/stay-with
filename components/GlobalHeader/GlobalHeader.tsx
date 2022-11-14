@@ -3,15 +3,16 @@ import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import useAuthenticated from '../../hooks/context/useAuthenticated';
-import useColorMode from '../../hooks/context/useDarkMode';
+import useColorMode from '../../hooks/context/useColorMode';
 import { PRIMARY_SHADOW } from '../../theme/shadows';
 import DarkModeSwitch from '../DarkModeSwitch';
 import SmallMenu from '../SmallMenu';
 import HeaderLink from './HeaderLink';
 
 const GlobalHeader = () => {
-  const theme = useTheme();
   const router = useRouter();
+  const theme = useTheme();
+
   const { status, user } = useAuthenticated();
   const { colorMode, setColorMode } = useColorMode();
 

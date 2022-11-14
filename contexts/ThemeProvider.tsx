@@ -4,7 +4,8 @@ import {
 } from '@mui/material';
 
 import { createTheme } from '@mui/material';
-import { createContext, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
+import useColorMode from '../hooks/context/useColorMode';
 import { darkPalette, lightPalette } from '../theme/palette';
 import { shadows } from '../theme/shadows';
 import { typography } from '../theme/typography';
@@ -23,23 +24,8 @@ interface ThemeProviderProps {
   children: React.ReactNode;
 }
 
-type ColorMode = 'dark' | 'light';
-
-export const ColorModeContext = createContext<{
-  colorMode: ColorMode;
-  setColorMode: (colorMode: ColorMode) => void;
-}>({
-  colorMode: 'light',
-  setColorMode: (colorMode: ColorMode) => {},
-});
-
 const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-
-  // https://mui.com/material-ui/customization/dark-mode/
-  const [colorMode, setColorMode] = useState<ColorMode>(
-    prefersDarkMode ? 'dark' : 'light'
-  );
+  const { colorMode } = useColorMode();
 
   useEffect(() => {
     if (colorMode === 'light') {
@@ -69,16 +55,7 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     [colorMode]
   );
 
-  return (
-    <ColorModeContext.Provider
-      value={{
-        colorMode,
-        setColorMode,
-      }}
-    >
-      <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
-    </ColorModeContext.Provider>
-  );
+  return <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>;
 };
 
 export default ThemeProvider;

@@ -1,5 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import userReducer from './userSlice';
+import colorReducer from './colorSlice';
 import {
   persistReducer,
   FLUSH,
@@ -13,12 +14,13 @@ import storage from 'redux-persist/lib/storage';
 
 const reducers = combineReducers({
   user: userReducer,
+  color: colorReducer,
 });
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['user'],
+  whitelist: ['user', 'color'],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);
