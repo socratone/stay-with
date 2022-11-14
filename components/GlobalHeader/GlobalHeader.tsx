@@ -3,15 +3,17 @@ import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import useAuthenticated from '../../hooks/context/useAuthenticated';
+import useColorMode from '../../hooks/context/useDarkMode';
 import { PRIMARY_BOX_SHADOW } from '../../theme/boxShadow';
+import DarkModeSwitch from '../DarkModeSwitch';
 import SmallMenu from '../SmallMenu';
 import HeaderLink from './HeaderLink';
 
 const GlobalHeader = () => {
   const theme = useTheme();
   const router = useRouter();
-
   const { status, user } = useAuthenticated();
+  const { colorMode, setColorMode } = useColorMode();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -28,6 +30,13 @@ const GlobalHeader = () => {
     signOut({
       callbackUrl: '/',
     });
+  };
+
+  const handleDarkModeSwitchChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    checked: boolean
+  ) => {
+    setColorMode(checked ? 'dark' : 'light');
   };
 
   return (
@@ -49,6 +58,10 @@ const GlobalHeader = () => {
         <HeaderLink href="/">MMM</HeaderLink>
       </Box>
       <Box display="flex" alignItems="center" height="100%" gap={1}>
+        <DarkModeSwitch
+          checked={colorMode === 'dark'}
+          onChange={handleDarkModeSwitchChange}
+        />
         {status === 'authenticated' ? (
           <>
             <ButtonBase onClick={handleClick} sx={{ borderRadius: '50%' }}>

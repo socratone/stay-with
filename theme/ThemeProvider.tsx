@@ -24,7 +24,10 @@ interface ThemeProviderProps {
 
 type ColorMode = 'dark' | 'light';
 
-export const ColorModeContext = createContext({
+export const ColorModeContext = createContext<{
+  colorMode: ColorMode;
+  setColorMode: (colorMode: ColorMode) => void;
+}>({
   colorMode: 'light',
   setColorMode: (colorMode: ColorMode) => {},
 });
