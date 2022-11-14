@@ -31,7 +31,7 @@ const Home: NextPage = () => {
 
   const handleEdit = (id: string) => {
     router.push({
-      pathname: '/pray',
+      pathname: '/contemplation',
       query: { id },
     });
   };

@@ -41,16 +41,14 @@ interface FormInput {
   content: string;
 }
 
-interface PrayProps {
+interface ContemplationProps {
   user: User;
   defaultValues?: FormInput;
 }
 
-export const getServerSideProps: GetServerSideProps<PrayProps> = async ({
-  query,
-  req,
-  res,
-}) => {
+export const getServerSideProps: GetServerSideProps<
+  ContemplationProps
+> = async ({ query, req, res }) => {
   try {
     const session = await unstable_getServerSession(req, res, authOptions);
 
@@ -123,7 +121,10 @@ export const getServerSideProps: GetServerSideProps<PrayProps> = async ({
   };
 };
 
-const Pray: NextPage<PrayProps> = ({ user, defaultValues }) => {
+const Contemplation: NextPage<ContemplationProps> = ({
+  user,
+  defaultValues,
+}) => {
   const router = useRouter();
 
   const {
@@ -407,4 +408,4 @@ const Pray: NextPage<PrayProps> = ({ user, defaultValues }) => {
   );
 };
 
-export default Pray;
+export default Contemplation;

@@ -30,9 +30,9 @@ const GlobalFooter: React.FC<GlobalFooterProps> = ({ hidden }) => {
           <Typography color="text.primary">나눔</Typography>
         </ButtonBase>
       </Link>
-      <Link href="/pray">
+      <Link href="/contemplation">
         <ButtonBase sx={{ height: '100%', flexGrow: 1 }}>
-          <Typography color="text.primary">기도</Typography>
+          <Typography color="text.primary">묵상</Typography>
         </ButtonBase>
       </Link>
     </Box>
