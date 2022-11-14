@@ -210,6 +210,40 @@ const Form: NextPage<FormProps> = ({ user, defaultValues }) => {
 
       <Container component="main" maxWidth="sm">
         <Box
+          sx={{
+            aspectRatio: '1920 / 1080',
+          }}
+        >
+          <iframe
+            width="100%"
+            height="100%"
+            id="ytplayer"
+            src="https://www.youtube.com/embed/f742p7mQ0Ic?autoplay=1"
+            frameBorder="0"
+          />
+        </Box>
+
+        <Typography
+          variant="h5"
+          fontWeight={600}
+          color="text.primary"
+          gutterBottom
+        >
+          오늘의 말씀
+        </Typography>
+
+        <Typography color="text.secondary" sx={{ whiteSpace: 'pre-line' }}>
+          {`1 내가 인간의 여러 언어와 천사의 언어로 말한다 하여도 나에게 사랑이 없으면 나는 요란한 징이나 소란한 꽹과리에 지나지 않습니다. 
+          2 내가 예언하는 능력이 있고 모든 신비와 모든 지식을 깨닫고 산을 옮길 수 있는 큰 믿음이 있다 하여도 나에게 사랑이 없으면 나는 아무것도 아닙니다. 
+          3 내가 모든 재산을 나누어 주고 내 몸까지 자랑스레 넘겨준다 하여도 나에게 사랑이 없으면 나에게는 아무 소용이 없습니다. 
+          4 사랑은 참고 기다립니다. 사랑은 친절합니다. 사랑은 시기하지 않고 뽐내지 않으며 교만하지 않습니다. 
+          5 사랑은 무례하지 않고 자기 이익을 추구하지 않으며 성을 내지 않고 앙심을 품지 않습니다. 
+          6 사랑은 불의에 기뻐하지 않고 진실을 두고 함께 기뻐합니다. 
+          7 사랑은 모든 것을 덮어 주고 모든 것을 믿으며 모든 것을 바라고 모든 것을 견디어 냅니다. 
+          8 사랑은 언제까지나 스러지지 않습니다. 예언도 없어지고 신령한 언어도 그치고 지식도 없어집니다.`}
+        </Typography>
+
+        <Box
           component="form"
           display="flex"
           flexDirection="column"
