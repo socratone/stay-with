@@ -212,7 +212,7 @@ const Contemplation: NextPage<ContemplationProps> = ({
 
       <GlobalHeader />
 
-      <Container component="main" maxWidth="sm">
+      <Container component="main" maxWidth="sm" sx={{ pt: 2 }}>
         <Image src={candleImage} alt="candle" width={552} height={311} />
 
         <Typography
