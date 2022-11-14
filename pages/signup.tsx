@@ -76,7 +76,7 @@ const SignUp: NextPage<SignUpProps> = ({ user, notSubscribedUser }) => {
         router.push('/');
       }, 1000);
 
-      // client에서 sign in
+      // client에서 로그인
       dispatch(
         setUser({
           id: user.id,
@@ -99,7 +99,7 @@ const SignUp: NextPage<SignUpProps> = ({ user, notSubscribedUser }) => {
 
     try {
       const addedUser = await addUser(payload);
-      // client에서 sign in
+      // client에서 로그인
       dispatch(
         setUser({
           id: addedUser.id,

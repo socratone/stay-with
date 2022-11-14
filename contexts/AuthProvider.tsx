@@ -17,6 +17,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const dispatch = useDispatch();
   const { status } = useSession();
 
+  // 세션이 만료되면 강제 로그아웃을 시킨다.
   useEffect(() => {
     if (status === 'unauthenticated') {
       dispatch(resetUser());
