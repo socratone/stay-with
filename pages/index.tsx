@@ -3,7 +3,6 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { useSWRConfig } from 'swr';
 import AlertDialog from '../components/AlertDialog';
 import GlobalHeader from '../components/GlobalHeader';
 import PostCard from '../components/PostCard';
@@ -15,8 +14,6 @@ import {
 import { Box, CircularProgress } from '@mui/material';
 import usePostsInfinite from '../hooks/api/usePostsInfinite';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import GlobalFooter from '../components/GlobalFooter';
-import useScrollDirection from '../hooks/dom/useScrollDirection';
 import useAuthenticated from '../hooks/context/useAuthenticated';
 
 const Home: NextPage = () => {
@@ -26,8 +23,6 @@ const Home: NextPage = () => {
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
   const { posts, size, setSize, isEnded, mutate } = usePostsInfinite();
-
-  const { scrollDirection } = useScrollDirection();
 
   const handleEdit = (id: string) => {
     router.push({
@@ -128,8 +123,6 @@ const Home: NextPage = () => {
           ))}
         </InfiniteScroll>
       </Container>
-
-      <GlobalFooter hidden={scrollDirection === 'down'} />
 
       <AlertDialog
         open={!!deleteId}

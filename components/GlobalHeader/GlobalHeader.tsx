@@ -56,7 +56,8 @@ const GlobalHeader = () => {
       }}
     >
       <Box display="flex" height="100%" gap={1}>
-        <HeaderLink href="/">MMM</HeaderLink>
+        <HeaderLink href="/">나눔</HeaderLink>
+        <HeaderLink href="/contemplation">묵상</HeaderLink>
       </Box>
       <Box display="flex" alignItems="center" height="100%" gap={1}>
         <DarkModeSwitch

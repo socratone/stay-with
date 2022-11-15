@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 
 type Direction = 'up' | 'none' | 'down';
 
+/**
+ * 현재 사용하지 않음
+ */
 const useScrollDirection = () => {
   const previousScrollYRef = useRef(0);
   const isRequestedRef = useRef(false);
