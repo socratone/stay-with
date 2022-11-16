@@ -10,8 +10,8 @@ const FilledSelect: React.FC<
       variant="filled"
       sx={{
         borderRadius: 4,
+        overflow: 'hidden',
         '.MuiSelect-select': {
-          borderRadius: 4,
           py: 2,
           pl: 2,
         },
