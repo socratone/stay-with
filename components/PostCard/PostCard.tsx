@@ -86,10 +86,7 @@ const PostCard: React.FC<PostCardProps> = ({
   };
 
   return (
-    <Paper
-      component="article"
-      sx={{ borderRadius: 6, boxShadow: PRIMARY_SHADOW }}
-    >
+    <Paper component="article" sx={{ borderRadius: 6 }}>
       {/* header */}
       <Box
         display="flex"

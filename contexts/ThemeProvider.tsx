@@ -1,11 +1,9 @@
-import {
-  ThemeProvider as MuiThemeProvider,
-  useMediaQuery,
-} from '@mui/material';
+import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 
 import { createTheme } from '@mui/material';
 import { useEffect, useMemo } from 'react';
 import useColorMode from '../hooks/context/useColorMode';
+import { components } from '../theme/components';
 import { darkPalette, lightPalette } from '../theme/palette';
 import { shadows } from '../theme/shadows';
 import { typography } from '../theme/typography';
@@ -44,13 +42,7 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
         },
         typography,
         shadows,
-        components: {
-          MuiButton: {
-            defaultProps: {
-              disableElevation: true,
-            },
-          },
-        },
+        components,
       }),
     [colorMode]
   );
