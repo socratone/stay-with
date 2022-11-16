@@ -19,6 +19,7 @@ export const components: ThemeOptions['components'] = {
       sx: {
         '.MuiPaper-root': {
           borderRadius: 4,
+          mt: 1,
         },
       },
     },

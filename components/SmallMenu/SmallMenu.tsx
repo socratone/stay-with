@@ -14,9 +14,8 @@ const SmallMenu = styled((props: MenuProps) => (
     {...props}
   />
 ))(({ theme }) => ({
-  '& .MuiPaper-root': {
+  '.MuiPaper-root': {
     borderRadius: 6,
-    marginTop: 8,
     color:
       theme.palette.mode === 'light'
         ? 'rgb(55, 65, 81)'
