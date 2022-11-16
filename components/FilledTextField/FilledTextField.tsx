@@ -3,10 +3,11 @@ import React from 'react';
 
 const FilledTextField: React.FC<
   Omit<TextFieldProps, 'variant' | 'size' | 'InputProps' | 'error'>
-> = ({ ...restProps }) => {
+> = React.forwardRef(({ ...restProps }, ref) => {
   return (
     <TextField
       {...restProps}
+      ref={ref}
       variant="filled"
       size="small"
       sx={{
@@ -23,6 +24,8 @@ const FilledTextField: React.FC<
       }}
     />
   );
-};
+});
+
+FilledTextField.displayName = 'FilledTextField';
 
 export default FilledTextField;

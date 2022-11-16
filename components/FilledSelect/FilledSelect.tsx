@@ -3,10 +3,11 @@ import React from 'react';
 
 const FilledSelect: React.FC<
   Omit<SelectProps, 'variant' | 'size' | 'error' | 'disableUnderline'>
-> = ({ ...restProps }) => {
+> = React.forwardRef(({ ...restProps }, ref) => {
   return (
     <Select
       {...restProps}
+      ref={ref}
       variant="filled"
       sx={{
         borderRadius: 4,
@@ -19,6 +20,8 @@ const FilledSelect: React.FC<
       disableUnderline
     />
   );
-};
+});
+
+FilledSelect.displayName = 'FilledSelect';
 
 export default FilledSelect;
