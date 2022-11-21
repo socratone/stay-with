@@ -56,7 +56,10 @@ export const getServerSideProps: GetServerSideProps<
     // 로그인 하지 않은 경우
     if (!session?.user?.name || !session?.user.email) {
       return {
-        notFound: true,
+        redirect: {
+          destination: '/login',
+          permanent: false,
+        },
       };
     }
 
@@ -65,7 +68,10 @@ export const getServerSideProps: GetServerSideProps<
     // 회원 가입을 하지 않은 경우
     if (!user) {
       return {
-        notFound: true,
+        redirect: {
+          destination: '/login',
+          permanent: false,
+        },
       };
     }
 
