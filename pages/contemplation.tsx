@@ -26,9 +26,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { unstable_getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]';
-import Image from 'next/image';
-import candleImage from '../public/images/candle.png';
-import YoutubePlayer from '../components/YoutubePlayer';
+import YoutubeVideo from '../components/YoutubeVideo';
 import FilledTextField from '../components/FilledTextField';
 import FilledSelect from '../components/FilledSelect';
 
@@ -231,14 +229,7 @@ const Contemplation: NextPage<ContemplationProps> = ({
           py={2}
         >
           <Box display="flex" flexDirection="column" gap={2}>
-            <Image
-              src={candleImage}
-              alt="candle"
-              width={570}
-              height={320}
-              objectFit="cover"
-              style={{ borderRadius: theme.spacing(3) }}
-            />
+            <YoutubeVideo videoId="f742p7mQ0Ic" />
 
             <Paper sx={{ borderRadius: 6, p: 2 }}>
               <Typography
@@ -438,8 +429,6 @@ const Contemplation: NextPage<ContemplationProps> = ({
           </Box>
         </Box>
       </Container>
-
-      <YoutubePlayer videoId="f742p7mQ0Ic" />
     </>
   );
 };
