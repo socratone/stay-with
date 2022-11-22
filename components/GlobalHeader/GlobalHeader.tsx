@@ -1,4 +1,11 @@
-import { Avatar, Box, ButtonBase, MenuItem, useTheme } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  ButtonBase,
+  IconButton,
+  MenuItem,
+  useTheme,
+} from '@mui/material';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -8,6 +15,7 @@ import { PRIMARY_SHADOW } from '../../theme/shadows';
 import DarkModeSwitch from '../DarkModeSwitch';
 import SmallMenu from '../SmallMenu';
 import HeaderLink from './HeaderLink';
+import MenuIcon from '@mui/icons-material/Menu';
 
 const GlobalHeader = () => {
   const router = useRouter();
@@ -16,15 +24,27 @@ const GlobalHeader = () => {
   const { status, user } = useAuthenticated();
   const { colorMode, setColorMode } = useColorMode();
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
+  const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
+  const menuOpen = Boolean(menuAnchorEl);
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+  const [profileMenuAnchorEl, setProfileMenuAnchorEl] =
+    useState<null | HTMLElement>(null);
+  const profileMenuOpen = Boolean(profileMenuAnchorEl);
+
+  const openMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setMenuAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const closeMenu = () => {
+    setMenuAnchorEl(null);
+  };
+
+  const openProfileMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setProfileMenuAnchorEl(event.currentTarget);
+  };
+
+  const closeProfileMenu = () => {
+    setProfileMenuAnchorEl(null);
   };
 
   const handleSignOut = () => {
@@ -55,9 +75,16 @@ const GlobalHeader = () => {
         bgcolor: theme.palette.paper?.main,
       }}
     >
-      <Box display="flex" height="100%" gap={1}>
-        <HeaderLink href="/">나눔</HeaderLink>
-        <HeaderLink href="/contemplation">묵상</HeaderLink>
+      <Box display="flex" alignItems="center" ml={-1}>
+        <IconButton onClick={openMenu}>
+          <MenuIcon />
+        </IconButton>
+        <SmallMenu anchorEl={menuAnchorEl} open={menuOpen} onClose={closeMenu}>
+          <MenuItem onClick={() => router.push('/')}>나눔</MenuItem>
+          <MenuItem onClick={() => router.push('/contemplation')}>
+            묵상
+          </MenuItem>
+        </SmallMenu>
       </Box>
       <Box display="flex" alignItems="center" height="100%" gap={1}>
         <DarkModeSwitch
@@ -66,7 +93,7 @@ const GlobalHeader = () => {
         />
         {status === 'authenticated' ? (
           <>
-            <ButtonBase onClick={handleClick} sx={{ borderRadius: '50%' }}>
+            <ButtonBase onClick={openProfileMenu} sx={{ borderRadius: '50%' }}>
               <Avatar
                 sx={{ width: 32, height: 32 }}
                 src={user?.image ?? undefined}
@@ -74,7 +101,11 @@ const GlobalHeader = () => {
                 P
               </Avatar>
             </ButtonBase>
-            <SmallMenu anchorEl={anchorEl} open={open} onClose={handleClose}>
+            <SmallMenu
+              anchorEl={profileMenuAnchorEl}
+              open={profileMenuOpen}
+              onClose={closeProfileMenu}
+            >
               <MenuItem onClick={() => router.push('/setting')}>설정</MenuItem>
               <MenuItem onClick={handleSignOut}>로그아웃</MenuItem>
             </SmallMenu>
