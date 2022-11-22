@@ -90,7 +90,12 @@ const Home: NextPage = () => {
   const handleMessageSend = async (message: string) => {
     if (!commentButtonClickedPost || !user) return;
     try {
-      await addCommentToPost(commentButtonClickedPost.id, { user, message });
+      const now = new Date().getTime();
+      await addCommentToPost(commentButtonClickedPost.id, {
+        user,
+        message,
+        createdAt: now,
+      });
       mutate();
     } catch (error) {
       console.error(error);

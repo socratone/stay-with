@@ -10,6 +10,7 @@ export interface User {
 export interface Comment {
   user: User;
   message: string;
+  createdAt: number;
 }
 
 export interface Post {
