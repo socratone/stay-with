@@ -114,7 +114,7 @@ const Home: NextPage = () => {
             <Box key={post.id} pt={1} pb={1} px={2}>
               <PostCard
                 name={post.user.name}
-                profileImageUrl={post.user.image}
+                profileImage={post.user.image}
                 phrase={post.phrase}
                 bible={post.bible}
                 startedChapter={post.startedChapter}
@@ -123,12 +123,12 @@ const Home: NextPage = () => {
                 endedVerse={post.endedVerse}
                 content={post.content}
                 isMine={post.user.email === user?.email}
-                // TODO
                 isLiked={!!post.likedUsers[user?.id ?? '']}
-                onEdit={() => handleEdit(post.id)}
-                onDelete={() => setDeleteId(post.id)}
-                onLike={() => handleLike(post.id)}
-                onUnlike={() => handleUnlike(post.id)}
+                onEditMenuItemClick={() => handleEdit(post.id)}
+                onDeleteMenuItemClick={() => setDeleteId(post.id)}
+                // TODO: 계속 클릭해도 한 번만 요청하도록
+                onLikeButtonClick={() => handleLike(post.id)}
+                onUnlikeButtonClick={() => handleUnlike(post.id)}
                 likedCount={Object.keys(post.likedUsers ?? {}).length}
                 onCommentButtonClick={() => handleCommentButtonClick(post)}
               />
@@ -147,27 +147,27 @@ const Home: NextPage = () => {
             user: {
               email: 'asdf@asdf.com',
               id: 'sadfsad',
-              name: '김말똥',
+              name: '목업1',
             },
-            message: 'awesome',
+            message: '목업1',
           },
           {
             id: 'asdfsdff',
             user: {
               email: 'asdf@asdf.com',
               id: 'sadfsad',
-              name: '이말똥',
+              name: '목업2',
             },
-            message: 'awesome',
+            message: '목업2',
           },
           {
             id: 'xsdfsdff',
             user: {
               email: 'asdf@asdf.com',
               id: 'sadfsad',
-              name: '나말똥',
+              name: '목업3',
             },
-            message: 'awesome',
+            message: '목업3',
           },
         ]}
       />

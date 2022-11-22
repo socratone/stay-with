@@ -18,7 +18,7 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 
 interface PostCardProps {
   name: string;
-  profileImageUrl?: string;
+  profileImage?: string;
   phrase: string;
   bible: Bible;
   startedChapter: number;
@@ -28,17 +28,17 @@ interface PostCardProps {
   content: string;
   isLiked: boolean;
   isMine: boolean;
-  onEdit: () => void;
-  onDelete: () => void;
-  onLike: () => void;
-  onUnlike: () => void;
+  onEditMenuItemClick: () => void;
+  onDeleteMenuItemClick: () => void;
+  onLikeButtonClick: () => void;
+  onUnlikeButtonClick: () => void;
   likedCount: number;
   onCommentButtonClick: () => void;
 }
 
 const PostCard: React.FC<PostCardProps> = ({
   name,
-  profileImageUrl,
+  profileImage,
   phrase,
   bible,
   startedChapter,
@@ -48,10 +48,10 @@ const PostCard: React.FC<PostCardProps> = ({
   content,
   isLiked,
   isMine,
-  onEdit,
-  onDelete,
-  onLike,
-  onUnlike,
+  onEditMenuItemClick,
+  onDeleteMenuItemClick,
+  onLikeButtonClick,
+  onUnlikeButtonClick,
   likedCount,
   onCommentButtonClick,
 }) => {
@@ -64,12 +64,12 @@ const PostCard: React.FC<PostCardProps> = ({
 
   const handleEdit = () => {
     setAnchorEl(null);
-    onEdit();
+    onEditMenuItemClick();
   };
 
   const handleDelete = () => {
     setAnchorEl(null);
-    onDelete();
+    onDeleteMenuItemClick();
   };
 
   const handleClose = () => {
@@ -100,8 +100,8 @@ const PostCard: React.FC<PostCardProps> = ({
         py={2}
       >
         <Box display="flex" alignItems="center" gap={1}>
-          {profileImageUrl ? (
-            <Avatar alt="Profile" src={profileImageUrl} />
+          {profileImage ? (
+            <Avatar alt="Profile" src={profileImage} />
           ) : (
             <Avatar sx={{ width: 34, height: 34 }}>{name?.[0] ?? 'P'}</Avatar>
           )}
@@ -150,7 +150,7 @@ const PostCard: React.FC<PostCardProps> = ({
 
       {/* footer */}
       <Box display="flex" alignItems="center" p={1}>
-        <IconButton onClick={isLiked ? onUnlike : onLike}>
+        <IconButton onClick={isLiked ? onUnlikeButtonClick : onLikeButtonClick}>
           {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         </IconButton>
         {likedCount ? (
