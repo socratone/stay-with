@@ -5,7 +5,6 @@ import {
   MenuItem,
   Paper,
   Typography,
-  useTheme,
 } from '@mui/material';
 import { Container } from '@mui/system';
 import { GetServerSideProps, NextPage } from 'next';
@@ -131,7 +130,6 @@ const Contemplation: NextPage<ContemplationProps> = ({
   defaultValues,
 }) => {
   const router = useRouter();
-  const theme = useTheme();
 
   const {
     register,
@@ -168,17 +166,18 @@ const Contemplation: NextPage<ContemplationProps> = ({
       const id = router.query?.id;
       const now = new Date().getTime();
 
-      let payload: Omit<Post, 'id' | 'createdAt' | 'likedUsers'> = {
-        bible,
-        content,
-        user,
-        phrase,
-        startedChapter: Number(startedChapter),
-        startedVerse: Number(startedVerse),
-        endedChapter: endedChapter ? Number(endedChapter) : 0,
-        endedVerse: endedVerse ? Number(endedVerse) : 0,
-        updatedAt: now,
-      };
+      let payload: Omit<Post, 'id' | 'createdAt' | 'likedUsers' | 'comments'> =
+        {
+          bible,
+          content,
+          user,
+          phrase,
+          startedChapter: Number(startedChapter),
+          startedVerse: Number(startedVerse),
+          endedChapter: endedChapter ? Number(endedChapter) : 0,
+          endedVerse: endedVerse ? Number(endedVerse) : 0,
+          updatedAt: now,
+        };
 
       if (typeof id === 'string') {
         await updatePost(id, payload);
@@ -187,6 +186,7 @@ const Contemplation: NextPage<ContemplationProps> = ({
           ...payload,
           createdAt: now,
           likedUsers: {},
+          comments: [],
         });
       }
 

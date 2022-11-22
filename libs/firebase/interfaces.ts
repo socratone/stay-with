@@ -7,6 +7,11 @@ export interface User {
   image?: string;
 }
 
+export interface Comment {
+  user: User;
+  message: string;
+}
+
 export interface Post {
   id: string;
   user: User;
@@ -22,4 +27,5 @@ export interface Post {
   likedUsers: {
     [id: string]: Omit<User, 'id'>;
   };
+  comments: Comment[];
 }

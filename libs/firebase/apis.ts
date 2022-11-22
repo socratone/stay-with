@@ -13,9 +13,11 @@ import {
   startAfter,
   where,
   deleteField,
+  arrayUnion,
+  arrayRemove,
 } from 'firebase/firestore/lite';
 import { app } from './configs';
-import { Post, User } from './interfaces';
+import { Comment, Post, User } from './interfaces';
 
 const db = getFirestore(app);
 
@@ -76,7 +78,7 @@ export const getPost = async (id: string) => {
 
 export const updatePost = async (
   id: string,
-  payload: Omit<Post, 'id' | 'createdAt' | 'likedUsers'>
+  payload: Omit<Post, 'id' | 'createdAt' | 'likedUsers' | 'comments'>
 ) => {
   const docRef = doc(db, POSTS, id);
   return await updateDoc(docRef, payload);
@@ -90,7 +92,7 @@ export const deletePost = async (id: string) => {
 export const addLikeToPost = async (id: string, payload: User) => {
   const docRef = doc(db, POSTS, id);
 
-  // https://firebase.google.com/docs/firestore/manage-data/add-data#update_elements_in_an_array
+  // https://firebase.google.com/docs/firestore/manage-data/add-data#update_fields_in_nested_objects
   const data = {
     [`likedUsers.${payload.id}.name`]: payload.name,
     [`likedUsers.${payload.id}.email`]: payload.email,
@@ -112,5 +114,23 @@ export const deleteLikeInPost = async (
   // https://firebase.google.com/docs/firestore/manage-data/delete-data
   return await updateDoc(docRef, {
     [`likedUsers.${payload.id}`]: deleteField(),
+  });
+};
+
+export const addCommentToPost = async (id: string, payload: Comment) => {
+  const docRef = doc(db, POSTS, id);
+
+  // https://firebase.google.com/docs/firestore/manage-data/add-data#update_elements_in_an_array
+  return await updateDoc(docRef, {
+    comments: arrayUnion(payload),
+  });
+};
+
+export const deleteCommentInPost = async (id: string, payload: Comment) => {
+  const docRef = doc(db, POSTS, id);
+
+  // https://firebase.google.com/docs/firestore/manage-data/add-data#update_elements_in_an_array
+  return await updateDoc(docRef, {
+    comments: arrayRemove(payload),
   });
 };

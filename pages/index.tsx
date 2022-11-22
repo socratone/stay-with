@@ -7,7 +7,9 @@ import AlertDialog from '../components/AlertDialog';
 import GlobalHeader from '../components/GlobalHeader';
 import PostCard from '../components/PostCard';
 import {
+  addCommentToPost,
   addLikeToPost,
+  deleteCommentInPost,
   deleteLikeInPost,
   deletePost,
 } from '../libs/firebase/apis';
@@ -15,7 +17,7 @@ import { Box, CircularProgress } from '@mui/material';
 import usePostsInfinite from '../hooks/api/usePostsInfinite';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import useAuthenticated from '../hooks/context/useAuthenticated';
-import { Post } from '../libs/firebase/interfaces';
+import { Comment, Post } from '../libs/firebase/interfaces';
 import CommentDrawer from '../components/CommentDrawer';
 
 const Home: NextPage = () => {
@@ -85,6 +87,26 @@ const Home: NextPage = () => {
     setCommentButtonClickedPost(null);
   };
 
+  const handleMessageSend = async (message: string) => {
+    if (!commentButtonClickedPost || !user) return;
+    try {
+      await addCommentToPost(commentButtonClickedPost.id, { user, message });
+      mutate();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleMessageDelete = async (comment: Comment) => {
+    if (!commentButtonClickedPost || !user) return;
+    try {
+      await deleteCommentInPost(commentButtonClickedPost.id, comment);
+      mutate();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <Head>
@@ -139,37 +161,11 @@ const Home: NextPage = () => {
 
       <CommentDrawer
         open={!!commentButtonClickedPost}
+        comments={commentButtonClickedPost?.comments ?? []}
         onClose={handleCommentDrawerClose}
-        comments={[
-          // TODO: api 연결
-          {
-            id: 'asdfsdf',
-            user: {
-              email: 'asdf@asdf.com',
-              id: 'sadfsad',
-              name: '목업1',
-            },
-            message: '목업1',
-          },
-          {
-            id: 'asdfsdff',
-            user: {
-              email: 'asdf@asdf.com',
-              id: 'sadfsad',
-              name: '목업2',
-            },
-            message: '목업2',
-          },
-          {
-            id: 'xsdfsdff',
-            user: {
-              email: 'asdf@asdf.com',
-              id: 'sadfsad',
-              name: '목업3',
-            },
-            message: '목업3',
-          },
-        ]}
+        onMessageSend={handleMessageSend}
+        onMessgeDelete={handleMessageDelete}
+        user={user}
       />
 
       <AlertDialog
