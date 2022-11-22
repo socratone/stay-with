@@ -15,12 +15,16 @@ import { Box, CircularProgress } from '@mui/material';
 import usePostsInfinite from '../hooks/api/usePostsInfinite';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import useAuthenticated from '../hooks/context/useAuthenticated';
+import { Post } from '../libs/firebase/interfaces';
+import CommentDrawer from '../components/CommentDrawer';
 
 const Home: NextPage = () => {
   const router = useRouter();
   const { user } = useAuthenticated();
 
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [commentButtonClickedPost, setCommentButtonClickedPost] =
+    useState<Post | null>(null);
 
   const { posts, size, setSize, isEnded, mutate } = usePostsInfinite();
 
@@ -73,6 +77,14 @@ const Home: NextPage = () => {
     }
   };
 
+  const handleCommentButtonClick = (post: Post) => {
+    setCommentButtonClickedPost(post);
+  };
+
+  const handleCommentDrawerClose = () => {
+    setCommentButtonClickedPost(null);
+  };
+
   return (
     <>
       <Head>
@@ -98,31 +110,67 @@ const Home: NextPage = () => {
             </Box>
           }
         >
-          {posts?.map((item) => (
-            <Box key={item.id} pt={1} pb={1} px={2}>
+          {posts?.map((post) => (
+            <Box key={post.id} pt={1} pb={1} px={2}>
               <PostCard
-                name={item.user.name}
-                profileImageUrl={item.user.image}
-                phrase={item.phrase}
-                bible={item.bible}
-                startedChapter={item.startedChapter}
-                startedVerse={item.startedVerse}
-                endedChapter={item.endedChapter}
-                endedVerse={item.endedVerse}
-                content={item.content}
-                isMine={item.user.email === user?.email}
+                name={post.user.name}
+                profileImageUrl={post.user.image}
+                phrase={post.phrase}
+                bible={post.bible}
+                startedChapter={post.startedChapter}
+                startedVerse={post.startedVerse}
+                endedChapter={post.endedChapter}
+                endedVerse={post.endedVerse}
+                content={post.content}
+                isMine={post.user.email === user?.email}
                 // TODO
-                isLiked={!!item.likedUsers[user?.id ?? '']}
-                onEdit={() => handleEdit(item.id)}
-                onDelete={() => setDeleteId(item.id)}
-                onLike={() => handleLike(item.id)}
-                onUnlike={() => handleUnlike(item.id)}
-                likedCount={Object.keys(item.likedUsers ?? {}).length}
+                isLiked={!!post.likedUsers[user?.id ?? '']}
+                onEdit={() => handleEdit(post.id)}
+                onDelete={() => setDeleteId(post.id)}
+                onLike={() => handleLike(post.id)}
+                onUnlike={() => handleUnlike(post.id)}
+                likedCount={Object.keys(post.likedUsers ?? {}).length}
+                onCommentButtonClick={() => handleCommentButtonClick(post)}
               />
             </Box>
           ))}
         </InfiniteScroll>
       </Container>
+
+      <CommentDrawer
+        open={!!commentButtonClickedPost}
+        onClose={handleCommentDrawerClose}
+        comments={[
+          // TODO: api 연결
+          {
+            id: 'asdfsdf',
+            user: {
+              email: 'asdf@asdf.com',
+              id: 'sadfsad',
+              name: '김말똥',
+            },
+            message: 'awesome',
+          },
+          {
+            id: 'asdfsdff',
+            user: {
+              email: 'asdf@asdf.com',
+              id: 'sadfsad',
+              name: '이말똥',
+            },
+            message: 'awesome',
+          },
+          {
+            id: 'xsdfsdff',
+            user: {
+              email: 'asdf@asdf.com',
+              id: 'sadfsad',
+              name: '나말똥',
+            },
+            message: 'awesome',
+          },
+        ]}
+      />
 
       <AlertDialog
         open={!!deleteId}

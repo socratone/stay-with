@@ -14,6 +14,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { Bible, bibleLabel } from '../../libs/firebase/constants';
 import SmallMenu from '../SmallMenu';
 import { PRIMARY_SHADOW } from '../../theme/shadows';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 
 interface PostCardProps {
   name: string;
@@ -32,6 +33,7 @@ interface PostCardProps {
   onLike: () => void;
   onUnlike: () => void;
   likedCount: number;
+  onCommentButtonClick: () => void;
 }
 
 const PostCard: React.FC<PostCardProps> = ({
@@ -51,6 +53,7 @@ const PostCard: React.FC<PostCardProps> = ({
   onLike,
   onUnlike,
   likedCount,
+  onCommentButtonClick,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -151,8 +154,11 @@ const PostCard: React.FC<PostCardProps> = ({
           {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         </IconButton>
         {likedCount ? (
-          <Typography fontSize={14}>{likedCount}명이 좋아해요</Typography>
+          <Typography fontSize={14}>{likedCount}</Typography>
         ) : null}
+        <IconButton onClick={onCommentButtonClick}>
+          <ChatBubbleOutlineIcon />
+        </IconButton>
       </Box>
     </Paper>
   );
