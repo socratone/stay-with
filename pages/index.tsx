@@ -24,8 +24,10 @@ const Home: NextPage = () => {
   const router = useRouter();
   const { user } = useAuthenticated();
 
-  const [deleteId, setDeleteId] = useState<string | null>(null);
-  const [commentButtonClickedPost, setCommentButtonClickedPost] =
+  const [selectedPostIdForDelete, setSelectedPostIdForDelete] = useState<
+    string | null
+  >(null);
+  const [selectedPostForComment, setSelectedPostForComment] =
     useState<Post | null>(null);
 
   const { posts, size, setSize, isEnded, mutate } = usePostsInfinite();
@@ -38,15 +40,15 @@ const Home: NextPage = () => {
   };
 
   const handleDelete = async () => {
-    if (!deleteId) return;
+    if (!selectedPostIdForDelete) return;
 
     try {
-      await deletePost(deleteId);
+      await deletePost(selectedPostIdForDelete);
       mutate();
     } catch (error) {
       console.error(error);
     } finally {
-      setDeleteId(null);
+      setSelectedPostIdForDelete(null);
     }
   };
 
@@ -80,18 +82,18 @@ const Home: NextPage = () => {
   };
 
   const handleCommentButtonClick = (post: Post) => {
-    setCommentButtonClickedPost(post);
+    setSelectedPostForComment(post);
   };
 
   const handleCommentDrawerClose = () => {
-    setCommentButtonClickedPost(null);
+    setSelectedPostForComment(null);
   };
 
   const handleMessageSend = async (message: string) => {
-    if (!commentButtonClickedPost || !user) return;
+    if (!selectedPostForComment || !user) return;
     try {
       const now = new Date().getTime();
-      await addCommentToPost(commentButtonClickedPost.id, {
+      await addCommentToPost(selectedPostForComment.id, {
         user,
         message,
         createdAt: now,
@@ -103,9 +105,9 @@ const Home: NextPage = () => {
   };
 
   const handleMessageDelete = async (comment: Comment) => {
-    if (!commentButtonClickedPost || !user) return;
+    if (!selectedPostForComment || !user) return;
     try {
-      await deleteCommentInPost(commentButtonClickedPost.id, comment);
+      await deleteCommentInPost(selectedPostForComment.id, comment);
       mutate();
     } catch (error) {
       console.error(error);
@@ -152,7 +154,9 @@ const Home: NextPage = () => {
                 isMine={post.user.email === user?.email}
                 isLiked={!!post.likedUsers[user?.id ?? '']}
                 onEditMenuItemClick={() => handleEdit(post.id)}
-                onDeleteMenuItemClick={() => setDeleteId(post.id)}
+                onDeleteMenuItemClick={() =>
+                  setSelectedPostIdForDelete(post.id)
+                }
                 // TODO: 계속 클릭해도 한 번만 요청하도록
                 onLikeButtonClick={() => handleLike(post.id)}
                 onUnlikeButtonClick={() => handleUnlike(post.id)}
@@ -165,8 +169,8 @@ const Home: NextPage = () => {
       </Container>
 
       <CommentDrawer
-        open={!!commentButtonClickedPost}
-        comments={commentButtonClickedPost?.comments ?? []}
+        open={!!selectedPostForComment}
+        comments={selectedPostForComment?.comments ?? []}
         onClose={handleCommentDrawerClose}
         onMessageSend={handleMessageSend}
         onMessgeDelete={handleMessageDelete}
@@ -174,8 +178,8 @@ const Home: NextPage = () => {
       />
 
       <AlertDialog
-        open={!!deleteId}
-        onClose={() => setDeleteId(null)}
+        open={!!selectedPostIdForDelete}
+        onClose={() => setSelectedPostIdForDelete(null)}
         onSubmit={handleDelete}
         title="삭제 확인"
         description="정말로 삭제하시겠습니까?"
