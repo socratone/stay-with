@@ -105,7 +105,8 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({
         onClose={handleClose}
         PaperProps={{
           sx: {
-            width: { xs: '100%', sm: '50%', md: '30%' },
+            width: '100%',
+            maxWidth: { xs: '100%', sm: 400, md: 400 },
           },
         }}
       >
