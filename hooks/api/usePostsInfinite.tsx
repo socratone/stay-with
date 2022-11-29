@@ -1,16 +1,19 @@
-import { getPostsInfinite } from '../../libs/firebase/apis';
+import {
+  getPostsInfinite,
+  GetPostsInfiniteOptions,
+} from '../../libs/firebase/apis';
 import useSWRInfinite from 'swr/infinite';
 import { Post } from '../../libs/firebase/interfaces';
 import { useEffect, useState } from 'react';
 
-const getKey = (pageIndex: number, previousPageData: Post[]) => {
-  if (previousPageData && !previousPageData.length) return null; // 끝에 도달
-  const endPost = previousPageData?.[previousPageData.length - 1];
-  return [endPost?.createdAt, 'posts']; // 키
-};
-
-const usePostsInfinite = () => {
+const usePostsInfinite = (options?: GetPostsInfiniteOptions) => {
   const [isEnded, setIsEnded] = useState(false);
+
+  const getKey = (pageIndex: number, previousPageData: Post[]) => {
+    if (previousPageData && !previousPageData.length) return null; // 끝에 도달
+    const endPost = previousPageData?.[previousPageData.length - 1];
+    return [endPost?.createdAt, options, 'posts']; // 키
+  };
 
   const { data, error, size, setSize, mutate } = useSWRInfinite(
     getKey,

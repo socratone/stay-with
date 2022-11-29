@@ -34,6 +34,7 @@ interface PostCardProps {
   onUnlikeButtonClick: () => void;
   likedCount: number;
   onCommentButtonClick: () => void;
+  onUserClick: () => void;
 }
 
 const PostCard: React.FC<PostCardProps> = ({
@@ -54,11 +55,12 @@ const PostCard: React.FC<PostCardProps> = ({
   onUnlikeButtonClick,
   likedCount,
   onCommentButtonClick,
+  onUserClick,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handleOptionButtonClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -99,7 +101,13 @@ const PostCard: React.FC<PostCardProps> = ({
         px={2}
         py={2}
       >
-        <Box display="flex" alignItems="center" gap={1}>
+        <Box
+          display="flex"
+          alignItems="center"
+          gap={1}
+          sx={{ cursor: 'pointer' }}
+          onClick={onUserClick}
+        >
           {profileImage ? (
             <Avatar alt="Profile" src={profileImage} />
           ) : (
@@ -116,7 +124,7 @@ const PostCard: React.FC<PostCardProps> = ({
           {isMine ? (
             <>
               <IconButton
-                onClick={handleClick}
+                onClick={handleOptionButtonClick}
                 size="small"
                 sx={{ boxShadow: PRIMARY_SHADOW }}
               >

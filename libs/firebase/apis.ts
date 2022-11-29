@@ -15,6 +15,8 @@ import {
   deleteField,
   arrayUnion,
   arrayRemove,
+  Query,
+  DocumentData,
 } from 'firebase/firestore/lite';
 import { app } from './configs';
 import { Comment, Post, User } from './interfaces';
@@ -45,19 +47,47 @@ export const getUserByEmail = async (email: string) => {
   return users[0] ?? null;
 };
 
+export const getUser = async (id: string) => {
+  const docRef = doc(db, USERS, id);
+  const docSnap = await getDoc(docRef);
+  return docSnap.data() as Omit<User, 'id'>;
+};
+
 /**
  * posts
  */
 
-export const getPostsInfinite = async (createdAt = Infinity) => {
+export type GetPostsInfiniteOptions = {
+  filter?: {
+    userId?: string;
+  };
+};
+
+export const getPostsInfinite = async (
+  createdAt = Infinity,
+  options?: GetPostsInfiniteOptions
+) => {
   const posts: Post[] = [];
   const postsRef = collection(db, POSTS);
-  const q = query(
-    postsRef,
-    orderBy('createdAt', 'desc'),
-    startAfter(createdAt),
-    limit(20) // 한 번에 불러오는 수
-  );
+  let q: Query<DocumentData>;
+
+  if (options?.filter?.userId) {
+    q = query(
+      postsRef,
+      where('user.id', '==', options?.filter?.userId),
+      orderBy('createdAt', 'desc'),
+      startAfter(createdAt),
+      limit(20) // 한 번에 불러오는 수
+    );
+  } else {
+    q = query(
+      postsRef,
+      orderBy('createdAt', 'desc'),
+      startAfter(createdAt),
+      limit(20) // 한 번에 불러오는 수
+    );
+  }
+
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
     posts.push({ id: doc.id, ...doc.data() } as Post);

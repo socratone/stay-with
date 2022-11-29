@@ -55,7 +55,7 @@ const GlobalHeaderDrawer: React.FC<GlobalHeaderDrawerProps> = ({
               <ListItemIcon>
                 <CreateIcon />
               </ListItemIcon>
-              <ListItemText primary="묵상" />
+              <ListItemText primary="묵상글 쓰기" />
             </ListItemButton>
           </ListItem>
         </List>
