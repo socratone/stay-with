@@ -7,9 +7,7 @@ import AlertDialog from '../components/AlertDialog';
 import GlobalHeader from '../components/GlobalHeader';
 import PostCard from '../components/PostCard';
 import {
-  addCommentToPost,
   addLikeToPost,
-  deleteCommentInPost,
   deleteLikeInPost,
   deletePost,
 } from '../libs/firebase/apis';
@@ -17,8 +15,8 @@ import { Box, CircularProgress } from '@mui/material';
 import usePostsInfinite from '../hooks/api/usePostsInfinite';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import useAuthenticated from '../hooks/context/useAuthenticated';
-import { Comment, Post } from '../libs/firebase/interfaces';
-import CommentDrawer from '../components/CommentDrawer';
+import { Post } from '../libs/firebase/interfaces';
+import CommentDrawer from '../sections/CommentDrawer';
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -39,7 +37,7 @@ const Home: NextPage = () => {
     });
   };
 
-  const handleDelete = async () => {
+  const handlePostDelete = async () => {
     if (!selectedPostIdForDelete) return;
 
     try {
@@ -87,31 +85,6 @@ const Home: NextPage = () => {
 
   const handleCommentDrawerClose = () => {
     setSelectedPostForComment(null);
-  };
-
-  const handleMessageSend = async (message: string) => {
-    if (!selectedPostForComment || !user) return;
-    try {
-      const now = new Date().getTime();
-      await addCommentToPost(selectedPostForComment.id, {
-        user,
-        message,
-        createdAt: now,
-      });
-      mutate();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleMessageDelete = async (comment: Comment) => {
-    if (!selectedPostForComment || !user) return;
-    try {
-      await deleteCommentInPost(selectedPostForComment.id, comment);
-      mutate();
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   return (
@@ -170,19 +143,16 @@ const Home: NextPage = () => {
 
       <CommentDrawer
         open={!!selectedPostForComment}
-        comments={selectedPostForComment?.comments ?? []}
+        postId={selectedPostForComment?.id}
         onClose={handleCommentDrawerClose}
-        onMessageSend={handleMessageSend}
-        onMessgeDelete={handleMessageDelete}
-        user={user}
       />
 
       <AlertDialog
         open={!!selectedPostIdForDelete}
         onClose={() => setSelectedPostIdForDelete(null)}
-        onSubmit={handleDelete}
+        onSubmit={handlePostDelete}
         title="삭제 확인"
-        description="정말로 삭제하시겠습니까?"
+        description="포스트를 삭제하시겠습니까?"
       />
     </>
   );
