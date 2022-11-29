@@ -17,6 +17,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import useAuthenticated from '../hooks/context/useAuthenticated';
 import { Post } from '../libs/firebase/interfaces';
 import CommentDrawer from '../sections/CommentDrawer';
+import Masonry from '@mui/lab/Masonry';
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -97,10 +98,52 @@ const Home: NextPage = () => {
 
       <GlobalHeader />
 
+      {/* desktop, tablet view */}
+      <Box
+        component="main"
+        maxWidth="xl"
+        sx={{
+          py: 2,
+          pl: 2,
+          display: { xs: 'none', sm: 'block', md: 'block', xl: 'block' },
+        }}
+      >
+        <Masonry spacing={2} columns={{ sm: 2, md: 3, lg: 4 }}>
+          {posts?.map((post) => (
+            <PostCard
+              key={post.id}
+              name={post.user.name}
+              profileImage={post.user.image}
+              phrase={post.phrase}
+              bible={post.bible}
+              startedChapter={post.startedChapter}
+              startedVerse={post.startedVerse}
+              endedChapter={post.endedChapter}
+              endedVerse={post.endedVerse}
+              content={post.content}
+              isMine={post.user.email === user?.email}
+              isLiked={!!post.likedUsers[user?.id ?? '']}
+              onEditMenuItemClick={() => handleEdit(post.id)}
+              onDeleteMenuItemClick={() => setSelectedPostIdForDelete(post.id)}
+              // TODO: 계속 클릭해도 한 번만 요청하도록
+              onLikeButtonClick={() => handleLike(post.id)}
+              onUnlikeButtonClick={() => handleUnlike(post.id)}
+              likedCount={Object.keys(post.likedUsers ?? {}).length}
+              onCommentButtonClick={() => handleCommentButtonClick(post)}
+            />
+          ))}
+        </Masonry>
+      </Box>
+
+      {/* mobile view */}
       <Container
         component="main"
         maxWidth="sm"
-        sx={{ px: { xs: 0, sm: 0, md: 0 }, pt: 1 }}
+        sx={{
+          px: { xs: 0 },
+          pt: 1,
+          display: { xs: 'block', sm: 'none', md: 'none', xl: 'none' },
+        }}
       >
         <InfiniteScroll
           dataLength={posts.length}
