@@ -50,10 +50,7 @@ const GlobalHeader = () => {
     });
   };
 
-  const handleDarkModeSwitchChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    checked: boolean
-  ) => {
+  const handleDarkModeSwitchChange = (checked: boolean) => {
     setColorMode(checked ? 'dark' : 'light');
   };
 
@@ -80,6 +77,7 @@ const GlobalHeader = () => {
         </Box>
         <Box display="flex" alignItems="center" height="100%" gap={1}>
           <IconButton
+            size="small"
             onClick={() => router.push('/contemplation')}
             sx={{ mr: -1 }}
           >

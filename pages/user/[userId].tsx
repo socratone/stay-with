@@ -57,7 +57,9 @@ const UserId: NextPage<UserIdProps> = ({ user }) => {
               {user.name?.[0] ?? 'P'}
             </Avatar>
           )}
-          <Typography fontWeight={500}>{user.name}</Typography>
+          <Typography color="text.primary" fontWeight={500}>
+            {user.name}
+          </Typography>
         </Box>
       </Box>
 
