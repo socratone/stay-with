@@ -12,8 +12,8 @@ const FilledTextField: React.FC<
       size="small"
       sx={{
         '.MuiInputBase-root': {
-          borderRadius: 4,
-          p: 2,
+          borderRadius: 2,
+          p: 1.5,
         },
         '.MuiInputBase-input': {
           p: 0,

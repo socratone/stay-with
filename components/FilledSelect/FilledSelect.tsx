@@ -10,11 +10,10 @@ const FilledSelect: React.FC<
       ref={ref}
       variant="filled"
       sx={{
-        borderRadius: 4,
+        borderRadius: 2,
         overflow: 'hidden',
         '.MuiSelect-select': {
-          py: 2,
-          pl: 2,
+          p: 1.5,
         },
       }}
       disableUnderline
