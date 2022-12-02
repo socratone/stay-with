@@ -271,7 +271,7 @@ const Contemplation: NextPage<ContemplationProps> = ({
                 p: 2,
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 2,
+                gap: 1.5,
               }}
             >
               <Box>
@@ -290,7 +290,7 @@ const Contemplation: NextPage<ContemplationProps> = ({
               <Box
                 display="grid"
                 gridTemplateColumns="1fr 1fr 1fr auto"
-                gap={2}
+                gap={1.5}
               >
                 <Box>
                   <FilledSelect
