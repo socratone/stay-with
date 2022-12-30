@@ -2,6 +2,7 @@ import { Bible } from './constants';
 
 export interface User {
   id: string;
+  googleId: string;
   name: string;
   email: string;
   image?: string;

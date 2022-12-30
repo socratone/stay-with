@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Button,
   Checkbox,
@@ -7,110 +8,90 @@ import {
   Typography,
 } from '@mui/material';
 import GlobalHeader from '../components/GlobalHeader';
-import { GetServerSideProps, NextPage } from 'next';
-import { unstable_getServerSession } from 'next-auth';
-import { authOptions } from './api/auth/[...nextauth]';
-import { addUser, getUserByEmail } from '../libs/firebase/apis';
+import { addUser } from '../libs/firebase/apis';
 import { User } from '../libs/firebase/interfaces';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../redux/userSlice';
-
+import { GetServerSideProps, NextPage } from 'next';
+import ErrorMessage from '../components/ErrorMessage';
+import axios, { AxiosResponse } from 'axios';
+import { ApiAuthAccessData } from './api/auth/access';
+import useAuth from '../hooks/context/useAuth';
 interface SignUpProps {
-  user?: User;
-  notSubscribedUser?: Omit<User, 'id'>;
+  googleId: string;
+  email: string;
+  image: string;
 }
 
 export const getServerSideProps: GetServerSideProps<SignUpProps> = async ({
-  req,
-  res,
+  query,
 }) => {
-  const session = await unstable_getServerSession(req, res, authOptions);
+  const googleId = String(query.googleid);
+  const email = String(query.email);
+  const image = String(query.picture);
 
-  // 로그인하지 않은 경우
-  if (!session?.user?.email || !session?.user?.name) {
-    return { notFound: true };
-  }
-
-  const user = await getUserByEmail(session.user.email);
-
-  // 아이디를 이미 생성한 경우
-  if (user) {
+  if (!googleId || !email) {
     return {
-      props: {
-        user,
-      },
+      notFound: true,
     };
   }
 
   return {
     props: {
-      notSubscribedUser: {
-        email: session.user.email,
-        name: session.user.name,
-        image: session.user.image ?? undefined,
-      },
+      googleId,
+      email,
+      image,
     },
   };
 };
 
-const SignUp: NextPage<SignUpProps> = ({ user, notSubscribedUser }) => {
+const SignUp: NextPage<SignUpProps> = ({ googleId, email, image }) => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { login } = useAuth();
 
   const [imageChecked, setImageChecked] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const [isRequesting, setIsRequesting] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Omit<User, 'id' | 'image'>>({
-    defaultValues: user,
-  });
+  } = useForm<Omit<User, 'id' | 'email' | 'image'>>();
 
-  useEffect(() => {
-    if (user) {
-      setTimeout(() => {
-        router.push('/');
-      }, 1000);
+  const handleSignUp: SubmitHandler<
+    Omit<User, 'id' | 'email' | 'image'>
+  > = async ({ name }) => {
+    setIsRequesting(true);
 
-      // client에서 로그인
-      dispatch(
-        setUser({
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          image: user.image ?? '',
-        })
-      );
-    }
-  }, [router, dispatch, user]);
-
-  const handleSignUp: SubmitHandler<Omit<User, 'id' | 'image'>> = async ({
-    email,
-    name,
-  }) => {
-    const payload: Omit<User, 'id'> = { email, name };
-    if (imageChecked && notSubscribedUser?.image) {
-      payload.image = notSubscribedUser?.image;
+    const payload: Omit<User, 'id'> = { googleId, email, name };
+    if (imageChecked) {
+      payload.image = image;
     }
 
     try {
       const addedUser = await addUser(payload);
-      // client에서 로그인
-      dispatch(
-        setUser({
-          id: addedUser.id,
-          email: addedUser.email,
-          name: addedUser.name,
-          image: addedUser.image ?? '',
-        })
-      );
+
+      // TODO: POST 요청으로 바꿔야 함
+      const {
+        data: { accessToken },
+      }: AxiosResponse<ApiAuthAccessData> = await axios.get('/api/auth/access');
+
+      login(accessToken, {
+        id: addedUser.id,
+        googleId: addedUser.googleId,
+        email: addedUser.email,
+        name: addedUser.name,
+        image: addedUser.image,
+      });
+
       router.push('/');
-    } catch (error) {
-      console.error(error);
+    } catch {
+      setIsError(true);
     }
   };
 
@@ -118,74 +99,64 @@ const SignUp: NextPage<SignUpProps> = ({ user, notSubscribedUser }) => {
     setImageChecked(checked);
   };
 
-  if (user) {
-    return (
+  return (
+    <Box height="100vh" display="flex" flexDirection="column">
+      <GlobalHeader />
       <Box
-        height="100%"
+        flexGrow={1}
+        gap={1}
         display="flex"
         flexDirection="column"
         justifyContent="center"
         alignItems="center"
       >
-        <Typography>{user.name}님 환영합니다!</Typography>
-      </Box>
-    );
-  }
-
-  if (notSubscribedUser) {
-    return (
-      <Box height="100vh" display="flex" flexDirection="column">
-        <GlobalHeader />
-        <Box
-          flexGrow={1}
-          gap={1}
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Typography>{notSubscribedUser.name}님 환영합니다!</Typography>
-          <Box>
-            <TextField
-              {...register('name', {
-                required: true,
-              })}
-              size="small"
-              error={!!errors.name}
-            />
-          </Box>
-
-          <Box>
-            <TextField
-              {...register('email', {
-                required: true,
-              })}
-              size="small"
-              error={!!errors.email}
-            />
-          </Box>
-
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={imageChecked}
-                onChange={handleImageCheckedChange}
+        {isError ? (
+          <ErrorMessage />
+        ) : (
+          <>
+            <Box>
+              {image && imageChecked ? (
+                <Avatar src={image} sx={{ width: 100, height: 100 }} />
+              ) : (
+                <Avatar sx={{ width: 100, height: 100 }}>없음</Avatar>
+              )}
+            </Box>
+            <Box>
+              <Typography>이름</Typography>
+              <TextField
+                {...register('name', {
+                  required: true,
+                  maxLength: 50,
+                })}
+                size="small"
+                error={!!errors.name}
               />
-            }
-            label="프로필 이미지 공개"
-          />
+            </Box>
 
-          <Box>
-            <Button variant="contained" onClick={handleSubmit(handleSignUp)}>
-              가입하기
-            </Button>
-          </Box>
-        </Box>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={imageChecked}
+                  onChange={handleImageCheckedChange}
+                />
+              }
+              label="프로필 이미지 공개"
+            />
+
+            <Box>
+              <Button
+                variant="contained"
+                onClick={handleSubmit(handleSignUp)}
+                disabled={isRequesting}
+              >
+                가입하기
+              </Button>
+            </Box>
+          </>
+        )}
       </Box>
-    );
-  }
-
-  return null;
+    </Box>
+  );
 };
 
 export default SignUp;

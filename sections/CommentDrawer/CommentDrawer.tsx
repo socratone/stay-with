@@ -11,7 +11,7 @@ import {
   deleteCommentInPost,
 } from '../../libs/firebase/apis';
 import AlertDialog from '../../components/AlertDialog';
-import useAuthenticated from '../../hooks/context/useAuthenticated';
+import useAuth from '../../hooks/context/useAuth';
 import usePost from '../../hooks/api/usePost';
 import ErrorMessage from '../../components/ErrorMessage';
 import LoadingCircular from '../../components/LoadingCircular';
@@ -27,7 +27,7 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({
   postId,
   onClose,
 }) => {
-  const { user } = useAuthenticated();
+  const { user } = useAuth();
   const { post, isError, isLoading, mutate } = usePost(postId);
   const comments = post?.comments ?? [];
 

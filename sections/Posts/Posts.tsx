@@ -7,7 +7,7 @@ import AlertDialog from '../../components/AlertDialog';
 import LoadingCircular from '../../components/LoadingCircular';
 import PostCard from '../../components/PostCard';
 import usePostsInfinite from '../../hooks/api/usePostsInfinite';
-import useAuthenticated from '../../hooks/context/useAuthenticated';
+import useAuth from '../../hooks/context/useAuth';
 import {
   addLikeToPost,
   deleteLikeInPost,
@@ -23,7 +23,7 @@ interface PostsProps {
 
 const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
   const router = useRouter();
-  const { user } = useAuthenticated();
+  const { user } = useAuth();
 
   const [selectedPostIdForDelete, setSelectedPostIdForDelete] = useState<
     string | null
@@ -60,6 +60,7 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
     try {
       await addLikeToPost(id, {
         id: user.id,
+        googleId: user.googleId,
         email: user.email,
         name: user.name,
         image: user.image ?? undefined,

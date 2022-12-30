@@ -31,6 +31,7 @@ const POSTS = 'posts';
  */
 
 export const addUser = async (payload: Omit<User, 'id'>) => {
+  // TODO: 이미 추가된 유저 validation
   const usersRef = collection(db, USERS);
   const docRef = await addDoc(usersRef, payload);
   return { ...payload, id: docRef.id };
@@ -40,6 +41,17 @@ export const getUserByEmail = async (email: string) => {
   const users: User[] = [];
   const usersRef = collection(db, USERS);
   const q = query(usersRef, where('email', '==', email));
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    users.push({ id: doc.id, ...doc.data() } as User);
+  });
+  return users[0] ?? null;
+};
+
+export const getUserByGoogleId = async (googleId: string) => {
+  const users: User[] = [];
+  const usersRef = collection(db, USERS);
+  const q = query(usersRef, where('googleId', '==', googleId));
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
     users.push({ id: doc.id, ...doc.data() } as User);

@@ -6,10 +6,9 @@ import {
   MenuItem,
   useTheme,
 } from '@mui/material';
-import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import useAuthenticated from '../../hooks/context/useAuthenticated';
+import useAuth from '../../hooks/context/useAuth';
 import useColorMode from '../../hooks/context/useColorMode';
 import { PRIMARY_SHADOW } from '../../theme/shadows';
 import DarkModeSwitch from '../DarkModeSwitch';
@@ -24,7 +23,7 @@ const GlobalHeader = () => {
   const router = useRouter();
   const theme = useTheme();
 
-  const { status, user } = useAuthenticated();
+  const { user, logout } = useAuth();
   const { colorMode, setColorMode } = useColorMode();
 
   const [profileMenuAnchorEl, setProfileMenuAnchorEl] =
@@ -43,12 +42,6 @@ const GlobalHeader = () => {
 
   const closeProfileMenu = () => {
     setProfileMenuAnchorEl(null);
-  };
-
-  const handleSignOut = () => {
-    signOut({
-      callbackUrl: '/',
-    });
   };
 
   const handleDarkModeSwitchChange = (checked: boolean) => {
@@ -77,13 +70,15 @@ const GlobalHeader = () => {
           </IconButton>
         </Box>
         <Box display="flex" alignItems="center" height="100%" gap={1}>
-          <IconButton
-            size="small"
-            onClick={() => router.push('/contemplation')}
-            sx={{ mr: -1 }}
-          >
-            <AddIcon />
-          </IconButton>
+          {user ? (
+            <IconButton
+              size="small"
+              onClick={() => router.push('/contemplation')}
+              sx={{ mr: -1 }}
+            >
+              <AddIcon />
+            </IconButton>
+          ) : null}
           <DarkModeSwitch
             checked={colorMode === 'dark'}
             onChange={handleDarkModeSwitchChange}
@@ -96,7 +91,7 @@ const GlobalHeader = () => {
               />
             </Box>
           </IconButton>
-          {status === 'authenticated' ? (
+          {user ? (
             <>
               <ButtonBase
                 onClick={openProfileMenu}
@@ -120,7 +115,7 @@ const GlobalHeader = () => {
                 <MenuItem onClick={() => router.push('/setting')}>
                   설정
                 </MenuItem>
-                <MenuItem onClick={handleSignOut}>로그아웃</MenuItem>
+                <MenuItem onClick={logout}>로그아웃</MenuItem>
               </SmallMenu>
             </>
           ) : (

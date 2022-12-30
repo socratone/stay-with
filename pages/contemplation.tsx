@@ -13,21 +13,15 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import GlobalHeader from '../components/GlobalHeader';
-import {
-  addPost,
-  getPost,
-  getUserByEmail,
-  updatePost,
-} from '../libs/firebase/apis';
+import { addPost, getPost, updatePost } from '../libs/firebase/apis';
 import { Bible, bibleOptions } from '../libs/firebase/constants';
-import { Post, User } from '../libs/firebase/interfaces';
+import { Post } from '../libs/firebase/interfaces';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
-import { unstable_getServerSession } from 'next-auth';
-import { authOptions } from './api/auth/[...nextauth]';
 import YoutubeVideo from '../components/YoutubeVideo';
 import FilledTextField from '../components/FilledTextField';
 import FilledSelect from '../components/FilledSelect';
+import useAuth from '../hooks/context/useAuth';
 
 interface FormInput {
   phrase: string;
@@ -40,59 +34,26 @@ interface FormInput {
 }
 
 interface ContemplationProps {
-  user: User;
+  postUserId?: string;
   defaultValues?: FormInput;
 }
 
 export const getServerSideProps: GetServerSideProps<
   ContemplationProps
-> = async ({ query, req, res }) => {
+> = async ({ query }) => {
   try {
-    const session = await unstable_getServerSession(req, res, authOptions);
-
-    // 로그인 하지 않은 경우
-    if (!session?.user?.name || !session?.user.email) {
-      return {
-        redirect: {
-          destination: '/login',
-          permanent: false,
-        },
-      };
-    }
-
-    const user = await getUserByEmail(session.user.email);
-
-    // 회원 가입을 하지 않은 경우
-    if (!user) {
-      return {
-        redirect: {
-          destination: '/login',
-          permanent: false,
-        },
-      };
-    }
-
     const id = query?.id;
 
     // 생성하는 경우
     if (!id) {
       return {
-        props: {
-          user,
-        },
+        props: {},
       };
     }
 
     // 수정하는 경우
     if (typeof id === 'string') {
       const post = await getPost(id);
-
-      // 사용자가 작성한 post가 아닌 경우
-      if (user.id !== post.user.id) {
-        return {
-          notFound: true,
-        };
-      }
 
       let defaultValues: FormInput = {
         phrase: post.phrase,
@@ -109,9 +70,10 @@ export const getServerSideProps: GetServerSideProps<
           endedVerse: String(post.endedVerse),
         };
       }
+
       return {
         props: {
-          user,
+          postUserId: post.user.id,
           defaultValues,
         },
       };
@@ -126,10 +88,11 @@ export const getServerSideProps: GetServerSideProps<
 };
 
 const Contemplation: NextPage<ContemplationProps> = ({
-  user,
+  postUserId,
   defaultValues,
 }) => {
   const router = useRouter();
+  const { user } = useAuth();
 
   const {
     register,
@@ -161,6 +124,8 @@ const Contemplation: NextPage<ContemplationProps> = ({
     endedChapter,
     endedVerse,
   }) => {
+    if (!user) return;
+
     setIsRequested(true);
     try {
       const id = router.query?.id;
@@ -207,6 +172,18 @@ const Contemplation: NextPage<ContemplationProps> = ({
     setValue('endedChapter', '');
     setValue('endedVerse', '');
   };
+
+  // 로그인을 하지 않았을 경우
+  if (!user) {
+    // TODO: 로그인 필요
+    return <Box>접근 불가</Box>;
+  }
+
+  // 사용자가 작성한 글이 아닌 경우
+  if (postUserId && postUserId !== user.id) {
+    // TODO: 다른 글 접근 불가
+    return <Box>접근 불가</Box>;
+  }
 
   return (
     <>
