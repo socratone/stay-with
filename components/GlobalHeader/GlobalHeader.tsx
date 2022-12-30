@@ -18,6 +18,7 @@ import HeaderLink from './HeaderLink';
 import MenuIcon from '@mui/icons-material/Menu';
 import AddIcon from '@mui/icons-material/Add';
 import GlobalHeaderDrawer from './GlobalHeaderDrawer';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 
 const GlobalHeader = () => {
   const router = useRouter();
@@ -86,7 +87,15 @@ const GlobalHeader = () => {
           <DarkModeSwitch
             checked={colorMode === 'dark'}
             onChange={handleDarkModeSwitchChange}
+            sx={{ mr: -1 }}
           />
+          <IconButton size="small">
+            <Box width={24} height={24}>
+              <NotificationsNoneIcon
+                sx={{ width: 20, height: 20, mt: '2px' }}
+              />
+            </Box>
+          </IconButton>
           {status === 'authenticated' ? (
             <>
               <ButtonBase
