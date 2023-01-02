@@ -3,7 +3,10 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getUserByGoogleId } from '../../libs/firebase/apis';
-import { ApiAuthAccessData } from '../../pages/api/auth/access';
+import {
+  ApiAuthAccessData,
+  ApiAuthAccessPayload,
+} from '../../pages/api/auth/access';
 import useAuth from '../context/useAuth';
 
 type UserInfoData = {
@@ -48,12 +51,15 @@ const useGoogleLoginRedirect = () => {
 
         // 앱에 아이디를 이미 생성한 경우
         if (user) {
-          // TODO: POST 요청으로 바꿔야 함
           const {
             data: { accessToken },
-          }: AxiosResponse<ApiAuthAccessData> = await axios.get(
-            '/api/auth/access'
-          );
+          } = await axios.post<
+            any,
+            AxiosResponse<ApiAuthAccessData>,
+            ApiAuthAccessPayload
+          >('/api/auth/access', {
+            googleId,
+          });
 
           login(accessToken, {
             id: user.id,
