@@ -1,4 +1,4 @@
-import { Box, Button } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import GlobalHeader from '../../components/GlobalHeader';
 
 const Login = () => {
@@ -8,9 +8,14 @@ const Login = () => {
       <Box
         flexGrow={1}
         display="flex"
+        flexDirection="column"
         justifyContent="center"
         alignItems="center"
+        gap={1}
       >
+        <Typography color="text.primary">
+          현재 구글 계정을 이용한 로그인만 가능합니다 🤗
+        </Typography>
         <Button
           variant="outlined"
           // TODO: .env 적용해야 함

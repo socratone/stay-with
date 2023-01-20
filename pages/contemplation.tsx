@@ -22,6 +22,8 @@ import YoutubeVideo from '../components/YoutubeVideo';
 import FilledTextField from '../components/FilledTextField';
 import FilledSelect from '../components/FilledSelect';
 import useAuth from '../hooks/context/useAuth';
+import LoginMessage from '../components/LoginMessage';
+import AccessDeniedMessage from '../components/AccessDeniedMessage';
 
 interface FormInput {
   phrase: string;
@@ -175,14 +177,32 @@ const Contemplation: NextPage<ContemplationProps> = ({
 
   // 로그인을 하지 않았을 경우
   if (!user) {
-    // TODO: 로그인 필요
-    return <Box>접근 불가</Box>;
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="100vh"
+        gap={1}
+      >
+        <LoginMessage />
+      </Box>
+    );
   }
 
   // 사용자가 작성한 글이 아닌 경우
   if (postUserId && postUserId !== user.id) {
-    // TODO: 다른 글 접근 불가
-    return <Box>접근 불가</Box>;
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="100vh"
+        gap={1}
+      >
+        <AccessDeniedMessage />
+      </Box>
+    );
   }
 
   return (
