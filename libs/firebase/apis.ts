@@ -31,7 +31,11 @@ const POSTS = 'posts';
  */
 
 export const addUser = async (payload: Omit<User, 'id'>) => {
-  // TODO: 이미 추가된 유저 validation
+  const alreadyAddedUser = await getUserByGoogleId(payload.googleId);
+  if (alreadyAddedUser) {
+    throw new Error('This user has already been added.');
+  }
+
   const usersRef = collection(db, USERS);
   const docRef = await addDoc(usersRef, payload);
   return { ...payload, id: docRef.id };
@@ -48,7 +52,9 @@ export const getUserByEmail = async (email: string) => {
   return users[0] ?? null;
 };
 
-export const getUserByGoogleId = async (googleId: string) => {
+export const getUserByGoogleId = async (
+  googleId: string
+): Promise<User | null> => {
   const users: User[] = [];
   const usersRef = collection(db, USERS);
   const q = query(usersRef, where('googleId', '==', googleId));
