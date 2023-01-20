@@ -32,6 +32,7 @@ const useGoogleLoginRedirect = () => {
 
   useEffect(() => {
     (async () => {
+      // 구글 인증 이후 query로 받은 access_token을 가져옴
       const googleAccessToken = getGoogleAccessToken(router.asPath);
 
       try {
@@ -49,7 +50,7 @@ const useGoogleLoginRedirect = () => {
         const { id: googleId, email, picture } = data;
         const user = await getUserByGoogleId(googleId);
 
-        // 앱에 아이디를 이미 생성한 경우
+        // 앱에 아이디를 이미 생성한 경우 -> 홈으로 이동
         if (user) {
           const {
             data: { accessToken },
@@ -73,7 +74,7 @@ const useGoogleLoginRedirect = () => {
           return;
         }
 
-        // 아이디 생성 페이지로 이동
+        // 앱에 아이디를 생성하지 않은 경우 -> 구글 기본 정보를 포함하여 아이디 생성 페이지로 이동
         router.push(
           `/signup?googleid=${googleId}&email=${email}&picture=${picture}`
         );
