@@ -10,7 +10,7 @@ const WaitingMessage = () => {
       gap={1}
     >
       <CircularProgress />
-      <Typography>잠시만 기다려주세요 😎</Typography>
+      <Typography color="text.primary">잠시만 기다려주세요 😎</Typography>
     </Box>
   );
 };
