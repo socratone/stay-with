@@ -109,7 +109,11 @@ const PostCard: React.FC<PostCardProps> = ({
           onClick={onUserClick}
         >
           {profileImage ? (
-            <Avatar alt="Profile" src={profileImage} />
+            <Avatar
+              alt="Profile"
+              src={profileImage}
+              sx={{ width: 34, height: 34 }}
+            />
           ) : (
             <Avatar sx={{ width: 34, height: 34 }}>{name?.[0] ?? 'P'}</Avatar>
           )}
