@@ -18,7 +18,7 @@ import { setUser } from '../redux/userSlice';
 import { GetServerSideProps, NextPage } from 'next';
 import ErrorMessage from '../components/ErrorMessage';
 import axios, { AxiosResponse } from 'axios';
-import { ApiAuthAccessData } from './api/auth/access';
+import { ApiAuthAccessData, ApiAuthAccessPayload } from './api/auth/access';
 import useAuth from '../hooks/context/useAuth';
 interface SignUpProps {
   googleId: string;
@@ -50,7 +50,6 @@ export const getServerSideProps: GetServerSideProps<SignUpProps> = async ({
 
 const SignUp: NextPage<SignUpProps> = ({ googleId, email, image }) => {
   const router = useRouter();
-  const dispatch = useDispatch();
   const { login } = useAuth();
 
   const [imageChecked, setImageChecked] = useState(true);
@@ -76,10 +75,15 @@ const SignUp: NextPage<SignUpProps> = ({ googleId, email, image }) => {
     try {
       const addedUser = await addUser(payload);
 
-      // TODO: POST 요청으로 바꿔야 함
       const {
         data: { accessToken },
-      }: AxiosResponse<ApiAuthAccessData> = await axios.get('/api/auth/access');
+      } = await axios.post<
+        any,
+        AxiosResponse<ApiAuthAccessData>,
+        ApiAuthAccessPayload
+      >('/api/auth/access', {
+        googleId,
+      });
 
       login(accessToken, {
         id: addedUser.id,
