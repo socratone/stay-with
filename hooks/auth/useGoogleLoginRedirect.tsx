@@ -2,19 +2,12 @@ import axios, { AxiosResponse } from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { getUserByGoogleId } from '../../libs/firebase/apis';
 import {
-  ApiAuthAccessData,
-  ApiAuthAccessPayload,
-} from '../../pages/api/auth/access';
+  ApiAuthLoginData,
+  ApiAuthLoginPayload,
+  GoogleUser,
+} from '../../pages/api/auth/login';
 import useAuth from '../context/useAuth';
-
-type UserInfoData = {
-  email: string;
-  id: string;
-  picture: string;
-  verified_email: boolean;
-};
 
 const getGoogleAccessToken = (path: string) => {
   const index = path.indexOf('access_token=');
@@ -36,50 +29,31 @@ const useGoogleLoginRedirect = () => {
       const googleAccessToken = getGoogleAccessToken(router.asPath);
 
       try {
-        // 오류가 발생하지 않는다면 정상적인 google 유저임을 입증
-        // https://developers.google.com/identity/protocols/oauth2/javascript-implicit-flow#callinganapi
-        const { data }: AxiosResponse<UserInfoData> = await axios.get(
-          `https://www.googleapis.com/oauth2/v2/userinfo`,
-          {
-            headers: {
-              Authorization: `Bearer ${googleAccessToken}`,
-            },
-          }
-        );
+        const {
+          data: { accessToken },
+        } = await axios.post<
+          any,
+          AxiosResponse<ApiAuthLoginData>,
+          ApiAuthLoginPayload
+        >('/api/auth/login', {
+          googleAccessToken,
+        });
 
-        const { id: googleId, email, picture } = data;
-        const user = await getUserByGoogleId(googleId);
+        login(accessToken);
 
-        // 앱에 아이디를 이미 생성한 경우 -> 홈으로 이동
-        if (user) {
-          const {
-            data: { accessToken },
-          } = await axios.post<
-            any,
-            AxiosResponse<ApiAuthAccessData>,
-            ApiAuthAccessPayload
-          >('/api/auth/access', {
-            googleId,
-          });
-
-          login(accessToken, {
-            id: user.id,
-            googleId: user.googleId,
-            email: user.email,
-            name: user.name,
-            image: user.image ?? '',
-          });
-
-          router.push('/');
-          return;
-        }
+        router.push('/');
+      } catch (error: any) {
+        const status = error?.response?.status;
+        const googleUser: GoogleUser = error?.response?.data?.googleUser;
 
         // 앱에 아이디를 생성하지 않은 경우 -> 구글 기본 정보를 포함하여 아이디 생성 페이지로 이동
-        router.push(
-          `/signup?googleid=${googleId}&email=${email}&picture=${picture}`
-        );
-      } catch {
-        setIsError(true);
+        if (status === 401) {
+          router.push(
+            `/signup?google_access_token=${googleAccessToken}&google_id=${googleUser.id}&email=${googleUser.email}&picture=${googleUser.picture}`
+          );
+        } else {
+          setIsError(true);
+        }
       }
     })();
   }, [dispatch, router, login]);

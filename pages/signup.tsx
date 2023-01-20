@@ -8,19 +8,19 @@ import {
   Typography,
 } from '@mui/material';
 import GlobalHeader from '../components/GlobalHeader';
-import { addUser } from '../libs/firebase/apis';
 import { User } from '../libs/firebase/interfaces';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { setUser } from '../redux/userSlice';
 import { GetServerSideProps, NextPage } from 'next';
 import ErrorMessage from '../components/ErrorMessage';
 import axios, { AxiosResponse } from 'axios';
-import { ApiAuthAccessData, ApiAuthAccessPayload } from './api/auth/access';
 import useAuth from '../hooks/context/useAuth';
+import { ApiAuthLoginData, ApiAuthLoginPayload } from './api/auth/login';
+import { ApiAuthSignUpData, ApiAuthSignUpPayload } from './api/auth/signup';
+
 interface SignUpProps {
+  googleAccessToken: string;
   googleId: string;
   email: string;
   image: string;
@@ -29,7 +29,8 @@ interface SignUpProps {
 export const getServerSideProps: GetServerSideProps<SignUpProps> = async ({
   query,
 }) => {
-  const googleId = String(query.googleid);
+  const googleAccessToken = String(query.google_access_token);
+  const googleId = String(query.google_id);
   const email = String(query.email);
   const image = String(query.picture);
 
@@ -41,6 +42,7 @@ export const getServerSideProps: GetServerSideProps<SignUpProps> = async ({
 
   return {
     props: {
+      googleAccessToken,
       googleId,
       email,
       image,
@@ -48,7 +50,12 @@ export const getServerSideProps: GetServerSideProps<SignUpProps> = async ({
   };
 };
 
-const SignUp: NextPage<SignUpProps> = ({ googleId, email, image }) => {
+const SignUp: NextPage<SignUpProps> = ({
+  googleAccessToken,
+  googleId,
+  email,
+  image,
+}) => {
   const router = useRouter();
   const { login } = useAuth();
 
@@ -73,25 +80,23 @@ const SignUp: NextPage<SignUpProps> = ({ googleId, email, image }) => {
     }
 
     try {
-      const addedUser = await addUser(payload);
+      await axios.post<
+        any,
+        AxiosResponse<ApiAuthSignUpData>,
+        ApiAuthSignUpPayload
+      >('/api/auth/signup', payload);
 
       const {
         data: { accessToken },
       } = await axios.post<
         any,
-        AxiosResponse<ApiAuthAccessData>,
-        ApiAuthAccessPayload
-      >('/api/auth/access', {
-        googleId,
+        AxiosResponse<ApiAuthLoginData>,
+        ApiAuthLoginPayload
+      >('/api/auth/login', {
+        googleAccessToken,
       });
 
-      login(accessToken, {
-        id: addedUser.id,
-        googleId: addedUser.googleId,
-        email: addedUser.email,
-        name: addedUser.name,
-        image: addedUser.image,
-      });
+      login(accessToken);
 
       router.push('/');
     } catch {
