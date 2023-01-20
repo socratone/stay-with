@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 import jwt from 'jsonwebtoken';
 import { getUserByGoogleId } from '../../libs/firebase/apis';
+import { ApiErrorData, responseUnknownError } from '../../utils/api';
 
 export type ApiLoginPayload = {
   googleAccessToken: string;
@@ -18,8 +19,7 @@ type GoogleUser = {
   verified_email: boolean;
 };
 
-export type ApiLoginErrorData = {
-  message: string;
+export type ApiLoginErrorData = ApiErrorData & {
   googleUser?: GoogleUser;
 };
 
@@ -42,7 +42,7 @@ const handler = async (
       // 오류가 발생하지 않는다면 정상적인 google 유저임을 입증
       // https://developers.google.com/identity/protocols/oauth2/javascript-implicit-flow#callinganapi
       const { data: googleUser }: AxiosResponse<GoogleUser> = await axios.get(
-        `https://www.googleapis.com/oauth2/v2/userinfo`,
+        'https://www.googleapis.com/oauth2/v2/userinfo',
         {
           headers: {
             Authorization: `Bearer ${googleAccessToken}`,
@@ -60,10 +60,11 @@ const handler = async (
         });
       }
 
-      const accessToken = jwt.sign(user, authSecret);
+      const accessToken = jwt.sign(user, authSecret, {
+        expiresIn: '1 days',
+      });
 
-      const data: ApiLoginData = { accessToken };
-      return res.status(200).json(data);
+      return res.status(200).json({ accessToken });
     } catch (error: any) {
       const statusText = error?.response?.statusText;
 
@@ -74,9 +75,7 @@ const handler = async (
         });
       }
 
-      return res.status(500).json({
-        message: 'An unknown error has occurred.',
-      });
+      return responseUnknownError(res);
     }
   }
 };
