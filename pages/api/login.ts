@@ -1,26 +1,34 @@
 import axios, { AxiosResponse } from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 import jwt from 'jsonwebtoken';
-import { getUserByGoogleId } from '../../../libs/firebase/apis';
+import { getUserByGoogleId } from '../../libs/firebase/apis';
 
-export type ApiAuthLoginPayload = {
+export type ApiLoginPayload = {
   googleAccessToken: string;
 };
 
-export type ApiAuthLoginData = {
+export type ApiLoginData = {
   accessToken: string;
 };
 
-export type GoogleUser = {
+type GoogleUser = {
   email: string;
   id: string;
   picture: string;
   verified_email: boolean;
 };
 
+export type ApiLoginErrorData = {
+  message: string;
+  googleUser?: GoogleUser;
+};
+
 const authSecret = process.env.AUTH_SECRET;
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (
+  req: NextApiRequest,
+  res: NextApiResponse<ApiLoginData | ApiLoginErrorData>
+) => {
   if (req.method === 'POST') {
     try {
       if (!authSecret) {
@@ -29,7 +37,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         });
       }
 
-      const { googleAccessToken }: ApiAuthLoginPayload = req.body;
+      const { googleAccessToken }: ApiLoginPayload = req.body;
 
       // 오류가 발생하지 않는다면 정상적인 google 유저임을 입증
       // https://developers.google.com/identity/protocols/oauth2/javascript-implicit-flow#callinganapi
@@ -54,7 +62,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       const accessToken = jwt.sign(user, authSecret);
 
-      const data: ApiAuthLoginData = { accessToken };
+      const data: ApiLoginData = { accessToken };
       return res.status(200).json(data);
     } catch (error: any) {
       const statusText = error?.response?.statusText;

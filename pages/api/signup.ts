@@ -1,17 +1,17 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { addUser } from '../../../libs/firebase/apis';
-import { User } from '../../../libs/firebase/interfaces';
+import { addUser } from '../../libs/firebase/apis';
+import { User } from '../../libs/firebase/interfaces';
 
-export type ApiAuthSignUpPayload = Omit<User, 'id'>;
+export type ApiSignUpPayload = Omit<User, 'id'>;
 
-export type ApiAuthSignUpData = {
+export type ApiSignUpData = {
   id: string;
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     try {
-      const payload: ApiAuthSignUpPayload = req.body;
+      const payload: ApiSignUpPayload = req.body;
       const { id } = await addUser(payload);
       return res.status(201).json({
         id,

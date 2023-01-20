@@ -3,10 +3,10 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
-  ApiAuthLoginData,
-  ApiAuthLoginPayload,
-  GoogleUser,
-} from '../../pages/api/auth/login';
+  ApiLoginData,
+  ApiLoginPayload,
+  ApiLoginErrorData,
+} from '../../pages/api/login';
 import useAuth from '../context/useAuth';
 
 const getGoogleAccessToken = (path: string) => {
@@ -31,23 +31,23 @@ const useGoogleLoginRedirect = () => {
       try {
         const {
           data: { accessToken },
-        } = await axios.post<
-          any,
-          AxiosResponse<ApiAuthLoginData>,
-          ApiAuthLoginPayload
-        >('/api/auth/login', {
-          googleAccessToken,
-        });
+        } = await axios.post<any, AxiosResponse<ApiLoginData>, ApiLoginPayload>(
+          '/api/login',
+          {
+            googleAccessToken,
+          }
+        );
 
         login(accessToken);
 
         router.push('/');
       } catch (error: any) {
         const status = error?.response?.status;
-        const googleUser: GoogleUser = error?.response?.data?.googleUser;
+        const googleUser: ApiLoginErrorData['googleUser'] =
+          error?.response?.data?.googleUser;
 
         // 앱에 아이디를 생성하지 않은 경우 -> 구글 기본 정보를 포함하여 아이디 생성 페이지로 이동
-        if (status === 401) {
+        if (status === 401 && googleUser) {
           router.push(
             `/signup?google_access_token=${googleAccessToken}&google_id=${googleUser.id}&email=${googleUser.email}&picture=${googleUser.picture}`
           );
