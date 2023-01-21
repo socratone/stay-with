@@ -12,7 +12,7 @@ const usePostsInfinite = (options?: GetPostsInfiniteOptions) => {
   const getKey = (pageIndex: number, previousPageData: Post[]) => {
     if (previousPageData && !previousPageData.length) return null; // 끝에 도달
     const endPost = previousPageData?.[previousPageData.length - 1];
-    return [endPost?.createdAt, options, 'posts']; // 키
+    return [endPost?.createdAt, options, '/api/posts']; // 키
   };
 
   const { data, error, size, setSize, mutate } = useSWRInfinite(

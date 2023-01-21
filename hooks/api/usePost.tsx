@@ -3,7 +3,7 @@ import useSWR from 'swr';
 
 const usePost = (postId?: string) => {
   const { data, error, mutate } = useSWR(
-    postId ? [postId, 'post'] : null,
+    postId ? [postId, '/api/posts'] : null,
     getPost
   );
 
