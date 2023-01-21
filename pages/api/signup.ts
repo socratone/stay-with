@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { addUser } from '../../libs/firebase/apis';
-import { User } from '../../libs/firebase/interfaces';
-import { ApiErrorData, responseUnknownError } from '../../utils/api';
+import { addUser } from 'libs/firebase/apis';
+import { User } from 'libs/firebase/interfaces';
+import { ApiErrorData, responseUnknownError } from 'utils/api';
 
 export type ApiSignUpPayload = Omit<User, 'id'>;
 

@@ -1,12 +1,8 @@
 import axios, { AxiosResponse } from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 import jwt from 'jsonwebtoken';
-import { getUserByGoogleId } from '../../libs/firebase/apis';
-import {
-  ApiErrorData,
-  AUTH_SECRET,
-  responseUnknownError,
-} from '../../utils/api';
+import { getUserByGoogleId } from 'libs/firebase/apis';
+import { ApiErrorData, AUTH_SECRET, responseUnknownError } from 'utils/api';
 
 export type ApiLoginPayload = {
   googleAccessToken: string;

@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
-import { resetUser, setUser } from '../../redux/userSlice';
-import { User } from '../../libs/firebase/interfaces';
+import { RootState } from 'redux/store';
+import { resetUser, setUser } from 'redux/userSlice';
+import { User } from 'libs/firebase/interfaces';
 import { useCallback } from 'react';
 import jwtDecode from 'jwt-decode';
-import { removeAccessToken, saveAccessToken } from '../../utils/token';
+import { removeAccessToken, saveAccessToken } from 'utils/token';
 
 const useAuth = () => {
   const dispatch = useDispatch();

@@ -1,17 +1,16 @@
 import { Box, Drawer, IconButton } from '@mui/material';
-import { Comment } from '../../libs/firebase/interfaces';
 import CommentItem from './CommentItem';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
-import FilledTextField from '../../components/FilledTextField';
+import FilledTextField from 'components/FilledTextField';
 import { useState } from 'react';
 import SendIcon from '@mui/icons-material/Send';
 
-import AlertDialog from '../../components/AlertDialog';
-import useAuth from '../../hooks/context/useAuth';
-import usePost from '../../hooks/api/usePost';
-import ErrorMessage from '../../components/ErrorMessage';
-import LoadingCircular from '../../components/LoadingCircular';
+import AlertDialog from 'components/AlertDialog';
+import useAuth from 'hooks/context/useAuth';
+import usePost from 'hooks/api/usePost';
+import ErrorMessage from 'components/ErrorMessage';
+import LoadingCircular from 'components/LoadingCircular';
 import { deleteCommentInPost, postCommentToPost } from 'libs/axios/apis';
 
 interface CommentDrawerProps {

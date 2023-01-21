@@ -1,11 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { addPost } from '../../../libs/firebase/apis';
-import { Post } from '../../../libs/firebase/interfaces';
-import {
-  ApiErrorData,
-  responseUnknownError,
-  isLoggedIn,
-} from '../../../utils/api';
+import { addPost } from 'libs/firebase/apis';
+import { Post } from 'libs/firebase/interfaces';
+import { ApiErrorData, responseUnknownError, isLoggedIn } from 'utils/api';
 
 export type ApiPostPayload = Omit<Post, 'id'>;
 

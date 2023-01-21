@@ -12,18 +12,18 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import GlobalHeader from '../components/GlobalHeader';
-import { getPost } from '../libs/firebase/apis';
+import GlobalHeader from 'components/GlobalHeader';
+import { getPost } from 'libs/firebase/apis';
 import { Bible, bibleOptions } from '../libs/firebase/constants';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
-import YoutubeVideo from '../components/YoutubeVideo';
-import FilledTextField from '../components/FilledTextField';
-import FilledSelect from '../components/FilledSelect';
-import useAuth from '../hooks/context/useAuth';
-import LoginMessage from '../components/LoginMessage';
-import AccessDeniedMessage from '../components/AccessDeniedMessage';
-import { postPost, putPost } from '../libs/axios/apis';
+import YoutubeVideo from 'components/YoutubeVideo';
+import FilledTextField from 'components/FilledTextField';
+import FilledSelect from 'components/FilledSelect';
+import useAuth from 'hooks/context/useAuth';
+import LoginMessage from 'components/LoginMessage';
+import AccessDeniedMessage from 'components/AccessDeniedMessage';
+import { postPost, putPost } from 'libs/axios/apis';
 
 interface FormInput {
   phrase: string;

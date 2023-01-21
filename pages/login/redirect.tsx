@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
-import ErrorMessage from '../../components/ErrorMessage';
-import WaitingMessage from '../../components/WaitingMessage';
-import useGoogleLoginRedirect from '../../hooks/auth/useGoogleLoginRedirect';
+import ErrorMessage from 'components/ErrorMessage';
+import WaitingMessage from 'components/WaitingMessage';
+import useGoogleLoginRedirect from 'hooks/auth/useGoogleLoginRedirect';
 
 const LoginRedirect = () => {
   const { isError } = useGoogleLoginRedirect();

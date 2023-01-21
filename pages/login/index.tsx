@@ -1,5 +1,5 @@
 import { Box, Button, Typography } from '@mui/material';
-import GlobalHeader from '../../components/GlobalHeader';
+import GlobalHeader from 'components/GlobalHeader';
 
 const Login = () => {
   return (
@@ -18,8 +18,7 @@ const Login = () => {
         </Typography>
         <Button
           variant="outlined"
-          // TODO: .env 적용해야 함
-          href={`https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=http%3A//localhost:3000/login/redirect&client_id=${process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID}&response_type=token&scope=https://www.googleapis.com/auth/userinfo.email`}
+          href={`https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=${process.env.NEXT_PUBLIC_BASE_URL}/login/redirect&client_id=${process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID}&response_type=token&scope=https://www.googleapis.com/auth/userinfo.email`}
         >
           구글로 로그인하기
         </Button>
