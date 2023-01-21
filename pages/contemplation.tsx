@@ -13,7 +13,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import GlobalHeader from '../components/GlobalHeader';
-import { addPost, getPost, updatePost } from '../libs/firebase/apis';
+import { getPost, updatePost } from '../libs/firebase/apis';
 import { Bible, bibleOptions } from '../libs/firebase/constants';
 import { Post } from '../libs/firebase/interfaces';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -24,6 +24,9 @@ import FilledSelect from '../components/FilledSelect';
 import useAuth from '../hooks/context/useAuth';
 import LoginMessage from '../components/LoginMessage';
 import AccessDeniedMessage from '../components/AccessDeniedMessage';
+import axios, { AxiosResponse } from 'axios';
+import { ApiPostPayload } from './api/posts';
+import { getAccessToken } from '../utils/token';
 
 interface FormInput {
   phrase: string;
@@ -149,12 +152,20 @@ const Contemplation: NextPage<ContemplationProps> = ({
       if (typeof id === 'string') {
         await updatePost(id, payload);
       } else {
-        await addPost({
-          ...payload,
-          createdAt: now,
-          likedUsers: {},
-          comments: [],
-        });
+        await axios.post<any, AxiosResponse, ApiPostPayload>(
+          '/api/posts',
+          {
+            ...payload,
+            createdAt: now,
+            likedUsers: {},
+            comments: [],
+          },
+          {
+            headers: {
+              Authorization: getAccessToken(),
+            },
+          }
+        );
       }
 
       router.push('/');

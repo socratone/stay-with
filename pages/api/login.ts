@@ -2,7 +2,11 @@ import axios, { AxiosResponse } from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 import jwt from 'jsonwebtoken';
 import { getUserByGoogleId } from '../../libs/firebase/apis';
-import { ApiErrorData, responseUnknownError } from '../../utils/api';
+import {
+  ApiErrorData,
+  AUTH_SECRET,
+  responseUnknownError,
+} from '../../utils/api';
 
 export type ApiLoginPayload = {
   googleAccessToken: string;
@@ -23,20 +27,12 @@ export type ApiLoginErrorData = ApiErrorData & {
   googleUser?: GoogleUser;
 };
 
-const authSecret = process.env.AUTH_SECRET;
-
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<ApiLoginData | ApiLoginErrorData>
 ) => {
   if (req.method === 'POST') {
     try {
-      if (!authSecret) {
-        return res.status(500).json({
-          message: 'The secret key is set incorrectly.',
-        });
-      }
-
       const { googleAccessToken }: ApiLoginPayload = req.body;
 
       // 오류가 발생하지 않는다면 정상적인 google 유저임을 입증
@@ -60,7 +56,7 @@ const handler = async (
         });
       }
 
-      const accessToken = jwt.sign(user, authSecret, {
+      const accessToken = jwt.sign(user, AUTH_SECRET, {
         expiresIn: '1 days',
       });
 

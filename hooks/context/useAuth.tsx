@@ -4,14 +4,7 @@ import { resetUser, setUser } from '../../redux/userSlice';
 import { User } from '../../libs/firebase/interfaces';
 import { useCallback } from 'react';
 import jwtDecode from 'jwt-decode';
-
-const saveAccessToken = (accessToken: string) => {
-  localStorage.setItem('accessToken', accessToken);
-};
-
-const removeAccessToken = () => {
-  localStorage.removeItem('accessToken');
-};
+import { removeAccessToken, saveAccessToken } from '../../utils/token';
 
 const useAuth = () => {
   const dispatch = useDispatch();
