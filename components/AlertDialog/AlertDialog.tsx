@@ -23,7 +23,7 @@ const AlertDialog: React.FC<AlertDialogProps> = ({
   description,
 }) => {
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth>
       <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
@@ -31,8 +31,10 @@ const AlertDialog: React.FC<AlertDialogProps> = ({
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>취소</Button>
-        <Button onClick={onSubmit} autoFocus>
+        <Button variant="outlined" onClick={onClose}>
+          취소
+        </Button>
+        <Button variant="contained" onClick={onSubmit} autoFocus>
           확인
         </Button>
       </DialogActions>
