@@ -4,6 +4,9 @@ interface YoutubeVideoProps {
   videoId: string;
 }
 
+/**
+ * deprecated
+ */
 const YoutubeVideo: React.FC<YoutubeVideoProps> = ({ videoId }) => {
   return (
     <Box

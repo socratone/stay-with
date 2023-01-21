@@ -9,6 +9,9 @@ export const components: ThemeOptions['components'] = {
       contained: {
         borderRadius: 8,
       },
+      outlined: {
+        borderRadius: 8,
+      },
       text: {
         borderRadius: 8,
       },

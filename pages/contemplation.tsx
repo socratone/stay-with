@@ -225,8 +225,6 @@ const Contemplation: NextPage<ContemplationProps> = ({
           py={2}
         >
           <Box display="flex" flexDirection="column" gap={2}>
-            <YoutubeVideo videoId="f742p7mQ0Ic" />
-
             <Paper sx={{ borderRadius: 6, p: 2 }}>
               <Typography
                 variant="h5"
@@ -399,9 +397,7 @@ const Contemplation: NextPage<ContemplationProps> = ({
                   </>
                 ) : null}
               </Box>
-            </Paper>
 
-            <Paper sx={{ borderRadius: 6, p: 2 }}>
               <Box>
                 <FilledTextField
                   {...register('content', {
@@ -417,7 +413,9 @@ const Contemplation: NextPage<ContemplationProps> = ({
             </Paper>
 
             <Box display="flex" justifyContent="flex-end" gap={1}>
-              <Button onClick={handleCancel}>취소</Button>
+              <Button variant="outlined" onClick={handleCancel}>
+                취소
+              </Button>
               <Button type="submit" variant="contained" disabled={isRequested}>
                 저장
               </Button>
