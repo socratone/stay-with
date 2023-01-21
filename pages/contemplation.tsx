@@ -13,9 +13,8 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import GlobalHeader from '../components/GlobalHeader';
-import { getPost, updatePost } from '../libs/firebase/apis';
+import { getPost } from '../libs/firebase/apis';
 import { Bible, bibleOptions } from '../libs/firebase/constants';
-import { Post } from '../libs/firebase/interfaces';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import YoutubeVideo from '../components/YoutubeVideo';
@@ -24,9 +23,7 @@ import FilledSelect from '../components/FilledSelect';
 import useAuth from '../hooks/context/useAuth';
 import LoginMessage from '../components/LoginMessage';
 import AccessDeniedMessage from '../components/AccessDeniedMessage';
-import axios, { AxiosResponse } from 'axios';
-import { ApiPostPayload } from './api/posts';
-import { getAccessToken } from '../utils/token';
+import { postPost, putPost } from '../libs/axios/apis';
 
 interface FormInput {
   phrase: string;
@@ -136,36 +133,27 @@ const Contemplation: NextPage<ContemplationProps> = ({
       const id = router.query?.id;
       const now = new Date().getTime();
 
-      let payload: Omit<Post, 'id' | 'createdAt' | 'likedUsers' | 'comments'> =
-        {
-          bible,
-          content,
-          user,
-          phrase,
-          startedChapter: Number(startedChapter),
-          startedVerse: Number(startedVerse),
-          endedChapter: endedChapter ? Number(endedChapter) : 0,
-          endedVerse: endedVerse ? Number(endedVerse) : 0,
-          updatedAt: now,
-        };
+      const payload = {
+        bible,
+        content,
+        phrase,
+        startedChapter: Number(startedChapter),
+        startedVerse: Number(startedVerse),
+        endedChapter: endedChapter ? Number(endedChapter) : 0,
+        endedVerse: endedVerse ? Number(endedVerse) : 0,
+        updatedAt: now,
+      };
 
       if (typeof id === 'string') {
-        await updatePost(id, payload);
+        await putPost(id, payload);
       } else {
-        await axios.post<any, AxiosResponse, ApiPostPayload>(
-          '/api/posts',
-          {
-            ...payload,
-            createdAt: now,
-            likedUsers: {},
-            comments: [],
-          },
-          {
-            headers: {
-              Authorization: getAccessToken(),
-            },
-          }
-        );
+        await postPost({
+          ...payload,
+          user,
+          createdAt: now,
+          likedUsers: {},
+          comments: [],
+        });
       }
 
       router.push('/');

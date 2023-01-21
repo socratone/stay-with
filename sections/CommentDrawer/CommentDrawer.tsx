@@ -6,15 +6,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilledTextField from '../../components/FilledTextField';
 import { useState } from 'react';
 import SendIcon from '@mui/icons-material/Send';
-import {
-  addCommentToPost,
-  deleteCommentInPost,
-} from '../../libs/firebase/apis';
+
 import AlertDialog from '../../components/AlertDialog';
 import useAuth from '../../hooks/context/useAuth';
 import usePost from '../../hooks/api/usePost';
 import ErrorMessage from '../../components/ErrorMessage';
 import LoadingCircular from '../../components/LoadingCircular';
+import { deleteCommentInPost, postCommentToPost } from 'libs/axios/apis';
 
 interface CommentDrawerProps {
   open: boolean;
@@ -32,26 +30,24 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({
   const comments = post?.comments ?? [];
 
   const [commentValue, setCommentValue] = useState('');
-  const [selectedCommentIndex, setSelectedCommentIndex] = useState<
-    number | null
+  const [selectedCommentId, setSelectedCommentId] = useState<string | null>(
+    null
+  );
+  const [selectedCommentIdForDelete, setSelectedCommentIdForDelete] = useState<
+    string | null
   >(null);
-  const comment =
-    selectedCommentIndex === null ? null : comments[selectedCommentIndex];
-
-  const [selectedCommentForDelete, setSelectedCommentForDelete] =
-    useState<Comment | null>(null);
 
   const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCommentValue(event.target.value);
   };
 
   const handleCommentDelete = async () => {
-    if (!postId || !selectedCommentForDelete) return;
+    if (!postId || !user || !selectedCommentIdForDelete) return;
     try {
-      await deleteCommentInPost(postId, selectedCommentForDelete);
+      await deleteCommentInPost(postId, selectedCommentIdForDelete);
       mutate();
-      setSelectedCommentForDelete(null);
-      setSelectedCommentIndex(null);
+      setSelectedCommentIdForDelete(null);
+      setSelectedCommentId(null);
     } catch (error) {
       console.error(error);
     }
@@ -65,7 +61,7 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({
 
     try {
       const now = new Date().getTime();
-      await addCommentToPost(postId, {
+      await postCommentToPost(postId, {
         user,
         message: trimedComment,
         createdAt: now,
@@ -77,21 +73,24 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({
   };
 
   const handleDeleteButtonClick = () => {
-    setSelectedCommentForDelete(comment);
+    setSelectedCommentIdForDelete(selectedCommentId);
   };
 
-  const handleCommentItemClick = (index: number) => {
-    setSelectedCommentIndex(index);
+  const handleCommentItemClick = (commentId: string) => {
+    setSelectedCommentId(commentId);
   };
 
   const handleClose = () => {
     onClose();
-    setSelectedCommentIndex(null);
+    setSelectedCommentId(null);
   };
 
   const getDeleteButtonDisabled = () => {
-    if (!comment) return true;
-    if (user?.id === comment.user.id) {
+    if (!selectedCommentId) return true;
+    const selectedComment = comments.find(
+      (comment) => comment.id === selectedCommentId
+    );
+    if (user?.id === selectedComment?.user.id) {
       return false;
     }
     return true;
@@ -121,7 +120,7 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({
             <IconButton onClick={handleClose} sx={{ ml: -1 }}>
               <CloseIcon />
             </IconButton>
-            {selectedCommentIndex !== null && (
+            {selectedCommentId !== null && (
               <IconButton
                 onClick={handleDeleteButtonClick}
                 disabled={getDeleteButtonDisabled()}
@@ -145,14 +144,14 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({
               <LoadingCircular />
             ) : (
               comments
-                .map((comment, index) => (
+                .map((comment) => (
                   <CommentItem
-                    key={index}
+                    key={comment.id}
                     image={comment.user.image}
                     name={comment.user.name}
                     message={comment.message}
-                    isSelected={index === selectedCommentIndex}
-                    onClick={() => handleCommentItemClick(index)}
+                    isSelected={comment.id === selectedCommentId}
+                    onClick={() => handleCommentItemClick(comment.id)}
                   />
                 ))
                 .reverse()
@@ -181,8 +180,8 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({
       </Drawer>
 
       <AlertDialog
-        open={!!selectedCommentForDelete}
-        onClose={() => setSelectedCommentForDelete(null)}
+        open={!!selectedCommentIdForDelete}
+        onClose={() => setSelectedCommentIdForDelete(null)}
         onSubmit={handleCommentDelete}
         title="삭제 확인"
         description="댓글을 삭제하시겠습니까?"

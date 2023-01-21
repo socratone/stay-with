@@ -14,10 +14,8 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 import ErrorMessage from '../components/ErrorMessage';
-import axios, { AxiosResponse } from 'axios';
 import useAuth from '../hooks/context/useAuth';
-import { ApiLoginData, ApiLoginPayload } from './api/login';
-import { ApiSignUpData, ApiSignUpPayload } from './api/signup';
+import { postLogin, postSignUp } from '../libs/axios/apis';
 
 interface SignUpProps {
   googleAccessToken: string;
@@ -80,19 +78,9 @@ const SignUp: NextPage<SignUpProps> = ({
     }
 
     try {
-      await axios.post<any, AxiosResponse<ApiSignUpData>, ApiSignUpPayload>(
-        '/api/signup',
-        payload
-      );
+      await postSignUp(payload);
 
-      const {
-        data: { accessToken },
-      } = await axios.post<any, AxiosResponse<ApiLoginData>, ApiLoginPayload>(
-        '/api/login',
-        {
-          googleAccessToken,
-        }
-      );
+      const { accessToken } = await postLogin(googleAccessToken);
 
       login(accessToken);
 

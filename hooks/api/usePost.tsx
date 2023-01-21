@@ -1,5 +1,5 @@
+import { getPost } from 'libs/axios/apis';
 import useSWR from 'swr';
-import { getPost } from '../../libs/firebase/apis';
 
 const usePost = (postId?: string) => {
   const { data, error, mutate } = useSWR(

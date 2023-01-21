@@ -9,6 +9,7 @@ export interface User {
 }
 
 export interface Comment {
+  id: string;
   user: User;
   message: string;
   createdAt: number;

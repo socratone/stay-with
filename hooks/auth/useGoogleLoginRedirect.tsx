@@ -1,13 +1,9 @@
-import axios, { AxiosResponse } from 'axios';
+import useAuth from 'hooks/context/useAuth';
+import { postLogin } from 'libs/axios/apis';
 import { useRouter } from 'next/router';
+import { ApiLoginErrorData } from 'pages/api/login';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import {
-  ApiLoginData,
-  ApiLoginPayload,
-  ApiLoginErrorData,
-} from '../../pages/api/login';
-import useAuth from '../context/useAuth';
 
 const getGoogleAccessToken = (path: string) => {
   const index = path.indexOf('access_token=');
@@ -29,14 +25,7 @@ const useGoogleLoginRedirect = () => {
       const googleAccessToken = getGoogleAccessToken(router.asPath);
 
       try {
-        const {
-          data: { accessToken },
-        } = await axios.post<any, AxiosResponse<ApiLoginData>, ApiLoginPayload>(
-          '/api/login',
-          {
-            googleAccessToken,
-          }
-        );
+        const { accessToken } = await postLogin(googleAccessToken);
 
         login(accessToken);
 

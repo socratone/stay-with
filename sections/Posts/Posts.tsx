@@ -1,21 +1,21 @@
 import { Masonry } from '@mui/lab';
 import { Box, Container } from '@mui/material';
+import AlertDialog from 'components/AlertDialog';
+import LoadingCircular from 'components/LoadingCircular';
+import PostCard from 'components/PostCard';
+import usePostsInfinite from 'hooks/api/usePostsInfinite';
+import useAuth from 'hooks/context/useAuth';
+import {
+  deleteLikedInPost,
+  deletePost,
+  postLikedToPost,
+} from 'libs/axios/apis';
+import { GetPostsInfiniteOptions } from 'libs/firebase/apis';
+import { Post } from 'libs/firebase/interfaces';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import AlertDialog from '../../components/AlertDialog';
-import LoadingCircular from '../../components/LoadingCircular';
-import PostCard from '../../components/PostCard';
-import usePostsInfinite from '../../hooks/api/usePostsInfinite';
-import useAuth from '../../hooks/context/useAuth';
-import {
-  addLikeToPost,
-  deleteLikeInPost,
-  deletePost,
-  GetPostsInfiniteOptions,
-} from '../../libs/firebase/apis';
-import { Post } from '../../libs/firebase/interfaces';
-import CommentDrawer from '../CommentDrawer';
+import CommentDrawer from 'sections/CommentDrawer';
 
 interface PostsProps {
   fetchOptions?: GetPostsInfiniteOptions;
@@ -58,7 +58,7 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
     if (!user) return;
 
     try {
-      await addLikeToPost(id, {
+      await postLikedToPost(id, {
         id: user.id,
         googleId: user.googleId,
         email: user.email,
@@ -75,9 +75,7 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
     if (!user) return;
 
     try {
-      await deleteLikeInPost(id, {
-        id: user.id,
-      });
+      await deleteLikedInPost(id, user.id);
       mutate();
     } catch (error) {
       console.error(error);
