@@ -31,6 +31,11 @@ const POSTS = 'posts';
  */
 
 export const addUser = async (payload: Omit<User, 'id'>) => {
+  const alreadyAddedUser = await getUserByGoogleId(payload.googleId);
+  if (alreadyAddedUser) {
+    throw new Error('This user has already been added.');
+  }
+
   const usersRef = collection(db, USERS);
   const docRef = await addDoc(usersRef, payload);
   return { ...payload, id: docRef.id };
@@ -40,6 +45,19 @@ export const getUserByEmail = async (email: string) => {
   const users: User[] = [];
   const usersRef = collection(db, USERS);
   const q = query(usersRef, where('email', '==', email));
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    users.push({ id: doc.id, ...doc.data() } as User);
+  });
+  return users[0] ?? null;
+};
+
+export const getUserByGoogleId = async (
+  googleId: string
+): Promise<User | null> => {
+  const users: User[] = [];
+  const usersRef = collection(db, USERS);
+  const q = query(usersRef, where('googleId', '==', googleId));
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
     users.push({ id: doc.id, ...doc.data() } as User);
@@ -63,6 +81,7 @@ export type GetPostsInfiniteOptions = {
   };
 };
 
+// TODO: api에서 호출되도록 수정해야 함
 export const getPostsInfinite = async (
   createdAt = Infinity,
   options?: GetPostsInfiniteOptions
@@ -108,7 +127,7 @@ export const getPost = async (id: string) => {
 
 export const updatePost = async (
   id: string,
-  payload: Omit<Post, 'id' | 'createdAt' | 'likedUsers' | 'comments'>
+  payload: Omit<Post, 'id' | 'user' | 'createdAt' | 'likedUsers' | 'comments'>
 ) => {
   const docRef = doc(db, POSTS, id);
   return await updateDoc(docRef, payload);
@@ -119,7 +138,7 @@ export const deletePost = async (id: string) => {
   return await deleteDoc(docRef);
 };
 
-export const addLikeToPost = async (id: string, payload: User) => {
+export const addLikedToPost = async (id: string, payload: User) => {
   const docRef = doc(db, POSTS, id);
 
   // https://firebase.google.com/docs/firestore/manage-data/add-data#update_fields_in_nested_objects
@@ -135,15 +154,12 @@ export const addLikeToPost = async (id: string, payload: User) => {
   return await updateDoc(docRef, data);
 };
 
-export const deleteLikeInPost = async (
-  id: string,
-  payload: Pick<User, 'id'>
-) => {
+export const deleteLikedInPost = async (id: string, userId: string) => {
   const docRef = doc(db, POSTS, id);
 
   // https://firebase.google.com/docs/firestore/manage-data/delete-data
   return await updateDoc(docRef, {
-    [`likedUsers.${payload.id}`]: deleteField(),
+    [`likedUsers.${userId}`]: deleteField(),
   });
 };
 
@@ -156,11 +172,13 @@ export const addCommentToPost = async (id: string, payload: Comment) => {
   });
 };
 
-export const deleteCommentInPost = async (id: string, payload: Comment) => {
+export const deleteCommentInPost = async (id: string, commentId: string) => {
   const docRef = doc(db, POSTS, id);
+  const post = await getPost(id);
+  const comment = post.comments.find((comment) => comment.id === commentId);
 
   // https://firebase.google.com/docs/firestore/manage-data/add-data#update_elements_in_an_array
   return await updateDoc(docRef, {
-    comments: arrayRemove(payload),
+    comments: arrayRemove(comment),
   });
 };
