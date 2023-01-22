@@ -13,6 +13,7 @@ import {
 import { GetPostsInfiniteOptions } from 'libs/firebase/apis';
 import { Post } from 'libs/firebase/interfaces';
 import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import CommentDrawer from 'sections/CommentDrawer';
@@ -23,7 +24,8 @@ interface PostsProps {
 
 const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
   const router = useRouter();
-  const { user } = useAuth();
+  const { enqueueSnackbar } = useSnackbar();
+  const { user, logout } = useAuth();
 
   const [selectedPostIdForDelete, setSelectedPostIdForDelete] = useState<
     string | null
@@ -66,8 +68,16 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
         image: user.image ?? undefined,
       });
       mutate();
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      const status = error?.response?.status;
+      if (status === 401) {
+        logout();
+        router.push('/expired');
+      } else {
+        enqueueSnackbar('에러가 발생했습니다.', {
+          variant: 'error',
+        });
+      }
     }
   };
 
@@ -77,8 +87,16 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
     try {
       await deleteLikedInPost(id, user.id);
       mutate();
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      const status = error?.response?.status;
+      if (status === 401) {
+        logout();
+        router.push('/expired');
+      } else {
+        enqueueSnackbar('에러가 발생했습니다.', {
+          variant: 'error',
+        });
+      }
     }
   };
 

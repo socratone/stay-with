@@ -12,6 +12,8 @@ import usePost from 'hooks/api/usePost';
 import ErrorMessage from 'components/ErrorMessage';
 import LoadingCircular from 'components/LoadingCircular';
 import { deleteCommentInPost, postCommentToPost } from 'libs/axios/apis';
+import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
 
 interface CommentDrawerProps {
   open: boolean;
@@ -24,7 +26,9 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({
   postId,
   onClose,
 }) => {
-  const { user } = useAuth();
+  const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
+  const { user, logout } = useAuth();
   const { post, isError, isLoading, mutate } = usePost(postId);
   const comments = post?.comments ?? [];
 
@@ -47,8 +51,16 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({
       mutate();
       setSelectedCommentIdForDelete(null);
       setSelectedCommentId(null);
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      const status = error?.response?.status;
+      if (status === 401) {
+        logout();
+        router.push('/expired');
+      } else {
+        enqueueSnackbar('에러가 발생했습니다.', {
+          variant: 'error',
+        });
+      }
     }
   };
 
@@ -66,8 +78,16 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({
         createdAt: now,
       });
       mutate();
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      const status = error?.response?.status;
+      if (status === 401) {
+        logout();
+        router.push('/expired');
+      } else {
+        enqueueSnackbar('에러가 발생했습니다.', {
+          variant: 'error',
+        });
+      }
     }
   };
 

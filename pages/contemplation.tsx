@@ -23,6 +23,7 @@ import useAuth from 'hooks/context/useAuth';
 import LoginMessage from 'components/LoginMessage';
 import AccessDeniedMessage from 'components/AccessDeniedMessage';
 import { postPost, putPost } from 'libs/axios/apis';
+import { useSnackbar } from 'notistack';
 
 interface FormInput {
   phrase: string;
@@ -93,7 +94,8 @@ const Contemplation: NextPage<ContemplationProps> = ({
   defaultValues,
 }) => {
   const router = useRouter();
-  const { user } = useAuth();
+  const { enqueueSnackbar } = useSnackbar();
+  const { user, logout } = useAuth();
 
   const {
     register,
@@ -156,8 +158,16 @@ const Contemplation: NextPage<ContemplationProps> = ({
       }
 
       router.push('/');
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      const status = error?.response?.status;
+      if (status === 401) {
+        logout();
+        router.push('/expired');
+      } else {
+        enqueueSnackbar('에러가 발생했습니다.', {
+          variant: 'error',
+        });
+      }
     } finally {
       setIsRequested(false);
     }
@@ -181,7 +191,6 @@ const Contemplation: NextPage<ContemplationProps> = ({
         justifyContent="center"
         alignItems="center"
         minHeight="100vh"
-        gap={1}
       >
         <LoginMessage />
       </Box>
@@ -196,7 +205,6 @@ const Contemplation: NextPage<ContemplationProps> = ({
         justifyContent="center"
         alignItems="center"
         minHeight="100vh"
-        gap={1}
       >
         <AccessDeniedMessage />
       </Box>

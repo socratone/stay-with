@@ -13,8 +13,12 @@ const Login = () => {
         alignItems="center"
         gap={1}
       >
-        <Typography color="text.primary">
-          현재 구글 계정을 이용한 로그인만 가능합니다 🤗
+        <Typography
+          color="text.primary"
+          textAlign="center"
+          sx={{ whiteSpace: 'pre-line' }}
+        >
+          {'현재 구글 계정을 이용한\n로그인만 가능합니다 🤗'}
         </Typography>
         <Button
           variant="outlined"
