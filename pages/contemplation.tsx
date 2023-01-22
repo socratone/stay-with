@@ -4,6 +4,8 @@ import {
   IconButton,
   MenuItem,
   Paper,
+  Select,
+  TextField,
   Typography,
 } from '@mui/material';
 import { Container } from '@mui/system';
@@ -17,9 +19,6 @@ import { getPost } from 'libs/firebase/apis';
 import { Bible, bibleOptions } from '../libs/firebase/constants';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
-import YoutubeVideo from 'components/YoutubeVideo';
-import FilledTextField from 'components/FilledTextField';
-import FilledSelect from 'components/FilledSelect';
 import useAuth from 'hooks/context/useAuth';
 import LoginMessage from 'components/LoginMessage';
 import AccessDeniedMessage from 'components/AccessDeniedMessage';
@@ -269,15 +268,16 @@ const Contemplation: NextPage<ContemplationProps> = ({
               }}
             >
               <Box>
-                <FilledTextField
+                <TextField
                   {...register('phrase', {
                     required: true,
                   })}
+                  size="small"
                   fullWidth
                   multiline
                   minRows={2}
                   placeholder="마음에 와닿은 구절"
-                  // error={!!errors.phrase}
+                  error={!!errors.phrase}
                 />
               </Box>
 
@@ -287,10 +287,11 @@ const Contemplation: NextPage<ContemplationProps> = ({
                 gap={1.5}
               >
                 <Box>
-                  <FilledSelect
+                  <Select
                     {...register('bible', {
                       required: true,
                     })}
+                    size="small"
                     defaultValue={Bible.Genesis}
                     fullWidth
                   >
@@ -299,34 +300,36 @@ const Contemplation: NextPage<ContemplationProps> = ({
                         {option.label}
                       </MenuItem>
                     ))}
-                  </FilledSelect>
+                  </Select>
                 </Box>
                 <Box>
-                  <FilledTextField
+                  <TextField
                     {...register('startedChapter', {
                       required: true,
                       validate: {
                         moreThanOne: (value) => Number(value) > 0,
                       },
                     })}
+                    size="small"
                     placeholder="장"
                     fullWidth
                     type="number"
-                    // error={!!errors.startedChapter}
+                    error={!!errors.startedChapter}
                   />
                 </Box>
                 <Box>
-                  <FilledTextField
+                  <TextField
                     {...register('startedVerse', {
                       required: true,
                       validate: {
                         moreThanOne: (value) => Number(value) > 0,
                       },
                     })}
+                    size="small"
                     placeholder="절"
                     fullWidth
                     type="number"
-                    // error={!!errors.startedVerse}
+                    error={!!errors.startedVerse}
                   />
                 </Box>
                 <Box ml={-1.5} alignSelf="center">
@@ -349,7 +352,7 @@ const Contemplation: NextPage<ContemplationProps> = ({
                       </IconButton>
                     </Box>
                     <Box>
-                      <FilledTextField
+                      <TextField
                         {...register('endedChapter', {
                           validate: {
                             onlyPlus: (value) => !value || Number(value) >= 1,
@@ -362,14 +365,15 @@ const Contemplation: NextPage<ContemplationProps> = ({
                               (!value && !getValues('endedVerse')),
                           },
                         })}
+                        size="small"
                         placeholder="장"
                         fullWidth
                         type="number"
-                        // error={!!errors.endedChapter}
+                        error={!!errors.endedChapter}
                       />
                     </Box>
                     <Box>
-                      <FilledTextField
+                      <TextField
                         {...register('endedVerse', {
                           validate: {
                             onlyPlus: (value) => !value || Number(value) >= 1,
@@ -383,10 +387,11 @@ const Contemplation: NextPage<ContemplationProps> = ({
                               (!value && !getValues('endedChapter')),
                           },
                         })}
+                        size="small"
                         placeholder="절"
                         fullWidth
                         type="number"
-                        // error={!!errors.endedVerse}
+                        error={!!errors.endedVerse}
                       />
                     </Box>
                     <Box alignSelf="center">
@@ -399,15 +404,16 @@ const Contemplation: NextPage<ContemplationProps> = ({
               </Box>
 
               <Box>
-                <FilledTextField
+                <TextField
                   {...register('content', {
                     required: true,
                   })}
+                  size="small"
                   fullWidth
                   multiline
                   minRows={15}
                   placeholder="구절을 통해 느낀점"
-                  // error={!!errors.content}
+                  error={!!errors.content}
                 />
               </Box>
             </Paper>

@@ -1,4 +1,4 @@
-import { Box, Drawer, IconButton } from '@mui/material';
+import { Box, Drawer, IconButton, TextField } from '@mui/material';
 import CommentItem from './CommentItem';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -164,9 +164,10 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({
             alignItems="center"
             gap={1}
           >
-            <FilledTextField
+            <TextField
               value={commentValue}
               onChange={handleCommentChange}
+              size="small"
               fullWidth
             />
             <Box mr={-1}>
