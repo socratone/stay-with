@@ -16,7 +16,7 @@ export interface Comment {
 }
 
 export interface Post {
-  id: string;
+  _id: string;
   user: User;
   phrase: string;
   bible: Bible;

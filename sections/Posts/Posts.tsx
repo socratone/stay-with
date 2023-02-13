@@ -149,7 +149,7 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
         <Masonry spacing={2} columns={{ sm: 2, md: 3, lg: 4 }}>
           {posts.map((post) => (
             <PostCard
-              key={post.id}
+              key={post._id}
               name={post.user.name}
               profileImage={post.user.image}
               phrase={post.phrase}
@@ -161,11 +161,11 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
               content={post.content}
               isMine={post.user.email === user?.email}
               isLiked={!!post.likedUsers[user?.id ?? '']}
-              onEditMenuItemClick={() => handleEdit(post.id)}
-              onDeleteMenuItemClick={() => setSelectedPostIdForDelete(post.id)}
+              onEditMenuItemClick={() => handleEdit(post._id)}
+              onDeleteMenuItemClick={() => setSelectedPostIdForDelete(post._id)}
               // TODO: 계속 클릭해도 한 번만 요청하도록
-              onLikeButtonClick={() => handleLike(post.id)}
-              onUnlikeButtonClick={() => handleUnlike(post.id)}
+              onLikeButtonClick={() => handleLike(post._id)}
+              onUnlikeButtonClick={() => handleUnlike(post._id)}
               likedCount={Object.keys(post.likedUsers ?? {}).length}
               onCommentButtonClick={() => handleCommentButtonClick(post)}
               onUserClick={() => handleUserClick(post.user.id)}
@@ -193,7 +193,7 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
         }}
       >
         {posts?.map((post) => (
-          <Box key={post.id} pt={1} pb={1} px={2}>
+          <Box key={post._id} pt={1} pb={1} px={2}>
             <PostCard
               name={post.user.name}
               profileImage={post.user.image}
@@ -206,11 +206,11 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
               content={post.content}
               isMine={post.user.email === user?.email}
               isLiked={!!post.likedUsers[user?.id ?? '']}
-              onEditMenuItemClick={() => handleEdit(post.id)}
-              onDeleteMenuItemClick={() => setSelectedPostIdForDelete(post.id)}
+              onEditMenuItemClick={() => handleEdit(post._id)}
+              onDeleteMenuItemClick={() => setSelectedPostIdForDelete(post._id)}
               // TODO: 계속 클릭해도 한 번만 요청하도록
-              onLikeButtonClick={() => handleLike(post.id)}
-              onUnlikeButtonClick={() => handleUnlike(post.id)}
+              onLikeButtonClick={() => handleLike(post._id)}
+              onUnlikeButtonClick={() => handleUnlike(post._id)}
               likedCount={Object.keys(post.likedUsers ?? {}).length}
               onCommentButtonClick={() => handleCommentButtonClick(post)}
               onUserClick={() => handleUserClick(post.user.id)}
@@ -229,7 +229,7 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
 
       <CommentDrawer
         open={!!selectedPostForComment}
-        postId={selectedPostForComment?.id}
+        postId={selectedPostForComment?._id}
         onClose={handleCommentDrawerClose}
       />
 
