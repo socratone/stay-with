@@ -1,18 +1,33 @@
 import {
   Document,
   Filter,
+  FindCursor,
   FindOptions,
   MongoClient,
   OptionalId,
+  WithId,
+  EstimatedDocumentCountOptions,
 } from 'mongodb';
 
 export enum CollectionName {
   Users = 'users',
+  Posts = 'posts',
 }
 
 const URI =
   'mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.7.0';
 const DATABASE_NAME = 'test';
+
+export type FindParams = {
+  filter?: Filter<Document>;
+  options?: FindOptions<Document>;
+  limit?: number;
+  skip?: number;
+};
+
+export type CountParams = {
+  options?: EstimatedDocumentCountOptions;
+};
 
 class Database {
   client: MongoClient;
@@ -49,20 +64,45 @@ class Database {
   // https://www.mongodb.com/docs/drivers/node/current/usage-examples/find/#find-multiple-documents
   async find(
     collectionName: CollectionName,
-    filter?: Filter<Document>,
-    options?: FindOptions<Document>
-  ): Promise<any[]> {
+    params?: FindParams
+  ): Promise<any> {
+    const filter = params?.filter;
+    const options = params?.options;
+    const limit = params?.limit ?? 10;
+    const skip = params?.skip;
+
     try {
       const database = this.client.db(DATABASE_NAME);
       const collection = database.collection(collectionName);
-      const cursor = filter
-        ? collection.find(filter, options)
-        : collection.find();
+
+      let cursor: FindCursor<WithId<Document>>;
+      cursor = filter ? collection.find(filter, options) : collection.find();
+      if (skip !== undefined) {
+        cursor = cursor.limit(limit).skip(skip);
+      }
+
       const documents: any = [];
       await cursor.forEach((document) => {
         documents.push(document);
       });
       return documents;
+    } catch (error: any) {
+      throw new Error(`500: ${error?.message}`);
+    } finally {
+      this.close();
+    }
+  }
+
+  async count(
+    collectionName: CollectionName,
+    params?: CountParams
+  ): Promise<number> {
+    const options = params?.options;
+
+    try {
+      const database = this.client.db(DATABASE_NAME);
+      const collection = database.collection(collectionName);
+      return await collection.estimatedDocumentCount(options);
     } catch (error: any) {
       throw new Error(`500: ${error?.message}`);
     } finally {

@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios';
 import axiosInstance from './instance';
 import { ApiLikedPayload } from 'pages/api/posts/[id]/likeds/index';
 import { ApiPostIdData, ApiPostIdPayload } from 'pages/api/posts/[id]';
-import { ApiPostPayload } from 'pages/api/posts';
+import { ApiPostPayload, ApiPostsData } from 'pages/api/posts';
 import { ApiLoginData, ApiLoginPayload } from 'pages/api/login';
 import { ApiSignUpData, ApiSignUpPayload } from 'pages/api/signup';
 import { ApiCommentPayload } from 'pages/api/posts/[id]/comments';
@@ -72,5 +72,18 @@ export const deleteCommentInPost = (id: string, commentId: string) => {
 export const getPost = (id: string): Promise<ApiPostIdData> => {
   return axiosInstance
     .get<any, AxiosResponse<ApiPostIdData>>(`/api/posts/${id}`)
+    .then((value) => value.data);
+};
+
+export type GetPostsParams = {
+  page?: number;
+  count?: number;
+};
+
+export const getPosts = (params?: GetPostsParams): Promise<ApiPostsData> => {
+  return axiosInstance
+    .get<any, AxiosResponse<ApiPostsData>>('/api/posts', {
+      params,
+    })
     .then((value) => value.data);
 };
