@@ -2,7 +2,9 @@ import { GetPostsParams, getPosts } from 'libs/axios/apis';
 import { useQuery } from 'react-query';
 
 const usePosts = (params?: GetPostsParams) => {
-  return useQuery([params, '/api/posts'], () => getPosts(params));
+  return useQuery([params, '/api/posts'], () => getPosts(params), {
+    keepPreviousData: true,
+  });
 };
 
 export default usePosts;
