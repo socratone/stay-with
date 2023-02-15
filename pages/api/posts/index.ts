@@ -1,10 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Post } from 'libs/firebase/interfaces';
 import { ApiErrorData, isLoggedIn } from 'utils/api';
-import Database, { CollectionName, FindParams } from 'server/database';
+import Database, { CollectionName } from 'server/database';
 import { InsertOneResult } from 'mongodb';
 
-export type ApiPostPayload = Omit<Post, 'id'>;
+export type ApiPostPayload = Omit<Post, '_id'>;
 
 export type ApiPostsData = { posts: Post[]; total: number };
 
@@ -17,18 +17,21 @@ const handler = async (
   const db = new Database();
 
   if (req.method === 'GET') {
-    let params: FindParams = {};
-
-    if (req.query.page) {
-      params['skip'] = (Number(req.query.page) - 1) * Number(req.query.count);
-    }
-
-    if (req.query.count) {
-      params['limit'] = Number(req.query.count);
-    }
+    const offset = req.query.offset;
+    const count = req.query.count;
 
     try {
-      const posts = await db.find(CollectionName.Posts, params);
+      const posts = await db.find(CollectionName.Posts, {
+        options: {
+          sort: {
+            createdAt: -1,
+          },
+          skip: offset
+            ? (Number(req.query.offset) - 1) * Number(req.query.count)
+            : 0,
+          limit: count ? Number(req.query.count) : 10,
+        },
+      });
       const total = await db.count(CollectionName.Posts);
       return res.status(200).json({ posts, total });
     } catch (error) {

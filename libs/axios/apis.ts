@@ -76,7 +76,7 @@ export const getPost = (id: string): Promise<ApiPostIdData> => {
 };
 
 export type GetPostsParams = {
-  page?: number;
+  offset?: number;
   count?: number;
 };
 

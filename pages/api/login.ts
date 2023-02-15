@@ -1,8 +1,8 @@
 import axios, { AxiosResponse } from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 import jwt from 'jsonwebtoken';
-import { getUserByGoogleId } from 'libs/firebase/apis';
-import { ApiErrorData, AUTH_SECRET, responseUnknownError } from 'utils/api';
+import { ApiErrorData, AUTH_SECRET } from 'utils/api';
+import Database, { CollectionName } from 'server/database';
 
 export type ApiLoginPayload = {
   googleAccessToken: string;
@@ -28,6 +28,8 @@ const handler = async (
   res: NextApiResponse<ApiLoginData | ApiLoginErrorData>
 ) => {
   if (req.method === 'POST') {
+    const db = new Database();
+
     try {
       const { googleAccessToken }: ApiLoginPayload = req.body;
 
@@ -44,7 +46,10 @@ const handler = async (
 
       // 가입된 유저인지 확인
       const googleId = googleUser.id;
-      const user = await getUserByGoogleId(googleId);
+      const user = await db.findOne(CollectionName.Users, {
+        googleId,
+      });
+
       if (!user) {
         return res.status(401).json({
           message: 'Unregistered user.',
@@ -67,7 +72,8 @@ const handler = async (
         });
       }
 
-      return responseUnknownError(res);
+      const { status, message } = db.parseError(error);
+      return res.status(status).send({ message });
     }
   }
 };

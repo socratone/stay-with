@@ -39,14 +39,18 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
   const [selectedPostForComment, setSelectedPostForComment] =
     useState<Post | null>(null);
 
+  const postsParams = {
+    offset: page,
+    count: PAGE_COUNT,
+  };
+
+  const postsKey = [postsParams, '/api/posts'];
+
   const {
     data: postsData,
     isLoading: postsLoading,
     isError: postsError,
-  } = usePosts({
-    page,
-    count: PAGE_COUNT,
-  });
+  } = usePosts(postsParams);
 
   const posts = postsData?.posts ?? [];
 
@@ -62,7 +66,7 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
 
     try {
       await deletePost(selectedPostIdForDelete);
-      queryClient.invalidateQueries('/api/posts');
+      queryClient.invalidateQueries(postsKey);
     } catch (error) {
       console.error(error);
     } finally {
@@ -75,13 +79,13 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
 
     try {
       await postLikedToPost(id, {
-        id: user.id,
+        _id: user._id,
         googleId: user.googleId,
         email: user.email,
         name: user.name,
         image: user.image ?? undefined,
       });
-      queryClient.invalidateQueries('/api/posts');
+      queryClient.invalidateQueries(postsKey);
     } catch (error: any) {
       const status = error?.response?.status;
       if (status === 401) {
@@ -99,8 +103,8 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
     if (!user) return;
 
     try {
-      await deleteLikedInPost(id, user.id);
-      queryClient.invalidateQueries('/api/posts');
+      await deleteLikedInPost(id, user._id);
+      queryClient.invalidateQueries(postsKey);
     } catch (error: any) {
       const status = error?.response?.status;
       if (status === 401) {
@@ -159,8 +163,8 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
               endedChapter={post.endedChapter}
               endedVerse={post.endedVerse}
               content={post.content}
-              isMine={post.user.email === user?.email}
-              isLiked={!!post.likedUsers[user?.id ?? '']}
+              isMine={post.user._id === user?._id}
+              isLiked={!!post.likedUsers[user?._id ?? '']}
               onEditMenuItemClick={() => handleEdit(post._id)}
               onDeleteMenuItemClick={() => setSelectedPostIdForDelete(post._id)}
               // TODO: 계속 클릭해도 한 번만 요청하도록
@@ -168,17 +172,19 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
               onUnlikeButtonClick={() => handleUnlike(post._id)}
               likedCount={Object.keys(post.likedUsers ?? {}).length}
               onCommentButtonClick={() => handleCommentButtonClick(post)}
-              onUserClick={() => handleUserClick(post.user.id)}
+              onUserClick={() => handleUserClick(post.user._id)}
             />
           ))}
         </Masonry>
 
         <Box display="flex" justifyContent="center">
-          <Pagination
-            page={page}
-            onChange={(_, page) => setPage(page)}
-            count={Math.ceil(Number(postsData?.total) / PAGE_COUNT)}
-          />
+          {postsData?.total === 0 ? null : (
+            <Pagination
+              page={page}
+              onChange={(_, page) => setPage(page)}
+              count={Math.ceil(Number(postsData?.total) / PAGE_COUNT)}
+            />
+          )}
         </Box>
       </Box>
 
@@ -205,7 +211,7 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
               endedVerse={post.endedVerse}
               content={post.content}
               isMine={post.user.email === user?.email}
-              isLiked={!!post.likedUsers[user?.id ?? '']}
+              isLiked={!!post.likedUsers[user?._id ?? '']}
               onEditMenuItemClick={() => handleEdit(post._id)}
               onDeleteMenuItemClick={() => setSelectedPostIdForDelete(post._id)}
               // TODO: 계속 클릭해도 한 번만 요청하도록
@@ -213,17 +219,19 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
               onUnlikeButtonClick={() => handleUnlike(post._id)}
               likedCount={Object.keys(post.likedUsers ?? {}).length}
               onCommentButtonClick={() => handleCommentButtonClick(post)}
-              onUserClick={() => handleUserClick(post.user.id)}
+              onUserClick={() => handleUserClick(post.user._id)}
             />
           </Box>
         ))}
 
         <Box display="flex" justifyContent="center">
-          <Pagination
-            page={page}
-            onChange={(_, page) => setPage(page)}
-            count={Math.ceil(Number(postsData?.total) / PAGE_COUNT)}
-          />
+          {postsData?.total === 0 ? null : (
+            <Pagination
+              page={page}
+              onChange={(_, page) => setPage(page)}
+              count={Math.ceil(Number(postsData?.total) / PAGE_COUNT)}
+            />
+          )}
         </Box>
       </Container>
 

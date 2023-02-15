@@ -25,7 +25,7 @@ const useAuth = () => {
   }, [dispatch]);
 
   return {
-    user: user.id ? user : null,
+    user: user._id ? user : null,
     login,
     logout,
   };

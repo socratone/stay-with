@@ -1,12 +1,13 @@
 import {
   Document,
   Filter,
-  FindCursor,
   FindOptions,
   MongoClient,
   OptionalId,
-  WithId,
   EstimatedDocumentCountOptions,
+  UpdateFilter,
+  UpdateOptions,
+  DeleteOptions,
 } from 'mongodb';
 
 export enum CollectionName {
@@ -21,12 +22,18 @@ const DATABASE_NAME = 'test';
 export type FindParams = {
   filter?: Filter<Document>;
   options?: FindOptions<Document>;
-  limit?: number;
-  skip?: number;
 };
 
 export type CountParams = {
   options?: EstimatedDocumentCountOptions;
+};
+
+type UpdateOneParams = {
+  options?: UpdateOptions;
+};
+
+type DeleteOneParams = {
+  options?: DeleteOptions;
 };
 
 class Database {
@@ -66,26 +73,65 @@ class Database {
     collectionName: CollectionName,
     params?: FindParams
   ): Promise<any> {
-    const filter = params?.filter;
+    const filter = params?.filter ?? {};
     const options = params?.options;
-    const limit = params?.limit ?? 10;
-    const skip = params?.skip;
 
     try {
       const database = this.client.db(DATABASE_NAME);
       const collection = database.collection(collectionName);
-
-      let cursor: FindCursor<WithId<Document>>;
-      cursor = filter ? collection.find(filter, options) : collection.find();
-      if (skip !== undefined) {
-        cursor = cursor.limit(limit).skip(skip);
-      }
-
+      const cursor = collection.find(filter, options);
       const documents: any = [];
       await cursor.forEach((document) => {
         documents.push(document);
       });
       return documents;
+    } catch (error: any) {
+      throw new Error(`500: ${error?.message}`);
+    } finally {
+      this.close();
+    }
+  }
+
+  // https://www.mongodb.com/docs/drivers/node/current/usage-examples/findOne/
+  async findOne<T>(collectionName: CollectionName, filter: Filter<Document>) {
+    try {
+      const database = this.client.db(DATABASE_NAME);
+      const collection = database.collection(collectionName);
+      return (await collection.findOne(filter)) as T | null;
+    } catch (error: any) {
+      throw new Error(`500: ${error?.message}`);
+    } finally {
+      this.close();
+    }
+  }
+
+  // https://www.mongodb.com/docs/drivers/node/current/usage-examples/updateOne/
+  async updateOne(
+    collectionName: CollectionName,
+    filter: Filter<Document>,
+    update: UpdateFilter<Document> | Partial<Document>,
+    params?: UpdateOneParams
+  ) {
+    try {
+      const database = this.client.db(DATABASE_NAME);
+      const collection = database.collection(collectionName);
+      return await collection.updateOne(filter, update, params?.options);
+    } catch (error: any) {
+      throw new Error(`500: ${error?.message}`);
+    } finally {
+      this.close();
+    }
+  }
+
+  async deleteOne(
+    collectionName: CollectionName,
+    filter: Filter<Document>,
+    params?: DeleteOneParams
+  ) {
+    try {
+      const database = this.client.db(DATABASE_NAME);
+      const collection = database.collection(collectionName);
+      return await collection.deleteOne(filter, params?.options);
     } catch (error: any) {
       throw new Error(`500: ${error?.message}`);
     } finally {

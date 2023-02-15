@@ -1,25 +1,27 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { addUser } from 'libs/firebase/apis';
 import { User } from 'libs/firebase/interfaces';
-import { ApiErrorData, responseUnknownError } from 'utils/api';
+import { ApiErrorData } from 'utils/api';
+import Database from 'server/database';
+import { CollectionName } from 'server/database';
+import { InsertOneResult } from 'mongodb';
 
-export type ApiSignUpPayload = Omit<User, 'id'>;
+export type ApiSignUpPayload = Omit<User, '_id'>;
 
-export type ApiSignUpData = {
-  id: string;
-};
+export type ApiSignUpData = InsertOneResult<Document>;
 
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<ApiSignUpData | ApiErrorData>
 ) => {
   if (req.method === 'POST') {
+    const db = new Database();
+
     try {
-      const payload: ApiSignUpPayload = req.body;
-      const { id } = await addUser(payload);
-      return res.status(201).json({ id });
-    } catch {
-      return responseUnknownError(res);
+      const result = await db.insertOne(CollectionName.Users, req.body);
+      return res.status(201).json(result);
+    } catch (error) {
+      const { status, message } = db.parseError(error);
+      return res.status(status).send({ message });
     }
   }
 };
