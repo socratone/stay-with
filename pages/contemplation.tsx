@@ -86,7 +86,7 @@ export const getServerSideProps: GetServerSideProps<
 
       return {
         props: {
-          postUserId: post.user._id,
+          postUserId: String(post.userId),
           defaultValues,
         },
       };
@@ -161,9 +161,9 @@ const Contemplation: NextPage<ContemplationProps> = ({
       } else {
         await postPost({
           ...payload,
-          user,
+          userId: user._id,
           createdAt: now,
-          likedUsers: {},
+          likedUserIds: [],
           comments: [],
         });
       }

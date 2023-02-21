@@ -9,15 +9,15 @@ export interface User {
 }
 
 export interface Comment {
-  id: string;
-  user: User;
+  _id: string;
+  userId: string;
   message: string;
   createdAt: number;
 }
 
 export interface Post {
   _id: string;
-  user: User;
+  userId: string;
   phrase: string;
   bible: Bible;
   startedChapter: number;
@@ -27,8 +27,6 @@ export interface Post {
   content: string;
   createdAt: number;
   updatedAt: number;
-  likedUsers: {
-    [id: string]: Omit<User, '_id'>;
-  };
+  likedUserIds: string[];
   comments: Comment[];
 }

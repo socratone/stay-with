@@ -8,6 +8,7 @@ import {
   UpdateFilter,
   UpdateOptions,
   DeleteOptions,
+  AggregateOptions,
 } from 'mongodb';
 
 export enum CollectionName {
@@ -36,6 +37,10 @@ type DeleteOneParams = {
   options?: DeleteOptions;
 };
 
+type AggregateParams = {
+  options?: AggregateOptions;
+};
+
 class Database {
   client: MongoClient;
 
@@ -58,7 +63,7 @@ class Database {
       const [status, message] = errorMessage.split(':');
       return {
         status: Number(status.trim()),
-        message: message.trim(),
+        message: message?.trim(),
       };
     }
 
@@ -73,13 +78,10 @@ class Database {
     collectionName: CollectionName,
     params?: FindParams
   ): Promise<any> {
-    const filter = params?.filter ?? {};
-    const options = params?.options;
-
     try {
       const database = this.client.db(DATABASE_NAME);
       const collection = database.collection(collectionName);
-      const cursor = collection.find(filter, options);
+      const cursor = collection.find(params?.filter ?? {}, params?.options);
       const documents: any = [];
       await cursor.forEach((document) => {
         documents.push(document);
@@ -98,6 +100,27 @@ class Database {
       const database = this.client.db(DATABASE_NAME);
       const collection = database.collection(collectionName);
       return (await collection.findOne(filter)) as T | null;
+    } catch (error: any) {
+      throw new Error(`500: ${error?.message}`);
+    } finally {
+      this.close();
+    }
+  }
+
+  async aggregate<T>(
+    collectionName: CollectionName,
+    pipeline: Document[],
+    params?: AggregateParams
+  ) {
+    try {
+      const database = this.client.db(DATABASE_NAME);
+      const collection = database.collection(collectionName);
+      const cursor = collection.aggregate(pipeline, params?.options);
+      const documents: any = [];
+      await cursor.forEach((document) => {
+        documents.push(document);
+      });
+      return documents as T;
     } catch (error: any) {
       throw new Error(`500: ${error?.message}`);
     } finally {

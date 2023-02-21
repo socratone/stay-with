@@ -1,13 +1,17 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { ApiErrorData, isLoggedIn, responseUnknownError } from 'utils/api';
-import { User } from 'libs/firebase/interfaces';
-import { addLikedToPost } from 'libs/firebase/apis';
+import { ApiErrorData, isLoggedIn } from 'utils/api';
+import Database, { CollectionName } from 'server/database';
+import { ObjectId, UpdateResult } from 'mongodb';
 
-export type ApiLikedPayload = User;
+export type ApiLikedPayload = {
+  userId: string;
+};
+
+type ApiLikedResultData = UpdateResult;
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<ApiErrorData>
+  res: NextApiResponse<ApiLikedResultData | ApiErrorData>
 ) => {
   const id = String(req.query.id);
   const payload: ApiLikedPayload = req.body;
@@ -21,11 +25,24 @@ const handler = async (
       });
     }
 
+    const db = new Database();
+
     try {
-      await addLikedToPost(id, payload);
-      return res.status(201).end();
-    } catch {
-      return responseUnknownError(res);
+      const result = await db.updateOne(
+        CollectionName.Posts,
+        { _id: new ObjectId(id) },
+        {
+          // https://www.mongodb.com/docs/manual/reference/operator/update/addToSet/
+          $addToSet: {
+            likedUserIds: new ObjectId(payload.userId),
+          },
+        }
+      );
+
+      return res.status(201).json(result);
+    } catch (error) {
+      const { status, message } = db.parseError(error);
+      return res.status(status).send({ message });
     }
   }
 };

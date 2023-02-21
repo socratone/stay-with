@@ -1,10 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { deleteLikedInPost } from 'libs/firebase/apis';
-import { ApiErrorData, isLoggedIn, responseUnknownError } from 'utils/api';
+import { ApiErrorData, isLoggedIn } from 'utils/api';
+import Database, { CollectionName } from 'server/database';
+import { ObjectId, UpdateResult } from 'mongodb';
+
+type ApiDeleteLikedResultData = UpdateResult;
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<ApiErrorData>
+  res: NextApiResponse<ApiDeleteLikedResultData | ApiErrorData>
 ) => {
   const id = String(req.query.id);
   const userId = String(req.query.userId);
@@ -18,11 +21,23 @@ const handler = async (
   }
 
   if (req.method === 'DELETE') {
+    const db = new Database();
+
     try {
-      await deleteLikedInPost(id, userId);
-      return res.status(200).end();
-    } catch {
-      return responseUnknownError(res);
+      const result = await db.updateOne(
+        CollectionName.Posts,
+        { _id: new ObjectId(id) },
+        {
+          // https://www.mongodb.com/docs/manual/reference/operator/update/pull/#-pull
+          $pull: {
+            likedUserIds: new ObjectId(userId),
+          },
+        }
+      );
+      return res.status(200).json(result);
+    } catch (error) {
+      const { status, message } = db.parseError(error);
+      return res.status(status).send({ message });
     }
   }
 };

@@ -7,12 +7,20 @@ import { CollectionName } from 'server/database';
 import { DeleteResult, ObjectId } from 'mongodb';
 import { UpdateResult } from 'mongodb';
 
-export type ApiPostIdPayload = Omit<
+export type ApiPutPostPayload = Omit<
   Post,
-  '_id' | 'user' | 'createdAt' | 'likedUsers' | 'comments'
+  '_id' | 'userId' | 'createdAt' | 'likedUserIds' | 'comments'
 >;
 
-export type ApiPostIdData = Omit<Post, '_id'>;
+// TODO: & 순서에 따라 어떻게 달라지는지 공부
+export type ApiGetPostData = {
+  comments: {
+    _id: string;
+    user: User;
+    message: string;
+    createdAt: number;
+  }[];
+} & Post;
 
 type ApiPutResultData = UpdateResult;
 
@@ -21,7 +29,7 @@ type ApiDeleteResultData = DeleteResult;
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<
-    ApiPostIdData | ApiPutResultData | ApiDeleteResultData | ApiErrorData
+    ApiGetPostData | ApiPutResultData | ApiDeleteResultData | ApiErrorData
   >
 ) => {
   const id = String(req.query.id);
@@ -29,22 +37,84 @@ const handler = async (
 
   if (req.method === 'GET') {
     try {
-      const post = await db.findOne<ApiPostIdData>(CollectionName.Posts, {
-        _id: new ObjectId(id),
-      });
+      const [post] = await db.aggregate<any[]>(CollectionName.Posts, [
+        {
+          $match: {
+            _id: new ObjectId(id),
+          },
+        },
+        {
+          $addFields: {
+            commentUserIds: {
+              $map: {
+                input: '$comments',
+                as: 'comment',
+                in: '$$comment.userId',
+              },
+            },
+          },
+        },
+        // https://www.mongodb.com/docs/manual/reference/operator/aggregation/lookup/#use--lookup-with-an-array
+        {
+          $lookup: {
+            from: CollectionName.Users,
+            localField: 'commentUserIds',
+            foreignField: '_id',
+            as: 'commentUsers',
+            pipeline: [
+              {
+                $project: {
+                  _id: 1,
+                  name: 1,
+                  image: 1,
+                },
+              },
+            ],
+          },
+        },
+        {
+          $unset: 'commentUserIds',
+        },
+      ]);
 
       if (!post) {
         return res.status(404).json({ message: 'Not found.' });
       }
 
-      return res.status(200).json(post);
+      const commentUsers = post.commentUsers;
+      const commentUsersObject = commentUsers.reduce(
+        (object: any, user: any) => {
+          return {
+            ...object,
+            [user._id]: {
+              name: user.name,
+              image: user.image,
+            },
+          };
+        },
+        {}
+      );
+
+      const comments = post.comments.map((comment: any) => {
+        const user = commentUsersObject[comment.userId];
+        return {
+          _id: comment._id,
+          name: user.name,
+          image: user.image,
+          message: comment.message,
+        };
+      });
+
+      const editedPost = { ...post, comments };
+
+      return res.status(200).json(editedPost);
     } catch (error) {
       const { status, message } = db.parseError(error);
       return res.status(status).send({ message });
     }
   }
 
-  const payload: ApiPostIdPayload = req.body;
+  const payload: ApiPutPostPayload = req.body;
   const accessToken = req.headers.authorization;
 
   if (!isLoggedIn(accessToken)) {
@@ -56,7 +126,7 @@ const handler = async (
   try {
     const user: User = jwtDecode(accessToken as string);
 
-    const post = await db.findOne<ApiPostIdData>(CollectionName.Posts, {
+    const post = await db.findOne<ApiGetPostData>(CollectionName.Posts, {
       _id: new ObjectId(id),
     });
 
@@ -64,8 +134,8 @@ const handler = async (
       return res.status(404).json({ message: 'Not found.' });
     }
 
-    if (user._id !== post.user._id) {
-      return res.status(400).send({
+    if (user._id !== String(post.userId)) {
+      return res.status(400).json({
         message: 'Not the author.',
       });
     }

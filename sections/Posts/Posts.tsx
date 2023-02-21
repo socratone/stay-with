@@ -79,11 +79,7 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
 
     try {
       await postLikedToPost(id, {
-        _id: user._id,
-        googleId: user.googleId,
-        email: user.email,
-        name: user.name,
-        image: user.image ?? undefined,
+        userId: user._id,
       });
       queryClient.invalidateQueries(postsKey);
     } catch (error: any) {
@@ -164,13 +160,13 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
               endedVerse={post.endedVerse}
               content={post.content}
               isMine={post.user._id === user?._id}
-              isLiked={!!post.likedUsers[user?._id ?? '']}
+              isLiked={!!post.likedUserIds.find((id) => id === user?._id)}
               onEditMenuItemClick={() => handleEdit(post._id)}
               onDeleteMenuItemClick={() => setSelectedPostIdForDelete(post._id)}
               // TODO: 계속 클릭해도 한 번만 요청하도록
               onLikeButtonClick={() => handleLike(post._id)}
               onUnlikeButtonClick={() => handleUnlike(post._id)}
-              likedCount={Object.keys(post.likedUsers ?? {}).length}
+              likedCount={post.likedUserIds.length}
               onCommentButtonClick={() => handleCommentButtonClick(post)}
               onUserClick={() => handleUserClick(post.user._id)}
             />
@@ -211,13 +207,13 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
               endedVerse={post.endedVerse}
               content={post.content}
               isMine={post.user.email === user?.email}
-              isLiked={!!post.likedUsers[user?._id ?? '']}
+              isLiked={!!post.likedUserIds.find((id) => id === user?._id)}
               onEditMenuItemClick={() => handleEdit(post._id)}
               onDeleteMenuItemClick={() => setSelectedPostIdForDelete(post._id)}
               // TODO: 계속 클릭해도 한 번만 요청하도록
               onLikeButtonClick={() => handleLike(post._id)}
               onUnlikeButtonClick={() => handleUnlike(post._id)}
-              likedCount={Object.keys(post.likedUsers ?? {}).length}
+              likedCount={post.likedUserIds.length}
               onCommentButtonClick={() => handleCommentButtonClick(post)}
               onUserClick={() => handleUserClick(post.user._id)}
             />
