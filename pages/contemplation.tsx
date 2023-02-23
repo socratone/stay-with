@@ -15,7 +15,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import GlobalHeader from 'components/GlobalHeader';
-import { Bible, bibleOptions } from '../constants/bible';
+import { Bible, bibleOptions } from 'constants/bible';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import useAuth from 'hooks/context/useAuth';

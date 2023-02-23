@@ -1,7 +1,7 @@
 import { Avatar, Box, Typography } from '@mui/material';
 import { GetServerSideProps, NextPage } from 'next';
-import GlobalHeader from '../../components/GlobalHeader';
-import Posts from '../../sections/Posts';
+import GlobalHeader from 'components/GlobalHeader';
+import Posts from 'sections/Posts';
 import Database, { CollectionName } from 'server/database';
 import { ObjectId } from 'mongodb';
 import { User } from 'types/interfaces';

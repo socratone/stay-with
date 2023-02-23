@@ -1,5 +1,5 @@
 import { Menu, MenuProps, styled } from '@mui/material';
-import { PRIMARY_SHADOW } from '../../theme/shadows';
+import { PRIMARY_SHADOW } from 'theme/shadows';
 
 const SmallMenu = styled((props: MenuProps) => (
   <Menu

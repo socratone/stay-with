@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { User } from '../types/interfaces';
+import { User } from 'types/interfaces';
 
 const initialState: Required<User> = {
   _id: '',

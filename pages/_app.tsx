@@ -1,8 +1,8 @@
-import '../styles/globals.css';
+import 'styles/globals.css';
 import type { AppProps } from 'next/app';
-import ThemeProvider from '../contexts/ThemeProvider';
+import ThemeProvider from 'contexts/ThemeProvider';
 import { Provider } from 'react-redux';
-import { store } from '../redux/store';
+import { store } from 'redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import persistStore from 'redux-persist/lib/persistStore';
 import { SnackbarProvider } from 'notistack';

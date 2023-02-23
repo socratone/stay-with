@@ -7,15 +7,15 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import GlobalHeader from '../components/GlobalHeader';
-import { User } from '../types/interfaces';
+import GlobalHeader from 'components/GlobalHeader';
+import { User } from 'types/interfaces';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { GetServerSideProps, NextPage } from 'next';
-import ErrorMessage from '../components/ErrorMessage';
-import useAuth from '../hooks/context/useAuth';
-import { postLogin, postSignUp } from '../libs/axios/apis';
+import ErrorMessage from 'components/ErrorMessage';
+import useAuth from 'hooks/context/useAuth';
+import { postLogin, postSignUp } from 'libs/axios/apis';
 
 interface SignUpProps {
   googleAccessToken: string;
