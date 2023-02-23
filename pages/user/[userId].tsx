@@ -1,12 +1,13 @@
 import { Avatar, Box, Typography } from '@mui/material';
 import { GetServerSideProps, NextPage } from 'next';
-import GlobalHeader from '../../components/GlobalHeader';
-import { getUser } from '../../libs/firebase/apis';
-import { User } from '../../libs/firebase/interfaces';
-import Posts from '../../sections/Posts';
+import GlobalHeader from 'components/GlobalHeader';
+import Posts from 'sections/Posts';
+import Database, { CollectionName } from 'server/database';
+import { ObjectId } from 'mongodb';
+import { User } from 'types/interfaces';
 
 interface UserIdProps {
-  user: User;
+  user: Omit<User, '_id'>;
 }
 
 export const getServerSideProps: GetServerSideProps<UserIdProps> = async ({
@@ -19,7 +20,10 @@ export const getServerSideProps: GetServerSideProps<UserIdProps> = async ({
   }
 
   try {
-    const user = await getUser(query.userId);
+    const db = new Database();
+    const user = await db.findOne<User>(CollectionName.Users, {
+      _id: new ObjectId(query.userId),
+    });
 
     if (!user) {
       return {
@@ -30,8 +34,10 @@ export const getServerSideProps: GetServerSideProps<UserIdProps> = async ({
     return {
       props: {
         user: {
-          ...user,
-          id: query.userId,
+          image: user.image,
+          email: user.email,
+          googleId: user.googleId,
+          name: user.name,
         },
       },
     };
@@ -66,7 +72,8 @@ const UserId: NextPage<UserIdProps> = ({ user }) => {
       <Posts
         fetchOptions={{
           filter: {
-            userId: user.id,
+            // TODO: id를 받아서 요청
+            // userId: user._id,
           },
         }}
       />

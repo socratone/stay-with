@@ -7,15 +7,15 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import GlobalHeader from '../components/GlobalHeader';
-import { User } from '../libs/firebase/interfaces';
+import GlobalHeader from 'components/GlobalHeader';
+import { User } from 'types/interfaces';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { GetServerSideProps, NextPage } from 'next';
-import ErrorMessage from '../components/ErrorMessage';
-import useAuth from '../hooks/context/useAuth';
-import { postLogin, postSignUp } from '../libs/axios/apis';
+import ErrorMessage from 'components/ErrorMessage';
+import useAuth from 'hooks/context/useAuth';
+import { postLogin, postSignUp } from 'libs/axios/apis';
 
 interface SignUpProps {
   googleAccessToken: string;
@@ -65,14 +65,14 @@ const SignUp: NextPage<SignUpProps> = ({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Omit<User, 'id' | 'email' | 'image'>>();
+  } = useForm<Omit<User, '_id' | 'email' | 'image'>>();
 
   const handleSignUp: SubmitHandler<
-    Omit<User, 'id' | 'email' | 'image'>
+    Omit<User, '_id' | 'email' | 'image'>
   > = async ({ name }) => {
     setIsRequesting(true);
 
-    const payload: Omit<User, 'id'> = { googleId, email, name };
+    const payload: Omit<User, '_id'> = { googleId, email, name };
     if (imageChecked) {
       payload.image = image;
     }
@@ -117,7 +117,7 @@ const SignUp: NextPage<SignUpProps> = ({
               )}
             </Box>
             <Box>
-              <Typography>이름</Typography>
+              <Typography color="text.primary">이름</Typography>
               <TextField
                 {...register('name', {
                   required: true,
@@ -135,7 +135,9 @@ const SignUp: NextPage<SignUpProps> = ({
                   onChange={handleImageCheckedChange}
                 />
               }
-              label="프로필 이미지 공개"
+              label={
+                <Typography color="text.primary">프로필 이미지 공개</Typography>
+              }
             />
 
             <Box>

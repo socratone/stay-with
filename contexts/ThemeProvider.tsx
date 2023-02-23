@@ -2,11 +2,11 @@ import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 
 import { createTheme } from '@mui/material';
 import { useEffect, useMemo } from 'react';
-import useColorMode from '../hooks/context/useColorMode';
-import { components } from '../theme/components';
-import { darkPalette, lightPalette } from '../theme/palette';
-import { shadows } from '../theme/shadows';
-import { typography } from '../theme/typography';
+import useColorMode from 'hooks/context/useColorMode';
+import { components } from 'theme/components';
+import { darkPalette, lightPalette } from 'theme/palette';
+import { shadows } from 'theme/shadows';
+import { typography } from 'theme/typography';
 
 // https://stackoverflow.com/questions/60424596/cant-customize-color-palette-types-on-material-ui-theme-in-typescript
 declare module '@mui/material/styles/createPalette' {

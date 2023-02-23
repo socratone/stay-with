@@ -1,7 +1,7 @@
-import { Bible } from './constants';
+import { Bible } from 'constants/bible';
 
 export interface User {
-  id: string;
+  _id: string;
   googleId: string;
   name: string;
   email: string;
@@ -9,15 +9,15 @@ export interface User {
 }
 
 export interface Comment {
-  id: string;
-  user: User;
+  _id: string;
+  userId: string;
   message: string;
   createdAt: number;
 }
 
 export interface Post {
-  id: string;
-  user: User;
+  _id: string;
+  userId: string;
   phrase: string;
   bible: Bible;
   startedChapter: number;
@@ -27,8 +27,6 @@ export interface Post {
   content: string;
   createdAt: number;
   updatedAt: number;
-  likedUsers: {
-    [id: string]: Omit<User, 'id'>;
-  };
+  likedUserIds: string[];
   comments: Comment[];
 }

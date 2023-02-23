@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import GlobalHeader from '../components/GlobalHeader';
-import Posts from '../sections/Posts';
+import GlobalHeader from 'components/GlobalHeader';
+import Posts from 'sections/Posts';
 
 const Home: NextPage = () => {
   return (

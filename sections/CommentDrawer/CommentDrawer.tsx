@@ -2,10 +2,8 @@ import { Box, Drawer, IconButton, TextField } from '@mui/material';
 import CommentItem from './CommentItem';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
-import FilledTextField from 'components/FilledTextField';
 import { useState } from 'react';
 import SendIcon from '@mui/icons-material/Send';
-
 import AlertDialog from 'components/AlertDialog';
 import useAuth from 'hooks/context/useAuth';
 import usePost from 'hooks/api/usePost';
@@ -29,8 +27,9 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const { user, logout } = useAuth();
-  const { post, isError, isLoading, mutate } = usePost(postId);
-  const comments = post?.comments ?? [];
+  const { data: postData, isError, isLoading, refetch } = usePost(postId);
+  // FIXME: type
+  const comments: any[] = postData?.comments ?? [];
 
   const [commentValue, setCommentValue] = useState('');
   const [selectedCommentId, setSelectedCommentId] = useState<string | null>(
@@ -48,7 +47,7 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({
     if (!postId || !user || !selectedCommentIdForDelete) return;
     try {
       await deleteCommentInPost(postId, selectedCommentIdForDelete);
-      mutate();
+      refetch();
       setSelectedCommentIdForDelete(null);
       setSelectedCommentId(null);
     } catch (error: any) {
@@ -73,11 +72,11 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({
     try {
       const now = new Date().getTime();
       await postCommentToPost(postId, {
-        user,
+        userId: user._id,
         message: trimedComment,
         createdAt: now,
       });
-      mutate();
+      refetch();
     } catch (error: any) {
       const status = error?.response?.status;
       if (status === 401) {
@@ -106,12 +105,15 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({
 
   const getDeleteButtonDisabled = () => {
     if (!selectedCommentId) return true;
+
     const selectedComment = comments.find(
-      (comment) => comment.id === selectedCommentId
+      (comment) => comment._id === selectedCommentId
     );
-    if (user?.id === selectedComment?.user.id) {
+
+    if (user?._id === selectedComment?.userId) {
       return false;
     }
+
     return true;
   };
 
@@ -165,12 +167,12 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({
               comments
                 .map((comment) => (
                   <CommentItem
-                    key={comment.id}
-                    image={comment.user.image}
-                    name={comment.user.name}
+                    key={comment._id}
+                    image={comment.image}
+                    name={comment.name}
                     message={comment.message}
-                    isSelected={comment.id === selectedCommentId}
-                    onClick={() => handleCommentItemClick(comment.id)}
+                    isSelected={comment._id === selectedCommentId}
+                    onClick={() => handleCommentItemClick(comment._id)}
                   />
                 ))
                 .reverse()

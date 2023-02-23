@@ -1,31 +1,37 @@
 import { Masonry } from '@mui/lab';
-import { Box, Container } from '@mui/material';
+import { Box, Container, Pagination } from '@mui/material';
 import AlertDialog from 'components/AlertDialog';
 import LoadingCircular from 'components/LoadingCircular';
+import ErrorMessage from 'components/ErrorMessage';
 import PostCard from 'components/PostCard';
-import usePostsInfinite from 'hooks/api/usePostsInfinite';
+import usePosts from 'hooks/api/usePosts';
 import useAuth from 'hooks/context/useAuth';
 import {
   deleteLikedInPost,
   deletePost,
   postLikedToPost,
 } from 'libs/axios/apis';
-import { GetPostsInfiniteOptions } from 'libs/firebase/apis';
-import { Post } from 'libs/firebase/interfaces';
+import { Post } from 'types/interfaces';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import { useQueryClient } from 'react-query';
 import CommentDrawer from 'sections/CommentDrawer';
 
 interface PostsProps {
-  fetchOptions?: GetPostsInfiniteOptions;
+  // FIXME: any type
+  fetchOptions?: any;
 }
+
+const PAGE_COUNT = 10;
 
 const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const { user, logout } = useAuth();
+  const queryClient = useQueryClient();
+
+  const [page, setPage] = useState(1);
 
   const [selectedPostIdForDelete, setSelectedPostIdForDelete] = useState<
     string | null
@@ -33,8 +39,20 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
   const [selectedPostForComment, setSelectedPostForComment] =
     useState<Post | null>(null);
 
-  const { posts, size, setSize, isEnded, mutate } =
-    usePostsInfinite(fetchOptions);
+  const postsParams = {
+    offset: page,
+    count: PAGE_COUNT,
+  };
+
+  const postsKey = [postsParams, '/api/posts'];
+
+  const {
+    data: postsData,
+    isLoading: postsLoading,
+    isError: postsError,
+  } = usePosts(postsParams);
+
+  const posts = postsData?.posts ?? [];
 
   const handleEdit = (id: string) => {
     router.push({
@@ -48,7 +66,7 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
 
     try {
       await deletePost(selectedPostIdForDelete);
-      mutate();
+      queryClient.invalidateQueries(postsKey);
     } catch (error) {
       console.error(error);
     } finally {
@@ -61,13 +79,9 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
 
     try {
       await postLikedToPost(id, {
-        id: user.id,
-        googleId: user.googleId,
-        email: user.email,
-        name: user.name,
-        image: user.image ?? undefined,
+        userId: user._id,
       });
-      mutate();
+      queryClient.invalidateQueries(postsKey);
     } catch (error: any) {
       const status = error?.response?.status;
       if (status === 401) {
@@ -85,8 +99,8 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
     if (!user) return;
 
     try {
-      await deleteLikedInPost(id, user.id);
-      mutate();
+      await deleteLikedInPost(id, user._id);
+      queryClient.invalidateQueries(postsKey);
     } catch (error: any) {
       const status = error?.response?.status;
       if (status === 401) {
@@ -112,6 +126,14 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
     router.push(`/user/${id}`);
   };
 
+  if (postsLoading) {
+    return <LoadingCircular />;
+  }
+
+  if (postsError) {
+    return <ErrorMessage />;
+  }
+
   return (
     <>
       {/* desktop, tablet view */}
@@ -125,9 +147,9 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
         }}
       >
         <Masonry spacing={2} columns={{ sm: 2, md: 3, lg: 4 }}>
-          {posts?.map((post) => (
+          {posts.map((post) => (
             <PostCard
-              key={post.id}
+              key={post._id}
               name={post.user.name}
               profileImage={post.user.image}
               phrase={post.phrase}
@@ -137,19 +159,29 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
               endedChapter={post.endedChapter}
               endedVerse={post.endedVerse}
               content={post.content}
-              isMine={post.user.email === user?.email}
-              isLiked={!!post.likedUsers[user?.id ?? '']}
-              onEditMenuItemClick={() => handleEdit(post.id)}
-              onDeleteMenuItemClick={() => setSelectedPostIdForDelete(post.id)}
+              isMine={post.user._id === user?._id}
+              isLiked={!!post.likedUserIds.find((id) => id === user?._id)}
+              onEditMenuItemClick={() => handleEdit(post._id)}
+              onDeleteMenuItemClick={() => setSelectedPostIdForDelete(post._id)}
               // TODO: 계속 클릭해도 한 번만 요청하도록
-              onLikeButtonClick={() => handleLike(post.id)}
-              onUnlikeButtonClick={() => handleUnlike(post.id)}
-              likedCount={Object.keys(post.likedUsers ?? {}).length}
+              onLikeButtonClick={() => handleLike(post._id)}
+              onUnlikeButtonClick={() => handleUnlike(post._id)}
+              likedCount={post.likedUserIds.length}
               onCommentButtonClick={() => handleCommentButtonClick(post)}
-              onUserClick={() => handleUserClick(post.user.id)}
+              onUserClick={() => handleUserClick(post.user._id)}
             />
           ))}
         </Masonry>
+
+        <Box display="flex" justifyContent="center">
+          {postsData?.total === 0 ? null : (
+            <Pagination
+              page={page}
+              onChange={(_, page) => setPage(page)}
+              count={Math.ceil(Number(postsData?.total) / PAGE_COUNT)}
+            />
+          )}
+        </Box>
       </Box>
 
       {/* mobile view */}
@@ -162,45 +194,46 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
           display: { xs: 'block', sm: 'none', md: 'none', xl: 'none' },
         }}
       >
-        <InfiniteScroll
-          dataLength={posts.length}
-          next={() => setSize(size + 1)}
-          hasMore={!isEnded}
-          loader={<LoadingCircular />}
-        >
-          {posts?.map((post) => (
-            <Box key={post.id} pt={1} pb={1} px={2}>
-              <PostCard
-                name={post.user.name}
-                profileImage={post.user.image}
-                phrase={post.phrase}
-                bible={post.bible}
-                startedChapter={post.startedChapter}
-                startedVerse={post.startedVerse}
-                endedChapter={post.endedChapter}
-                endedVerse={post.endedVerse}
-                content={post.content}
-                isMine={post.user.email === user?.email}
-                isLiked={!!post.likedUsers[user?.id ?? '']}
-                onEditMenuItemClick={() => handleEdit(post.id)}
-                onDeleteMenuItemClick={() =>
-                  setSelectedPostIdForDelete(post.id)
-                }
-                // TODO: 계속 클릭해도 한 번만 요청하도록
-                onLikeButtonClick={() => handleLike(post.id)}
-                onUnlikeButtonClick={() => handleUnlike(post.id)}
-                likedCount={Object.keys(post.likedUsers ?? {}).length}
-                onCommentButtonClick={() => handleCommentButtonClick(post)}
-                onUserClick={() => handleUserClick(post.user.id)}
-              />
-            </Box>
-          ))}
-        </InfiniteScroll>
+        {posts?.map((post) => (
+          <Box key={post._id} pt={1} pb={1} px={2}>
+            <PostCard
+              name={post.user.name}
+              profileImage={post.user.image}
+              phrase={post.phrase}
+              bible={post.bible}
+              startedChapter={post.startedChapter}
+              startedVerse={post.startedVerse}
+              endedChapter={post.endedChapter}
+              endedVerse={post.endedVerse}
+              content={post.content}
+              isMine={post.user.email === user?.email}
+              isLiked={!!post.likedUserIds.find((id) => id === user?._id)}
+              onEditMenuItemClick={() => handleEdit(post._id)}
+              onDeleteMenuItemClick={() => setSelectedPostIdForDelete(post._id)}
+              // TODO: 계속 클릭해도 한 번만 요청하도록
+              onLikeButtonClick={() => handleLike(post._id)}
+              onUnlikeButtonClick={() => handleUnlike(post._id)}
+              likedCount={post.likedUserIds.length}
+              onCommentButtonClick={() => handleCommentButtonClick(post)}
+              onUserClick={() => handleUserClick(post.user._id)}
+            />
+          </Box>
+        ))}
+
+        <Box display="flex" justifyContent="center">
+          {postsData?.total === 0 ? null : (
+            <Pagination
+              page={page}
+              onChange={(_, page) => setPage(page)}
+              count={Math.ceil(Number(postsData?.total) / PAGE_COUNT)}
+            />
+          )}
+        </Box>
       </Container>
 
       <CommentDrawer
         open={!!selectedPostForComment}
-        postId={selectedPostForComment?.id}
+        postId={selectedPostForComment?._id}
         onClose={handleCommentDrawerClose}
       />
 

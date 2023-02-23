@@ -15,8 +15,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import GlobalHeader from 'components/GlobalHeader';
-import { getPost } from 'libs/firebase/apis';
-import { Bible, bibleOptions } from '../libs/firebase/constants';
+import { Bible, bibleOptions } from 'constants/bible';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import useAuth from 'hooks/context/useAuth';
@@ -24,6 +23,9 @@ import LoginMessage from 'components/LoginMessage';
 import AccessDeniedMessage from 'components/AccessDeniedMessage';
 import { postPost, putPost } from 'libs/axios/apis';
 import { useSnackbar } from 'notistack';
+import Database, { CollectionName } from 'server/database';
+import { Post } from 'types/interfaces';
+import { ObjectId } from 'mongodb';
 
 interface FormInput {
   phrase: string;
@@ -55,7 +57,16 @@ export const getServerSideProps: GetServerSideProps<
 
     // 수정하는 경우
     if (typeof id === 'string') {
-      const post = await getPost(id);
+      const db = new Database();
+      const post = await db.findOne<Post>(CollectionName.Posts, {
+        _id: new ObjectId(id),
+      });
+
+      if (!post) {
+        return {
+          notFound: true,
+        };
+      }
 
       let defaultValues: FormInput = {
         phrase: post.phrase,
@@ -75,7 +86,7 @@ export const getServerSideProps: GetServerSideProps<
 
       return {
         props: {
-          postUserId: post.user.id,
+          postUserId: String(post.userId),
           defaultValues,
         },
       };
@@ -150,9 +161,9 @@ const Contemplation: NextPage<ContemplationProps> = ({
       } else {
         await postPost({
           ...payload,
-          user,
+          userId: user._id,
           createdAt: now,
-          likedUsers: {},
+          likedUserIds: [],
           comments: [],
         });
       }
@@ -198,7 +209,7 @@ const Contemplation: NextPage<ContemplationProps> = ({
   }
 
   // 사용자가 작성한 글이 아닌 경우
-  if (postUserId && postUserId !== user.id) {
+  if (postUserId && postUserId !== user._id) {
     return (
       <Box
         display="flex"

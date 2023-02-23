@@ -5,8 +5,8 @@ import {
   Switch,
   Typography,
 } from '@mui/material';
-import GlobalHeader from '../components/GlobalHeader';
-import useColorMode from '../hooks/context/useColorMode';
+import GlobalHeader from 'components/GlobalHeader';
+import useColorMode from 'hooks/context/useColorMode';
 
 const Setting = () => {
   const { colorMode, setColorMode } = useColorMode();

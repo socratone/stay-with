@@ -8,11 +8,11 @@ import {
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import useAuth from '../../hooks/context/useAuth';
-import useColorMode from '../../hooks/context/useColorMode';
-import { PRIMARY_SHADOW } from '../../theme/shadows';
-import DarkModeSwitch from '../DarkModeSwitch';
-import SmallMenu from '../SmallMenu';
+import useAuth from 'hooks/context/useAuth';
+import useColorMode from 'hooks/context/useColorMode';
+import { PRIMARY_SHADOW } from 'theme/shadows';
+import DarkModeSwitch from 'components/DarkModeSwitch';
+import SmallMenu from 'components/SmallMenu';
 import HeaderLink from './HeaderLink';
 import MenuIcon from '@mui/icons-material/Menu';
 import AddIcon from '@mui/icons-material/Add';
@@ -109,7 +109,7 @@ const GlobalHeader = () => {
                 open={profileMenuOpen}
                 onClose={closeProfileMenu}
               >
-                <MenuItem onClick={() => router.push(`/user/${user?.id}`)}>
+                <MenuItem onClick={() => router.push(`/user/${user?._id}`)}>
                   내 페이지
                 </MenuItem>
                 <MenuItem onClick={() => router.push('/setting')}>
