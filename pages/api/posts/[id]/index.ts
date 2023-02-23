@@ -37,6 +37,7 @@ const handler = async (
 
   if (req.method === 'GET') {
     try {
+      // FIXME: any type
       const [post] = await db.aggregate<any[]>(CollectionName.Posts, [
         {
           $match: {
@@ -71,6 +72,7 @@ const handler = async (
 
       const commentUsers = post.commentUsers;
       const commentUsersObject = commentUsers.reduce(
+        // FIXME: any type
         (object: any, user: any) => {
           return {
             ...object,
