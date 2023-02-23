@@ -19,7 +19,7 @@ import { useQueryClient } from 'react-query';
 import CommentDrawer from 'sections/CommentDrawer';
 
 interface PostsProps {
-  // FIXME: any type
+  // TODO: any type
   fetchOptions?: any;
 }
 

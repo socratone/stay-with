@@ -17,16 +17,16 @@ export interface Comment {
 
 export interface Post {
   _id: string;
-  userId: string;
-  phrase: string;
   bible: Bible;
+  content: string;
+  phrase: string;
   startedChapter: number;
   startedVerse: number;
   endedChapter?: number;
   endedVerse?: number;
-  content: string;
-  createdAt: number;
   updatedAt: number;
+  userId: string;
+  createdAt: number;
   likedUserIds: string[];
   comments: Comment[];
 }

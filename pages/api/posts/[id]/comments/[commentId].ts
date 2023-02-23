@@ -1,12 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { ApiErrorData, isLoggedIn } from 'utils/api';
-import { Comment, Post } from 'types/interfaces';
+import { Post } from 'types/interfaces';
 import Database, { CollectionName } from 'server/database';
 import { ObjectId, UpdateResult } from 'mongodb';
 
 type ApiDeleteCommentResultData = UpdateResult;
-
-export type ApiDeleteCommentPayload = Comment;
 
 const handler = async (
   req: NextApiRequest,
