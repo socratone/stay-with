@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { User } from 'libs/firebase/interfaces';
+import { User } from 'types/interfaces';
 import { ApiErrorData } from 'utils/api';
 import Database from 'server/database';
 import { CollectionName } from 'server/database';

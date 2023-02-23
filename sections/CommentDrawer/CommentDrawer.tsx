@@ -29,9 +29,8 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({
   const { enqueueSnackbar } = useSnackbar();
   const { user, logout } = useAuth();
   const { post, isError, isLoading, mutate } = usePost(postId);
-  const comments = post?.comments ?? [];
-
-  console.log('comments:', comments);
+  // FIXME: type
+  const comments: any[] = post?.comments ?? [];
 
   const [commentValue, setCommentValue] = useState('');
   const [selectedCommentId, setSelectedCommentId] = useState<string | null>(
@@ -107,12 +106,15 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({
 
   const getDeleteButtonDisabled = () => {
     if (!selectedCommentId) return true;
+
     const selectedComment = comments.find(
       (comment) => comment._id === selectedCommentId
     );
-    if (user?._id === selectedComment?.user._id) {
+
+    if (user?._id === selectedComment?.userId) {
       return false;
     }
+
     return true;
   };
 

@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import jwt from 'jsonwebtoken';
 import { ApiErrorData, AUTH_SECRET } from 'utils/api';
 import Database, { CollectionName } from 'server/database';
+import { User } from 'types/interfaces';
 
 export type ApiLoginPayload = {
   googleAccessToken: string;
@@ -46,7 +47,7 @@ const handler = async (
 
       // 가입된 유저인지 확인
       const googleId = googleUser.id;
-      const user = await db.findOne(CollectionName.Users, {
+      const user = await db.findOne<User>(CollectionName.Users, {
         googleId,
       });
 

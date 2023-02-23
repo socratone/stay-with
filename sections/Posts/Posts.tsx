@@ -11,8 +11,7 @@ import {
   deletePost,
   postLikedToPost,
 } from 'libs/axios/apis';
-import { GetPostsInfiniteOptions } from 'libs/firebase/apis';
-import { Post } from 'libs/firebase/interfaces';
+import { Post } from 'types/interfaces';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
@@ -20,7 +19,7 @@ import { useQueryClient } from 'react-query';
 import CommentDrawer from 'sections/CommentDrawer';
 
 interface PostsProps {
-  fetchOptions?: GetPostsInfiniteOptions;
+  fetchOptions?: any;
 }
 
 const PAGE_COUNT = 10;

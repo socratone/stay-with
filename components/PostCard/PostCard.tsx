@@ -11,7 +11,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useState } from 'react';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import { Bible, bibleLabel } from '../../libs/firebase/constants';
+import { Bible, bibleLabel } from '../../constants/bible';
 import SmallMenu from '../SmallMenu';
 import { PRIMARY_SHADOW } from '../../theme/shadows';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';

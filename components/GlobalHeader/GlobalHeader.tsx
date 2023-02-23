@@ -109,7 +109,7 @@ const GlobalHeader = () => {
                 open={profileMenuOpen}
                 onClose={closeProfileMenu}
               >
-                <MenuItem onClick={() => router.push(`/user/${user?.id}`)}>
+                <MenuItem onClick={() => router.push(`/user/${user?._id}`)}>
                   내 페이지
                 </MenuItem>
                 <MenuItem onClick={() => router.push('/setting')}>

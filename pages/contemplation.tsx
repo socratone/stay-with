@@ -15,7 +15,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import GlobalHeader from 'components/GlobalHeader';
-import { Bible, bibleOptions } from '../libs/firebase/constants';
+import { Bible, bibleOptions } from '../constants/bible';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import useAuth from 'hooks/context/useAuth';
@@ -24,7 +24,7 @@ import AccessDeniedMessage from 'components/AccessDeniedMessage';
 import { postPost, putPost } from 'libs/axios/apis';
 import { useSnackbar } from 'notistack';
 import Database, { CollectionName } from 'server/database';
-import { Post } from 'libs/firebase/interfaces';
+import { Post } from 'types/interfaces';
 import { ObjectId } from 'mongodb';
 
 interface FormInput {

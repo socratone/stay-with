@@ -8,7 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import GlobalHeader from '../components/GlobalHeader';
-import { User } from '../libs/firebase/interfaces';
+import { User } from '../types/interfaces';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { useState } from 'react';

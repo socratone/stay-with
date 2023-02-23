@@ -1,4 +1,4 @@
-import { Bible } from './constants';
+import { Bible } from '../constants/bible';
 
 export interface User {
   _id: string;

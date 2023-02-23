@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
 import { resetUser, setUser } from 'redux/userSlice';
-import { User } from 'libs/firebase/interfaces';
+import { User } from 'types/interfaces';
 import { useCallback } from 'react';
 import jwtDecode from 'jwt-decode';
 import { removeAccessToken, saveAccessToken } from 'utils/token';

@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { Post, User } from 'libs/firebase/interfaces';
+import { Post, User } from 'types/interfaces';
 import { ApiErrorData, isLoggedIn } from 'utils/api';
 import Database, { CollectionName } from 'server/database';
 import { InsertOneResult, ObjectId } from 'mongodb';

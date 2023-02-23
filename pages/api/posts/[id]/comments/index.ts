@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { ApiErrorData, isLoggedIn } from 'utils/api';
-import { Comment } from 'libs/firebase/interfaces';
+import { Comment } from 'types/interfaces';
 import Database from 'server/database';
 import { CollectionName } from 'server/database';
 import { ObjectId, UpdateResult } from 'mongodb';

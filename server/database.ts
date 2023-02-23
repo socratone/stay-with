@@ -20,12 +20,12 @@ const URI =
   'mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.7.0';
 const DATABASE_NAME = 'test';
 
-export type FindParams = {
+type FindParams = {
   filter?: Filter<Document>;
   options?: FindOptions<Document>;
 };
 
-export type CountParams = {
+type CountParams = {
   options?: EstimatedDocumentCountOptions;
 };
 
@@ -74,10 +74,10 @@ class Database {
   }
 
   // https://www.mongodb.com/docs/drivers/node/current/usage-examples/find/#find-multiple-documents
-  async find(
+  async find<T>(
     collectionName: CollectionName,
     params?: FindParams
-  ): Promise<any> {
+  ): Promise<T> {
     try {
       const database = this.client.db(DATABASE_NAME);
       const collection = database.collection(collectionName);

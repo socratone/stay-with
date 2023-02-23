@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import jwtDecode from 'jwt-decode';
 import { ApiErrorData, isLoggedIn } from 'utils/api';
-import { Post, User } from 'libs/firebase/interfaces';
+import { Post, User } from 'types/interfaces';
 import Database from 'server/database';
 import { CollectionName } from 'server/database';
 import { DeleteResult, ObjectId } from 'mongodb';
@@ -61,19 +61,7 @@ const handler = async (
             localField: 'commentUserIds',
             foreignField: '_id',
             as: 'commentUsers',
-            pipeline: [
-              {
-                $project: {
-                  _id: 1,
-                  name: 1,
-                  image: 1,
-                },
-              },
-            ],
           },
-        },
-        {
-          $unset: 'commentUserIds',
         },
       ]);
 
@@ -99,6 +87,7 @@ const handler = async (
         const user = commentUsersObject[comment.userId];
         return {
           _id: comment._id,
+          userId: comment.userId,
           name: user.name,
           image: user.image,
           message: comment.message,
