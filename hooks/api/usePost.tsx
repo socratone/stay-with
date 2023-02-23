@@ -1,18 +1,10 @@
 import { getPost } from 'libs/axios/apis';
-import useSWR from 'swr';
+import { useQuery } from 'react-query';
 
 const usePost = (postId?: string) => {
-  const { data, error, mutate } = useSWR(
-    postId ? [postId, '/api/posts'] : null,
-    getPost
-  );
-
-  return {
-    post: data,
-    isLoading: !error && !data,
-    isError: error,
-    mutate,
-  };
+  return useQuery([postId, '/api/posts'], () => getPost(postId as string), {
+    enabled: !!postId,
+  });
 };
 
 export default usePost;

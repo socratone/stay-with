@@ -4,7 +4,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useState } from 'react';
 import SendIcon from '@mui/icons-material/Send';
-
 import AlertDialog from 'components/AlertDialog';
 import useAuth from 'hooks/context/useAuth';
 import usePost from 'hooks/api/usePost';
@@ -28,9 +27,9 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const { user, logout } = useAuth();
-  const { post, isError, isLoading, mutate } = usePost(postId);
+  const { data: postData, isError, isLoading, refetch } = usePost(postId);
   // FIXME: type
-  const comments: any[] = post?.comments ?? [];
+  const comments: any[] = postData?.comments ?? [];
 
   const [commentValue, setCommentValue] = useState('');
   const [selectedCommentId, setSelectedCommentId] = useState<string | null>(
@@ -48,7 +47,7 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({
     if (!postId || !user || !selectedCommentIdForDelete) return;
     try {
       await deleteCommentInPost(postId, selectedCommentIdForDelete);
-      mutate();
+      refetch();
       setSelectedCommentIdForDelete(null);
       setSelectedCommentId(null);
     } catch (error: any) {
@@ -77,7 +76,7 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({
         message: trimedComment,
         createdAt: now,
       });
-      mutate();
+      refetch();
     } catch (error: any) {
       const status = error?.response?.status;
       if (status === 401) {
