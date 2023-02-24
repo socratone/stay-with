@@ -21,8 +21,41 @@
 - `users` collection
 - `posts` collection
 
+## Deployment
+
+- Vercel
+- Mongodb Atlas
+
 ## Stacks
 
 - NextJS
 - Mongodb
 - Material UI
+
+## Eslint Rules
+
+- import 순서를 자동으로 sort 해준다. ([참고 링크](https://github.com/lydell/eslint-plugin-simple-import-sort))
+
+```
+"plugins": ["simple-import-sort"],
+"rules": {
+  "simple-import-sort/imports": "error",
+  "simple-import-sort/exports": "error",
+  "import/first": "error",
+  "import/newline-after-import": "error",
+  "import/no-duplicates": "error",
+}
+```
+
+- material ui를 전부 import 하지 않도록 막는다. ([참고 링크](https://eslint.org/docs/latest/rules/no-restricted-imports))
+
+```
+"no-restricted-imports": [
+  "error",
+  {
+    "paths": ["@mui/material"]
+  }
+]
+```
+
+- no-else-return
