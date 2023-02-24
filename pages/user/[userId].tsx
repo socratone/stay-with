@@ -1,9 +1,11 @@
-import { Avatar, Box, Typography } from '@mui/material';
-import { GetServerSideProps, NextPage } from 'next';
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import GlobalHeader from 'components/GlobalHeader';
+import { ObjectId } from 'mongodb';
+import { GetServerSideProps, NextPage } from 'next';
 import Posts from 'sections/Posts';
 import Database, { CollectionName } from 'server/database';
-import { ObjectId } from 'mongodb';
 import { User } from 'types/interfaces';
 
 interface UserIdProps {

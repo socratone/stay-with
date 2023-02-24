@@ -1,21 +1,19 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Checkbox,
-  FormControlLabel,
-  TextField,
-  Typography,
-} from '@mui/material';
-import GlobalHeader from 'components/GlobalHeader';
-import { User } from 'types/interfaces';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { GetServerSideProps, NextPage } from 'next';
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import ErrorMessage from 'components/ErrorMessage';
+import GlobalHeader from 'components/GlobalHeader';
 import useAuth from 'hooks/context/useAuth';
 import { postLogin, postSignUp } from 'libs/axios/apis';
+import { GetServerSideProps, NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { User } from 'types/interfaces';
 
 interface SignUpProps {
   googleAccessToken: string;

@@ -1,4 +1,5 @@
-import { Select, SelectProps } from '@mui/material';
+import { SelectProps } from '@mui/material';
+import Select from '@mui/material/Select';
 import React from 'react';
 
 const FilledSelect: React.FC<

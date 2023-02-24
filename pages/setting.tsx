@@ -1,10 +1,8 @@
-import {
-  Container,
-  FormControlLabel,
-  FormGroup,
-  Switch,
-  Typography,
-} from '@mui/material';
+import Container from '@mui/material/Container';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
+import Switch from '@mui/material/Switch';
+import Typography from '@mui/material/Typography';
 import GlobalHeader from 'components/GlobalHeader';
 import useColorMode from 'hooks/context/useColorMode';
 

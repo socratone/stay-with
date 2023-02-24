@@ -1,4 +1,8 @@
-import { Avatar, Box, ButtonBase, Typography, useTheme } from '@mui/material';
+import { useTheme } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import ButtonBase from '@mui/material/ButtonBase';
+import Typography from '@mui/material/Typography';
 
 interface CommentItemProps {
   image?: string;

@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import Box from '@mui/material/Box';
 import ErrorMessage from 'components/ErrorMessage';
 import WaitingMessage from 'components/WaitingMessage';
 import useGoogleLoginRedirect from 'hooks/auth/useGoogleLoginRedirect';

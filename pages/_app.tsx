@@ -1,13 +1,14 @@
 import 'styles/globals.css';
-import type { AppProps } from 'next/app';
+
+import Snackbar from 'components/Snackbar';
 import ThemeProvider from 'contexts/ThemeProvider';
+import type { AppProps } from 'next/app';
+import { SnackbarProvider } from 'notistack';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { Provider } from 'react-redux';
 import { store } from 'redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import persistStore from 'redux-persist/lib/persistStore';
-import { SnackbarProvider } from 'notistack';
-import Snackbar from 'components/Snackbar';
-import { QueryClient, QueryClientProvider } from 'react-query';
 
 const persistor = persistStore(store);
 const queryClient = new QueryClient();

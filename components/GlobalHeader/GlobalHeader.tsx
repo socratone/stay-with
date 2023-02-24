@@ -1,23 +1,22 @@
-import {
-  Avatar,
-  Box,
-  ButtonBase,
-  IconButton,
-  MenuItem,
-  useTheme,
-} from '@mui/material';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-import useAuth from 'hooks/context/useAuth';
-import useColorMode from 'hooks/context/useColorMode';
-import { PRIMARY_SHADOW } from 'theme/shadows';
+import AddIcon from '@mui/icons-material/Add';
+import MenuIcon from '@mui/icons-material/Menu';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import { useTheme } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import ButtonBase from '@mui/material/ButtonBase';
+import IconButton from '@mui/material/IconButton';
+import MenuItem from '@mui/material/MenuItem';
 import DarkModeSwitch from 'components/DarkModeSwitch';
 import SmallMenu from 'components/SmallMenu';
-import HeaderLink from './HeaderLink';
-import MenuIcon from '@mui/icons-material/Menu';
-import AddIcon from '@mui/icons-material/Add';
+import useAuth from 'hooks/context/useAuth';
+import useColorMode from 'hooks/context/useColorMode';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { PRIMARY_SHADOW } from 'theme/shadows';
+
 import GlobalHeaderDrawer from './GlobalHeaderDrawer';
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import HeaderLink from './HeaderLink';
 
 const GlobalHeader = () => {
   const router = useRouter();

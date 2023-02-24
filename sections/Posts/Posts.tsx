@@ -1,8 +1,10 @@
 import { Masonry } from '@mui/lab';
-import { Box, Container, Pagination } from '@mui/material';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import Pagination from '@mui/material/Pagination';
 import AlertDialog from 'components/AlertDialog';
-import LoadingCircular from 'components/LoadingCircular';
 import ErrorMessage from 'components/ErrorMessage';
+import LoadingCircular from 'components/LoadingCircular';
 import PostCard from 'components/PostCard';
 import usePosts from 'hooks/api/usePosts';
 import useAuth from 'hooks/context/useAuth';
@@ -11,12 +13,12 @@ import {
   deletePost,
   postLikedToPost,
 } from 'libs/axios/apis';
-import { Post } from 'types/interfaces';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import { useQueryClient } from 'react-query';
 import CommentDrawer from 'sections/CommentDrawer';
+import { Post } from 'types/interfaces';
 
 interface PostsProps {
   // TODO: any type

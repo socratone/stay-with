@@ -1,16 +1,17 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import userReducer from './userSlice';
-import colorReducer from './colorSlice';
 import {
-  persistReducer,
   FLUSH,
-  REHYDRATE,
   PAUSE,
   PERSIST,
+  persistReducer,
   PURGE,
   REGISTER,
+  REHYDRATE,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+
+import colorReducer from './colorSlice';
+import userReducer from './userSlice';
 
 const reducers = combineReducers({
   user: userReducer,

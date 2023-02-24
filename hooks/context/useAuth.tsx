@@ -1,9 +1,9 @@
+import jwtDecode from 'jwt-decode';
+import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
 import { resetUser, setUser } from 'redux/userSlice';
 import { User } from 'types/interfaces';
-import { useCallback } from 'react';
-import jwtDecode from 'jwt-decode';
 import { removeAccessToken, saveAccessToken } from 'utils/token';
 
 const useAuth = () => {
