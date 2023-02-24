@@ -47,15 +47,4 @@
 }
 ```
 
-- material ui를 전부 import 하지 않도록 막는다. ([참고 링크](https://eslint.org/docs/latest/rules/no-restricted-imports))
-
-```
-"no-restricted-imports": [
-  "error",
-  {
-    "paths": ["@mui/material"]
-  }
-]
-```
-
 - no-else-return
