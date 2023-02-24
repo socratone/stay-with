@@ -28,8 +28,7 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({
   const { enqueueSnackbar } = useSnackbar();
   const { user, logout } = useAuth();
   const { data: postData, isError, isLoading, refetch } = usePost(postId);
-  // FIXME: type
-  const comments: any[] = postData?.comments ?? [];
+  const comments = postData?.comments ?? [];
 
   const [commentValue, setCommentValue] = useState('');
   const [selectedCommentId, setSelectedCommentId] = useState<string | null>(

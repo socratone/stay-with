@@ -12,15 +12,28 @@ export type ApiPutPostPayload = Omit<
   '_id' | 'userId' | 'createdAt' | 'likedUserIds' | 'comments'
 >;
 
-// TODO: & 순서에 따라 어떻게 달라지는지 공부
-export type ApiGetPostData = {
+export interface ApiGetPostData extends AggregatedPost {
   comments: {
     _id: string;
-    user: User;
+    userId: string;
+    name: string;
+    image: string;
     message: string;
     createdAt: number;
   }[];
-} & Post;
+}
+
+interface AggregatedPost extends Post {
+  commentUserIds: string[];
+  commentUsers: User[];
+}
+
+type UsersObject = {
+  [userId: string]: {
+    name: string;
+    image: string;
+  };
+};
 
 type ApiPutResultData = UpdateResult;
 
@@ -37,43 +50,44 @@ const handler = async (
 
   if (req.method === 'GET') {
     try {
-      // FIXME: any type
-      const [post] = await db.aggregate<any[]>(CollectionName.Posts, [
-        {
-          $match: {
-            _id: new ObjectId(id),
+      const [post] = await db.aggregate<AggregatedPost[]>(
+        CollectionName.Posts,
+        [
+          {
+            $match: {
+              _id: new ObjectId(id),
+            },
           },
-        },
-        {
-          $addFields: {
-            commentUserIds: {
-              $map: {
-                input: '$comments',
-                as: 'comment',
-                in: '$$comment.userId',
+          {
+            $addFields: {
+              commentUserIds: {
+                $map: {
+                  input: '$comments',
+                  as: 'comment',
+                  in: '$$comment.userId',
+                },
               },
             },
           },
-        },
-        // https://www.mongodb.com/docs/manual/reference/operator/aggregation/lookup/#use--lookup-with-an-array
-        {
-          $lookup: {
-            from: CollectionName.Users,
-            localField: 'commentUserIds',
-            foreignField: '_id',
-            as: 'commentUsers',
+          // https://www.mongodb.com/docs/manual/reference/operator/aggregation/lookup/#use--lookup-with-an-array
+          {
+            $lookup: {
+              from: CollectionName.Users,
+              localField: 'commentUserIds',
+              foreignField: '_id',
+              as: 'commentUsers',
+            },
           },
-        },
-      ]);
+        ]
+      );
 
       if (!post) {
         return res.status(404).json({ message: 'Not found.' });
       }
 
       const commentUsers = post.commentUsers;
-      const commentUsersObject = commentUsers.reduce(
-        // FIXME: any type
-        (object: any, user: any) => {
+      const commentUsersObject: UsersObject = commentUsers.reduce(
+        (object, user) => {
           return {
             ...object,
             [user._id]: {
@@ -85,7 +99,7 @@ const handler = async (
         {}
       );
 
-      const comments = post.comments.map((comment: any) => {
+      const comments = post.comments.map((comment) => {
         const user = commentUsersObject[comment.userId];
         return {
           _id: comment._id,
@@ -93,6 +107,7 @@ const handler = async (
           name: user.name,
           image: user.image,
           message: comment.message,
+          createdAt: comment.createdAt,
         };
       });
 
@@ -117,7 +132,7 @@ const handler = async (
   try {
     const user: User = jwtDecode(accessToken as string);
 
-    const post = await db.findOne<ApiGetPostData>(CollectionName.Posts, {
+    const post = await db.findOne<Post>(CollectionName.Posts, {
       _id: new ObjectId(id),
     });
 

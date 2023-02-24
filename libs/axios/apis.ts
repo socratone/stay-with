@@ -6,7 +6,6 @@ import { ApiPostPayload, ApiPostsData } from 'pages/api/posts';
 import { ApiLoginData, ApiLoginPayload } from 'pages/api/login';
 import { ApiSignUpData, ApiSignUpPayload } from 'pages/api/signup';
 import { ApiCommentPayload } from 'pages/api/posts/[id]/comments';
-import { ApiDeleteCommentPayload } from 'pages/api/posts/[id]/comments/[commentId]';
 
 export const postSignUp = (
   payload: ApiSignUpPayload
@@ -64,7 +63,7 @@ export const postCommentToPost = (id: string, payload: ApiCommentPayload) => {
 };
 
 export const deleteCommentInPost = (id: string, commentId: string) => {
-  return axiosInstance.delete<any, AxiosResponse, ApiDeleteCommentPayload>(
+  return axiosInstance.delete<any, AxiosResponse>(
     `/api/posts/${id}/comments/${commentId}`
   );
 };
