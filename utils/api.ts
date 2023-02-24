@@ -1,5 +1,5 @@
-import { NextApiResponse } from 'next';
 import jwt from 'jsonwebtoken';
+import { NextApiResponse } from 'next';
 
 export type ApiErrorData = {
   message: string;

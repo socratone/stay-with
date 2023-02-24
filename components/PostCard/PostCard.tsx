@@ -1,20 +1,18 @@
-import {
-  Avatar,
-  Box,
-  Chip,
-  IconButton,
-  MenuItem,
-  Paper,
-  Typography,
-} from '@mui/material';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import { useState } from 'react';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import { Bible, bibleLabel } from 'constants/bible';
-import SmallMenu from 'components/SmallMenu';
-import { PRIMARY_SHADOW } from 'theme/shadows';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
+import IconButton from '@mui/material/IconButton';
+import MenuItem from '@mui/material/MenuItem';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import SmallMenu from 'components/SmallMenu';
+import { Bible, bibleLabel } from 'constants/bible';
+import { useState } from 'react';
+import { PRIMARY_SHADOW } from 'theme/shadows';
 
 interface PostCardProps {
   name: string;

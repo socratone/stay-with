@@ -1,4 +1,3 @@
-import { forwardRef, useCallback } from 'react';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CloseIcon from '@mui/icons-material/Close';
 import ErrorIcon from '@mui/icons-material/Error';
@@ -6,6 +5,7 @@ import WarningIcon from '@mui/icons-material/Warning';
 import Alert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
 import { CustomContentProps, SnackbarContent, useSnackbar } from 'notistack';
+import { forwardRef, useCallback } from 'react';
 
 const Snackbar = forwardRef<HTMLDivElement, CustomContentProps>(
   ({ id, variant, message }, ref) => {

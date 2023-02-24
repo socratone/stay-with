@@ -1,5 +1,7 @@
+import { SxProps } from '@mui/material';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
 import * as React from 'react';
-import { Box, IconButton, SxProps } from '@mui/material';
 
 interface DarkModeSwitchProps {
   checked: boolean;

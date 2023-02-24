@@ -1,7 +1,7 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'redux/store';
-import { setMode } from 'redux/colorSlice';
 import { useMediaQuery } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { setMode } from 'redux/colorSlice';
+import { RootState } from 'redux/store';
 
 const useColorMode = () => {
   const dispatch = useDispatch();

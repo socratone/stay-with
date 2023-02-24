@@ -1,8 +1,8 @@
+import { InsertOneResult, ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
+import Database, { CollectionName } from 'server/database';
 import { Post, User } from 'types/interfaces';
 import { ApiErrorData, isLoggedIn } from 'utils/api';
-import Database, { CollectionName } from 'server/database';
-import { InsertOneResult, ObjectId } from 'mongodb';
 
 export type ApiPostPayload = Omit<Post, '_id'>;
 

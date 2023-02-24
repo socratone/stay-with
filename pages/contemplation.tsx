@@ -1,31 +1,29 @@
-import {
-  Box,
-  Button,
-  IconButton,
-  MenuItem,
-  Paper,
-  Select,
-  TextField,
-  Typography,
-} from '@mui/material';
-import { Container } from '@mui/system';
-import { GetServerSideProps, NextPage } from 'next';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import GlobalHeader from 'components/GlobalHeader';
-import { Bible, bibleOptions } from 'constants/bible';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
-import useAuth from 'hooks/context/useAuth';
-import LoginMessage from 'components/LoginMessage';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import MenuItem from '@mui/material/MenuItem';
+import Paper from '@mui/material/Paper';
+import Select from '@mui/material/Select';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { Container } from '@mui/system';
 import AccessDeniedMessage from 'components/AccessDeniedMessage';
+import GlobalHeader from 'components/GlobalHeader';
+import LoginMessage from 'components/LoginMessage';
+import { Bible, bibleOptions } from 'constants/bible';
+import useAuth from 'hooks/context/useAuth';
 import { postPost, putPost } from 'libs/axios/apis';
+import { ObjectId } from 'mongodb';
+import type { GetServerSideProps, NextPage } from 'next';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
+import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import Database, { CollectionName } from 'server/database';
 import { Post } from 'types/interfaces';
-import { ObjectId } from 'mongodb';
 
 interface FormInput {
   phrase: string;

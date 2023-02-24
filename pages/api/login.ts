@@ -1,9 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
-import { NextApiRequest, NextApiResponse } from 'next';
 import jwt from 'jsonwebtoken';
-import { ApiErrorData, AUTH_SECRET } from 'utils/api';
+import { NextApiRequest, NextApiResponse } from 'next';
 import Database, { CollectionName } from 'server/database';
 import { User } from 'types/interfaces';
+import { ApiErrorData, AUTH_SECRET } from 'utils/api';
 
 export type ApiLoginPayload = {
   googleAccessToken: string;

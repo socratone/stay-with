@@ -1,7 +1,7 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { ApiErrorData, isLoggedIn } from 'utils/api';
-import Database, { CollectionName } from 'server/database';
 import { ObjectId, UpdateResult } from 'mongodb';
+import { NextApiRequest, NextApiResponse } from 'next';
+import Database, { CollectionName } from 'server/database';
+import { ApiErrorData, isLoggedIn } from 'utils/api';
 
 type ApiDeleteLikedResultData = UpdateResult;
 

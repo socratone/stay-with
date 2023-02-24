@@ -1,9 +1,8 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { ApiErrorData, isLoggedIn } from 'utils/api';
-import { Comment } from 'types/interfaces';
-import Database from 'server/database';
-import { CollectionName } from 'server/database';
 import { ObjectId, UpdateResult } from 'mongodb';
+import { NextApiRequest, NextApiResponse } from 'next';
+import Database, { CollectionName } from 'server/database';
+import { Comment } from 'types/interfaces';
+import { ApiErrorData, isLoggedIn } from 'utils/api';
 
 export type ApiCommentPayload = Omit<Comment, '_id'>;
 

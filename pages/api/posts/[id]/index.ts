@@ -1,11 +1,9 @@
-import { NextApiRequest, NextApiResponse } from 'next';
 import jwtDecode from 'jwt-decode';
-import { ApiErrorData, isLoggedIn } from 'utils/api';
+import { DeleteResult, ObjectId, UpdateResult } from 'mongodb';
+import { NextApiRequest, NextApiResponse } from 'next';
+import Database, { CollectionName } from 'server/database';
 import { Post, User } from 'types/interfaces';
-import Database from 'server/database';
-import { CollectionName } from 'server/database';
-import { DeleteResult, ObjectId } from 'mongodb';
-import { UpdateResult } from 'mongodb';
+import { ApiErrorData, isLoggedIn } from 'utils/api';
 
 export type ApiPutPostPayload = Omit<
   Post,

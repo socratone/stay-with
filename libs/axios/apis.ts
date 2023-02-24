@@ -1,11 +1,12 @@
 import { AxiosResponse } from 'axios';
-import axiosInstance from './instance';
-import { ApiLikedPayload } from 'pages/api/posts/[id]/likeds/index';
-import { ApiGetPostData, ApiPutPostPayload } from 'pages/api/posts/[id]';
-import { ApiPostPayload, ApiPostsData } from 'pages/api/posts';
 import { ApiLoginData, ApiLoginPayload } from 'pages/api/login';
-import { ApiSignUpData, ApiSignUpPayload } from 'pages/api/signup';
+import { ApiPostPayload, ApiPostsData } from 'pages/api/posts';
+import { ApiGetPostData, ApiPutPostPayload } from 'pages/api/posts/[id]';
 import { ApiCommentPayload } from 'pages/api/posts/[id]/comments';
+import { ApiLikedPayload } from 'pages/api/posts/[id]/likeds/index';
+import { ApiSignUpData, ApiSignUpPayload } from 'pages/api/signup';
+
+import axiosInstance from './instance';
 
 export const postSignUp = (
   payload: ApiSignUpPayload

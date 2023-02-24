@@ -1,8 +1,8 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { ApiErrorData, isLoggedIn } from 'utils/api';
-import { Post } from 'types/interfaces';
-import Database, { CollectionName } from 'server/database';
 import { ObjectId, UpdateResult } from 'mongodb';
+import { NextApiRequest, NextApiResponse } from 'next';
+import Database, { CollectionName } from 'server/database';
+import { Post } from 'types/interfaces';
+import { ApiErrorData, isLoggedIn } from 'utils/api';
 
 type ApiDeleteCommentResultData = UpdateResult;
 

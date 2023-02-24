@@ -1,4 +1,4 @@
-import { GetPostsParams, getPosts } from 'libs/axios/apis';
+import { getPosts, GetPostsParams } from 'libs/axios/apis';
 import { useQuery } from 'react-query';
 
 const usePosts = (params?: GetPostsParams) => {
