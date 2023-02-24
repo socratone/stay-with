@@ -1,0 +1,11 @@
+{
+  // eslint에 따라 auto fix
+  "editor.codeActionsOnSave": {
+    "source.fixAll": false,
+    "source.fixAll.eslint": true,
+    "source.fixAll.tslint": false,
+    "source.fixAll.stylelint": false
+  },
+  "editor.formatOnSave": true,
+  "files.insertFinalNewline": true
+}
