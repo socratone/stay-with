@@ -7,12 +7,6 @@ export type ApiErrorData = {
 
 export const AUTH_SECRET = process.env.AUTH_SECRET as string;
 
-export const responseUnknownError = (res: NextApiResponse) => {
-  res.status(500).json({
-    message: 'An unknown error has occurred.',
-  });
-};
-
 export const isLoggedIn = (accessToken?: string) => {
   try {
     jwt.verify(accessToken ?? '', AUTH_SECRET);
