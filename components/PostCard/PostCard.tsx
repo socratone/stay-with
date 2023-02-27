@@ -81,7 +81,7 @@ const PostCard: React.FC<PostCardProps> = ({
       return `${bibleLabel[bible]} ${chapter[0]},${verse[0]}-${verse[1]}`;
     }
 
-    return `${bibleLabel[bible]} ${chapter[0]},${verse[0]}-${chapter[1]},${chapter[1]}`;
+    return `${bibleLabel[bible]} ${chapter[0]},${verse[0]}-${chapter[1]},${verse[1]}`;
   };
 
   return (
