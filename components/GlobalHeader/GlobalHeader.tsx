@@ -12,11 +12,13 @@ import SmallMenu from 'components/SmallMenu';
 import useAuth from 'hooks/context/useAuth';
 import useColorMode from 'hooks/context/useColorMode';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { PRIMARY_SHADOW } from 'theme/shadows';
 
 import GlobalHeaderDrawer from './GlobalHeaderDrawer';
 import HeaderLink from './HeaderLink';
+
+export const GLOBAL_HEADER_HEIGHT = 50;
 
 const GlobalHeader = () => {
   const router = useRouter();
@@ -54,7 +56,7 @@ const GlobalHeader = () => {
         display="flex"
         justifyContent="space-between"
         boxShadow={PRIMARY_SHADOW}
-        height={50}
+        height={GLOBAL_HEADER_HEIGHT}
         px={2}
         sx={{
           position: 'sticky',

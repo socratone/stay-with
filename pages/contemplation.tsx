@@ -4,13 +4,12 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
-import Paper from '@mui/material/Paper';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { Container } from '@mui/system';
 import AccessDeniedMessage from 'components/AccessDeniedMessage';
 import GlobalHeader from 'components/GlobalHeader';
+import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/GlobalHeader';
 import LoginMessage from 'components/LoginMessage';
 import { Bible, bibleOptions } from 'constants/bible';
 import useAuth from 'hooks/context/useAuth';
@@ -23,6 +22,7 @@ import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Database, { CollectionName } from 'server/database';
+import { PRIMARY_SHADOW } from 'theme/shadows';
 import { Post } from 'types/interfaces';
 
 interface FormInput {
@@ -230,54 +230,58 @@ const Contemplation: NextPage<ContemplationProps> = ({
 
       <GlobalHeader />
 
-      <Container component="main" maxWidth="lg">
+      <Box
+        component="main"
+        sx={{
+          height: {
+            xs: 'unset',
+            sm: 'unset',
+            md: `calc(100vh - ${GLOBAL_HEADER_HEIGHT}px)`,
+          },
+        }}
+      >
         <Box
           display="grid"
-          gap={2}
           gridTemplateColumns={{
+            xs: '1fr',
             sm: '1fr',
             md: '1fr 1fr',
           }}
-          py={2}
+          height="100%"
         >
-          <Box display="flex" flexDirection="column" gap={2}>
-            <Paper sx={{ borderRadius: 6, p: 2 }}>
-              <Typography
-                variant="h5"
-                fontWeight={600}
-                color="text.primary"
-                gutterBottom
-              >
-                오늘의 말씀
-              </Typography>
-
-              <Typography
-                color="text.secondary"
-                sx={{ whiteSpace: 'pre-line' }}
-              >
-                {`1 내가 인간의 여러 언어와 천사의 언어로 말한다 하여도 나에게 사랑이 없으면 나는 요란한 징이나 소란한 꽹과리에 지나지 않습니다. 
-                  2 내가 예언하는 능력이 있고 모든 신비와 모든 지식을 깨닫고 산을 옮길 수 있는 큰 믿음이 있다 하여도 나에게 사랑이 없으면 나는 아무것도 아닙니다. 
-                  3 내가 모든 재산을 나누어 주고 내 몸까지 자랑스레 넘겨준다 하여도 나에게 사랑이 없으면 나에게는 아무 소용이 없습니다. 
-                  4 사랑은 참고 기다립니다. 사랑은 친절합니다. 사랑은 시기하지 않고 뽐내지 않으며 교만하지 않습니다. 
-                  5 사랑은 무례하지 않고 자기 이익을 추구하지 않으며 성을 내지 않고 앙심을 품지 않습니다. 
-                  6 사랑은 불의에 기뻐하지 않고 진실을 두고 함께 기뻐합니다. 
-                  7 사랑은 모든 것을 덮어 주고 모든 것을 믿으며 모든 것을 바라고 모든 것을 견디어 냅니다. 
-                  8 사랑은 언제까지나 스러지지 않습니다. 예언도 없어지고 신령한 언어도 그치고 지식도 없어집니다.`}
-              </Typography>
-            </Paper>
+          {/* left */}
+          <Box>
+            <Box
+              component="iframe"
+              src="https://missa.cbck.or.kr/DailyMissa"
+              sx={{
+                border: 0,
+                width: '100%',
+                height: { xs: '50vh', sm: '50vh', md: '100%' },
+                display: 'block',
+              }}
+            />
           </Box>
 
+          {/* right */}
           <Box
             component="form"
             display="flex"
             flexDirection="column"
             gap={2}
             onSubmit={handleSubmit(onSubmit)}
-            pb={20}
+            sx={{
+              height: '100%',
+              overflowY: 'auto',
+              boxShadow: {
+                xs: PRIMARY_SHADOW,
+                sm: PRIMARY_SHADOW,
+                md: 'unset',
+              },
+            }}
           >
-            <Paper
+            <Box
               sx={{
-                borderRadius: 6,
                 p: 2,
                 display: 'flex',
                 flexDirection: 'column',
@@ -433,19 +437,23 @@ const Contemplation: NextPage<ContemplationProps> = ({
                   error={!!errors.content}
                 />
               </Box>
-            </Paper>
 
-            <Box display="flex" justifyContent="flex-end" gap={1}>
-              <Button variant="outlined" onClick={handleCancel}>
-                취소
-              </Button>
-              <Button type="submit" variant="contained" disabled={isRequested}>
-                저장
-              </Button>
+              <Box display="flex" justifyContent="flex-end" gap={1}>
+                <Button variant="outlined" onClick={handleCancel}>
+                  취소
+                </Button>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  disabled={isRequested}
+                >
+                  저장
+                </Button>
+              </Box>
             </Box>
           </Box>
         </Box>
-      </Container>
+      </Box>
     </>
   );
 };
