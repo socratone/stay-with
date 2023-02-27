@@ -11,7 +11,7 @@ import useAuth from 'hooks/context/useAuth';
 import { postLogin, postSignUp } from 'libs/axios/apis';
 import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { User } from 'types/interfaces';
 
@@ -88,7 +88,10 @@ const SignUp: NextPage<SignUpProps> = ({
     }
   };
 
-  const handleImageCheckedChange = (_: any, checked: boolean) => {
+  const handleImageCheckedChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    checked: boolean
+  ) => {
     setImageChecked(checked);
   };
 

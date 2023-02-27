@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Database, { CollectionName } from 'server/database';
 import { User } from 'types/interfaces';
-import { ApiErrorData, AUTH_SECRET } from 'utils/api';
+import { ApiErrorData } from 'utils/api';
 
 export type ApiLoginPayload = {
   googleAccessToken: string;
@@ -58,7 +58,7 @@ const handler = async (
         });
       }
 
-      const accessToken = jwt.sign(user, AUTH_SECRET, {
+      const accessToken = jwt.sign(user, process.env.AUTH_SECRET as string, {
         expiresIn: '1 days',
       });
 
