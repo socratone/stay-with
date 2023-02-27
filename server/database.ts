@@ -16,9 +16,8 @@ export enum CollectionName {
   Posts = 'posts',
 }
 
-const URI =
-  'mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.7.0';
-const DATABASE_NAME = 'test';
+const MONGO_CLIENT_URL = process.env.MONGO_CLIENT_URL as string;
+const DB_NAME = 'mmm-database';
 
 type FindParams = {
   filter?: Filter<Document>;
@@ -45,7 +44,7 @@ class Database {
   client: MongoClient;
 
   constructor() {
-    this.client = new MongoClient(URI); // Create a new MongoClient
+    this.client = new MongoClient(MONGO_CLIENT_URL); // Create a new MongoClient
   }
 
   private async close() {
@@ -79,7 +78,7 @@ class Database {
     params?: FindParams
   ): Promise<T> {
     try {
-      const database = this.client.db(DATABASE_NAME);
+      const database = this.client.db(DB_NAME);
       const collection = database.collection(collectionName);
       const cursor = collection.find(params?.filter ?? {}, params?.options);
       const documents: any = [];
@@ -97,7 +96,7 @@ class Database {
   // https://www.mongodb.com/docs/drivers/node/current/usage-examples/findOne/
   async findOne<T>(collectionName: CollectionName, filter: Filter<Document>) {
     try {
-      const database = this.client.db(DATABASE_NAME);
+      const database = this.client.db(DB_NAME);
       const collection = database.collection(collectionName);
       return (await collection.findOne(filter)) as T | null;
     } catch (error: any) {
@@ -113,7 +112,7 @@ class Database {
     params?: AggregateParams
   ) {
     try {
-      const database = this.client.db(DATABASE_NAME);
+      const database = this.client.db(DB_NAME);
       const collection = database.collection(collectionName);
       const cursor = collection.aggregate(pipeline, params?.options);
       const documents: any = [];
@@ -136,7 +135,7 @@ class Database {
     params?: UpdateOneParams
   ) {
     try {
-      const database = this.client.db(DATABASE_NAME);
+      const database = this.client.db(DB_NAME);
       const collection = database.collection(collectionName);
       return await collection.updateOne(filter, update, params?.options);
     } catch (error: any) {
@@ -152,7 +151,7 @@ class Database {
     params?: DeleteOneParams
   ) {
     try {
-      const database = this.client.db(DATABASE_NAME);
+      const database = this.client.db(DB_NAME);
       const collection = database.collection(collectionName);
       return await collection.deleteOne(filter, params?.options);
     } catch (error: any) {
@@ -169,7 +168,7 @@ class Database {
     const options = params?.options;
 
     try {
-      const database = this.client.db(DATABASE_NAME);
+      const database = this.client.db(DB_NAME);
       const collection = database.collection(collectionName);
       return await collection.estimatedDocumentCount(options);
     } catch (error: any) {
@@ -185,7 +184,7 @@ class Database {
     document: OptionalId<Document>
   ) {
     try {
-      const database = this.client.db(DATABASE_NAME);
+      const database = this.client.db(DB_NAME);
       const collection = database.collection(collectionName);
       return await collection.insertOne(document);
     } catch (error: any) {
