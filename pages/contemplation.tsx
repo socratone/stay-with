@@ -20,7 +20,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import Database, { CollectionName } from 'server/database';
 import { PRIMARY_SHADOW } from 'theme/shadows';
 import { Post } from 'types/interfaces';
@@ -107,6 +107,7 @@ const Contemplation: NextPage<ContemplationProps> = ({
   const { user, logout } = useAuth();
 
   const {
+    control,
     register,
     handleSubmit,
     getValues,
@@ -309,20 +310,24 @@ const Contemplation: NextPage<ContemplationProps> = ({
                 gap={1.5}
               >
                 <Box>
-                  <Select
-                    {...register('bible', {
-                      required: true,
-                    })}
-                    size="small"
-                    defaultValue={Bible.Genesis}
-                    fullWidth
-                  >
-                    {bibleOptions.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                  <Controller
+                    control={control}
+                    name="bible"
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        size="small"
+                        defaultValue={Bible.Genesis}
+                        fullWidth
+                      >
+                        {bibleOptions.map((option) => (
+                          <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    )}
+                  />
                 </Box>
                 <Box>
                   <TextField
