@@ -69,16 +69,16 @@ export const getServerSideProps: GetServerSideProps<
       let defaultValues: FormInput = {
         phrase: post.phrase,
         bible: post.bible,
-        startedChapter: String(post.startedChapter),
-        startedVerse: String(post.startedVerse),
+        startedChapter: String(post.chapter[0]),
+        startedVerse: String(post.verse[0]),
         content: post.content,
       };
 
-      if (post.endedChapter && post.endedVerse) {
+      if (post.chapter[1] && post.verse[1]) {
         defaultValues = {
           ...defaultValues,
-          endedChapter: String(post.endedChapter),
-          endedVerse: String(post.endedVerse),
+          endedChapter: String(post.chapter[1]),
+          endedVerse: String(post.verse[1]),
         };
       }
 
@@ -147,10 +147,11 @@ const Contemplation: NextPage<ContemplationProps> = ({
         bible,
         content,
         phrase,
-        startedChapter: Number(startedChapter),
-        startedVerse: Number(startedVerse),
-        endedChapter: endedChapter ? Number(endedChapter) : 0,
-        endedVerse: endedVerse ? Number(endedVerse) : 0,
+        chapter: [
+          Number(startedChapter),
+          endedChapter ? Number(endedChapter) : 0,
+        ],
+        verse: [Number(startedVerse), endedVerse ? Number(endedVerse) : 0],
         updatedAt: now,
       };
 

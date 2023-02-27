@@ -27,6 +27,7 @@ interface PostsProps {
 
 const PAGE_COUNT = 10;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
@@ -156,10 +157,8 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
               profileImage={post.user.image}
               phrase={post.phrase}
               bible={post.bible}
-              startedChapter={post.startedChapter}
-              startedVerse={post.startedVerse}
-              endedChapter={post.endedChapter}
-              endedVerse={post.endedVerse}
+              chapter={post.chapter}
+              verse={post.verse}
               content={post.content}
               isMine={post.user._id === user?._id}
               isLiked={!!post.likedUserIds.find((id) => id === user?._id)}
@@ -203,10 +202,8 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
               profileImage={post.user.image}
               phrase={post.phrase}
               bible={post.bible}
-              startedChapter={post.startedChapter}
-              startedVerse={post.startedVerse}
-              endedChapter={post.endedChapter}
-              endedVerse={post.endedVerse}
+              chapter={post.chapter}
+              verse={post.verse}
               content={post.content}
               isMine={post.user.email === user?.email}
               isLiked={!!post.likedUserIds.find((id) => id === user?._id)}
