@@ -1,17 +1,17 @@
 import { ObjectId, UpdateResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Database, { CollectionName } from 'server/database';
-import { Post } from 'types/interfaces';
 import { ApiErrorData, isLoggedIn } from 'utils/api';
 
-type ApiDeleteCommentResultData = UpdateResult;
+type ApiDeleteLikedResultData = UpdateResult;
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<ApiDeleteCommentResultData | ApiErrorData>
+  res: NextApiResponse<ApiDeleteLikedResultData | ApiErrorData>
 ) => {
   const id = String(req.query.id);
-  const commentId = String(req.query.commentId);
+  const userId = String(req.query.userId);
+
   const accessToken = req.headers.authorization;
 
   if (!isLoggedIn(accessToken)) {
@@ -20,27 +20,18 @@ const handler = async (
     });
   }
 
-  const db = new Database();
-
   if (req.method === 'DELETE') {
+    const db = new Database();
+
     try {
-      const post = await db.findOne<Post>(CollectionName.Posts, {
-        _id: new ObjectId(id),
-      });
-
-      if (!post) {
-        return res.status(404).json({ message: 'Not found.' });
-      }
-
-      const comment = post.comments.find(
-        (comment) => String(comment._id) === commentId
-      );
-
       const result = await db.updateOne(
-        CollectionName.Posts,
+        CollectionName.LexioDivinas,
         { _id: new ObjectId(id) },
         {
-          $pull: { comments: comment },
+          // https://www.mongodb.com/docs/manual/reference/operator/update/pull/#-pull
+          $pull: {
+            likedUserIds: new ObjectId(userId),
+          },
         }
       );
       return res.status(200).json(result);

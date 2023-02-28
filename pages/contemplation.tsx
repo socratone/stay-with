@@ -13,7 +13,7 @@ import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/GlobalHeader';
 import LoginMessage from 'components/LoginMessage';
 import { Bible, bibleOptions } from 'constants/bible';
 import useAuth from 'hooks/context/useAuth';
-import { postPost, putPost } from 'libs/axios/apis';
+import { postLexioDivina, putLexioDivina } from 'libs/axios/apis';
 import { ObjectId } from 'mongodb';
 import type { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
@@ -23,7 +23,7 @@ import { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import Database, { CollectionName } from 'server/database';
 import { PRIMARY_SHADOW } from 'theme/shadows';
-import { Post } from 'types/interfaces';
+import { LexioDivina } from 'types/interfaces';
 
 interface FormInput {
   phrase: string;
@@ -36,7 +36,7 @@ interface FormInput {
 }
 
 interface ContemplationProps {
-  postUserId?: string;
+  lexioDivinaUserId?: string;
   defaultValues?: FormInput;
 }
 
@@ -56,35 +56,38 @@ export const getServerSideProps: GetServerSideProps<
     // 수정하는 경우
     if (typeof id === 'string') {
       const db = new Database();
-      const post = await db.findOne<Post>(CollectionName.Posts, {
-        _id: new ObjectId(id),
-      });
+      const lexioDivina = await db.findOne<LexioDivina>(
+        CollectionName.LexioDivinas,
+        {
+          _id: new ObjectId(id),
+        }
+      );
 
-      if (!post) {
+      if (!lexioDivina) {
         return {
           notFound: true,
         };
       }
 
       let defaultValues: FormInput = {
-        phrase: post.phrase,
-        bible: post.bible,
-        chapter: String(post.chapter),
-        verse: String(post.verse),
-        content: post.content,
+        phrase: lexioDivina.phrase,
+        bible: lexioDivina.bible,
+        chapter: String(lexioDivina.chapter),
+        verse: String(lexioDivina.verse),
+        content: lexioDivina.content,
       };
 
-      if (post.endChapter && post.endVerse) {
+      if (lexioDivina.endChapter && lexioDivina.endVerse) {
         defaultValues = {
           ...defaultValues,
-          endChapter: String(post.endChapter),
-          endVerse: String(post.endVerse),
+          endChapter: String(lexioDivina.endChapter),
+          endVerse: String(lexioDivina.endVerse),
         };
       }
 
       return {
         props: {
-          postUserId: String(post.userId),
+          lexioDivinaUserId: String(lexioDivina.userId),
           defaultValues,
         },
       };
@@ -99,7 +102,7 @@ export const getServerSideProps: GetServerSideProps<
 };
 
 const Contemplation: NextPage<ContemplationProps> = ({
-  postUserId,
+  lexioDivinaUserId,
   defaultValues,
 }) => {
   const router = useRouter();
@@ -156,9 +159,9 @@ const Contemplation: NextPage<ContemplationProps> = ({
       };
 
       if (typeof id === 'string') {
-        await putPost(id, payload);
+        await putLexioDivina(id, payload);
       } else {
-        await postPost({
+        await postLexioDivina({
           ...payload,
           userId: user._id,
           createdAt: now,
@@ -208,7 +211,7 @@ const Contemplation: NextPage<ContemplationProps> = ({
   }
 
   // 사용자가 작성한 글이 아닌 경우
-  if (postUserId && postUserId !== user._id) {
+  if (lexioDivinaUserId && lexioDivinaUserId !== user._id) {
     return (
       <Box
         display="flex"

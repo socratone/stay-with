@@ -14,7 +14,7 @@ import { Bible, bibleLabel } from 'constants/bible';
 import { useState } from 'react';
 import { PRIMARY_SHADOW } from 'theme/shadows';
 
-interface PostCardProps {
+interface LexioDivinaCardProps {
   name: string;
   profileImage?: string;
   phrase: string;
@@ -35,7 +35,7 @@ interface PostCardProps {
   onUserClick: () => void;
 }
 
-const PostCard: React.FC<PostCardProps> = ({
+const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
   name,
   profileImage,
   phrase,
@@ -174,4 +174,4 @@ const PostCard: React.FC<PostCardProps> = ({
   );
 };
 
-export default PostCard;
+export default LexioDivinaCard;

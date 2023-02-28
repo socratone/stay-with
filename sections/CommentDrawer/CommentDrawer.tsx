@@ -8,9 +8,12 @@ import TextField from '@mui/material/TextField';
 import AlertDialog from 'components/AlertDialog';
 import ErrorMessage from 'components/ErrorMessage';
 import LoadingCircular from 'components/LoadingCircular';
-import usePost from 'hooks/api/usePost';
+import useLexioDivina from 'hooks/api/useLexioDivina';
 import useAuth from 'hooks/context/useAuth';
-import { deleteCommentInPost, postCommentToPost } from 'libs/axios/apis';
+import {
+  deleteCommentInLexioDivina,
+  postCommentToLexioDivina,
+} from 'libs/axios/apis';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
@@ -19,20 +22,21 @@ import CommentItem from './CommentItem';
 
 interface CommentDrawerProps {
   open: boolean;
-  postId?: string;
+  id?: string;
   onClose: () => void;
 }
 
-const CommentDrawer: React.FC<CommentDrawerProps> = ({
-  open,
-  postId,
-  onClose,
-}) => {
+const CommentDrawer: React.FC<CommentDrawerProps> = ({ open, id, onClose }) => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const { user, logout } = useAuth();
-  const { data: postData, isError, isLoading, refetch } = usePost(postId);
-  const comments = postData?.comments ?? [];
+  const {
+    data: lexioDivinaData,
+    isError,
+    isLoading,
+    refetch,
+  } = useLexioDivina(id);
+  const comments = lexioDivinaData?.comments ?? [];
 
   const [commentValue, setCommentValue] = useState('');
   const [selectedCommentId, setSelectedCommentId] = useState<string | null>(
@@ -47,9 +51,9 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({
   };
 
   const handleCommentDelete = async () => {
-    if (!postId || !user || !selectedCommentIdForDelete) return;
+    if (!id || !user || !selectedCommentIdForDelete) return;
     try {
-      await deleteCommentInPost(postId, selectedCommentIdForDelete);
+      await deleteCommentInLexioDivina(id, selectedCommentIdForDelete);
       refetch();
       setSelectedCommentIdForDelete(null);
       setSelectedCommentId(null);
@@ -67,14 +71,14 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({
   };
 
   const handleCommentSend = async () => {
-    if (!postId || !user) return;
+    if (!id || !user) return;
     const trimedComment = commentValue.trim();
     if (trimedComment.length === 0) return;
     setCommentValue('');
 
     try {
       const now = new Date().getTime();
-      await postCommentToPost(postId, {
+      await postCommentToLexioDivina(id, {
         userId: user._id,
         message: trimedComment,
         createdAt: now,

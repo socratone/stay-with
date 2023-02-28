@@ -13,7 +13,7 @@ import {
 
 export enum CollectionName {
   Users = 'users',
-  Posts = 'posts',
+  LexioDivinas = 'lexio-divinas',
 }
 
 const MONGO_CLIENT_URL = process.env.MONGO_CLIENT_URL as string;

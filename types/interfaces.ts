@@ -15,7 +15,7 @@ export interface Comment {
   createdAt: number;
 }
 
-export interface Post {
+export interface LexioDivina {
   _id: string;
   bible: Bible;
   content: string;
