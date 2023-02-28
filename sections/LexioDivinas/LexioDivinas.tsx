@@ -180,7 +180,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
         </Masonry>
 
         <Box display="flex" justifyContent="center">
-          {lexioDivinasData?.total === 0 ? null : (
+          {lexioDivinasData?.total ?? 0 <= PAGE_COUNT ? null : (
             <Pagination
               page={page}
               onChange={(_, page) => setPage(page)}
@@ -231,7 +231,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
         ))}
 
         <Box display="flex" justifyContent="center">
-          {lexioDivinasData?.total === 0 ? null : (
+          {lexioDivinasData?.total ?? 0 <= PAGE_COUNT ? null : (
             <Pagination
               page={page}
               onChange={(_, page) => setPage(page)}
