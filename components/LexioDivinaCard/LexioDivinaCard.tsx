@@ -14,13 +14,15 @@ import { Bible, bibleLabel } from 'constants/bible';
 import { useState } from 'react';
 import { PRIMARY_SHADOW } from 'theme/shadows';
 
-interface PostCardProps {
+interface LexioDivinaCardProps {
   name: string;
   profileImage?: string;
   phrase: string;
   bible: Bible;
-  chapter: number[];
-  verse: number[];
+  chapter: number;
+  verse: number;
+  endChapter: number;
+  endVerse: number;
   content: string;
   isLiked: boolean;
   isMine: boolean;
@@ -33,13 +35,15 @@ interface PostCardProps {
   onUserClick: () => void;
 }
 
-const PostCard: React.FC<PostCardProps> = ({
+const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
   name,
   profileImage,
   phrase,
   bible,
   chapter,
   verse,
+  endChapter,
+  endVerse,
   content,
   isLiked,
   isMine,
@@ -73,15 +77,15 @@ const PostCard: React.FC<PostCardProps> = ({
   };
 
   const getChipLabel = () => {
-    if (!chapter[1] && !verse[1]) {
-      return `${bibleLabel[bible]} ${chapter[0]},${verse[0]}`;
+    if (!endChapter && !endVerse) {
+      return `${bibleLabel[bible]} ${chapter},${verse}`;
     }
 
-    if (chapter[0] === chapter[1]) {
-      return `${bibleLabel[bible]} ${chapter[0]},${verse[0]}-${verse[1]}`;
+    if (chapter === endChapter) {
+      return `${bibleLabel[bible]} ${chapter},${verse}-${endVerse}`;
     }
 
-    return `${bibleLabel[bible]} ${chapter[0]},${verse[0]}-${chapter[1]},${verse[1]}`;
+    return `${bibleLabel[bible]} ${chapter},${verse}-${endChapter},${endVerse}`;
   };
 
   return (
@@ -170,4 +174,4 @@ const PostCard: React.FC<PostCardProps> = ({
   );
 };
 
-export default PostCard;
+export default LexioDivinaCard;

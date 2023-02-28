@@ -15,13 +15,15 @@ export interface Comment {
   createdAt: number;
 }
 
-export interface Post {
+export interface LexioDivina {
   _id: string;
   bible: Bible;
   content: string;
   phrase: string;
-  chapter: number[];
-  verse: number[];
+  chapter: number;
+  verse: number;
+  endChapter: number;
+  endVerse: number;
   updatedAt: number;
   userId: string;
   createdAt: number;

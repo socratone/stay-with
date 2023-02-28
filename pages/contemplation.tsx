@@ -13,7 +13,7 @@ import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/GlobalHeader';
 import LoginMessage from 'components/LoginMessage';
 import { Bible, bibleOptions } from 'constants/bible';
 import useAuth from 'hooks/context/useAuth';
-import { postPost, putPost } from 'libs/axios/apis';
+import { postLexioDivina, putLexioDivina } from 'libs/axios/apis';
 import { ObjectId } from 'mongodb';
 import type { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
@@ -23,20 +23,20 @@ import { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import Database, { CollectionName } from 'server/database';
 import { PRIMARY_SHADOW } from 'theme/shadows';
-import { Post } from 'types/interfaces';
+import { LexioDivina } from 'types/interfaces';
 
 interface FormInput {
   phrase: string;
   bible: Bible;
-  startedChapter: string;
-  startedVerse: string;
-  endedChapter?: string;
-  endedVerse?: string;
+  chapter: string;
+  verse: string;
+  endChapter?: string;
+  endVerse?: string;
   content: string;
 }
 
 interface ContemplationProps {
-  postUserId?: string;
+  lexioDivinaUserId?: string;
   defaultValues?: FormInput;
 }
 
@@ -56,35 +56,38 @@ export const getServerSideProps: GetServerSideProps<
     // 수정하는 경우
     if (typeof id === 'string') {
       const db = new Database();
-      const post = await db.findOne<Post>(CollectionName.Posts, {
-        _id: new ObjectId(id),
-      });
+      const lexioDivina = await db.findOne<LexioDivina>(
+        CollectionName.LexioDivinas,
+        {
+          _id: new ObjectId(id),
+        }
+      );
 
-      if (!post) {
+      if (!lexioDivina) {
         return {
           notFound: true,
         };
       }
 
       let defaultValues: FormInput = {
-        phrase: post.phrase,
-        bible: post.bible,
-        startedChapter: String(post.chapter[0]),
-        startedVerse: String(post.verse[0]),
-        content: post.content,
+        phrase: lexioDivina.phrase,
+        bible: lexioDivina.bible,
+        chapter: String(lexioDivina.chapter),
+        verse: String(lexioDivina.verse),
+        content: lexioDivina.content,
       };
 
-      if (post.chapter[1] && post.verse[1]) {
+      if (lexioDivina.endChapter && lexioDivina.endVerse) {
         defaultValues = {
           ...defaultValues,
-          endedChapter: String(post.chapter[1]),
-          endedVerse: String(post.verse[1]),
+          endChapter: String(lexioDivina.endChapter),
+          endVerse: String(lexioDivina.endVerse),
         };
       }
 
       return {
         props: {
-          postUserId: String(post.userId),
+          lexioDivinaUserId: String(lexioDivina.userId),
           defaultValues,
         },
       };
@@ -99,7 +102,7 @@ export const getServerSideProps: GetServerSideProps<
 };
 
 const Contemplation: NextPage<ContemplationProps> = ({
-  postUserId,
+  lexioDivinaUserId,
   defaultValues,
 }) => {
   const router = useRouter();
@@ -122,7 +125,7 @@ const Contemplation: NextPage<ContemplationProps> = ({
   });
 
   const [isRequested, setIsRequested] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(!!defaultValues?.endedChapter);
+  const [isExpanded, setIsExpanded] = useState(!!defaultValues?.endChapter);
 
   const handleCancel = () => {
     router.back();
@@ -132,10 +135,10 @@ const Contemplation: NextPage<ContemplationProps> = ({
     bible,
     content,
     phrase,
-    startedChapter,
-    startedVerse,
-    endedChapter,
-    endedVerse,
+    chapter,
+    verse,
+    endChapter,
+    endVerse,
   }) => {
     if (!user) return;
 
@@ -148,18 +151,17 @@ const Contemplation: NextPage<ContemplationProps> = ({
         bible,
         content,
         phrase,
-        chapter: [
-          Number(startedChapter),
-          endedChapter ? Number(endedChapter) : 0,
-        ],
-        verse: [Number(startedVerse), endedVerse ? Number(endedVerse) : 0],
+        chapter: Number(chapter),
+        verse: Number(verse),
+        endChapter: endChapter ? Number(endChapter) : 0,
+        endVerse: endVerse ? Number(endVerse) : 0,
         updatedAt: now,
       };
 
       if (typeof id === 'string') {
-        await putPost(id, payload);
+        await putLexioDivina(id, payload);
       } else {
-        await postPost({
+        await postLexioDivina({
           ...payload,
           userId: user._id,
           createdAt: now,
@@ -190,8 +192,8 @@ const Contemplation: NextPage<ContemplationProps> = ({
 
   const handleClickMinusButton = () => {
     setIsExpanded(false);
-    setValue('endedChapter', '');
-    setValue('endedVerse', '');
+    setValue('endChapter', '');
+    setValue('endVerse', '');
   };
 
   // 로그인을 하지 않았을 경우
@@ -209,7 +211,7 @@ const Contemplation: NextPage<ContemplationProps> = ({
   }
 
   // 사용자가 작성한 글이 아닌 경우
-  if (postUserId && postUserId !== user._id) {
+  if (lexioDivinaUserId && lexioDivinaUserId !== user._id) {
     return (
       <Box
         display="flex"
@@ -331,7 +333,7 @@ const Contemplation: NextPage<ContemplationProps> = ({
                 </Box>
                 <Box>
                   <TextField
-                    {...register('startedChapter', {
+                    {...register('chapter', {
                       required: true,
                       validate: {
                         moreThanOne: (value) => Number(value) > 0,
@@ -341,12 +343,12 @@ const Contemplation: NextPage<ContemplationProps> = ({
                     placeholder="장"
                     fullWidth
                     type="number"
-                    error={!!errors.startedChapter}
+                    error={!!errors.chapter}
                   />
                 </Box>
                 <Box>
                   <TextField
-                    {...register('startedVerse', {
+                    {...register('verse', {
                       required: true,
                       validate: {
                         moreThanOne: (value) => Number(value) > 0,
@@ -356,7 +358,7 @@ const Contemplation: NextPage<ContemplationProps> = ({
                     placeholder="절"
                     fullWidth
                     type="number"
-                    error={!!errors.startedVerse}
+                    error={!!errors.verse}
                   />
                 </Box>
                 <Box ml={-1.5} alignSelf="center">
@@ -380,45 +382,44 @@ const Contemplation: NextPage<ContemplationProps> = ({
                     </Box>
                     <Box>
                       <TextField
-                        {...register('endedChapter', {
+                        {...register('endChapter', {
                           validate: {
                             onlyPlus: (value) => !value || Number(value) >= 1,
-                            moreThanStartedChapter: (value) =>
+                            moreThanStartChapter: (value) =>
                               !value ||
-                              Number(value) >=
-                                Number(getValues('startedChapter')),
+                              Number(value) >= Number(getValues('chapter')),
                             haveBoth: (value) =>
-                              (!!value && !!getValues('endedVerse')) ||
-                              (!value && !getValues('endedVerse')),
+                              (!!value && !!getValues('endVerse')) ||
+                              (!value && !getValues('endVerse')),
                           },
                         })}
                         size="small"
                         placeholder="장"
                         fullWidth
                         type="number"
-                        error={!!errors.endedChapter}
+                        error={!!errors.endChapter}
                       />
                     </Box>
                     <Box>
                       <TextField
-                        {...register('endedVerse', {
+                        {...register('endVerse', {
                           validate: {
                             onlyPlus: (value) => !value || Number(value) >= 1,
                             moreThanStarted: (value) =>
                               !value ||
-                              Number(getValues('startedChapter')) <
-                                Number(getValues('endedChapter')) ||
-                              Number(value) > Number(getValues('startedVerse')),
+                              Number(getValues('chapter')) <
+                                Number(getValues('endChapter')) ||
+                              Number(value) > Number(getValues('verse')),
                             haveBoth: (value) =>
-                              (!!value && !!getValues('endedChapter')) ||
-                              (!value && !getValues('endedChapter')),
+                              (!!value && !!getValues('endChapter')) ||
+                              (!value && !getValues('endChapter')),
                           },
                         })}
                         size="small"
                         placeholder="절"
                         fullWidth
                         type="number"
-                        error={!!errors.endedVerse}
+                        error={!!errors.endVerse}
                       />
                     </Box>
                     <Box alignSelf="center">

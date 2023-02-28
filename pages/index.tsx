@@ -1,7 +1,7 @@
 import GlobalHeader from 'components/GlobalHeader';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import Posts from 'sections/Posts';
+import LexioDivinas from 'sections/LexioDivinas';
 
 const Home: NextPage = () => {
   return (
@@ -14,7 +14,7 @@ const Home: NextPage = () => {
 
       <GlobalHeader />
 
-      <Posts />
+      <LexioDivinas />
     </>
   );
 };

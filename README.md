@@ -4,22 +4,22 @@
 
 ## Apis
 
-- `/posts` GET 글 리스트 데이터
-- `/posts` POST 글 작성
-- `/posts/{id}` GET 글 데이터
-- `/posts/{id}` PUT 글 수정
-- `/posts/{id}` DELETE 글 삭제
-- `/posts/{id}/comments` POST 포스트의 댓글 작성
-- `/posts/{id}/comments/{id}` DELETE 포스트의 댓글 삭제
-- `/posts/{id}/likeds` POST 포스트의 좋아요 추가
-- `/posts/{id}/likeds/{id}` DELETE 포스트의 좋아요 삭제
+- `/lexio-divinas` GET 묵상글 리스트 데이터
+- `/lexio-divinas` POST 묵상글 작성
+- `/lexio-divinas/{id}` GET 묵상글 데이터
+- `/lexio-divinas/{id}` PUT 묵상글 수정
+- `/lexio-divinas/{id}` DELETE 묵상글 삭제
+- `/lexio-divinas/{id}/comments` POST 묵상글의 댓글 작성
+- `/lexio-divinas/{id}/comments/{id}` DELETE 묵상글의 댓글 삭제
+- `/lexio-divinas/{id}/likeds` POST 묵상글의 좋아요 추가
+- `/lexio-divinas/{id}/likeds/{id}` DELETE 묵상글의 좋아요 삭제
 - `/login` POST 사용자 로그인
 - `/signup` POST 사용자 등록
 
 ## Data Schema
 
 - `users` collection
-- `posts` collection
+- `lexio-divinas` collection
 
 ## Deployment
 

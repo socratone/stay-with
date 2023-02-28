@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import GlobalHeader from 'components/GlobalHeader';
 import { ObjectId } from 'mongodb';
 import { GetServerSideProps, NextPage } from 'next';
-import Posts from 'sections/Posts';
+import LexioDivinas from 'sections/LexioDivinas';
 import Database, { CollectionName } from 'server/database';
 import { User } from 'types/interfaces';
 
@@ -71,7 +71,7 @@ const UserId: NextPage<UserIdProps> = ({ user }) => {
         </Box>
       </Box>
 
-      <Posts
+      <LexioDivinas
         fetchOptions={{
           filter: {
             // TODO: id를 받아서 요청

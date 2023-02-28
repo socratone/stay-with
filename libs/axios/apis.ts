@@ -1,9 +1,15 @@
 import { AxiosResponse } from 'axios';
+import {
+  ApiLexioDivinaPayload,
+  ApiLexioDivinasData,
+} from 'pages/api/lexio-divinas';
+import {
+  ApiGetLexioDivinaData,
+  ApiPutLexioDivinaPayload,
+} from 'pages/api/lexio-divinas/[id]';
+import { ApiCommentPayload } from 'pages/api/lexio-divinas/[id]/comments';
+import { ApiLikedPayload } from 'pages/api/lexio-divinas/[id]/likeds/index';
 import { ApiLoginData, ApiLoginPayload } from 'pages/api/login';
-import { ApiPostPayload, ApiPostsData } from 'pages/api/posts';
-import { ApiGetPostData, ApiPutPostPayload } from 'pages/api/posts/[id]';
-import { ApiCommentPayload } from 'pages/api/posts/[id]/comments';
-import { ApiLikedPayload } from 'pages/api/posts/[id]/likeds/index';
 import { ApiSignUpData, ApiSignUpPayload } from 'pages/api/signup';
 
 import axiosInstance from './instance';
@@ -27,62 +33,73 @@ export const postLogin = (googleAccessToken: string): Promise<ApiLoginData> => {
     .then((response) => response.data);
 };
 
-export const postPost = (payload: ApiPostPayload) => {
-  return axiosInstance.post<any, AxiosResponse, ApiPostPayload>(
-    '/api/posts',
+export const postLexioDivina = (payload: ApiLexioDivinaPayload) => {
+  return axiosInstance.post<any, AxiosResponse, ApiLexioDivinaPayload>(
+    '/api/lexio-divinas',
     payload
   );
 };
 
-export const putPost = (id: string, payload: ApiPutPostPayload) => {
-  return axiosInstance.put<any, AxiosResponse, ApiPutPostPayload>(
-    `/api/posts/${id}`,
+export const putLexioDivina = (
+  id: string,
+  payload: ApiPutLexioDivinaPayload
+) => {
+  return axiosInstance.put<any, AxiosResponse, ApiPutLexioDivinaPayload>(
+    `/api/lexio-divinas/${id}`,
     payload
   );
 };
 
-export const deletePost = (id: string) => {
-  return axiosInstance.delete(`/api/posts/${id}`);
+export const deleteLexioDivina = (id: string) => {
+  return axiosInstance.delete(`/api/lexio-divinas/${id}`);
 };
 
-export const postLikedToPost = (id: string, payload: ApiLikedPayload) => {
+export const postLikedToLexioDivina = (
+  id: string,
+  payload: ApiLikedPayload
+) => {
   return axiosInstance.post<any, AxiosResponse, ApiLikedPayload>(
-    `/api/posts/${id}/likeds`,
+    `/api/lexio-divinas/${id}/likeds`,
     payload
   );
 };
 
-export const deleteLikedInPost = (id: string, userId: string) => {
-  return axiosInstance.delete(`/api/posts/${id}/likeds/${userId}`);
+export const deleteLikedInLexioDivina = (id: string, userId: string) => {
+  return axiosInstance.delete(`/api/lexio-divinas/${id}/likeds/${userId}`);
 };
 
-export const postCommentToPost = (id: string, payload: ApiCommentPayload) => {
+export const postCommentToLexioDivina = (
+  id: string,
+  payload: ApiCommentPayload
+) => {
   return axiosInstance.post<any, AxiosResponse, ApiCommentPayload>(
-    `/api/posts/${id}/comments`,
+    `/api/lexio-divinas/${id}/comments`,
     payload
   );
 };
 
-export const deleteCommentInPost = (id: string, commentId: string) => {
+export const deleteCommentInLexioDivina = (id: string, commentId: string) => {
   return axiosInstance.delete<any, AxiosResponse>(
-    `/api/posts/${id}/comments/${commentId}`
+    `/api/lexio-divinas/${id}/comments/${commentId}`
   );
 };
 
-export const getPost = (id: string): Promise<ApiGetPostData> => {
+export const getLexioDivina = (id: string): Promise<ApiGetLexioDivinaData> => {
   return axiosInstance
-    .get<any, AxiosResponse<ApiGetPostData>>(`/api/posts/${id}`)
+    .get<any, AxiosResponse<ApiGetLexioDivinaData>>(`/api/lexio-divinas/${id}`)
     .then((value) => value.data);
 };
 
-export type GetPostsParams = {
+export type GetLexioDivinasParams = {
   offset?: number;
   count?: number;
 };
 
-export const getPosts = (params?: GetPostsParams): Promise<ApiPostsData> => {
+export const getLexioDivinas = (
+  params?: GetLexioDivinasParams
+): Promise<ApiLexioDivinasData> => {
   return axiosInstance
-    .get<any, AxiosResponse<ApiPostsData>>('/api/posts', {
+    .get<any, AxiosResponse<ApiLexioDivinasData>>('/api/lexio-divinas', {
       params,
     })
     .then((value) => value.data);

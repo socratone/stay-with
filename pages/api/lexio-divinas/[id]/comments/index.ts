@@ -28,7 +28,7 @@ const handler = async (
 
     try {
       const result = await db.updateOne(
-        CollectionName.Posts,
+        CollectionName.LexioDivinas,
         { _id: new ObjectId(id) },
         {
           // https://www.mongodb.com/docs/manual/reference/operator/update/addToSet/
