@@ -20,8 +20,10 @@ export interface Post {
   bible: Bible;
   content: string;
   phrase: string;
-  chapter: number[];
-  verse: number[];
+  chapter: number;
+  verse: number;
+  endChapter: number;
+  endVerse: number;
   updatedAt: number;
   userId: string;
   createdAt: number;

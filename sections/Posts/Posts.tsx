@@ -159,6 +159,8 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
               bible={post.bible}
               chapter={post.chapter}
               verse={post.verse}
+              endChapter={post.endChapter}
+              endVerse={post.endVerse}
               content={post.content}
               isMine={post.user._id === user?._id}
               isLiked={!!post.likedUserIds.find((id) => id === user?._id)}
@@ -204,6 +206,8 @@ const Posts: React.FC<PostsProps> = ({ fetchOptions }) => {
               bible={post.bible}
               chapter={post.chapter}
               verse={post.verse}
+              endChapter={post.endChapter}
+              endVerse={post.endVerse}
               content={post.content}
               isMine={post.user.email === user?.email}
               isLiked={!!post.likedUserIds.find((id) => id === user?._id)}

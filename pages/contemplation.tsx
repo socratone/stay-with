@@ -28,10 +28,10 @@ import { Post } from 'types/interfaces';
 interface FormInput {
   phrase: string;
   bible: Bible;
-  startedChapter: string;
-  startedVerse: string;
-  endedChapter?: string;
-  endedVerse?: string;
+  chapter: string;
+  verse: string;
+  endChapter?: string;
+  endVerse?: string;
   content: string;
 }
 
@@ -69,16 +69,16 @@ export const getServerSideProps: GetServerSideProps<
       let defaultValues: FormInput = {
         phrase: post.phrase,
         bible: post.bible,
-        startedChapter: String(post.chapter[0]),
-        startedVerse: String(post.verse[0]),
+        chapter: String(post.chapter),
+        verse: String(post.verse),
         content: post.content,
       };
 
-      if (post.chapter[1] && post.verse[1]) {
+      if (post.endChapter && post.endVerse) {
         defaultValues = {
           ...defaultValues,
-          endedChapter: String(post.chapter[1]),
-          endedVerse: String(post.verse[1]),
+          endChapter: String(post.endChapter),
+          endVerse: String(post.endVerse),
         };
       }
 
@@ -122,7 +122,7 @@ const Contemplation: NextPage<ContemplationProps> = ({
   });
 
   const [isRequested, setIsRequested] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(!!defaultValues?.endedChapter);
+  const [isExpanded, setIsExpanded] = useState(!!defaultValues?.endChapter);
 
   const handleCancel = () => {
     router.back();
@@ -132,10 +132,10 @@ const Contemplation: NextPage<ContemplationProps> = ({
     bible,
     content,
     phrase,
-    startedChapter,
-    startedVerse,
-    endedChapter,
-    endedVerse,
+    chapter,
+    verse,
+    endChapter,
+    endVerse,
   }) => {
     if (!user) return;
 
@@ -148,11 +148,10 @@ const Contemplation: NextPage<ContemplationProps> = ({
         bible,
         content,
         phrase,
-        chapter: [
-          Number(startedChapter),
-          endedChapter ? Number(endedChapter) : 0,
-        ],
-        verse: [Number(startedVerse), endedVerse ? Number(endedVerse) : 0],
+        chapter: Number(chapter),
+        verse: Number(verse),
+        endChapter: endChapter ? Number(endChapter) : 0,
+        endVerse: endVerse ? Number(endVerse) : 0,
         updatedAt: now,
       };
 
@@ -190,8 +189,8 @@ const Contemplation: NextPage<ContemplationProps> = ({
 
   const handleClickMinusButton = () => {
     setIsExpanded(false);
-    setValue('endedChapter', '');
-    setValue('endedVerse', '');
+    setValue('endChapter', '');
+    setValue('endVerse', '');
   };
 
   // 로그인을 하지 않았을 경우
@@ -331,7 +330,7 @@ const Contemplation: NextPage<ContemplationProps> = ({
                 </Box>
                 <Box>
                   <TextField
-                    {...register('startedChapter', {
+                    {...register('chapter', {
                       required: true,
                       validate: {
                         moreThanOne: (value) => Number(value) > 0,
@@ -341,12 +340,12 @@ const Contemplation: NextPage<ContemplationProps> = ({
                     placeholder="장"
                     fullWidth
                     type="number"
-                    error={!!errors.startedChapter}
+                    error={!!errors.chapter}
                   />
                 </Box>
                 <Box>
                   <TextField
-                    {...register('startedVerse', {
+                    {...register('verse', {
                       required: true,
                       validate: {
                         moreThanOne: (value) => Number(value) > 0,
@@ -356,7 +355,7 @@ const Contemplation: NextPage<ContemplationProps> = ({
                     placeholder="절"
                     fullWidth
                     type="number"
-                    error={!!errors.startedVerse}
+                    error={!!errors.verse}
                   />
                 </Box>
                 <Box ml={-1.5} alignSelf="center">
@@ -380,45 +379,44 @@ const Contemplation: NextPage<ContemplationProps> = ({
                     </Box>
                     <Box>
                       <TextField
-                        {...register('endedChapter', {
+                        {...register('endChapter', {
                           validate: {
                             onlyPlus: (value) => !value || Number(value) >= 1,
-                            moreThanStartedChapter: (value) =>
+                            moreThanStartChapter: (value) =>
                               !value ||
-                              Number(value) >=
-                                Number(getValues('startedChapter')),
+                              Number(value) >= Number(getValues('chapter')),
                             haveBoth: (value) =>
-                              (!!value && !!getValues('endedVerse')) ||
-                              (!value && !getValues('endedVerse')),
+                              (!!value && !!getValues('endVerse')) ||
+                              (!value && !getValues('endVerse')),
                           },
                         })}
                         size="small"
                         placeholder="장"
                         fullWidth
                         type="number"
-                        error={!!errors.endedChapter}
+                        error={!!errors.endChapter}
                       />
                     </Box>
                     <Box>
                       <TextField
-                        {...register('endedVerse', {
+                        {...register('endVerse', {
                           validate: {
                             onlyPlus: (value) => !value || Number(value) >= 1,
                             moreThanStarted: (value) =>
                               !value ||
-                              Number(getValues('startedChapter')) <
-                                Number(getValues('endedChapter')) ||
-                              Number(value) > Number(getValues('startedVerse')),
+                              Number(getValues('chapter')) <
+                                Number(getValues('endChapter')) ||
+                              Number(value) > Number(getValues('verse')),
                             haveBoth: (value) =>
-                              (!!value && !!getValues('endedChapter')) ||
-                              (!value && !getValues('endedChapter')),
+                              (!!value && !!getValues('endChapter')) ||
+                              (!value && !getValues('endChapter')),
                           },
                         })}
                         size="small"
                         placeholder="절"
                         fullWidth
                         type="number"
-                        error={!!errors.endedVerse}
+                        error={!!errors.endVerse}
                       />
                     </Box>
                     <Box alignSelf="center">
