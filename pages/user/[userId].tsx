@@ -2,6 +2,7 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import GlobalHeader from 'components/GlobalHeader';
+import Meta from 'components/Meta';
 import { ObjectId } from 'mongodb';
 import { GetServerSideProps, NextPage } from 'next';
 import LexioDivinas from 'sections/LexioDivinas';
@@ -54,6 +55,7 @@ export const getServerSideProps: GetServerSideProps<UserIdProps> = async ({
 const UserId: NextPage<UserIdProps> = ({ user }) => {
   return (
     <>
+      <Meta />
       <GlobalHeader />
 
       <Box pt={2} px={2}>

@@ -11,16 +11,17 @@ import AccessDeniedMessage from 'components/AccessDeniedMessage';
 import GlobalHeader from 'components/GlobalHeader';
 import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/GlobalHeader';
 import LoginMessage from 'components/LoginMessage';
+import Meta from 'components/Meta';
 import { Bible, bibleOptions } from 'constants/bible';
 import useAuth from 'hooks/context/useAuth';
 import { postLexioDivina, putLexioDivina } from 'libs/axios/apis';
 import { ObjectId } from 'mongodb';
 import type { GetServerSideProps, NextPage } from 'next';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
 import Database, { CollectionName } from 'server/database';
 import { PRIMARY_SHADOW } from 'theme/shadows';
 import { LexioDivina } from 'types/interfaces';
@@ -226,12 +227,7 @@ const Contemplation: NextPage<ContemplationProps> = ({
 
   return (
     <>
-      <Head>
-        <title>머물음</title>
-        <meta name="description" content="머물음 웹" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
+      <Meta />
       <GlobalHeader />
 
       <Box
@@ -447,14 +443,14 @@ const Contemplation: NextPage<ContemplationProps> = ({
 
               <Box display="flex" justifyContent="flex-end" gap={1}>
                 <Button variant="outlined" onClick={handleCancel}>
-                  취소
+                  <FormattedMessage id="common.cancel" />
                 </Button>
                 <Button
                   type="submit"
                   variant="contained"
                   disabled={isRequested}
                 >
-                  저장
+                  <FormattedMessage id="common.save" />
                 </Button>
               </Box>
             </Box>
