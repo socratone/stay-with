@@ -46,7 +46,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
     count: PAGE_COUNT,
   };
 
-  const lexioDivinasKey = [lexioDivinasParams, '/api/lexioDivinas'];
+  const lexioDivinasKey = [lexioDivinasParams, '/api/lexio-divinas'];
 
   const {
     data: lexioDivinasData,
