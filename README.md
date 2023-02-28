@@ -18,12 +18,42 @@
 
 ## Data Schema
 
-- `users` collection
-- `lexio-divinas` collection
+```
+interface User {
+  _id: string;
+  googleId: string;
+  name: string;
+  email: string;
+  image?: string;
+}
+```
+
+```
+interface LexioDivina {
+  _id: string;
+  bible: Bible;
+  content: string;
+  phrase: string;
+  chapter: number;
+  verse: number;
+  endChapter: number;
+  endVerse: number;
+  updatedAt: number;
+  createdAt: number;
+  userId: string;
+  likedUserIds: string[];
+  comments: {
+    _id: string;
+    userId: string;
+    message: string;
+    createdAt: number;
+  }[];
+}
+```
 
 ## Deployment
 
-- Vercel
+- [Vercel](https://vercel.com/socratone/mmm)
 - [Mongodb Atlas](https://cloud.mongodb.com/v2/63e7a20d3a6c87733d5ab363#/clusters)
 
 ## Stacks
