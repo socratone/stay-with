@@ -4,6 +4,7 @@ import FormGroup from '@mui/material/FormGroup';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import GlobalHeader from 'components/GlobalHeader';
+import Meta from 'components/Meta';
 import useColorMode from 'hooks/context/useColorMode';
 
 const Setting = () => {
@@ -11,6 +12,7 @@ const Setting = () => {
 
   return (
     <>
+      <Meta />
       <GlobalHeader />
 
       <Container component="main" maxWidth="sm" sx={{ pt: 1 }}>

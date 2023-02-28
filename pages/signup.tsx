@@ -7,6 +7,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import ErrorMessage from 'components/ErrorMessage';
 import GlobalHeader from 'components/GlobalHeader';
+import Meta from 'components/Meta';
 import useAuth from 'hooks/context/useAuth';
 import { postLogin, postSignUp } from 'libs/axios/apis';
 import { GetServerSideProps, NextPage } from 'next';
@@ -97,6 +98,7 @@ const SignUp: NextPage<SignUpProps> = ({
 
   return (
     <Box height="100vh" display="flex" flexDirection="column">
+      <Meta />
       <GlobalHeader />
       <Box
         flexGrow={1}

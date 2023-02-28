@@ -129,11 +129,19 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
   };
 
   if (lexioDivinasLoading) {
-    return <LoadingCircular />;
+    return (
+      <Box p={2}>
+        <LoadingCircular />
+      </Box>
+    );
   }
 
   if (lexioDivinasError) {
-    return <ErrorMessage />;
+    return (
+      <Box p={2}>
+        <ErrorMessage />
+      </Box>
+    );
   }
 
   return (

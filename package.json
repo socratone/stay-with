@@ -20,10 +20,12 @@
     "jwt-decode": "^3.1.2",
     "mongodb": "5.0",
     "next": "12.2.5",
+    "next-seo": "^5.15.0",
     "notistack": "3.0.0-alpha.7",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.38.0",
+    "react-intl": "^6.2.10",
     "react-query": "^3.39.3",
     "react-redux": "^8.0.5",
     "redux-persist": "^6.0.0"
