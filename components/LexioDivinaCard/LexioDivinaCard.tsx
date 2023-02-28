@@ -171,7 +171,10 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
 
       {/* footer */}
       <Box display="flex" alignItems="center" p={1}>
-        <IconButton onClick={isLiked ? onUnlikeButtonClick : onLikeButtonClick}>
+        <IconButton
+          onClick={isLiked ? onUnlikeButtonClick : onLikeButtonClick}
+          size="small"
+        >
           {isLiked ? (
             <LikedIcon color={theme.palette.error.main} />
           ) : (
@@ -181,7 +184,7 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
         {likedCount ? (
           <Typography fontSize={14}>{likedCount}</Typography>
         ) : null}
-        <IconButton onClick={onCommentButtonClick}>
+        <IconButton onClick={onCommentButtonClick} size="small">
           <BubbleIcon color={theme.palette.text.secondary} />
         </IconButton>
       </Box>
