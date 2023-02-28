@@ -25,7 +25,7 @@ interface LexioDivinasProps {
   fetchOptions?: any;
 }
 
-const PAGE_COUNT = 10;
+const PAGE_COUNT = 20;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
