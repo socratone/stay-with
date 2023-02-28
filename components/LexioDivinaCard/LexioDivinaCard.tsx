@@ -1,4 +1,5 @@
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import { useTheme } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
@@ -8,16 +9,13 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import SmallMenu from 'components/SmallMenu';
 import { Bible, bibleLabel } from 'constants/bible';
-import useColorMode from 'hooks/context/useColorMode';
-import Image from 'next/image';
 import { useState } from 'react';
 import { PRIMARY_SHADOW } from 'theme/shadows';
 import { isNewTestament } from 'utils/bible';
 
-import commentBlackImage from './comment-black.png';
-import commentWhiteImage from './comment-white.png';
-import loveBlackImage from './love-black.png';
-import loveWhiteImage from './love-white.png';
+import BubbleIcon from './BubbleIcon';
+import LikedIcon from './LikedIcon';
+import OutlinedLikedIcon from './OutlinedLikedIcon';
 
 interface LexioDivinaCardProps {
   name: string;
@@ -62,7 +60,7 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const { colorMode } = useColorMode();
+  const theme = useTheme();
 
   const handleOptionButtonClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -175,31 +173,16 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
       <Box display="flex" alignItems="center" p={1}>
         <IconButton onClick={isLiked ? onUnlikeButtonClick : onLikeButtonClick}>
           {isLiked ? (
-            <Image
-              src={colorMode === 'light' ? loveBlackImage : loveWhiteImage}
-              width={24}
-              height={24}
-              alt="love"
-            />
+            <LikedIcon color={theme.palette.error.main} />
           ) : (
-            <Image
-              src={colorMode === 'light' ? loveBlackImage : loveWhiteImage}
-              width={24}
-              height={24}
-              alt="love"
-            />
+            <OutlinedLikedIcon color={theme.palette.text.secondary} />
           )}
         </IconButton>
         {likedCount ? (
           <Typography fontSize={14}>{likedCount}</Typography>
         ) : null}
         <IconButton onClick={onCommentButtonClick}>
-          <Image
-            src={colorMode === 'light' ? commentBlackImage : commentWhiteImage}
-            width={24}
-            height={24}
-            alt="comment"
-          />
+          <BubbleIcon color={theme.palette.text.secondary} />
         </IconButton>
       </Box>
     </Paper>
