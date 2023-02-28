@@ -252,7 +252,8 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
         onClose={() => setSelectedLexioDivinaIdForDelete(null)}
         onSubmit={handleLexioDivinaDelete}
         title="삭제 확인"
-        description="포스트를 삭제하시겠습니까?"
+        description="묵상글을 삭제하시겠습니까?"
+        color="error"
       />
     </>
   );

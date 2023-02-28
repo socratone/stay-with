@@ -1,6 +1,3 @@
-import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -11,9 +8,16 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import SmallMenu from 'components/SmallMenu';
 import { Bible, bibleLabel } from 'constants/bible';
+import useColorMode from 'hooks/context/useColorMode';
+import Image from 'next/image';
 import { useState } from 'react';
 import { PRIMARY_SHADOW } from 'theme/shadows';
 import { isNewTestament } from 'utils/bible';
+
+import commentBlackImage from './comment-black.png';
+import commentWhiteImage from './comment-white.png';
+import loveBlackImage from './love-black.png';
+import loveWhiteImage from './love-white.png';
 
 interface LexioDivinaCardProps {
   name: string;
@@ -58,6 +62,7 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const { colorMode } = useColorMode();
 
   const handleOptionButtonClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -169,13 +174,32 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
       {/* footer */}
       <Box display="flex" alignItems="center" p={1}>
         <IconButton onClick={isLiked ? onUnlikeButtonClick : onLikeButtonClick}>
-          {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+          {isLiked ? (
+            <Image
+              src={colorMode === 'light' ? loveBlackImage : loveWhiteImage}
+              width={24}
+              height={24}
+              alt="love"
+            />
+          ) : (
+            <Image
+              src={colorMode === 'light' ? loveBlackImage : loveWhiteImage}
+              width={24}
+              height={24}
+              alt="love"
+            />
+          )}
         </IconButton>
         {likedCount ? (
           <Typography fontSize={14}>{likedCount}</Typography>
         ) : null}
         <IconButton onClick={onCommentButtonClick}>
-          <ChatBubbleOutlineIcon />
+          <Image
+            src={colorMode === 'light' ? commentBlackImage : commentWhiteImage}
+            width={24}
+            height={24}
+            alt="comment"
+          />
         </IconButton>
       </Box>
     </Paper>
