@@ -13,6 +13,7 @@ import SmallMenu from 'components/SmallMenu';
 import { Bible, bibleLabel } from 'constants/bible';
 import { useState } from 'react';
 import { PRIMARY_SHADOW } from 'theme/shadows';
+import { isNewTestament } from 'utils/bible';
 
 interface LexioDivinaCardProps {
   name: string;
@@ -88,6 +89,13 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
     return `${bibleLabel[bible]} ${chapter},${verse}-${endChapter},${endVerse}`;
   };
 
+  const getChipColor = () => {
+    if (isNewTestament(bible)) {
+      return 'primary';
+    }
+    return 'secondary';
+  };
+
   return (
     <Paper component="article" sx={{ borderRadius: 6 }}>
       {/* header */}
@@ -122,7 +130,7 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
           </Box>
         </Box>
         <Box display="flex" alignItems="center" gap={1}>
-          <Chip label={getChipLabel()} color="primary" />
+          <Chip label={getChipLabel()} color={getChipColor()} />
           {isMine ? (
             <>
               <IconButton

@@ -161,3 +161,33 @@ export const bibleOptions = Object.keys(bibleLabel).map((key) => {
     label: bibleLabel[key as Bible],
   };
 });
+
+export const newTestaments = [
+  Bible.Matthew,
+  Bible.Mark,
+  Bible.Luke,
+  Bible.John,
+  Bible.Acts,
+  Bible.Romans,
+  Bible.CorinthiansFirst,
+  Bible.CorinthiansSecond,
+  Bible.Galatians,
+  Bible.Ephesians,
+  Bible.Philippians,
+  Bible.Colossians,
+  Bible.ThessaloniansFirst,
+  Bible.ThessaloniansSecond,
+  Bible.TimothyFirst,
+  Bible.TimothySecond,
+  Bible.Titus,
+  Bible.Philemon,
+  Bible.Hebrews,
+  Bible.James,
+  Bible.PeterFirst,
+  Bible.PeterSecond,
+  Bible.JohnFirst,
+  Bible.JohnSecond,
+  Bible.JohnThird,
+  Bible.Jude,
+  Bible.Revelation,
+];
