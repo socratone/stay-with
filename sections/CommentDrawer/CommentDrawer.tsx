@@ -176,6 +176,7 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({ open, id, onClose }) => {
                     image={comment.image}
                     name={comment.name}
                     message={comment.message}
+                    createdAt={comment.createdAt}
                     isSelected={comment._id === selectedCommentId}
                     onClick={() => handleCommentItemClick(comment._id)}
                   />

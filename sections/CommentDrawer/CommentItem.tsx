@@ -3,11 +3,13 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
+import { FormattedDate } from 'react-intl';
 
 interface CommentItemProps {
   image?: string;
   name: string;
   message: string;
+  createdAt: Date;
   onClick: () => void;
   isSelected: boolean;
 }
@@ -16,6 +18,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
   image,
   name,
   message,
+  createdAt,
   onClick,
   isSelected,
 }) => {
@@ -33,8 +36,17 @@ const CommentItem: React.FC<CommentItemProps> = ({
           <Avatar sx={{ width: 34, height: 34 }}>{name?.[0] ?? 'P'}</Avatar>
         )}
         <Box>
-          <Typography align="left" fontWeight={600}>
-            {name}
+          <Typography display="flex" gap={1} alignItems="center">
+            <Typography component="span" fontWeight={600}>
+              {name}
+            </Typography>
+            <Typography
+              component="span"
+              variant="body2"
+              color={(theme) => theme.palette.text.secondary}
+            >
+              <FormattedDate value={createdAt} />
+            </Typography>
           </Typography>
           <Typography align="left">{message}</Typography>
         </Box>
