@@ -12,7 +12,6 @@ export interface Comment {
   _id: string;
   userId: string;
   message: string;
-  createdAt: number;
 }
 
 export interface LexioDivina {
@@ -24,9 +23,7 @@ export interface LexioDivina {
   verse: number;
   endChapter: number;
   endVerse: number;
-  updatedAt: number;
   userId: string;
-  createdAt: number;
   likedUserIds: string[];
   comments: Comment[];
 }
