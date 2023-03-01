@@ -38,15 +38,12 @@ interface LexioDivina {
   verse: number;
   endChapter: number;
   endVerse: number;
-  updatedAt: number;
-  createdAt: number;
   userId: string;
   likedUserIds: string[];
   comments: {
     _id: string;
     userId: string;
     message: string;
-    createdAt: number;
   }[];
 }
 ```
