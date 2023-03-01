@@ -1,14 +1,11 @@
 import AddIcon from '@mui/icons-material/Add';
 import MenuIcon from '@mui/icons-material/Menu';
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import { useTheme } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import IconButton from '@mui/material/IconButton';
-import MenuItem from '@mui/material/MenuItem';
 import DarkModeSwitch from 'components/DarkModeSwitch';
-import SmallMenu from 'components/SmallMenu';
 import useAuth from 'hooks/context/useAuth';
 import useColorMode from 'hooks/context/useColorMode';
 import { useRouter } from 'next/router';
@@ -24,12 +21,8 @@ const GlobalHeader = () => {
   const router = useRouter();
   const theme = useTheme();
 
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const { colorMode, setColorMode } = useColorMode();
-
-  const [profileMenuAnchorEl, setProfileMenuAnchorEl] =
-    useState<null | HTMLElement>(null);
-  const profileMenuOpen = Boolean(profileMenuAnchorEl);
 
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -37,17 +30,11 @@ const GlobalHeader = () => {
 
   const closeMenu = () => setMenuOpen(false);
 
-  const openProfileMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setProfileMenuAnchorEl(event.currentTarget);
-  };
-
-  const closeProfileMenu = () => {
-    setProfileMenuAnchorEl(null);
-  };
-
   const handleDarkModeSwitchChange = (checked: boolean) => {
     setColorMode(checked ? 'dark' : 'light');
   };
+
+  const handleAvatarClick = () => router.push(`/user/${user?._id}`);
 
   return (
     <>
@@ -83,42 +70,19 @@ const GlobalHeader = () => {
           <DarkModeSwitch
             checked={colorMode === 'dark'}
             onChange={handleDarkModeSwitchChange}
-            sx={{ mr: -1 }}
           />
-          <IconButton size="small">
-            <Box width={24} height={24}>
-              <NotificationsNoneIcon
-                sx={{ width: 20, height: 20, mt: '2px' }}
-              />
-            </Box>
-          </IconButton>
           {user ? (
-            <>
-              <ButtonBase
-                onClick={openProfileMenu}
-                sx={{ borderRadius: '50%' }}
+            <ButtonBase
+              onClick={handleAvatarClick}
+              sx={{ borderRadius: '50%' }}
+            >
+              <Avatar
+                sx={{ width: 32, height: 32 }}
+                src={user?.image ?? undefined}
               >
-                <Avatar
-                  sx={{ width: 32, height: 32 }}
-                  src={user?.image ?? undefined}
-                >
-                  P
-                </Avatar>
-              </ButtonBase>
-              <SmallMenu
-                anchorEl={profileMenuAnchorEl}
-                open={profileMenuOpen}
-                onClose={closeProfileMenu}
-              >
-                <MenuItem onClick={() => router.push(`/user/${user?._id}`)}>
-                  내 페이지
-                </MenuItem>
-                <MenuItem onClick={() => router.push('/setting')}>
-                  설정
-                </MenuItem>
-                <MenuItem onClick={logout}>로그아웃</MenuItem>
-              </SmallMenu>
-            </>
+                P
+              </Avatar>
+            </ButtonBase>
           ) : (
             <HeaderLink href="/login">Login</HeaderLink>
           )}

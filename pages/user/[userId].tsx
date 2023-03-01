@@ -1,8 +1,11 @@
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import GlobalHeader from 'components/GlobalHeader';
 import Meta from 'components/Meta';
+import useAuth from 'hooks/context/useAuth';
 import { ObjectId } from 'mongodb';
 import { GetServerSideProps, NextPage } from 'next';
 import LexioDivinas from 'sections/LexioDivinas';
@@ -53,12 +56,21 @@ export const getServerSideProps: GetServerSideProps<UserIdProps> = async ({
 };
 
 const UserId: NextPage<UserIdProps> = ({ user }) => {
+  const { user: me, logout } = useAuth();
+  const isLoggedIn = !!me;
+
   return (
     <>
       <Meta />
       <GlobalHeader />
 
-      <Box pt={2} px={2}>
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        pt={2}
+        px={2}
+      >
         <Box display="flex" gap={1} alignItems="center">
           {user?.image ? (
             <Avatar alt="Profile" src={user.image} />
@@ -71,7 +83,12 @@ const UserId: NextPage<UserIdProps> = ({ user }) => {
             {user.name}
           </Typography>
         </Box>
-      </Box>
+        {isLoggedIn ? (
+          <Button color="inherit" onClick={logout}>
+            로그아웃
+          </Button>
+        ) : null}
+      </Stack>
 
       <LexioDivinas
         fetchOptions={{
