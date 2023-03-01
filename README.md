@@ -78,3 +78,14 @@ interface LexioDivina {
 ```
 
 - no-else-return
+
+## Development
+
+- .env.development
+
+```
+NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID="?????"
+NEXT_PUBLIC_BASE_URL="http://localhost:3000"
+AUTH_SECRET="?????"
+MONGO_CLIENT_URL="mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.7.0"
+```
