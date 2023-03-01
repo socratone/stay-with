@@ -146,7 +146,6 @@ const Contemplation: NextPage<ContemplationProps> = ({
     setIsRequested(true);
     try {
       const id = router.query?.id;
-      const now = new Date().getTime();
 
       const payload = {
         bible,
@@ -156,7 +155,6 @@ const Contemplation: NextPage<ContemplationProps> = ({
         verse: Number(verse),
         endChapter: endChapter ? Number(endChapter) : 0,
         endVerse: endVerse ? Number(endVerse) : 0,
-        updatedAt: now,
       };
 
       if (typeof id === 'string') {
@@ -165,7 +163,6 @@ const Contemplation: NextPage<ContemplationProps> = ({
         await postLexioDivina({
           ...payload,
           userId: user._id,
-          createdAt: now,
           likedUserIds: [],
           comments: [],
         });

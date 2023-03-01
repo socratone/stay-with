@@ -37,7 +37,6 @@ const handler = async (
               _id: new ObjectId(),
               userId: new ObjectId(payload.userId),
               message: payload.message,
-              createdAt: payload.createdAt,
             },
           },
         }

@@ -7,7 +7,7 @@ import { ApiErrorData, isLoggedIn } from 'utils/api';
 
 export type ApiPutLexioDivinaPayload = Omit<
   LexioDivina,
-  '_id' | 'userId' | 'createdAt' | 'likedUserIds' | 'comments'
+  '_id' | 'userId' | 'likedUserIds' | 'comments'
 >;
 
 export interface ApiGetLexioDivinaData extends AggregatedLexioDivina {
@@ -17,7 +17,7 @@ export interface ApiGetLexioDivinaData extends AggregatedLexioDivina {
     name: string;
     image: string;
     message: string;
-    createdAt: number;
+    createdAt: Date;
   }[];
 }
 
@@ -108,7 +108,7 @@ const handler = async (
           name: user.name,
           image: user.image,
           message: comment.message,
-          createdAt: comment.createdAt,
+          createdAt: new ObjectId(comment._id).getTimestamp(),
         };
       });
 

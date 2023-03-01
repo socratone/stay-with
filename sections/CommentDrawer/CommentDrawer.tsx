@@ -77,11 +77,9 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({ open, id, onClose }) => {
     setCommentValue('');
 
     try {
-      const now = new Date().getTime();
       await postCommentToLexioDivina(id, {
         userId: user._id,
         message: trimedComment,
-        createdAt: now,
       });
       refetch();
     } catch (error: any) {
