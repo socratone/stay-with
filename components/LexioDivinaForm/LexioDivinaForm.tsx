@@ -12,7 +12,7 @@ import { useState } from 'react';
 import { Controller, SubmitHandler, UseFormReturn } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
-interface FormInput {
+export interface LexioDivinaFormValues {
   phrase: string;
   bible: Bible;
   chapter: string;
@@ -23,10 +23,10 @@ interface FormInput {
 }
 
 interface LexioDivinaFormProps {
-  form: UseFormReturn<FormInput>;
+  form: UseFormReturn<LexioDivinaFormValues>;
   isRequested: boolean;
   defaultIsExpanded?: boolean;
-  onSubmit: SubmitHandler<FormInput>;
+  onSubmit: SubmitHandler<LexioDivinaFormValues>;
   onCancel: () => void;
 }
 
