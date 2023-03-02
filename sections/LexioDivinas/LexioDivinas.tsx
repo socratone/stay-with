@@ -181,6 +181,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
               onLikeButtonClick={() => handleLike(lexioDivina._id)}
               onUnlikeButtonClick={() => handleUnlike(lexioDivina._id)}
               likedCount={lexioDivina.likedUserIds.length}
+              commentCount={lexioDivina.comments.length}
               onCommentButtonClick={() => handleCommentButtonClick(lexioDivina)}
               onUserClick={() => handleUserClick(lexioDivina.user._id)}
             />
@@ -232,6 +233,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
               onLikeButtonClick={() => handleLike(lexioDivina._id)}
               onUnlikeButtonClick={() => handleUnlike(lexioDivina._id)}
               likedCount={lexioDivina.likedUserIds.length}
+              commentCount={lexioDivina.comments.length}
               onCommentButtonClick={() => handleCommentButtonClick(lexioDivina)}
               onUserClick={() => handleUserClick(lexioDivina.user._id)}
             />

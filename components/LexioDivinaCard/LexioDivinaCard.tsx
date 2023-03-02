@@ -6,6 +6,7 @@ import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
 import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import SmallMenu from 'components/SmallMenu';
 import { Bible, bibleLabel } from 'constants/bible';
@@ -34,6 +35,7 @@ interface LexioDivinaCardProps {
   onLikeButtonClick: () => void;
   onUnlikeButtonClick: () => void;
   likedCount: number;
+  commentCount: number;
   onCommentButtonClick: () => void;
   onUserClick: () => void;
 }
@@ -55,6 +57,7 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
   onLikeButtonClick,
   onUnlikeButtonClick,
   likedCount,
+  commentCount,
   onCommentButtonClick,
   onUserClick,
 }) => {
@@ -170,7 +173,7 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
       </Typography>
 
       {/* footer */}
-      <Box display="flex" alignItems="center" p={1}>
+      <Stack direction="row" alignItems="center" p={1}>
         <IconButton
           onClick={isLiked ? onUnlikeButtonClick : onLikeButtonClick}
           size="small"
@@ -187,7 +190,10 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
         <IconButton onClick={onCommentButtonClick} size="small">
           <BubbleIcon color={theme.palette.text.secondary} />
         </IconButton>
-      </Box>
+        {commentCount ? (
+          <Typography fontSize={14}>{commentCount}</Typography>
+        ) : null}
+      </Stack>
     </Paper>
   );
 };
