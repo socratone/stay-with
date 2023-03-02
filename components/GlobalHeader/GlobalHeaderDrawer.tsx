@@ -1,7 +1,8 @@
-import CreateIcon from '@mui/icons-material/Create';
+import CloseIcon from '@mui/icons-material/Close';
 import HomeIcon from '@mui/icons-material/Home';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -39,21 +40,24 @@ const GlobalHeaderDrawer: React.FC<GlobalHeaderDrawerProps> = ({
       }}
     >
       <Box display="flex" flexDirection="column" height="100%">
-        <List>
+        <Box
+          component="header"
+          display="flex"
+          justifyContent="space-between"
+          py={1}
+          px={2}
+        >
+          <IconButton onClick={onClose} sx={{ ml: -1 }}>
+            <CloseIcon />
+          </IconButton>
+        </Box>
+        <List sx={{ pt: 0 }}>
           <ListItem disablePadding>
             <ListItemButton onClick={() => handleClick('/')}>
-              <ListItemIcon>
+              <ListItemIcon sx={{ minWidth: 40 }}>
                 <HomeIcon />
               </ListItemIcon>
               <ListItemText primary="홈" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton onClick={() => handleClick('/contemplation')}>
-              <ListItemIcon>
-                <CreateIcon />
-              </ListItemIcon>
-              <ListItemText primary="묵상글 쓰기" />
             </ListItemButton>
           </ListItem>
         </List>

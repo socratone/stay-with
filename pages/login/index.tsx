@@ -39,7 +39,7 @@ const Login = () => {
           }
         </Typography>
         <Button onClick={handleCopyClick} startIcon={<ContentCopyIcon />}>
-          현재 링크 복사하기
+          현재 주소 복사하기
         </Button>
         <Button
           variant="outlined"
