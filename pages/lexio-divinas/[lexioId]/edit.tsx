@@ -1,22 +1,28 @@
 import Box from '@mui/material/Box';
+import AccessDeniedMessage from 'components/AccessDeniedMessage';
+import DailyMissa from 'components/DailyMissa/DailyMissa';
 import GlobalHeader from 'components/GlobalHeader';
 import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/GlobalHeader';
 import LexioDivinaForm, {
   LexioDivinaFormValues,
 } from 'components/LexioDivinaForm/LexioDivinaForm';
+import LoadingCircular from 'components/LoadingCircular';
 import LoginMessage from 'components/LoginMessage';
 import Meta from 'components/Meta';
 import { Bible } from 'constants/bible';
+import useLexioDivina from 'hooks/api/useLexioDivina';
 import useAuth from 'hooks/context/useAuth';
-import { postLexioDivina } from 'libs/axios/apis';
+import { putLexioDivina } from 'libs/axios/apis';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { PRIMARY_SHADOW } from 'theme/shadows';
 
-const LexioDivinaCreate = () => {
+const LexioDivinaEdit = () => {
   const router = useRouter();
+  const { lexioId } = router.query;
+  const { data: lexioDivinaData, isLoading } = useLexioDivina(String(lexioId));
   const { enqueueSnackbar } = useSnackbar();
   const { user, logout } = useAuth();
 
@@ -27,6 +33,26 @@ const LexioDivinaCreate = () => {
       bible: Bible.Genesis,
     },
   });
+
+  const setValue = form.setValue;
+
+  useEffect(() => {
+    if (lexioDivinaData) {
+      const { phrase, bible, chapter, verse, content, endChapter, endVerse } =
+        lexioDivinaData;
+
+      setValue('phrase', phrase);
+      setValue('bible', bible);
+      setValue('chapter', String(chapter));
+      setValue('verse', String(verse));
+      setValue('content', content);
+
+      if (endChapter && endVerse) {
+        setValue('endChapter', String(endChapter));
+        setValue('endVerse', String(endVerse));
+      }
+    }
+  }, [lexioDivinaData, setValue]);
 
   const handleCancel = () => {
     router.back();
@@ -46,6 +72,8 @@ const LexioDivinaCreate = () => {
     setIsRequested(true);
 
     try {
+      const id = String(router.query?.id);
+
       const payload = {
         bible,
         content,
@@ -56,12 +84,7 @@ const LexioDivinaCreate = () => {
         endVerse: endVerse ? Number(endVerse) : 0,
       };
 
-      await postLexioDivina({
-        ...payload,
-        userId: user._id,
-        likedUserIds: [],
-        comments: [],
-      });
+      await putLexioDivina(id, payload);
 
       router.push('/');
     } catch (error: any) {
@@ -79,6 +102,14 @@ const LexioDivinaCreate = () => {
     }
   };
 
+  if (isLoading || !lexioDivinaData) {
+    return (
+      <Box p={2}>
+        <LoadingCircular />
+      </Box>
+    );
+  }
+
   // 로그인을 하지 않았을 경우
   if (!user) {
     return (
@@ -89,6 +120,20 @@ const LexioDivinaCreate = () => {
         minHeight="100vh"
       >
         <LoginMessage />
+      </Box>
+    );
+  }
+
+  // 사용자가 작성한 글이 아닌 경우
+  if (lexioDivinaData.userId !== user._id) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="100vh"
+      >
+        <AccessDeniedMessage />
       </Box>
     );
   }
@@ -119,16 +164,7 @@ const LexioDivinaCreate = () => {
         >
           {/* left */}
           <Box>
-            <Box
-              component="iframe"
-              src="https://missa.cbck.or.kr/DailyMissa"
-              sx={{
-                border: 0,
-                width: '100%',
-                height: { xs: '50vh', sm: '50vh', md: '100%' },
-                display: 'block',
-              }}
-            />
+            <DailyMissa />
           </Box>
 
           {/* right */}
@@ -149,6 +185,7 @@ const LexioDivinaCreate = () => {
             <LexioDivinaForm
               form={form}
               isRequested={isRequested}
+              defaultIsExpanded={!!lexioDivinaData.endChapter}
               onCancel={handleCancel}
               onSubmit={onSubmit}
             />
@@ -159,4 +196,4 @@ const LexioDivinaCreate = () => {
   );
 };
 
-export default LexioDivinaCreate;
+export default LexioDivinaEdit;

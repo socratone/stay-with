@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box';
 import AccessDeniedMessage from 'components/AccessDeniedMessage';
+import DailyMissa from 'components/DailyMissa/DailyMissa';
 import GlobalHeader from 'components/GlobalHeader';
 import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/GlobalHeader';
 import LexioDivinaForm from 'components/LexioDivinaForm/LexioDivinaForm';
@@ -222,16 +223,7 @@ const Contemplation: NextPage<ContemplationProps> = ({
         >
           {/* left */}
           <Box>
-            <Box
-              component="iframe"
-              src="https://missa.cbck.or.kr/DailyMissa"
-              sx={{
-                border: 0,
-                width: '100%',
-                height: { xs: '50vh', sm: '50vh', md: '100%' },
-                display: 'block',
-              }}
-            />
+            <DailyMissa />
           </Box>
 
           {/* right */}

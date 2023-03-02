@@ -57,10 +57,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
   const lexioDivinas = lexioDivinasData?.lexioDivinas ?? [];
 
   const handleEdit = (id: string) => {
-    router.push({
-      pathname: '/contemplation',
-      query: { id },
-    });
+    router.push(`/lexio-divinas/${id}/edit`);
   };
 
   const handleLexioDivinaDelete = async () => {
