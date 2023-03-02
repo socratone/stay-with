@@ -21,8 +21,8 @@ import { PRIMARY_SHADOW } from 'theme/shadows';
 
 const LexioDivinaEdit = () => {
   const router = useRouter();
-  const { lexioId } = router.query;
-  const { data: lexioDivinaData, isLoading } = useLexioDivina(String(lexioId));
+  const lexioId = String(router.query.lexioId);
+  const { data: lexioDivinaData, isLoading } = useLexioDivina(lexioId);
   const { enqueueSnackbar } = useSnackbar();
   const { user, logout } = useAuth();
 
@@ -72,8 +72,6 @@ const LexioDivinaEdit = () => {
     setIsRequested(true);
 
     try {
-      const id = String(router.query?.id);
-
       const payload = {
         bible,
         content,
@@ -84,7 +82,7 @@ const LexioDivinaEdit = () => {
         endVerse: endVerse ? Number(endVerse) : 0,
       };
 
-      await putLexioDivina(id, payload);
+      await putLexioDivina(lexioId, payload);
 
       router.push('/');
     } catch (error: any) {
