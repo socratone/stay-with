@@ -40,13 +40,7 @@ const GlobalHeaderDrawer: React.FC<GlobalHeaderDrawerProps> = ({
       }}
     >
       <Box display="flex" flexDirection="column" height="100%">
-        <Box
-          component="header"
-          display="flex"
-          justifyContent="space-between"
-          py={1}
-          px={2}
-        >
+        <Box component="header" py={1} px={2}>
           <IconButton onClick={onClose} sx={{ ml: -1 }}>
             <CloseIcon />
           </IconButton>

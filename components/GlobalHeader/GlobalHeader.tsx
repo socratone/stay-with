@@ -61,7 +61,7 @@ const GlobalHeader = () => {
           {user ? (
             <IconButton
               size="small"
-              onClick={() => router.push('/contemplation')}
+              onClick={() => router.push('/lexio-divinas/create')}
               sx={{ mr: -1 }}
             >
               <AddIcon />
