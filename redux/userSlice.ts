@@ -4,10 +4,10 @@ import { User } from 'types/interfaces';
 
 const initialState: Required<User> = {
   _id: '',
-  googleId: '',
+  kakaoId: 0,
   name: '',
   email: '',
-  image: '',
+  imageUrl: '',
 };
 
 export const userSlice = createSlice({
@@ -16,17 +16,17 @@ export const userSlice = createSlice({
   reducers: {
     setUser: (state, action: PayloadAction<User>) => {
       state._id = action.payload._id;
-      state.googleId = action.payload.googleId;
+      state.kakaoId = action.payload.kakaoId;
       state.name = action.payload.name;
       state.email = action.payload.email;
-      state.image = action.payload.image ?? '';
+      state.imageUrl = action.payload.imageUrl ?? '';
     },
     resetUser: (state) => {
       state._id = '';
-      state.googleId = '';
+      state.kakaoId = 0;
       state.name = '';
       state.email = '';
-      state.image = '';
+      state.imageUrl = '';
     },
   },
 });

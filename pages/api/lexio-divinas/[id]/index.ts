@@ -93,7 +93,7 @@ const handler = async (
             ...object,
             [user._id]: {
               name: user.name,
-              image: user.image,
+              image: user.imageUrl,
             },
           };
         },

@@ -40,9 +40,9 @@ export const getServerSideProps: GetServerSideProps<UserIdProps> = async ({
     return {
       props: {
         user: {
-          image: user.image,
+          imageUrl: user.imageUrl,
           email: user.email,
-          googleId: user.googleId,
+          kakaoId: user.kakaoId,
           name: user.name,
         },
       },
@@ -72,8 +72,8 @@ const UserId: NextPage<UserIdProps> = ({ user }) => {
         px={2}
       >
         <Box display="flex" gap={1} alignItems="center">
-          {user?.image ? (
-            <Avatar alt="Profile" src={user.image} />
+          {user?.imageUrl ? (
+            <Avatar alt="Profile" src={user.imageUrl} />
           ) : (
             <Avatar sx={{ width: 34, height: 34 }}>
               {user.name?.[0] ?? 'P'}

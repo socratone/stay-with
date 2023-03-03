@@ -1,10 +1,15 @@
 import Box from '@mui/material/Box';
 import ErrorMessage from 'components/ErrorMessage';
 import WaitingMessage from 'components/WaitingMessage';
-import useGoogleLoginRedirect from 'hooks/auth/useGoogleLoginRedirect';
+import useKakaoLoginRedirect from 'hooks/auth/useKakaoLoginRedirect';
+import { useRouter } from 'next/router';
+import queryString from 'query-string';
 
 const LoginRedirect = () => {
-  const { isError } = useGoogleLoginRedirect();
+  const router = useRouter();
+  const [, rawQueryString] = router.asPath.split('?');
+  const { code } = queryString.parse(rawQueryString);
+  const { isError } = useKakaoLoginRedirect(String(code));
 
   return (
     <>

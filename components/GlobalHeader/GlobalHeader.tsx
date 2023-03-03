@@ -78,7 +78,7 @@ const GlobalHeader = () => {
             >
               <Avatar
                 sx={{ width: 32, height: 32 }}
-                src={user?.image ?? undefined}
+                src={user?.imageUrl ?? undefined}
               >
                 P
               </Avatar>

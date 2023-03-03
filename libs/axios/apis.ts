@@ -9,7 +9,7 @@ import {
 } from 'pages/api/lexio-divinas/[id]';
 import { ApiCommentPayload } from 'pages/api/lexio-divinas/[id]/comments';
 import { ApiLikedPayload } from 'pages/api/lexio-divinas/[id]/likeds/index';
-import { ApiLoginData, ApiLoginPayload } from 'pages/api/login';
+import { ApiLoginKakaoData, ApiLoginKakaoPayload } from 'pages/api/login/kakao';
 import { ApiSignUpData, ApiSignUpPayload } from 'pages/api/signup';
 
 import axiosInstance from './instance';
@@ -25,11 +25,14 @@ export const postSignUp = (
     .then((response) => response.data);
 };
 
-export const postLogin = (googleAccessToken: string): Promise<ApiLoginData> => {
+export const postLoginWithKakao = (code: string) => {
   return axiosInstance
-    .post<any, AxiosResponse<ApiLoginData>, ApiLoginPayload>('/api/login', {
-      googleAccessToken,
-    })
+    .post<any, AxiosResponse<ApiLoginKakaoData>, ApiLoginKakaoPayload>(
+      '/api/login/kakao',
+      {
+        code,
+      }
+    )
     .then((response) => response.data);
 };
 

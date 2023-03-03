@@ -2,10 +2,10 @@ import { Bible } from 'constants/bible';
 
 export interface User {
   _id: string;
-  googleId: string;
+  kakaoId: number;
   name: string;
   email: string;
-  image?: string;
+  imageUrl?: string;
 }
 
 export interface Comment {

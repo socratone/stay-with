@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import AccessDeniedMessage from 'components/AccessDeniedMessage';
 import DailyMissa from 'components/DailyMissa/DailyMissa';
+import ErrorMessage from 'components/ErrorMessage/ErrorMessage';
 import GlobalHeader from 'components/GlobalHeader';
 import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/GlobalHeader';
 import LexioDivinaForm, {
@@ -22,7 +23,7 @@ import { PRIMARY_SHADOW } from 'theme/shadows';
 const LexioDivinaEdit = () => {
   const router = useRouter();
   const lexioId = String(router.query.lexioId);
-  const { data: lexioDivinaData, isLoading } = useLexioDivina(lexioId);
+  const { data: lexioDivinaData, isLoading, isError } = useLexioDivina(lexioId);
   const { enqueueSnackbar } = useSnackbar();
   const { user, logout } = useAuth();
 
@@ -104,6 +105,14 @@ const LexioDivinaEdit = () => {
     return (
       <Box p={2}>
         <LoadingCircular />
+      </Box>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Box p={2}>
+        <ErrorMessage />
       </Box>
     );
   }

@@ -21,10 +21,10 @@
 ```
 interface User {
   _id: string;
-  googleId: string;
+  kakaoId: number;
   name: string;
   email: string;
-  image?: string;
+  imageUrl?: string;
 }
 ```
 
