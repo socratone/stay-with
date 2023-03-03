@@ -83,11 +83,7 @@ const UserId: NextPage<UserIdProps> = ({ user }) => {
             {user.name}
           </Typography>
         </Box>
-        {isLoggedIn ? (
-          <Button color="inherit" onClick={logout}>
-            로그아웃
-          </Button>
-        ) : null}
+        {isLoggedIn ? <Button onClick={logout}>로그아웃</Button> : null}
       </Stack>
 
       <LexioDivinas
