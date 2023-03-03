@@ -8,8 +8,7 @@ import Typography from '@mui/material/Typography';
 import ErrorMessage from 'components/ErrorMessage';
 import GlobalHeader from 'components/GlobalHeader';
 import Meta from 'components/Meta';
-import useAuth from 'hooks/context/useAuth';
-import { postLogin, postSignUp } from 'libs/axios/apis';
+import { postSignUp } from 'libs/axios/apis';
 import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -17,21 +16,19 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { User } from 'types/interfaces';
 
 interface SignUpProps {
-  googleAccessToken: string;
-  googleId: string;
+  kakaoId: number;
   email: string;
-  image: string;
+  imageUrl: string;
 }
 
 export const getServerSideProps: GetServerSideProps<SignUpProps> = async ({
   query,
 }) => {
-  const googleAccessToken = String(query.google_access_token);
-  const googleId = String(query.google_id);
+  const kakaoId = Number(query.kakao_id);
   const email = String(query.email);
-  const image = String(query.picture);
+  const imageUrl = String(query.image_url);
 
-  if (!googleId || !email) {
+  if (!kakaoId || !email) {
     return {
       notFound: true,
     };
@@ -39,22 +36,15 @@ export const getServerSideProps: GetServerSideProps<SignUpProps> = async ({
 
   return {
     props: {
-      googleAccessToken,
-      googleId,
+      kakaoId,
       email,
-      image,
+      imageUrl,
     },
   };
 };
 
-const SignUp: NextPage<SignUpProps> = ({
-  googleAccessToken,
-  googleId,
-  email,
-  image,
-}) => {
+const SignUp: NextPage<SignUpProps> = ({ kakaoId, email, imageUrl }) => {
   const router = useRouter();
-  const { login } = useAuth();
 
   const [imageChecked, setImageChecked] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -64,26 +54,21 @@ const SignUp: NextPage<SignUpProps> = ({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Omit<User, '_id' | 'email' | 'image'>>();
+  } = useForm<Omit<User, '_id' | 'email' | 'imageUrl'>>();
 
   const handleSignUp: SubmitHandler<
-    Omit<User, '_id' | 'email' | 'image'>
+    Omit<User, '_id' | 'email' | 'imageUrl'>
   > = async ({ name }) => {
     setIsRequesting(true);
 
-    const payload: Omit<User, '_id'> = { googleId, email, name };
+    const payload: Omit<User, '_id'> = { kakaoId, email, name };
     if (imageChecked) {
-      payload.image = image;
+      payload.imageUrl = imageUrl;
     }
 
     try {
       await postSignUp(payload);
-
-      const { accessToken } = await postLogin(googleAccessToken);
-
-      login(accessToken);
-
-      router.push('/');
+      router.push('/login');
     } catch {
       setIsError(true);
     }
@@ -113,8 +98,8 @@ const SignUp: NextPage<SignUpProps> = ({
         ) : (
           <>
             <Box>
-              {image && imageChecked ? (
-                <Avatar src={image} sx={{ width: 100, height: 100 }} />
+              {imageUrl && imageChecked ? (
+                <Avatar src={imageUrl} sx={{ width: 100, height: 100 }} />
               ) : (
                 <Avatar sx={{ width: 100, height: 100 }}>없음</Avatar>
               )}

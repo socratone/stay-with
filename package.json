@@ -22,6 +22,7 @@
     "next": "12.2.5",
     "next-seo": "^5.15.0",
     "notistack": "3.0.0-alpha.7",
+    "query-string": "^8.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.38.0",

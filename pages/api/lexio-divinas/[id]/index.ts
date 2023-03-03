@@ -15,7 +15,7 @@ export interface ApiGetLexioDivinaData extends AggregatedLexioDivina {
     _id: string;
     userId: string;
     name: string;
-    image: string;
+    imageUrl: string;
     message: string;
     createdAt: Date;
   }[];
@@ -29,7 +29,7 @@ interface AggregatedLexioDivina extends LexioDivina {
 type UsersObject = {
   [userId: string]: {
     name: string;
-    image: string;
+    imageUrl: string;
   };
 };
 
@@ -93,7 +93,7 @@ const handler = async (
             ...object,
             [user._id]: {
               name: user.name,
-              image: user.image,
+              imageUrl: user.imageUrl,
             },
           };
         },
@@ -106,7 +106,7 @@ const handler = async (
           _id: comment._id,
           userId: comment.userId,
           name: user.name,
-          image: user.image,
+          imageUrl: user.imageUrl,
           message: comment.message,
           createdAt: new ObjectId(comment._id).getTimestamp(),
         };

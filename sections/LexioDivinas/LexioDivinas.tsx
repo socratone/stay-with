@@ -158,7 +158,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
             <LexioDivinaCard
               key={lexioDivina._id}
               name={lexioDivina.user.name}
-              profileImage={lexioDivina.user.image}
+              profileImageUrl={lexioDivina.user.imageUrl}
               phrase={lexioDivina.phrase}
               bible={lexioDivina.bible}
               chapter={lexioDivina.chapter}
@@ -210,7 +210,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
           <Box key={lexioDivina._id} pt={1} pb={1} px={2}>
             <LexioDivinaCard
               name={lexioDivina.user.name}
-              profileImage={lexioDivina.user.image}
+              profileImageUrl={lexioDivina.user.imageUrl}
               phrase={lexioDivina.phrase}
               bible={lexioDivina.bible}
               chapter={lexioDivina.chapter}
