@@ -20,7 +20,7 @@ import OutlinedLikedIcon from './OutlinedLikedIcon';
 
 interface LexioDivinaCardProps {
   name: string;
-  profileImage?: string;
+  profileImageUrl?: string;
   phrase: string;
   bible: Bible;
   chapter: number;
@@ -42,7 +42,7 @@ interface LexioDivinaCardProps {
 
 const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
   name,
-  profileImage,
+  profileImageUrl,
   phrase,
   bible,
   chapter,
@@ -120,10 +120,10 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
           sx={{ cursor: 'pointer' }}
           onClick={onUserClick}
         >
-          {profileImage ? (
+          {profileImageUrl ? (
             <Avatar
               alt="Profile"
-              src={profileImage}
+              src={profileImageUrl}
               sx={{ width: 34, height: 34 }}
             />
           ) : (

@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { FormattedDate } from 'react-intl';
 
 interface CommentItemProps {
-  image?: string;
+  imageUrl?: string;
   name: string;
   message: string;
   createdAt: Date;
@@ -15,7 +15,7 @@ interface CommentItemProps {
 }
 
 const CommentItem: React.FC<CommentItemProps> = ({
-  image,
+  imageUrl,
   name,
   message,
   createdAt,
@@ -30,8 +30,8 @@ const CommentItem: React.FC<CommentItemProps> = ({
       sx={{ bgcolor: isSelected ? theme.palette.primary.main : undefined }}
     >
       <Box display="flex" gap={1} px={2} py={1} width="100%">
-        {image ? (
-          <Avatar alt="Profile" src={image} />
+        {imageUrl ? (
+          <Avatar alt="Profile" src={imageUrl} />
         ) : (
           <Avatar sx={{ width: 34, height: 34 }}>{name?.[0] ?? 'P'}</Avatar>
         )}

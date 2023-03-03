@@ -173,7 +173,7 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({ open, id, onClose }) => {
                 .map((comment) => (
                   <CommentItem
                     key={comment._id}
-                    image={comment.image}
+                    imageUrl={comment.imageUrl}
                     name={comment.name}
                     message={comment.message}
                     createdAt={comment.createdAt}
