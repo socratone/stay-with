@@ -68,7 +68,7 @@ const SignUp: NextPage<SignUpProps> = ({ kakaoId, email, imageUrl }) => {
 
     try {
       await postSignUp(payload);
-      router.push('/');
+      router.push('/login');
     } catch {
       setIsError(true);
     }
