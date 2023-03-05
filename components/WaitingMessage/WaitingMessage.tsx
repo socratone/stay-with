@@ -2,7 +2,11 @@ import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 
-const WaitingMessage = () => {
+interface WaitingMessage {
+  content?: string;
+}
+
+const WaitingMessage: React.FC<WaitingMessage> = ({ content }) => {
   return (
     <Box
       display="flex"
@@ -12,7 +16,9 @@ const WaitingMessage = () => {
       gap={1}
     >
       <CircularProgress />
-      <Typography color="text.primary">잠시만 기다려주세요 😎</Typography>
+      <Typography color="text.primary">
+        {content ? content : '잠시만 기다려주세요 😎'}
+      </Typography>
     </Box>
   );
 };
