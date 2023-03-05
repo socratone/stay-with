@@ -18,7 +18,7 @@ const useKakaoLoginRedirect = (code: string) => {
         isRequestedRef.current = true;
         const { accessToken } = await postLoginWithKakao(code);
         login(accessToken);
-        router.push('/');
+        router.replace('/');
       } catch (error: any) {
         const status = error?.response?.status;
         const kakaoUser: ApiLoginKakaoErrorData['kakaoUser'] =
