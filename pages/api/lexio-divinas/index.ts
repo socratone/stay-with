@@ -81,9 +81,9 @@ const handler = async (
         total = await db.find(CollectionName.LexioDivinas, {
           filter: { userId: new ObjectId(userId) },
         });
+      } else {
+        total = await db.count(CollectionName.LexioDivinas);
       }
-
-      total = await db.count(CollectionName.LexioDivinas);
 
       db.close();
       return res.status(200).json({ lexioDivinas, total });
