@@ -97,6 +97,7 @@ const handler = async (
       });
 
       if (!user) {
+        db.close();
         return res.status(401).json({
           message: 'Unregistered user.',
           kakaoUser,
@@ -107,6 +108,7 @@ const handler = async (
         expiresIn: '1 days',
       });
 
+      db.close();
       return res.status(200).json({ accessToken });
     } catch (error: any) {
       if (error?.response?.status === 400) {
@@ -115,7 +117,7 @@ const handler = async (
         });
       }
 
-      const { status, message } = db.parseError(error);
+      const { status, message } = Database.parseError(error);
       return res.status(status).send({ message });
     }
   }

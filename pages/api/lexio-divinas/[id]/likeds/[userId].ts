@@ -34,9 +34,11 @@ const handler = async (
           },
         }
       );
+
+      db.close();
       return res.status(200).json(result);
     } catch (error) {
-      const { status, message } = db.parseError(error);
+      const { status, message } = Database.parseError(error);
       return res.status(status).send({ message });
     }
   }

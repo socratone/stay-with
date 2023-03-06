@@ -47,7 +47,7 @@ class Database {
     this.client = new MongoClient(MONGO_CLIENT_URL); // Create a new MongoClient
   }
 
-  private async close() {
+  async close() {
     try {
       await this.client.close();
     } catch {
@@ -55,7 +55,7 @@ class Database {
     }
   }
 
-  parseError(error: any) {
+  static parseError(error: any) {
     const errorMessage = error?.message; // '500: Database connection failed.' | undefined
 
     if (typeof errorMessage === 'string') {
@@ -87,9 +87,8 @@ class Database {
       });
       return documents;
     } catch (error: any) {
-      throw new Error(`500: ${error?.message}`);
-    } finally {
       this.close();
+      throw new Error(`500: ${error?.message}`);
     }
   }
 
@@ -100,9 +99,8 @@ class Database {
       const collection = database.collection(collectionName);
       return (await collection.findOne(filter)) as T | null;
     } catch (error: any) {
-      throw new Error(`500: ${error?.message}`);
-    } finally {
       this.close();
+      throw new Error(`500: ${error?.message}`);
     }
   }
 
@@ -121,9 +119,8 @@ class Database {
       });
       return documents as T;
     } catch (error: any) {
-      throw new Error(`500: ${error?.message}`);
-    } finally {
       this.close();
+      throw new Error(`500: ${error?.message}`);
     }
   }
 
@@ -139,9 +136,8 @@ class Database {
       const collection = database.collection(collectionName);
       return await collection.updateOne(filter, update, params?.options);
     } catch (error: any) {
-      throw new Error(`500: ${error?.message}`);
-    } finally {
       this.close();
+      throw new Error(`500: ${error?.message}`);
     }
   }
 
@@ -155,9 +151,8 @@ class Database {
       const collection = database.collection(collectionName);
       return await collection.deleteOne(filter, params?.options);
     } catch (error: any) {
-      throw new Error(`500: ${error?.message}`);
-    } finally {
       this.close();
+      throw new Error(`500: ${error?.message}`);
     }
   }
 
@@ -172,9 +167,8 @@ class Database {
       const collection = database.collection(collectionName);
       return await collection.estimatedDocumentCount(options);
     } catch (error: any) {
-      throw new Error(`500: ${error?.message}`);
-    } finally {
       this.close();
+      throw new Error(`500: ${error?.message}`);
     }
   }
 
@@ -188,9 +182,8 @@ class Database {
       const collection = database.collection(collectionName);
       return await collection.insertOne(document);
     } catch (error: any) {
-      throw new Error(`500: ${error?.message}`);
-    } finally {
       this.close();
+      throw new Error(`500: ${error?.message}`);
     }
   }
 }

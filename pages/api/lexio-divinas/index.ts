@@ -19,59 +19,76 @@ const handler = async (
     ApiLexioDivinasData | ApiLexioDivinaResultData | ApiErrorData
   >
 ) => {
-  const db = new Database();
-
   if (req.method === 'GET') {
-    const offset = req.query.offset;
-    const count = req.query.count;
+    const db = new Database();
+    const offset = req.query.offset
+      ? (Number(req.query.offset) - 1) * Number(req.query.count)
+      : 0;
+    const count = req.query.count ? Number(req.query.count) : 10;
+    const userId = req.query.userId ? String(req.query.userId) : null;
+
+    const pipeline: any[] = [
+      {
+        $lookup: {
+          from: CollectionName.Users,
+          let: {
+            searchId: {
+              $toObjectId: '$userId',
+            },
+          },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ['$_id', '$$searchId'],
+                },
+              },
+            },
+          ],
+          as: 'user',
+        },
+      },
+      {
+        $unwind: '$user',
+      },
+      {
+        // TODO: 이게 가능한지 확인해야 함
+        $sort: {
+          _id: -1,
+        },
+      },
+      {
+        $skip: offset,
+      },
+      {
+        $limit: count,
+      },
+    ];
+
+    if (userId) {
+      pipeline.unshift({ $match: { userId: new ObjectId(userId) } });
+    }
 
     try {
       // https://stackoverflow.com/questions/69978663/get-data-from-another-collection-string-objectid
       const lexioDivinas = await db.aggregate<
         ApiLexioDivinasData['lexioDivinas']
-      >(CollectionName.LexioDivinas, [
-        {
-          $lookup: {
-            from: CollectionName.Users,
-            let: {
-              searchId: {
-                $toObjectId: '$userId',
-              },
-            },
-            pipeline: [
-              {
-                $match: {
-                  $expr: {
-                    $eq: ['$_id', '$$searchId'],
-                  },
-                },
-              },
-            ],
-            as: 'user',
-          },
-        },
-        {
-          $unwind: '$user',
-        },
-        {
-          $sort: {
-            _id: -1,
-          },
-        },
-        {
-          $skip: offset
-            ? (Number(req.query.offset) - 1) * Number(req.query.count)
-            : 0,
-        },
-        {
-          $limit: count ? Number(req.query.count) : 10,
-        },
-      ]);
+      >(CollectionName.LexioDivinas, pipeline);
 
-      const total = await db.count(CollectionName.LexioDivinas);
+      let total = 0;
+
+      if (userId) {
+        total = await db.find(CollectionName.LexioDivinas, {
+          filter: { userId: new ObjectId(userId) },
+        });
+      }
+
+      total = await db.count(CollectionName.LexioDivinas);
+
+      db.close();
       return res.status(200).json({ lexioDivinas, total });
     } catch (error) {
-      const { status, message } = db.parseError(error);
+      const { status, message } = Database.parseError(error);
       return res.status(status).send({ message });
     }
   }
@@ -86,14 +103,16 @@ const handler = async (
     }
 
     try {
+      const db = new Database();
       const userId = req.body.userId;
       const result = await db.insertOne(CollectionName.LexioDivinas, {
         ...req.body,
         userId: new ObjectId(userId),
       });
+      db.close();
       return res.status(201).json(result);
     } catch (error) {
-      const { status, message } = db.parseError(error);
+      const { status, message } = Database.parseError(error);
       return res.status(status).send({ message });
     }
   }

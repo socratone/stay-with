@@ -25,9 +25,10 @@ const handler = async (
         return res.status(404).json({ message: 'Not found.' });
       }
 
+      db.close();
       return res.status(200).json({ user });
     } catch (error) {
-      const { status, message } = db.parseError(error);
+      const { status, message } = Database.parseError(error);
       return res.status(status).send({ message });
     }
   }

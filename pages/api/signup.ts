@@ -17,9 +17,10 @@ const handler = async (
 
     try {
       const result = await db.insertOne(CollectionName.Users, req.body);
+      db.close();
       return res.status(201).json(result);
     } catch (error) {
-      const { status, message } = db.parseError(error);
+      const { status, message } = Database.parseError(error);
       return res.status(status).send({ message });
     }
   }

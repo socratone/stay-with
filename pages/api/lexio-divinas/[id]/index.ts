@@ -44,9 +44,10 @@ const handler = async (
   >
 ) => {
   const id = String(req.query.id);
-  const db = new Database();
 
   if (req.method === 'GET') {
+    const db = new Database();
+
     try {
       const [lexioDivina] = await db.aggregate<AggregatedLexioDivina[]>(
         CollectionName.LexioDivinas,
@@ -80,6 +81,7 @@ const handler = async (
       );
 
       if (!lexioDivina) {
+        db.close();
         return res.status(404).json({ message: 'Not found.' });
       }
 
@@ -111,9 +113,10 @@ const handler = async (
 
       const editedLexioDivina = { ...lexioDivina, comments };
 
+      db.close();
       return res.status(200).json(editedLexioDivina);
     } catch (error) {
-      const { status, message } = db.parseError(error);
+      const { status, message } = Database.parseError(error);
       return res.status(status).send({ message });
     }
   }
@@ -127,6 +130,8 @@ const handler = async (
     });
   }
 
+  const db = new Database();
+
   try {
     const user: User = jwtDecode(accessToken as string);
 
@@ -138,10 +143,12 @@ const handler = async (
     );
 
     if (!lexioDivina) {
+      db.close();
       return res.status(404).json({ message: 'Not found.' });
     }
 
     if (user._id !== String(lexioDivina.userId)) {
+      db.close();
       return res.status(400).json({
         message: 'Not the author.',
       });
@@ -151,7 +158,7 @@ const handler = async (
       return res.status(500).json({ message: 'Invalid token error.' });
     }
 
-    const { status, message } = db.parseError(error);
+    const { status, message } = Database.parseError(error);
     return res.status(status).send({ message });
   }
 
@@ -166,9 +173,11 @@ const handler = async (
           $set: payload,
         }
       );
+
+      db.close();
       return res.status(200).json(result);
     } catch (error) {
-      const { status, message } = db.parseError(error);
+      const { status, message } = Database.parseError(error);
       return res.status(status).send({ message });
     }
   }
@@ -178,9 +187,10 @@ const handler = async (
       const result = await db.deleteOne(CollectionName.LexioDivinas, {
         _id: new ObjectId(id),
       });
+      db.close();
       return res.status(200).json(result);
     } catch (error) {
-      const { status, message } = db.parseError(error);
+      const { status, message } = Database.parseError(error);
       return res.status(status).send({ message });
     }
   }

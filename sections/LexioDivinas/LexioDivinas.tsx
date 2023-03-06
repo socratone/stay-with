@@ -21,13 +21,13 @@ import CommentDrawer from 'sections/CommentDrawer';
 import { LexioDivina } from 'types/interfaces';
 
 interface LexioDivinasProps {
-  // TODO: any type
-  fetchOptions?: any;
+  fetchOptions?: {
+    userId?: string;
+  };
 }
 
 const PAGE_COUNT = 20;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
@@ -44,6 +44,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
   const lexioDivinasParams = {
     offset: page,
     count: PAGE_COUNT,
+    userId: fetchOptions?.userId,
   };
 
   const lexioDivinasKey = [lexioDivinasParams, '/api/lexio-divinas'];
