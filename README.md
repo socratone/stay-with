@@ -15,6 +15,7 @@
 - `/lexio-divinas/{id}/likeds/{id}` DELETE 묵상글의 좋아요 삭제
 - `/login` POST 사용자 로그인
 - `/signup` POST 사용자 등록
+- `/users/{id}` GET 사용자 데이터
 
 ## Data Schema
 

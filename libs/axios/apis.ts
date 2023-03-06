@@ -4,13 +4,14 @@ import {
   ApiLexioDivinasData,
 } from 'pages/api/lexio-divinas';
 import {
-  ApiGetLexioDivinaData,
+  ApiLexioDivinaData,
   ApiPutLexioDivinaPayload,
 } from 'pages/api/lexio-divinas/[id]';
 import { ApiCommentPayload } from 'pages/api/lexio-divinas/[id]/comments';
 import { ApiLikedPayload } from 'pages/api/lexio-divinas/[id]/likeds/index';
 import { ApiLoginKakaoData, ApiLoginKakaoPayload } from 'pages/api/login/kakao';
 import { ApiSignUpData, ApiSignUpPayload } from 'pages/api/signup';
+import { ApiUserData } from 'pages/api/users/[id]';
 
 import axiosInstance from './instance';
 
@@ -87,9 +88,9 @@ export const deleteCommentInLexioDivina = (id: string, commentId: string) => {
   );
 };
 
-export const getLexioDivina = (id: string): Promise<ApiGetLexioDivinaData> => {
+export const getLexioDivina = (id: string): Promise<ApiLexioDivinaData> => {
   return axiosInstance
-    .get<any, AxiosResponse<ApiGetLexioDivinaData>>(`/api/lexio-divinas/${id}`)
+    .get<any, AxiosResponse<ApiLexioDivinaData>>(`/api/lexio-divinas/${id}`)
     .then((value) => value.data);
 };
 
@@ -105,5 +106,11 @@ export const getLexioDivinas = (
     .get<any, AxiosResponse<ApiLexioDivinasData>>('/api/lexio-divinas', {
       params,
     })
+    .then((value) => value.data);
+};
+
+export const getUser = (id: string): Promise<ApiUserData> => {
+  return axiosInstance
+    .get<any, AxiosResponse<ApiUserData>>(`/api/users/${id}`)
     .then((value) => value.data);
 };

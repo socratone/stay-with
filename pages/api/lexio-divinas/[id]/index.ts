@@ -10,7 +10,7 @@ export type ApiPutLexioDivinaPayload = Omit<
   '_id' | 'userId' | 'likedUserIds' | 'comments'
 >;
 
-export interface ApiGetLexioDivinaData extends AggregatedLexioDivina {
+export interface ApiLexioDivinaData extends AggregatedLexioDivina {
   comments: {
     _id: string;
     userId: string;
@@ -40,10 +40,7 @@ type ApiDeleteResultData = DeleteResult;
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<
-    | ApiGetLexioDivinaData
-    | ApiPutResultData
-    | ApiDeleteResultData
-    | ApiErrorData
+    ApiLexioDivinaData | ApiPutResultData | ApiDeleteResultData | ApiErrorData
   >
 ) => {
   const id = String(req.query.id);
