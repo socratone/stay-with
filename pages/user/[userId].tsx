@@ -14,7 +14,7 @@ import LexioDivinas from 'sections/LexioDivinas';
 
 const UserId = () => {
   const router = useRouter();
-  const userId = String(router.query.userId);
+  const userId = router.query.userId ? String(router.query.userId) : undefined;
   const { data: userData, isLoading, isError } = useUser(userId);
   const { user: me, logout } = useAuth();
   const isLoggedIn = !!me;
@@ -70,10 +70,7 @@ const UserId = () => {
 
       <LexioDivinas
         fetchOptions={{
-          filter: {
-            // TODO: id를 받아서 요청
-            // userId: user._id,
-          },
+          userId: userData?.user._id,
         }}
       />
     </>
