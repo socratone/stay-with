@@ -1,9 +1,8 @@
-import 'react-spring-bottom-sheet/dist/style.css';
-
 import { useMediaQuery, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import GlobalHeader from 'components/GlobalHeader';
 import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/GlobalHeader';
+import LexioDivinaBottomSheet from 'components/LexioDivinaBottomSheet/LexioDivinaBottomSheet';
 import LexioDivinaForm, {
   LexioDivinaFormValues,
 } from 'components/LexioDivinaForm/LexioDivinaForm';
@@ -11,13 +10,11 @@ import LoginMessage from 'components/LoginMessage';
 import Meta from 'components/Meta';
 import { Bible } from 'constants/bible';
 import useAuth from 'hooks/context/useAuth';
-import useColorMode from 'hooks/context/useColorMode';
 import { postLexioDivina } from 'libs/axios/apis';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { BottomSheet } from 'react-spring-bottom-sheet';
 
 const LexioDivinaCreate = () => {
   const router = useRouter();
@@ -26,19 +23,6 @@ const LexioDivinaCreate = () => {
 
   const { enqueueSnackbar } = useSnackbar();
   const { user, logout } = useAuth();
-  const { colorMode } = useColorMode();
-
-  useEffect(() => {
-    const root = document.querySelector(':root') as any;
-
-    if (colorMode === 'dark') {
-      root.style.setProperty('--rsbs-bg', 'black');
-      root.style.setProperty('--rsbs-handle-bg', 'white');
-    } else {
-      root.style.setProperty('--rsbs-bg', '');
-      root.style.setProperty('--rsbs-handle-bg', '');
-    }
-  }, [colorMode]);
 
   const [isRequested, setIsRequested] = useState(false);
 
@@ -171,23 +155,7 @@ const LexioDivinaCreate = () => {
       </Box>
 
       {isTabletOrSmaller ? (
-        <BottomSheet
-          open
-          defaultSnap={300}
-          snapPoints={({ maxHeight }) => [
-            (maxHeight / 10) * 9,
-            (maxHeight / 10) * 8,
-            (maxHeight / 10) * 7,
-            (maxHeight / 10) * 6,
-            (maxHeight / 10) * 5,
-            (maxHeight / 10) * 4,
-            (maxHeight / 10) * 3,
-            300,
-            110,
-          ]}
-          expandOnContentDrag
-          blocking={false}
-        >
+        <LexioDivinaBottomSheet>
           <LexioDivinaForm
             form={form}
             isRequested={isRequested}
@@ -195,7 +163,7 @@ const LexioDivinaCreate = () => {
             onCancel={handleCancel}
             onSubmit={onSubmit}
           />
-        </BottomSheet>
+        </LexioDivinaBottomSheet>
       ) : null}
     </>
   );
