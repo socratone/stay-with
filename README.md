@@ -1,6 +1,6 @@
 # 머물음 (meo-mul-eum)
 
-가톨릭 묵상 노트
+가톨릭 묵상 SNS
 
 ## Apis
 
@@ -82,8 +82,10 @@ interface LexioDivina {
 - .env.development
 
 ```
-NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID="?????"
 NEXT_PUBLIC_BASE_URL="http://localhost:3000"
-AUTH_SECRET="?????"
+NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY="????"
+KAKAO_REST_API_KEY="????"
+KAKAO_CLIENT_SECRET="????"
+AUTH_SECRET="????"
 MONGO_CLIENT_URL="mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.7.0"
 ```
