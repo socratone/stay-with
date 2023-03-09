@@ -51,7 +51,7 @@ class Database {
     try {
       await this.client.close();
     } catch {
-      console.error('Database shutdown error.');
+      // TODO: log
     }
   }
 
