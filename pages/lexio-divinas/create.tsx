@@ -1,5 +1,6 @@
 import { useMediaQuery, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
+import DailyMissa from 'components/DailyMissa/DailyMissa';
 import GlobalHeader from 'components/GlobalHeader';
 import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/GlobalHeader';
 import LexioDivinaBottomSheet from 'components/LexioDivinaBottomSheet/LexioDivinaBottomSheet';
@@ -102,12 +103,7 @@ const LexioDivinaCreate = () => {
       <Meta />
       <GlobalHeader />
 
-      <Box
-        component="main"
-        sx={{
-          height: `calc(100vh - ${GLOBAL_HEADER_HEIGHT}px)`,
-        }}
-      >
+      <Box component="main" height={`calc(100vh - ${GLOBAL_HEADER_HEIGHT}px)`}>
         <Box
           display="grid"
           gridTemplateColumns={{
@@ -119,16 +115,7 @@ const LexioDivinaCreate = () => {
         >
           {/* left */}
           <Box>
-            <Box
-              component="iframe"
-              src="https://missa.cbck.or.kr/DailyMissa"
-              sx={{
-                border: 0,
-                width: '100%',
-                height: '100%',
-                display: 'block',
-              }}
-            />
+            <DailyMissa />
           </Box>
 
           {/* right */}
