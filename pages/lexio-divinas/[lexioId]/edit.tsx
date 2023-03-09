@@ -1,9 +1,11 @@
+import { useMediaQuery, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import AccessDeniedMessage from 'components/AccessDeniedMessage';
 import DailyMissa from 'components/DailyMissa/DailyMissa';
 import ErrorMessage from 'components/ErrorMessage/ErrorMessage';
 import GlobalHeader from 'components/GlobalHeader';
 import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/GlobalHeader';
+import LexioDivinaBottomSheet from 'components/LexioDivinaBottomSheet/LexioDivinaBottomSheet';
 import LexioDivinaForm, {
   LexioDivinaFormValues,
 } from 'components/LexioDivinaForm/LexioDivinaForm';
@@ -18,10 +20,12 @@ import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { PRIMARY_SHADOW } from 'theme/shadows';
 
 const LexioDivinaEdit = () => {
   const router = useRouter();
+  const theme = useTheme();
+  const isTabletOrSmaller = useMediaQuery(theme.breakpoints.down('md'));
+
   const lexioId = String(router.query.lexioId);
   const { data: lexioDivinaData, isLoading, isError } = useLexioDivina(lexioId);
   const { enqueueSnackbar } = useSnackbar();
@@ -150,16 +154,7 @@ const LexioDivinaEdit = () => {
       <Meta />
       <GlobalHeader />
 
-      <Box
-        component="main"
-        sx={{
-          height: {
-            xs: 'unset',
-            sm: 'unset',
-            md: `calc(100vh - ${GLOBAL_HEADER_HEIGHT}px)`,
-          },
-        }}
-      >
+      <Box component="main" height={`calc(100vh - ${GLOBAL_HEADER_HEIGHT}px)`}>
         <Box
           display="grid"
           gridTemplateColumns={{
@@ -175,30 +170,41 @@ const LexioDivinaEdit = () => {
           </Box>
 
           {/* right */}
-          <Box
-            display="flex"
-            flexDirection="column"
-            gap={2}
-            sx={{
-              height: '100%',
-              overflowY: 'auto',
-              boxShadow: {
-                xs: PRIMARY_SHADOW,
-                sm: PRIMARY_SHADOW,
-                md: 'unset',
-              },
-            }}
-          >
-            <LexioDivinaForm
-              form={form}
-              isRequested={isRequested}
-              defaultIsExpanded={!!lexioDivinaData.endChapter}
-              onCancel={handleCancel}
-              onSubmit={onSubmit}
-            />
-          </Box>
+          {!isTabletOrSmaller ? (
+            <Box
+              display="flex"
+              flexDirection="column"
+              gap={2}
+              sx={{
+                height: '100%',
+                overflowY: 'auto',
+              }}
+            >
+              <LexioDivinaForm
+                form={form}
+                isRequested={isRequested}
+                defaultIsExpanded={!!lexioDivinaData.endChapter}
+                contentRows={15}
+                onCancel={handleCancel}
+                onSubmit={onSubmit}
+              />
+            </Box>
+          ) : null}
         </Box>
       </Box>
+
+      {isTabletOrSmaller ? (
+        <LexioDivinaBottomSheet>
+          <LexioDivinaForm
+            form={form}
+            isRequested={isRequested}
+            defaultIsExpanded={!!lexioDivinaData.endChapter}
+            contentRows={2}
+            onCancel={handleCancel}
+            onSubmit={onSubmit}
+          />
+        </LexioDivinaBottomSheet>
+      ) : null}
     </>
   );
 };

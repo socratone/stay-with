@@ -26,6 +26,7 @@ interface LexioDivinaFormProps {
   form: UseFormReturn<LexioDivinaFormValues>;
   isRequested: boolean;
   defaultIsExpanded?: boolean;
+  contentRows?: number;
   onSubmit: SubmitHandler<LexioDivinaFormValues>;
   onCancel: () => void;
 }
@@ -34,6 +35,7 @@ const LexioDivinaForm: React.FC<LexioDivinaFormProps> = ({
   form,
   isRequested,
   defaultIsExpanded,
+  contentRows,
   onSubmit,
   onCancel,
 }) => {
@@ -211,7 +213,7 @@ const LexioDivinaForm: React.FC<LexioDivinaFormProps> = ({
           size="small"
           fullWidth
           multiline
-          minRows={15}
+          minRows={contentRows}
           placeholder="구절을 통해 느낀점"
           error={!!errors.content}
         />
