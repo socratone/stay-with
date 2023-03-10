@@ -10,9 +10,9 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import SmallMenu from 'components/SmallMenu';
 import { Bible, bibleLabel } from 'constants/bible';
+import { isNewTestament } from 'helpers/bible';
 import { useState } from 'react';
 import { PRIMARY_SHADOW } from 'theme/shadows';
-import { isNewTestament } from 'utils/bible';
 
 import BubbleIcon from './BubbleIcon';
 import LikedIcon from './LikedIcon';

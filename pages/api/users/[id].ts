@@ -2,7 +2,7 @@ import { ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Database, { CollectionName } from 'server/database';
 import { User } from 'types/interfaces';
-import { ApiErrorData } from 'utils/api';
+import { ApiErrorData } from 'utils/auth';
 
 export type ApiUserData = {
   user: User;

@@ -2,7 +2,7 @@ import { ObjectId, UpdateResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Database, { CollectionName } from 'server/database';
 import { Comment } from 'types/interfaces';
-import { ApiErrorData, isLoggedIn } from 'utils/api';
+import { ApiErrorData, isLoggedIn } from 'utils/auth';
 
 export type ApiCommentPayload = Omit<Comment, '_id'>;
 

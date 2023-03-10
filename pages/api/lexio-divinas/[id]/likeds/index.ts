@@ -1,7 +1,7 @@
 import { ObjectId, UpdateResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Database, { CollectionName } from 'server/database';
-import { ApiErrorData, isLoggedIn } from 'utils/api';
+import { ApiErrorData, isLoggedIn } from 'utils/auth';
 
 export type ApiLikedPayload = {
   userId: string;

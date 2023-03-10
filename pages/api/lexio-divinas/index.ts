@@ -2,7 +2,7 @@ import { InsertOneResult, ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Database, { CollectionName } from 'server/database';
 import { LexioDivina, User } from 'types/interfaces';
-import { ApiErrorData, isLoggedIn } from 'utils/api';
+import { ApiErrorData, isLoggedIn } from 'utils/auth';
 
 export type ApiLexioDivinaPayload = Omit<LexioDivina, '_id'>;
 
