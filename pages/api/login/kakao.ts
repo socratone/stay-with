@@ -1,9 +1,10 @@
 import axios, { AxiosResponse } from 'axios';
+import { CollectionName } from 'constants/mongodb';
 import jwt from 'jsonwebtoken';
 import { NextApiRequest, NextApiResponse } from 'next';
-import Database, { CollectionName } from 'server/database';
 import { User } from 'types/interfaces';
 import { ApiErrorData } from 'utils/auth';
+import Mongodb from 'utils/mongodb';
 
 export type ApiLoginKakaoPayload = {
   code: string;
@@ -78,7 +79,7 @@ const handler = async (
       });
     }
 
-    const db = new Database();
+    const db = new Mongodb();
 
     try {
       const { data: kakaoUser }: AxiosResponse<KakaoUser> = await axios.get(
@@ -117,7 +118,7 @@ const handler = async (
         });
       }
 
-      const { status, message } = Database.parseError(error);
+      const { status, message } = Mongodb.parseError(error);
       return res.status(status).send({ message });
     }
   }

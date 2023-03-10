@@ -1,8 +1,9 @@
+import { CollectionName } from 'constants/mongodb';
 import { ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import Database, { CollectionName } from 'server/database';
 import { User } from 'types/interfaces';
 import { ApiErrorData } from 'utils/auth';
+import Mongodb from 'utils/mongodb';
 
 export type ApiUserData = {
   user: User;
@@ -13,7 +14,7 @@ const handler = async (
   res: NextApiResponse<ApiUserData | ApiErrorData>
 ) => {
   const id = String(req.query.id);
-  const db = new Database();
+  const db = new Mongodb();
 
   if (req.method === 'GET') {
     try {
@@ -28,7 +29,7 @@ const handler = async (
       db.close();
       return res.status(200).json({ user });
     } catch (error) {
-      const { status, message } = Database.parseError(error);
+      const { status, message } = Mongodb.parseError(error);
       return res.status(status).send({ message });
     }
   }

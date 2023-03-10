@@ -1,8 +1,9 @@
+import { CollectionName } from 'constants/mongodb';
 import { InsertOneResult, ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import Database, { CollectionName } from 'server/database';
 import { LexioDivina, User } from 'types/interfaces';
 import { ApiErrorData, isLoggedIn } from 'utils/auth';
+import Mongodb from 'utils/mongodb';
 
 export type ApiLexioDivinaPayload = Omit<LexioDivina, '_id'>;
 
@@ -20,7 +21,7 @@ const handler = async (
   >
 ) => {
   if (req.method === 'GET') {
-    const db = new Database();
+    const db = new Mongodb();
     const offset = req.query.offset
       ? (Number(req.query.offset) - 1) * Number(req.query.count)
       : 0;
@@ -88,7 +89,7 @@ const handler = async (
       db.close();
       return res.status(200).json({ lexioDivinas, total });
     } catch (error) {
-      const { status, message } = Database.parseError(error);
+      const { status, message } = Mongodb.parseError(error);
       return res.status(status).send({ message });
     }
   }
@@ -103,7 +104,7 @@ const handler = async (
     }
 
     try {
-      const db = new Database();
+      const db = new Mongodb();
       const userId = req.body.userId;
       const result = await db.insertOne(CollectionName.LexioDivinas, {
         ...req.body,
@@ -112,7 +113,7 @@ const handler = async (
       db.close();
       return res.status(201).json(result);
     } catch (error) {
-      const { status, message } = Database.parseError(error);
+      const { status, message } = Mongodb.parseError(error);
       return res.status(status).send({ message });
     }
   }

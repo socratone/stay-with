@@ -1,3 +1,4 @@
+import { CollectionName } from 'constants/mongodb';
 import {
   AggregateOptions,
   DeleteOptions,
@@ -10,11 +11,6 @@ import {
   UpdateFilter,
   UpdateOptions,
 } from 'mongodb';
-
-export enum CollectionName {
-  Users = 'users',
-  LexioDivinas = 'lexio-divinas',
-}
 
 const MONGO_CLIENT_URL = process.env.MONGO_CLIENT_URL as string;
 const DB_NAME = 'mmm-database';
@@ -40,7 +36,7 @@ type AggregateParams = {
   options?: AggregateOptions;
 };
 
-class Database {
+class Mongodb {
   client: MongoClient;
 
   constructor() {
@@ -188,4 +184,4 @@ class Database {
   }
 }
 
-export default Database;
+export default Mongodb;

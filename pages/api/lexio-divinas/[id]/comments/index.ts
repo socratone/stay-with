@@ -1,8 +1,9 @@
+import { CollectionName } from 'constants/mongodb';
 import { ObjectId, UpdateResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import Database, { CollectionName } from 'server/database';
 import { Comment } from 'types/interfaces';
 import { ApiErrorData, isLoggedIn } from 'utils/auth';
+import Mongodb from 'utils/mongodb';
 
 export type ApiCommentPayload = Omit<Comment, '_id'>;
 
@@ -24,7 +25,7 @@ const handler = async (
       });
     }
 
-    const db = new Database();
+    const db = new Mongodb();
 
     try {
       const result = await db.updateOne(
@@ -45,7 +46,7 @@ const handler = async (
       db.close();
       return res.status(201).json(result);
     } catch (error) {
-      const { status, message } = Database.parseError(error);
+      const { status, message } = Mongodb.parseError(error);
       return res.status(status).send({ message });
     }
   }

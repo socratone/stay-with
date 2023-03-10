@@ -1,9 +1,10 @@
+import { CollectionName } from 'constants/mongodb';
 import jwtDecode from 'jwt-decode';
 import { DeleteResult, ObjectId, UpdateResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import Database, { CollectionName } from 'server/database';
 import { LexioDivina, User } from 'types/interfaces';
 import { ApiErrorData, isLoggedIn } from 'utils/auth';
+import Mongodb from 'utils/mongodb';
 
 export type ApiPutLexioDivinaPayload = Omit<
   LexioDivina,
@@ -46,7 +47,7 @@ const handler = async (
   const id = String(req.query.id);
 
   if (req.method === 'GET') {
-    const db = new Database();
+    const db = new Mongodb();
 
     try {
       const [lexioDivina] = await db.aggregate<AggregatedLexioDivina[]>(
@@ -116,7 +117,7 @@ const handler = async (
       db.close();
       return res.status(200).json(editedLexioDivina);
     } catch (error) {
-      const { status, message } = Database.parseError(error);
+      const { status, message } = Mongodb.parseError(error);
       return res.status(status).send({ message });
     }
   }
@@ -130,7 +131,7 @@ const handler = async (
     });
   }
 
-  const db = new Database();
+  const db = new Mongodb();
 
   try {
     const user: User = jwtDecode(accessToken as string);
@@ -158,7 +159,7 @@ const handler = async (
       return res.status(500).json({ message: 'Invalid token error.' });
     }
 
-    const { status, message } = Database.parseError(error);
+    const { status, message } = Mongodb.parseError(error);
     return res.status(status).send({ message });
   }
 
@@ -177,7 +178,7 @@ const handler = async (
       db.close();
       return res.status(200).json(result);
     } catch (error) {
-      const { status, message } = Database.parseError(error);
+      const { status, message } = Mongodb.parseError(error);
       return res.status(status).send({ message });
     }
   }
@@ -190,7 +191,7 @@ const handler = async (
       db.close();
       return res.status(200).json(result);
     } catch (error) {
-      const { status, message } = Database.parseError(error);
+      const { status, message } = Mongodb.parseError(error);
       return res.status(status).send({ message });
     }
   }
