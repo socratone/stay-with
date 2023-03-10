@@ -1,20 +1,20 @@
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import Autocomplete from '@mui/material/Autocomplete';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { Bible, BIBLE_OPTIONS } from 'constants/bible';
 import { useState } from 'react';
 import { Controller, SubmitHandler, UseFormReturn } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
+import { AutocompleteOption } from 'types/mui';
 
 export interface LexioDivinaFormValues {
   phrase: string;
-  bible: Bible;
+  bible: AutocompleteOption<Bible>;
   chapter: string;
   verse: string;
   endChapter?: string;
@@ -90,19 +90,19 @@ const LexioDivinaForm: React.FC<LexioDivinaFormProps> = ({
           <Controller
             control={control}
             name="bible"
+            rules={{
+              required: true,
+            }}
             render={({ field }) => (
-              <Select
+              <Autocomplete
                 {...field}
-                size="small"
-                defaultValue={Bible.Genesis}
-                fullWidth
-              >
-                {BIBLE_OPTIONS.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </Select>
+                onChange={(_, newValue) => field.onChange(newValue)}
+                disablePortal
+                options={BIBLE_OPTIONS}
+                renderInput={(params) => (
+                  <TextField {...params} size="small" error={!!errors.bible} />
+                )}
+              />
             )}
           />
         </Box>

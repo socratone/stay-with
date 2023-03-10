@@ -157,7 +157,7 @@ export const BIBLE_LABEL = {
 
 export const BIBLE_OPTIONS = Object.keys(BIBLE_LABEL).map((key) => {
   return {
-    value: key,
+    value: key as Bible,
     label: BIBLE_LABEL[key as Bible],
   };
 });

@@ -9,7 +9,7 @@ import LexioDivinaForm, {
 } from 'components/LexioDivinaForm/LexioDivinaForm';
 import LoginMessage from 'components/LoginMessage';
 import Meta from 'components/Meta';
-import { Bible } from 'constants/bible';
+import { Bible, BIBLE_LABEL } from 'constants/bible';
 import { postLexioDivina } from 'helpers/axios';
 import useAuth from 'hooks/context/useAuth';
 import { useRouter } from 'next/router';
@@ -29,7 +29,7 @@ const LexioDivinaCreate = () => {
 
   const form = useForm<LexioDivinaFormValues>({
     defaultValues: {
-      bible: Bible.Genesis,
+      bible: { value: Bible.Genesis, label: BIBLE_LABEL[Bible.Genesis] },
     },
   });
 
@@ -52,7 +52,7 @@ const LexioDivinaCreate = () => {
 
     try {
       const payload = {
-        bible,
+        bible: bible.value,
         content,
         phrase,
         chapter: Number(chapter),
