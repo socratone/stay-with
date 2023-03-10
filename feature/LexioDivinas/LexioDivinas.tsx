@@ -18,7 +18,7 @@ import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import { useQueryClient } from 'react-query';
-import { LexioDivina } from 'types/interfaces';
+import { LexioDivina } from 'types/document';
 
 interface LexioDivinasProps {
   fetchOptions?: {

@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
 import { resetUser, setUser } from 'redux/userSlice';
-import { User } from 'types/interfaces';
+import { User } from 'types/document';
 import { removeAccessToken, saveAccessToken } from 'utils/token';
 
 const useAuth = () => {

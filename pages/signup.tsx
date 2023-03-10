@@ -13,7 +13,7 @@ import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { User } from 'types/interfaces';
+import { User } from 'types/document';
 
 interface SignUpProps {
   kakaoId: number;
