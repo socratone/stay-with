@@ -89,3 +89,44 @@ KAKAO_CLIENT_SECRET="????"
 AUTH_SECRET="????"
 MONGO_CLIENT_URL="mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.7.0"
 ```
+
+## Folder Structure
+
+### Components
+
+재사용 가능한 컴포넌트\
+각 폴더 안에 컴포넌트에 필요한 모든 요소들을 둔다.
+
+- AlertDialog
+  - index.ts
+  - AlertDialog.tsx
+  - Button.tsx
+  - constants.ts
+  - helpers.ts
+
+index.ts를 이용해서 import시 path를 깔끔하게 한다.\
+index.ts로 이어지는 AlertDialog.tsx(메인 컴포넌트)를 제외하고는 AlertDialog 폴더 안에 있어 구분이 되니 prefix는 postfix 등을 붙이지 않는다.
+
+### Feature
+
+기능과 관련된 로직이 들어 있어서 공통으로 사용할 수 없는 컴포넌트
+
+### Utils
+
+범용적으로 사용할 수 있는 순수 함수\
+공통으로 사용하면 여기에 둔다.\
+예를 들어 lodash에 있는 함수가 utils에 해당한다.
+
+### Helpers
+
+Utils와는 조금 다르게 특정 프로젝트에만 사용하기 적합한 순수 함수\
+공통으로 사용하면 여기에 둔다.
+
+### Constants
+
+상수, 공통으로 사용하면 여기에 둔다.
+
+### 참고
+
+- https://kofearticle.substack.com/p/korean-fe-article--08f
+- https://www.robinwieruch.de/react-folder-structure/
