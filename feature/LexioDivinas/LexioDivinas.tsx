@@ -68,7 +68,9 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
       await deleteLexioDivina(selectedLexioDivinaIdForDelete);
       queryClient.invalidateQueries(lexioDivinasKey);
     } catch (error) {
-      console.error(error);
+      enqueueSnackbar('에러가 발생했습니다.', {
+        variant: 'error',
+      });
     } finally {
       setSelectedLexioDivinaIdForDelete(null);
     }
