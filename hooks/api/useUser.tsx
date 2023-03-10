@@ -1,4 +1,4 @@
-import { getUser } from 'libs/axios/apis';
+import { getUser } from 'helpers/axios';
 import { useQuery } from 'react-query';
 
 const useUser = (id?: string) => {

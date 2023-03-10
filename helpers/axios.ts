@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import {
   ApiLexioDivinaPayload,
   ApiLexioDivinasData,
@@ -12,8 +12,38 @@ import { ApiLikedPayload } from 'pages/api/lexio-divinas/[id]/likeds/index';
 import { ApiLoginKakaoData, ApiLoginKakaoPayload } from 'pages/api/login/kakao';
 import { ApiSignUpData, ApiSignUpPayload } from 'pages/api/signup';
 import { ApiUserData } from 'pages/api/users/[id]';
+import { getAccessToken } from 'utils/token';
 
-import axiosInstance from './instance';
+const axiosInstance = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:3000',
+});
+
+axiosInstance.interceptors.request.use(
+  (config) => {
+    // Do something before request is sent
+    config.headers = {
+      Authorization: getAccessToken(),
+    };
+    return config;
+  },
+  (error) => {
+    // Do something with request error
+    return Promise.reject(error);
+  }
+);
+
+axiosInstance.interceptors.response.use(
+  (response) => {
+    // Any status code that lie within the range of 2xx cause this function to trigger
+    // Do something with response data
+    return response;
+  },
+  (error) => {
+    // Any status codes that falls outside the range of 2xx cause this function to trigger
+    // Do something with response error
+    return Promise.reject(error);
+  }
+);
 
 export const postSignUp = (
   payload: ApiSignUpPayload

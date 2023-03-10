@@ -7,13 +7,13 @@ import ErrorMessage from 'components/ErrorMessage';
 import LexioDivinaCard from 'components/LexioDivinaCard';
 import LoadingCircular from 'components/LoadingCircular';
 import CommentDrawer from 'feature/CommentDrawer';
-import useLexioDivinas from 'hooks/api/useLexioDivinas';
-import useAuth from 'hooks/context/useAuth';
 import {
   deleteLexioDivina,
   deleteLikedInLexioDivina,
   postLikedToLexioDivina,
-} from 'libs/axios/apis';
+} from 'helpers/axios';
+import useLexioDivinas from 'hooks/api/useLexioDivinas';
+import useAuth from 'hooks/context/useAuth';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';

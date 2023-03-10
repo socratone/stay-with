@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import ErrorMessage from 'components/ErrorMessage';
 import GlobalHeader from 'components/GlobalHeader';
 import Meta from 'components/Meta';
-import { postSignUp } from 'libs/axios/apis';
+import { postSignUp } from 'helpers/axios';
 import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';

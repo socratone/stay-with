@@ -8,12 +8,12 @@ import TextField from '@mui/material/TextField';
 import AlertDialog from 'components/AlertDialog';
 import ErrorMessage from 'components/ErrorMessage';
 import LoadingCircular from 'components/LoadingCircular';
-import useLexioDivina from 'hooks/api/useLexioDivina';
-import useAuth from 'hooks/context/useAuth';
 import {
   deleteCommentInLexioDivina,
   postCommentToLexioDivina,
-} from 'libs/axios/apis';
+} from 'helpers/axios';
+import useLexioDivina from 'hooks/api/useLexioDivina';
+import useAuth from 'hooks/context/useAuth';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';

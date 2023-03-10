@@ -1,4 +1,4 @@
-import { getLexioDivinas, GetLexioDivinasParams } from 'libs/axios/apis';
+import { getLexioDivinas, GetLexioDivinasParams } from 'helpers/axios';
 import { useQuery } from 'react-query';
 
 const useLexioDivinas = (params?: GetLexioDivinasParams) => {

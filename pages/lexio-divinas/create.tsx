@@ -10,8 +10,8 @@ import LexioDivinaForm, {
 import LoginMessage from 'components/LoginMessage';
 import Meta from 'components/Meta';
 import { Bible } from 'constants/bible';
+import { postLexioDivina } from 'helpers/axios';
 import useAuth from 'hooks/context/useAuth';
-import { postLexioDivina } from 'libs/axios/apis';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
