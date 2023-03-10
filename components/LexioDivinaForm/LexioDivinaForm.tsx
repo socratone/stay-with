@@ -7,7 +7,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { Bible, bibleOptions } from 'constants/bible';
+import { Bible, BIBLE_OPTIONS } from 'constants/bible';
 import { useState } from 'react';
 import { Controller, SubmitHandler, UseFormReturn } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
@@ -97,7 +97,7 @@ const LexioDivinaForm: React.FC<LexioDivinaFormProps> = ({
                 defaultValue={Bible.Genesis}
                 fullWidth
               >
-                {bibleOptions.map((option) => (
+                {BIBLE_OPTIONS.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
                     {option.label}
                   </MenuItem>

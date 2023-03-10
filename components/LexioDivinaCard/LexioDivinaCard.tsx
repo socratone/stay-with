@@ -9,7 +9,7 @@ import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import SmallMenu from 'components/SmallMenu';
-import { Bible, bibleLabel } from 'constants/bible';
+import { Bible, BIBLE_LABEL } from 'constants/bible';
 import { isNewTestament } from 'helpers/bible';
 import { useState } from 'react';
 import { PRIMARY_SHADOW } from 'theme/shadows';
@@ -85,14 +85,14 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
 
   const getChipLabel = () => {
     if (!endChapter && !endVerse) {
-      return `${bibleLabel[bible]} ${chapter},${verse}`;
+      return `${BIBLE_LABEL[bible]} ${chapter},${verse}`;
     }
 
     if (chapter === endChapter) {
-      return `${bibleLabel[bible]} ${chapter},${verse}-${endVerse}`;
+      return `${BIBLE_LABEL[bible]} ${chapter},${verse}-${endVerse}`;
     }
 
-    return `${bibleLabel[bible]} ${chapter},${verse}-${endChapter},${endVerse}`;
+    return `${BIBLE_LABEL[bible]} ${chapter},${verse}-${endChapter},${endVerse}`;
   };
 
   const getChipColor = () => {

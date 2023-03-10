@@ -79,7 +79,7 @@ export enum Bible {
   Revelation = 'revelation',
 }
 
-export const bibleLabel = {
+export const BIBLE_LABEL = {
   [Bible.Genesis]: '창세',
   [Bible.Exodus]: '탈출',
   [Bible.Leviticus]: '레위',
@@ -153,16 +153,16 @@ export const bibleLabel = {
   [Bible.JohnThird]: '3요한',
   [Bible.Jude]: '유다',
   [Bible.Revelation]: '묵시',
-};
+} as const;
 
-export const bibleOptions = Object.keys(bibleLabel).map((key) => {
+export const BIBLE_OPTIONS = Object.keys(BIBLE_LABEL).map((key) => {
   return {
     value: key,
-    label: bibleLabel[key as Bible],
+    label: BIBLE_LABEL[key as Bible],
   };
 });
 
-export const newTestaments = [
+export const NEW_TESTAMENTS = [
   Bible.Matthew,
   Bible.Mark,
   Bible.Luke,
@@ -190,4 +190,4 @@ export const newTestaments = [
   Bible.JohnThird,
   Bible.Jude,
   Bible.Revelation,
-];
+] as const;
