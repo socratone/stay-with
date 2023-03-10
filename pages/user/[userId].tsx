@@ -7,10 +7,10 @@ import ErrorMessage from 'components/ErrorMessage/ErrorMessage';
 import GlobalHeader from 'components/GlobalHeader';
 import LoadingCircular from 'components/LoadingCircular/LoadingCircular';
 import Meta from 'components/Meta';
+import LexioDivinas from 'feature/LexioDivinas';
 import useUser from 'hooks/api/useUser';
 import useAuth from 'hooks/context/useAuth';
 import { useRouter } from 'next/router';
-import LexioDivinas from 'sections/LexioDivinas';
 
 const UserId = () => {
   const router = useRouter();

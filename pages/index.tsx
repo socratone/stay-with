@@ -1,7 +1,7 @@
 import GlobalHeader from 'components/GlobalHeader';
 import Meta from 'components/Meta';
+import LexioDivinas from 'feature/LexioDivinas';
 import type { NextPage } from 'next';
-import LexioDivinas from 'sections/LexioDivinas';
 
 const Home: NextPage = () => {
   return (

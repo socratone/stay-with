@@ -6,6 +6,7 @@ import AlertDialog from 'components/AlertDialog';
 import ErrorMessage from 'components/ErrorMessage';
 import LexioDivinaCard from 'components/LexioDivinaCard';
 import LoadingCircular from 'components/LoadingCircular';
+import CommentDrawer from 'feature/CommentDrawer';
 import useLexioDivinas from 'hooks/api/useLexioDivinas';
 import useAuth from 'hooks/context/useAuth';
 import {
@@ -17,7 +18,6 @@ import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import { useQueryClient } from 'react-query';
-import CommentDrawer from 'sections/CommentDrawer';
 import { LexioDivina } from 'types/interfaces';
 
 interface LexioDivinasProps {
