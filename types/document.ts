@@ -1,20 +1,20 @@
 import { Bible } from 'constants/bible';
 
-export interface User {
+export type User = {
   _id: string;
   kakaoId: number;
   name: string;
   email: string;
   imageUrl?: string;
-}
+};
 
-export interface Comment {
+export type Comment = {
   _id: string;
   userId: string;
   message: string;
-}
+};
 
-export interface LexioDivina {
+export type LexioDivina = {
   _id: string;
   bible: Bible;
   content: string;
@@ -26,4 +26,4 @@ export interface LexioDivina {
   userId: string;
   likedUserIds: string[];
   comments: Comment[];
-}
+};
