@@ -11,7 +11,7 @@ import { ApiCommentPayload } from 'pages/api/lexio-divinas/[id]/comments';
 import { ApiLikedPayload } from 'pages/api/lexio-divinas/[id]/likeds/index';
 import { ApiLoginKakaoData, ApiLoginKakaoPayload } from 'pages/api/login/kakao';
 import { ApiSignUpData, ApiSignUpPayload } from 'pages/api/signup';
-import { ApiUserData } from 'pages/api/users/[id]';
+import { ApiPatchUserPayload, ApiUserData } from 'pages/api/users/[id]';
 import { getAccessToken } from 'utils/token';
 
 const axiosInstance = axios.create({
@@ -143,4 +143,11 @@ export const getUser = (id: string): Promise<ApiUserData> => {
   return axiosInstance
     .get<any, AxiosResponse<ApiUserData>>(`/api/users/${id}`)
     .then((value) => value.data);
+};
+
+export const patchUser = (id: string, payload: ApiPatchUserPayload) => {
+  return axiosInstance.patch<any, AxiosResponse, ApiPatchUserPayload>(
+    `/api/users/${id}`,
+    payload
+  );
 };

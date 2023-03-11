@@ -3,7 +3,7 @@ import { useQuery } from 'react-query';
 
 const useLexioDivinas = (params?: GetLexioDivinasParams) => {
   return useQuery(
-    [params, '/api/lexio-divinas'],
+    ['/api/lexio-divinas', params],
     () => getLexioDivinas(params),
     {
       keepPreviousData: true,
