@@ -13,6 +13,7 @@ import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
 import { User } from 'types/document';
 
 interface SignUpProps {
@@ -105,7 +106,9 @@ const SignUp: NextPage<SignUpProps> = ({ kakaoId, email, imageUrl }) => {
               )}
             </Box>
             <Box>
-              <Typography color="text.primary">이름</Typography>
+              <Typography color="text.primary">
+                <FormattedMessage id="common.name" />
+              </Typography>
               <TextField
                 {...register('name', {
                   required: true,

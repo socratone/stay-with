@@ -2,5 +2,6 @@
   "meta.title": "머물음",
   "meta.description": "기도하고 적는 곳",
   "common.save": "save",
-  "common.cancel": "cancel"
+  "common.cancel": "cancel",
+  "common.name": "name"
 }

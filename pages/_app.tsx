@@ -44,14 +44,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                 warning: Snackbar,
               }}
             >
-              <IntlProvider
-                locale={locale ?? 'ko'}
-                messages={messages}
-                onError={(error) => {
-                  // i18n 값이 빠진 경우
-                  console.error(error);
-                }}
-              >
+              <IntlProvider locale={locale ?? 'ko'} messages={messages}>
                 <Component {...pageProps} />
               </IntlProvider>
             </SnackbarProvider>

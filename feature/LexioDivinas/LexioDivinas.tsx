@@ -27,6 +27,7 @@ interface LexioDivinasProps {
 }
 
 const PAGE_COUNT = 20;
+export const LEXIO_DIVINAS_KEY = { queryKey: '/api/lexio-divinas' };
 
 const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
   const router = useRouter();
@@ -47,8 +48,6 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
     userId: fetchOptions?.userId,
   };
 
-  const lexioDivinasKey = [lexioDivinasParams, '/api/lexio-divinas'];
-
   const {
     data: lexioDivinasData,
     isLoading: lexioDivinasLoading,
@@ -66,7 +65,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
 
     try {
       await deleteLexioDivina(selectedLexioDivinaIdForDelete);
-      queryClient.invalidateQueries(lexioDivinasKey);
+      queryClient.invalidateQueries(LEXIO_DIVINAS_KEY);
     } catch (error) {
       enqueueSnackbar('에러가 발생했습니다.', {
         variant: 'error',
@@ -83,7 +82,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
       await postLikedToLexioDivina(id, {
         userId: user._id,
       });
-      queryClient.invalidateQueries(lexioDivinasKey);
+      queryClient.invalidateQueries(LEXIO_DIVINAS_KEY);
     } catch (error: any) {
       const status = error?.response?.status;
       if (status === 401) {
@@ -102,7 +101,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
 
     try {
       await deleteLikedInLexioDivina(id, user._id);
-      queryClient.invalidateQueries(lexioDivinasKey);
+      queryClient.invalidateQueries(LEXIO_DIVINAS_KEY);
     } catch (error: any) {
       const status = error?.response?.status;
       if (status === 401) {

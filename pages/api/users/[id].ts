@@ -1,5 +1,5 @@
 import { CollectionName } from 'constants/mongodb';
-import { ObjectId } from 'mongodb';
+import { ObjectId, UpdateResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { User } from 'types/document';
 import { ApiErrorData } from 'utils/auth';
@@ -9,9 +9,15 @@ export type ApiUserData = {
   user: User;
 };
 
+export type ApiPatchUserPayload = {
+  name?: User['name'];
+};
+
+type ApiPutResultData = UpdateResult;
+
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<ApiUserData | ApiErrorData>
+  res: NextApiResponse<ApiUserData | ApiErrorData | ApiPutResultData>
 ) => {
   const id = String(req.query.id);
   const db = new Mongodb();
@@ -28,6 +34,28 @@ const handler = async (
 
       db.close();
       return res.status(200).json({ user });
+    } catch (error) {
+      const { status, message } = Mongodb.parseError(error);
+      return res.status(status).send({ message });
+    }
+  }
+
+  if (req.method === 'PATCH') {
+    const payload: ApiPatchUserPayload = req.body;
+
+    try {
+      const result = await db.updateOne(
+        CollectionName.Users,
+        {
+          _id: new ObjectId(id),
+        },
+        {
+          $set: payload,
+        }
+      );
+
+      db.close();
+      return res.status(200).json(result);
     } catch (error) {
       const { status, message } = Mongodb.parseError(error);
       return res.status(status).send({ message });
