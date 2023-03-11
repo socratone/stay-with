@@ -16,6 +16,7 @@
 - `/login` POST 사용자 로그인
 - `/signup` POST 사용자 등록
 - `/users/{id}` GET 사용자 데이터
+- `/users/{id}` PATCH 사용자 데이터 수정
 
 ## Data Schema
 
