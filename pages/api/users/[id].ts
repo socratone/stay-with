@@ -1,4 +1,5 @@
 import { CollectionName } from 'constants/mongodb';
+import jwtDecode from 'jwt-decode';
 import { ObjectId, UpdateResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { User } from 'types/document';
@@ -41,6 +42,16 @@ const handler = async (
   }
 
   if (req.method === 'PATCH') {
+    const accessToken = req.headers.authorization;
+    const user: User = jwtDecode(accessToken as string);
+
+    if (id !== user._id) {
+      db.close();
+      return res.status(400).json({
+        message: 'Not yourself.',
+      });
+    }
+
     const payload: ApiPatchUserPayload = req.body;
 
     try {

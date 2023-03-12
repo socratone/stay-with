@@ -91,9 +91,11 @@ const UserInfo: React.FC<UserInfoProps> = ({ userId }) => {
             <Typography color="text.primary" fontWeight={500}>
               {userData?.user.name}
             </Typography>
-            <IconButton onClick={handleNameEditButtonClick} size="small">
-              <EditIcon fontSize="small" />
-            </IconButton>
+            {isMyself ? (
+              <IconButton onClick={handleNameEditButtonClick} size="small">
+                <EditIcon fontSize="small" />
+              </IconButton>
+            ) : null}
           </Stack>
           {isMyself ? <Button onClick={logout}>로그아웃</Button> : null}
         </Stack>
