@@ -120,15 +120,13 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
           sx={{ cursor: 'pointer' }}
           onClick={onUserClick}
         >
-          {profileImageUrl ? (
-            <Avatar
-              alt="Profile"
-              src={profileImageUrl}
-              sx={{ width: 34, height: 34 }}
-            />
-          ) : (
-            <Avatar sx={{ width: 34, height: 34 }}>{name?.[0] ?? 'P'}</Avatar>
-          )}
+          <Avatar
+            alt="profile"
+            src={profileImageUrl}
+            sx={{ width: 34, height: 34 }}
+          >
+            {name?.[0] ?? 'P'}
+          </Avatar>
           <Box display="flex" alignItems="center">
             <Typography color="text.primary" fontWeight={500}>
               {name}

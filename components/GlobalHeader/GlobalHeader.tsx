@@ -80,7 +80,7 @@ const GlobalHeader = () => {
                 sx={{ width: 32, height: 32 }}
                 src={user?.imageUrl ?? undefined}
               >
-                P
+                {user.name[0]}
               </Avatar>
             </ButtonBase>
           ) : (

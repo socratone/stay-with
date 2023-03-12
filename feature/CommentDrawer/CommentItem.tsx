@@ -30,11 +30,9 @@ const CommentItem: React.FC<CommentItemProps> = ({
       sx={{ bgcolor: isSelected ? theme.palette.primary.main : undefined }}
     >
       <Box display="flex" gap={1} px={2} py={1} width="100%">
-        {imageUrl ? (
-          <Avatar alt="Profile" src={imageUrl} />
-        ) : (
-          <Avatar sx={{ width: 34, height: 34 }}>{name?.[0] ?? 'P'}</Avatar>
-        )}
+        <Avatar alt="profile" src={imageUrl} sx={{ width: 34, height: 34 }}>
+          {name?.[0] ?? 'P'}
+        </Avatar>
         <Box>
           <Typography display="flex" gap={1} alignItems="center">
             <Typography component="span" fontWeight={600}>

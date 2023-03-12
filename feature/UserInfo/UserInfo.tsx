@@ -81,13 +81,13 @@ const UserInfo: React.FC<UserInfoProps> = ({ userId }) => {
           justifyContent="space-between"
         >
           <Stack direction="row" gap={1} alignItems="center">
-            {userData?.user.imageUrl ? (
-              <Avatar alt="Profile" src={userData?.user.imageUrl} />
-            ) : (
-              <Avatar sx={{ width: 34, height: 34 }}>
-                {userData?.user.name?.[0] ?? 'P'}
-              </Avatar>
-            )}
+            <Avatar
+              alt="profile"
+              src={userData?.user.imageUrl}
+              sx={{ width: 34, height: 34 }}
+            >
+              {userData?.user.name?.[0] ?? 'P'}
+            </Avatar>
             <Typography color="text.primary" fontWeight={500}>
               {userData?.user.name}
             </Typography>
