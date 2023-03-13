@@ -30,22 +30,11 @@ const handler = async (
 
     const pipeline: any[] = [
       {
+        // https://www.mongodb.com/docs/v6.0/reference/operator/aggregation/lookup/#syntax
         $lookup: {
           from: CollectionName.Users,
-          let: {
-            searchId: {
-              $toObjectId: '$userId',
-            },
-          },
-          pipeline: [
-            {
-              $match: {
-                $expr: {
-                  $eq: ['$_id', '$$searchId'],
-                },
-              },
-            },
-          ],
+          localField: 'userId',
+          foreignField: '_id',
           as: 'user',
         },
       },
@@ -53,7 +42,6 @@ const handler = async (
         $unwind: '$user',
       },
       {
-        // TODO: 이게 가능한지 확인해야 함
         $sort: {
           _id: -1,
         },
