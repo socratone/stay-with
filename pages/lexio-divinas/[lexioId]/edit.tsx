@@ -12,7 +12,7 @@ import LexioDivinaForm, {
 import LoadingCircular from 'components/LoadingCircular';
 import LoginMessage from 'components/LoginMessage';
 import Meta from 'components/Meta';
-import { BIBLE_LABEL } from 'constants/bible';
+import { Bible, BIBLE_LABEL } from 'constants/bible';
 import { putLexioDivina } from 'helpers/axios';
 import useLexioDivina from 'hooks/api/useLexioDivina';
 import useAuth from 'hooks/context/useAuth';
@@ -34,7 +34,11 @@ const LexioDivinaEdit = () => {
 
   const [isRequested, setIsRequested] = useState(false);
 
-  const form = useForm<LexioDivinaFormValues>();
+  const form = useForm<LexioDivinaFormValues>({
+    defaultValues: {
+      bible: { value: Bible.Genesis, label: BIBLE_LABEL[Bible.Genesis] },
+    },
+  });
 
   const setValue = form.setValue;
 
