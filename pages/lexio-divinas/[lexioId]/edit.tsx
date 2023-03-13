@@ -69,7 +69,7 @@ const LexioDivinaEdit = () => {
     endChapter,
     endVerse,
   }) => {
-    if (!user) return;
+    if (!user || !lexioId) return;
 
     setIsRequested(true);
 
