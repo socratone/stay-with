@@ -10,7 +10,8 @@ import { useRouter } from 'next/router';
 
 const UserId = () => {
   const router = useRouter();
-  const userId = router.query.userId ? String(router.query.userId) : undefined;
+  const userId =
+    typeof router.query.userId === 'string' ? router.query.userId : undefined;
   const { data: userData, isLoading, isError } = useUser(userId);
 
   if (isLoading) {

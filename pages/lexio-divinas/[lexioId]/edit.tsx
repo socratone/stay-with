@@ -26,7 +26,8 @@ const LexioDivinaEdit = () => {
   const theme = useTheme();
   const isTabletOrSmaller = useMediaQuery(theme.breakpoints.down('md'));
 
-  const lexioId = String(router.query.lexioId);
+  const lexioId =
+    typeof router.query.lexioId === 'string' ? router.query.lexioId : undefined;
   const { data: lexioDivinaData, isLoading, isError } = useLexioDivina(lexioId);
   const { enqueueSnackbar } = useSnackbar();
   const { user, logout } = useAuth();
