@@ -27,7 +27,7 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     if (colorMode === 'light') {
       document.body.style.backgroundColor = '#fff';
     } else {
-      document.body.style.backgroundColor = '#000';
+      document.body.style.backgroundColor = '#121212';
     }
   }, [colorMode]);
 
