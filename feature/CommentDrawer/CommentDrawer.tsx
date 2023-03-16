@@ -17,6 +17,7 @@ import useAuth from 'hooks/context/useAuth';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
+import { useIntl } from 'react-intl';
 
 import CommentItem from './CommentItem';
 
@@ -27,6 +28,7 @@ interface CommentDrawerProps {
 }
 
 const CommentDrawer: React.FC<CommentDrawerProps> = ({ open, id, onClose }) => {
+  const { formatMessage } = useIntl();
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const { user, logout } = useAuth();
@@ -39,12 +41,10 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({ open, id, onClose }) => {
   const comments = lexioDivinaData?.comments ?? [];
 
   const [commentValue, setCommentValue] = useState('');
-  const [selectedCommentId, setSelectedCommentId] = useState<string | null>(
-    null
-  );
-  const [selectedCommentIdForDelete, setSelectedCommentIdForDelete] = useState<
-    string | null
-  >(null);
+  const [selectedCommentId, setSelectedCommentId] =
+    useState<string | null>(null);
+  const [selectedCommentIdForDelete, setSelectedCommentIdForDelete] =
+    useState<string | null>(null);
 
   const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCommentValue(event.target.value);
@@ -63,7 +63,7 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({ open, id, onClose }) => {
         logout();
         router.push('/expired');
       } else {
-        enqueueSnackbar('에러가 발생했습니다.', {
+        enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
           variant: 'error',
         });
       }
@@ -88,7 +88,7 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({ open, id, onClose }) => {
         logout();
         router.push('/expired');
       } else {
-        enqueueSnackbar('에러가 발생했습니다.', {
+        enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
           variant: 'error',
         });
       }

@@ -13,6 +13,7 @@ import useAuth from 'hooks/context/useAuth';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useIntl } from 'react-intl';
 import { useQueryClient } from 'react-query';
 
 interface UserInfoProps {
@@ -20,6 +21,7 @@ interface UserInfoProps {
 }
 
 const UserInfo: React.FC<UserInfoProps> = ({ userId }) => {
+  const { formatMessage } = useIntl();
   const { enqueueSnackbar } = useSnackbar();
   const queryClient = useQueryClient();
 
@@ -54,8 +56,16 @@ const UserInfo: React.FC<UserInfoProps> = ({ userId }) => {
       setIsEdit(false);
       queryClient.invalidateQueries({ queryKey: '/api/users' });
       queryClient.invalidateQueries(LEXIO_DIVINAS_KEY);
-    } catch {
-      enqueueSnackbar('에러가 발생했습니다.');
+    } catch (error: any) {
+      if (error.response.status === 409) {
+        enqueueSnackbar(formatMessage({ id: 'error.message.duplicateName' }), {
+          variant: 'error',
+        });
+      } else {
+        enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
+          variant: 'error',
+        });
+      }
     } finally {
       setIsRequested(false);
     }

@@ -16,8 +16,10 @@ import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useIntl } from 'react-intl';
 
 const LexioDivinaCreate = () => {
+  const { formatMessage } = useIntl();
   const router = useRouter();
   const theme = useTheme();
   const isTabletOrSmaller = useMediaQuery(theme.breakpoints.down('md'));
@@ -75,7 +77,7 @@ const LexioDivinaCreate = () => {
         logout();
         router.push('/expired');
       } else {
-        enqueueSnackbar('에러가 발생했습니다.', {
+        enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
           variant: 'error',
         });
       }
