@@ -17,6 +17,7 @@ import useAuth from 'hooks/context/useAuth';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
+import { useIntl } from 'react-intl';
 import { useQueryClient } from 'react-query';
 import { LexioDivina } from 'types/document';
 
@@ -30,6 +31,7 @@ const PAGE_COUNT = 20;
 export const LEXIO_DIVINAS_KEY = { queryKey: '/api/lexio-divinas' };
 
 const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
+  const { formatMessage } = useIntl();
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const { user, logout } = useAuth();
@@ -67,7 +69,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
       await deleteLexioDivina(selectedLexioDivinaIdForDelete);
       queryClient.invalidateQueries(LEXIO_DIVINAS_KEY);
     } catch (error) {
-      enqueueSnackbar('에러가 발생했습니다.', {
+      enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
         variant: 'error',
       });
     } finally {
@@ -89,7 +91,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
         logout();
         router.push('/expired');
       } else {
-        enqueueSnackbar('에러가 발생했습니다.', {
+        enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
           variant: 'error',
         });
       }
@@ -108,7 +110,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
         logout();
         router.push('/expired');
       } else {
-        enqueueSnackbar('에러가 발생했습니다.', {
+        enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
           variant: 'error',
         });
       }

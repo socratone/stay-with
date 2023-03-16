@@ -55,6 +55,17 @@ const handler = async (
     const payload: ApiPatchUserPayload = req.body;
 
     try {
+      // name 수정 요청을 한 경우에만 중복 검사
+      if (payload.name) {
+        const duplicateNameUser = await db.findOne(CollectionName.Users, {
+          name: payload.name,
+        });
+
+        if (duplicateNameUser) {
+          return res.status(409).send({ message: 'Duplicate name.' });
+        }
+      }
+
       const result = await db.updateOne(
         CollectionName.Users,
         {
