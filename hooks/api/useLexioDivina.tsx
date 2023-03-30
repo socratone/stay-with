@@ -3,7 +3,7 @@ import { getLexioDivina } from 'helpers/axios';
 
 const useLexioDivina = (id?: string) => {
   return useQuery({
-    queryKey: [id, '/api/lexio-divinas'],
+    queryKey: ['/api/lexio-divinas', id],
     queryFn: () => getLexioDivina(id as string),
     enabled: !!id,
   });

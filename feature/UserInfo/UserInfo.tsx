@@ -54,7 +54,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ userId }) => {
     try {
       await patchUser(userId, { name });
       setIsEdit(false);
-      queryClient.invalidateQueries({ queryKey: '/api/users' });
+      queryClient.invalidateQueries({ queryKey: ['/api/users'] });
       queryClient.invalidateQueries(LEXIO_DIVINAS_KEY);
     } catch (error: any) {
       if (error.response.status === 409) {

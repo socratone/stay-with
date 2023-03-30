@@ -28,7 +28,7 @@ interface LexioDivinasProps {
 }
 
 const PAGE_COUNT = 20;
-export const LEXIO_DIVINAS_KEY = { queryKey: '/api/lexio-divinas' };
+export const LEXIO_DIVINAS_KEY = { queryKey: ['/api/lexio-divinas'] };
 
 const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
   const { formatMessage } = useIntl();
