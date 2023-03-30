@@ -8,7 +8,7 @@ import Mongodb from 'utils/mongodb';
 export type ApiLexioDivinaPayload = Omit<LexioDivina, '_id'>;
 
 export type ApiLexioDivinasData = {
-  lexioDivinas: (LexioDivina & { user: User })[];
+  lexioDivinas: (LexioDivina & { user: User; createdAt: Date })[];
   total: number;
 };
 
@@ -51,6 +51,11 @@ const handler = async (
       },
       {
         $limit: count,
+      },
+      {
+        $addFields: {
+          createdAt: { $toDate: '$_id' },
+        },
       },
     ];
 
