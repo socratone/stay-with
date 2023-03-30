@@ -185,6 +185,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
               commentCount={lexioDivina.comments.length}
               onCommentButtonClick={() => handleCommentButtonClick(lexioDivina)}
               onUserClick={() => handleUserClick(lexioDivina.user._id)}
+              createdAt={lexioDivina.createdAt}
             />
           ))}
         </Masonry>
@@ -237,6 +238,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
               commentCount={lexioDivina.comments.length}
               onCommentButtonClick={() => handleCommentButtonClick(lexioDivina)}
               onUserClick={() => handleUserClick(lexioDivina.user._id)}
+              createdAt={lexioDivina.createdAt}
             />
           </Box>
         ))}
