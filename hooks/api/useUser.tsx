@@ -1,8 +1,10 @@
+import { useQuery } from '@tanstack/react-query';
 import { getUser } from 'helpers/axios';
-import { useQuery } from 'react-query';
 
 const useUser = (id?: string) => {
-  return useQuery(['/api/users', id], () => getUser(id as string), {
+  return useQuery({
+    queryKey: ['/api/users', id],
+    queryFn: () => getUser(id as string),
     enabled: !!id,
   });
 };

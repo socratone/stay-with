@@ -1,14 +1,12 @@
+import { useQuery } from '@tanstack/react-query';
 import { getLexioDivinas, GetLexioDivinasParams } from 'helpers/axios';
-import { useQuery } from 'react-query';
 
 const useLexioDivinas = (params?: GetLexioDivinasParams) => {
-  return useQuery(
-    ['/api/lexio-divinas', params],
-    () => getLexioDivinas(params),
-    {
-      keepPreviousData: true,
-    }
-  );
+  return useQuery({
+    queryKey: ['/api/lexio-divinas', params],
+    queryFn: () => getLexioDivinas(params),
+    keepPreviousData: true,
+  });
 };
 
 export default useLexioDivinas;

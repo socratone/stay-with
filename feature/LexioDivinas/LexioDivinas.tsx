@@ -2,6 +2,7 @@ import { Masonry } from '@mui/lab';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Pagination from '@mui/material/Pagination';
+import { useQueryClient } from '@tanstack/react-query';
 import AlertDialog from 'components/AlertDialog';
 import ErrorMessage from 'components/ErrorMessage';
 import LexioDivinaCard from 'components/LexioDivinaCard';
@@ -18,7 +19,6 @@ import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { useQueryClient } from 'react-query';
 import { LexioDivina } from 'types/document';
 
 interface LexioDivinasProps {
