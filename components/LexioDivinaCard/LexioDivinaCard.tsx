@@ -12,6 +12,7 @@ import SmallMenu from 'components/SmallMenu';
 import { Bible, BIBLE_LABEL } from 'constants/bible';
 import { isNewTestament } from 'helpers/bible';
 import { useState } from 'react';
+import { FormattedDate } from 'react-intl';
 import { PRIMARY_SHADOW } from 'theme/shadows';
 
 import BubbleIcon from './BubbleIcon';
@@ -38,6 +39,7 @@ interface LexioDivinaCardProps {
   commentCount: number;
   onCommentButtonClick: () => void;
   onUserClick: () => void;
+  createdAt: Date;
 }
 
 const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
@@ -60,6 +62,7 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
   commentCount,
   onCommentButtonClick,
   onUserClick,
+  createdAt,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -127,11 +130,22 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
           >
             {name?.[0] ?? 'P'}
           </Avatar>
-          <Box display="flex" alignItems="center">
-            <Typography color="text.primary" fontWeight={500}>
+          <Stack>
+            <Typography
+              color="text.primary"
+              fontWeight={500}
+              sx={{ lineHeight: 1.2 }}
+            >
               {name}
             </Typography>
-          </Box>
+            <Typography
+              variant="body2"
+              color={(theme) => theme.palette.text.secondary}
+              sx={{ lineHeight: 1.2 }}
+            >
+              <FormattedDate value={createdAt} />
+            </Typography>
+          </Stack>
         </Box>
         <Box display="flex" alignItems="center" gap={1}>
           <Chip label={getChipLabel()} color={getChipColor()} />
