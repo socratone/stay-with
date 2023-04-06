@@ -8,7 +8,7 @@ export type User = {
   imageUrl?: string;
 };
 
-export type Comment = {
+export type LexioDivinaComment = {
   _id: string;
   userId: string;
   message: string;
@@ -25,5 +25,5 @@ export type LexioDivina = {
   endVerse: number;
   userId: string;
   likedUserIds: string[];
-  comments: Comment[];
+  comments: LexioDivinaComment[];
 };

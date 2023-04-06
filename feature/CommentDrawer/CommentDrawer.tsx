@@ -8,6 +8,7 @@ import TextField from '@mui/material/TextField';
 import AlertDialog from 'components/AlertDialog';
 import ErrorMessage from 'components/ErrorMessage';
 import LoadingCircular from 'components/LoadingCircular';
+import { LEXIO_DIVINA_COMMENT_VALIDATION } from 'constants/validation';
 import {
   deleteCommentInLexioDivina,
   postCommentToLexioDivina,
@@ -41,10 +42,12 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({ open, id, onClose }) => {
   const comments = lexioDivinaData?.comments ?? [];
 
   const [commentValue, setCommentValue] = useState('');
-  const [selectedCommentId, setSelectedCommentId] =
-    useState<string | null>(null);
-  const [selectedCommentIdForDelete, setSelectedCommentIdForDelete] =
-    useState<string | null>(null);
+  const [selectedCommentId, setSelectedCommentId] = useState<string | null>(
+    null
+  );
+  const [selectedCommentIdForDelete, setSelectedCommentIdForDelete] = useState<
+    string | null
+  >(null);
 
   const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCommentValue(event.target.value);
@@ -72,8 +75,22 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({ open, id, onClose }) => {
 
   const handleCommentSend = async () => {
     if (!id || !user) return;
+
+    const { maxLength } = LEXIO_DIVINA_COMMENT_VALIDATION.message;
     const trimedComment = commentValue.trim();
-    if (trimedComment.length === 0) return;
+
+    if (trimedComment.length === 0) {
+      return enqueueSnackbar('값을 입력하세요 😔', {
+        variant: 'error',
+      });
+    }
+
+    if (trimedComment.length > maxLength) {
+      return enqueueSnackbar(`${maxLength}자를 넘을 수 없어요 😂`, {
+        variant: 'error',
+      });
+    }
+
     setCommentValue('');
 
     try {
