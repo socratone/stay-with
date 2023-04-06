@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { Bible, BIBLE_OPTIONS } from 'constants/bible';
+import { LEXIO_DIVINA_VALIDATION } from 'constants/validation';
 import { useState } from 'react';
 import { Controller, SubmitHandler, UseFormReturn } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
@@ -75,6 +76,7 @@ const LexioDivinaForm: React.FC<LexioDivinaFormProps> = ({
         <TextField
           {...register('phrase', {
             required: true,
+            ...LEXIO_DIVINA_VALIDATION.phrase,
           })}
           size="small"
           fullWidth
@@ -206,16 +208,24 @@ const LexioDivinaForm: React.FC<LexioDivinaFormProps> = ({
       </Box>
 
       <Box>
-        <TextField
-          {...register('content', {
+        <Controller
+          control={control}
+          name="content"
+          rules={{
             required: true,
-          })}
-          size="small"
-          fullWidth
-          multiline
-          minRows={contentRows}
-          placeholder="구절을 통해 느낀점"
-          error={!!errors.content}
+            ...LEXIO_DIVINA_VALIDATION.content,
+          }}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              size="small"
+              fullWidth
+              multiline
+              minRows={contentRows}
+              placeholder="구절을 통해 느낀점"
+              error={!!errors.content}
+            />
+          )}
         />
       </Box>
 
