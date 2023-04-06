@@ -75,6 +75,7 @@ const LexioDivinaForm: React.FC<LexioDivinaFormProps> = ({
         <TextField
           {...register('phrase', {
             required: true,
+            maxLength: 300,
           })}
           size="small"
           fullWidth
@@ -206,16 +207,25 @@ const LexioDivinaForm: React.FC<LexioDivinaFormProps> = ({
       </Box>
 
       <Box>
-        <TextField
-          {...register('content', {
+        <Controller
+          control={control}
+          name="content"
+          rules={{
             required: true,
-          })}
-          size="small"
-          fullWidth
-          multiline
-          minRows={contentRows}
-          placeholder="구절을 통해 느낀점"
-          error={!!errors.content}
+            minLength: 10,
+            maxLength: 3000,
+          }}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              size="small"
+              fullWidth
+              multiline
+              minRows={contentRows}
+              placeholder="구절을 통해 느낀점"
+              error={!!errors.content}
+            />
+          )}
         />
       </Box>
 
