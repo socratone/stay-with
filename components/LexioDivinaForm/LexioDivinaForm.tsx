@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { Bible, BIBLE_OPTIONS } from 'constants/bible';
+import { LEXIO_DIVINA_VALIDATION } from 'constants/validation';
 import { useState } from 'react';
 import { Controller, SubmitHandler, UseFormReturn } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
@@ -75,7 +76,7 @@ const LexioDivinaForm: React.FC<LexioDivinaFormProps> = ({
         <TextField
           {...register('phrase', {
             required: true,
-            maxLength: 300,
+            ...LEXIO_DIVINA_VALIDATION.phrase,
           })}
           size="small"
           fullWidth
@@ -212,8 +213,7 @@ const LexioDivinaForm: React.FC<LexioDivinaFormProps> = ({
           name="content"
           rules={{
             required: true,
-            minLength: 10,
-            maxLength: 3000,
+            ...LEXIO_DIVINA_VALIDATION.content,
           }}
           render={({ field }) => (
             <TextField
