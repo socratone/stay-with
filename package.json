@@ -6,6 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "build:staging": "env-cmd -f .env.staging next build && env-cmd -f .env.staging next start",
+    "build:development": "env-cmd -f .env.development next build && env-cmd -f .env.development next start",
     "lint": "next lint",
     "clone-database": "ts-node ./scripts/clone-database.ts"
   },
@@ -42,6 +44,7 @@
     "@typescript-eslint/eslint-plugin": "^5.53.0",
     "@typescript-eslint/parser": "^5.53.0",
     "dotenv": "^16.0.3",
+    "env-cmd": "^10.1.0",
     "eslint": "8.22.0",
     "eslint-config-next": "^13.2.4",
     "eslint-plugin-simple-import-sort": "^10.0.0",
