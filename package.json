@@ -2,7 +2,6 @@
   "name": "mmm",
   "version": "0.1.1",
   "private": true,
-  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -35,7 +34,7 @@
     "redux-persist": "^6.0.0"
   },
   "devDependencies": {
-    "@types/inquirer": "^9.0.3",
+    "@types/inquirer": "^8.2.6",
     "@types/jsonwebtoken": "^9.0.1",
     "@types/node": "18.7.8",
     "@types/react": "18.0.17",
@@ -46,7 +45,7 @@
     "eslint": "8.22.0",
     "eslint-config-next": "^13.2.4",
     "eslint-plugin-simple-import-sort": "^10.0.0",
-    "inquirer": "^9.1.5",
+    "inquirer": "^8.2.4",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.3"
   }
