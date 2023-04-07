@@ -88,9 +88,9 @@ const GlobalHeader = () => {
             <HeaderLink href="/login">Login</HeaderLink>
           )}
         </Box>
-      </Box>
 
-      <EnvChip />
+        <EnvChip />
+      </Box>
 
       <GlobalHeaderDrawer open={menuOpen} onClose={closeMenu} />
     </>
