@@ -39,8 +39,8 @@ type AggregateParams = {
 class Mongodb {
   client: MongoClient;
 
-  constructor() {
-    this.client = new MongoClient(MONGO_CLIENT_URL); // Create a new MongoClient
+  constructor(url = MONGO_CLIENT_URL) {
+    this.client = new MongoClient(url); // Create a new MongoClient
   }
 
   async close() {
@@ -177,6 +177,30 @@ class Mongodb {
       const database = this.client.db(DB_NAME);
       const collection = database.collection(collectionName);
       return await collection.insertOne(document);
+    } catch (error: any) {
+      this.close();
+      throw new Error(`500: ${error?.message}`);
+    }
+  }
+
+  // https://www.mongodb.com/docs/drivers/node/current/usage-examples/insertMany/
+  async insertMany(collectionName: CollectionName, documents: Document[]) {
+    try {
+      const database = this.client.db(DB_NAME);
+      const collection = database.collection(collectionName);
+      return await collection.insertMany(documents);
+    } catch (error: any) {
+      this.close();
+      throw new Error(`500: ${error?.message}`);
+    }
+  }
+
+  // 💀 특별한 경우를 제외하고는 사용 금지
+  async drop(collectionName: CollectionName) {
+    try {
+      const database = this.client.db(DB_NAME);
+      const collection = database.collection(collectionName);
+      return await collection.drop();
     } catch (error: any) {
       this.close();
       throw new Error(`500: ${error?.message}`);
