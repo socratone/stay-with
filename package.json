@@ -6,8 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "start:staging": "env-cmd -f .env.staging next build && env-cmd -f .env.staging next start",
-    "start:development": "env-cmd -f .env.development next build && env-cmd -f .env.development next start",
+    "build:staging": "env-cmd -f .env.staging next build && env-cmd -f .env.staging next start",
+    "build:development": "env-cmd -f .env.development next build && env-cmd -f .env.development next start",
     "lint": "next lint",
     "clone-database": "ts-node ./scripts/clone-database.ts"
   },
