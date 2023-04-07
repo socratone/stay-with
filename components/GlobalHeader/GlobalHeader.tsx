@@ -12,6 +12,7 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { PRIMARY_SHADOW } from 'theme/shadows';
 
+import EnvChip from './EnvChip';
 import GlobalHeaderDrawer from './GlobalHeaderDrawer';
 import HeaderLink from './HeaderLink';
 
@@ -88,6 +89,8 @@ const GlobalHeader = () => {
           )}
         </Box>
       </Box>
+
+      <EnvChip />
 
       <GlobalHeaderDrawer open={menuOpen} onClose={closeMenu} />
     </>
