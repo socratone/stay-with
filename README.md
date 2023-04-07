@@ -78,18 +78,22 @@ interface LexioDivina {
 
 - no-else-return
 
-## Development
+## Environment
 
 - .env.development
 
 ```
+NEXT_PUBLIC_ENV="development"
 NEXT_PUBLIC_BASE_URL="http://localhost:3000"
 NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY="????"
 KAKAO_REST_API_KEY="????"
 KAKAO_CLIENT_SECRET="????"
 AUTH_SECRET="????"
-MONGO_CLIENT_URL="mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.7.0"
+MONGO_CLIENT_URL="????"
 ```
+
+- .env.staging
+- .env.production
 
 ## Folder Structure
 
