@@ -1,14 +1,13 @@
 import jwtDecode from 'jwt-decode';
 import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'redux/store';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { resetUser, setUser } from 'redux/userSlice';
 import { User } from 'types/document';
 import { removeAccessToken, saveAccessToken } from 'utils/token';
 
 const useAuth = () => {
-  const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.user);
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.user);
 
   const login = useCallback(
     (accessToken: string) => {

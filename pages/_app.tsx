@@ -11,7 +11,7 @@ import { SnackbarProvider } from 'notistack';
 import { useMemo } from 'react';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
-import { store } from 'redux/store';
+import store from 'redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import persistStore from 'redux-persist/lib/persistStore';
 
