@@ -15,7 +15,7 @@ import Meta from 'components/Meta';
 import { Bible, BIBLE_LABEL } from 'constants/bible';
 import { putLexioDivina } from 'helpers/axios';
 import useLexioDivina from 'hooks/api/useLexioDivina';
-import useAuth from 'hooks/context/useAuth';
+import useAuth from 'hooks/auth/useAuth';
 import useTempLexioDivinaRecorder from 'hooks/form/useTempLexioDivinaRecorder';
 import useQueryString from 'hooks/router/useQueryString';
 import { useRouter } from 'next/router';

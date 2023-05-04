@@ -14,7 +14,7 @@ import {
   postCommentToLexioDivina,
 } from 'helpers/axios';
 import useLexioDivina from 'hooks/api/useLexioDivina';
-import useAuth from 'hooks/context/useAuth';
+import useAuth from 'hooks/auth/useAuth';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';

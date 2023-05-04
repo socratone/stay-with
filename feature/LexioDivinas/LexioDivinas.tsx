@@ -14,7 +14,7 @@ import {
   postLikedToLexioDivina,
 } from 'helpers/axios';
 import useLexioDivinas from 'hooks/api/useLexioDivinas';
-import useAuth from 'hooks/context/useAuth';
+import useAuth from 'hooks/auth/useAuth';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';

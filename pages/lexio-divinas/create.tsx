@@ -11,7 +11,7 @@ import LoginMessage from 'components/LoginMessage';
 import Meta from 'components/Meta';
 import { Bible, BIBLE_LABEL } from 'constants/bible';
 import { postLexioDivina } from 'helpers/axios';
-import useAuth from 'hooks/context/useAuth';
+import useAuth from 'hooks/auth/useAuth';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
