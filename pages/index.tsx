@@ -45,7 +45,7 @@ const Home: NextPage = () => {
       <LexioDivinas />
       <SelectorDialog
         title="임시 저장글 확인"
-        description="임시 저장된 글이 있습니다. 작성하러 이동하시겠습니까? 지우기를 누르면 지워집니다."
+        description="아직 저장하지 않은 글이 있습니다. 저장하러 이동하겠습니까? 지우기를 누르면 지워집니다."
         open={navDialogOpen}
         buttons={[
           {
