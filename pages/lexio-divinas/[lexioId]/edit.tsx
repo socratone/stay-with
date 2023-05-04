@@ -16,20 +16,27 @@ import { Bible, BIBLE_LABEL } from 'constants/bible';
 import { putLexioDivina } from 'helpers/axios';
 import useLexioDivina from 'hooks/api/useLexioDivina';
 import useAuth from 'hooks/context/useAuth';
+import useTempLexioDivinaRecorder from 'hooks/form/useTempLexioDivinaRecorder';
+import useQueryString from 'hooks/router/useQueryString';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
+import { useAppSelector } from 'redux/hooks';
 
 const LexioDivinaEdit = () => {
   const { formatMessage } = useIntl();
   const router = useRouter();
   const theme = useTheme();
   const isTabletOrSmaller = useMediaQuery(theme.breakpoints.down('md'));
+  const tempLexioDivina = useAppSelector((state) => state.tempLexioDivina);
+
+  const { temp } = useQueryString();
 
   const lexioId =
     typeof router.query.lexioId === 'string' ? router.query.lexioId : undefined;
+
   const { data: lexioDivinaData, isLoading, isError } = useLexioDivina(lexioId);
   const { enqueueSnackbar } = useSnackbar();
   const { user, logout } = useAuth();
@@ -44,8 +51,14 @@ const LexioDivinaEdit = () => {
 
   const setValue = form.setValue;
 
+  const { reset: resetTempLexioDivina } = useTempLexioDivinaRecorder({
+    value: form.watch(),
+    id: lexioId,
+    enabled: form.formState.isDirty,
+  });
+
   useEffect(() => {
-    if (lexioDivinaData) {
+    if (lexioDivinaData && !temp) {
       const { phrase, bible, chapter, verse, content, endChapter, endVerse } =
         lexioDivinaData;
 
@@ -60,7 +73,22 @@ const LexioDivinaEdit = () => {
         setValue('endVerse', String(endVerse));
       }
     }
-  }, [lexioDivinaData, setValue]);
+  }, [lexioDivinaData, temp, setValue]);
+
+  useEffect(() => {
+    if (temp) {
+      const { phrase, bible, chapter, verse, content, endChapter, endVerse } =
+        tempLexioDivina;
+
+      phrase && setValue('phrase', phrase);
+      bible && setValue('bible', bible);
+      chapter && setValue('chapter', chapter);
+      verse && setValue('verse', verse);
+      content && setValue('content', content);
+      setValue('endChapter', endChapter);
+      setValue('endVerse', endVerse);
+    }
+  }, [temp, tempLexioDivina, setValue]);
 
   const handleCancel = () => {
     router.back();
@@ -92,6 +120,7 @@ const LexioDivinaEdit = () => {
 
       await putLexioDivina(lexioId, payload);
 
+      resetTempLexioDivina();
       router.push('/');
     } catch (error: any) {
       const status = error?.response?.status;
