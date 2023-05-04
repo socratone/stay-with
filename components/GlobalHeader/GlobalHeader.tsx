@@ -7,7 +7,7 @@ import ButtonBase from '@mui/material/ButtonBase';
 import IconButton from '@mui/material/IconButton';
 import DarkModeSwitch from 'components/DarkModeSwitch';
 import useAuth from 'hooks/auth/useAuth';
-import useColorMode from 'hooks/context/useColorMode';
+import useColorMode from 'hooks/theme/useColorMode';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { PRIMARY_SHADOW } from 'theme/shadows';
