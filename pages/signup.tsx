@@ -17,11 +17,11 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { User } from 'types/document';
 
-interface SignUpProps {
+type SignUpProps = {
   kakaoId: number;
   email: string;
   imageUrl: string;
-}
+};
 
 export const getServerSideProps: GetServerSideProps<SignUpProps> = async ({
   query,
@@ -60,34 +60,32 @@ const SignUp: NextPage<SignUpProps> = ({ kakaoId, email, imageUrl }) => {
     formState: { errors },
   } = useForm<Omit<User, '_id' | 'email' | 'imageUrl'>>();
 
-  const handleSignUp: SubmitHandler<Omit<User, '_id' | 'email' | 'imageUrl'>> =
-    async ({ name }) => {
-      setIsRequesting(true);
+  const handleSignUp: SubmitHandler<
+    Omit<User, '_id' | 'email' | 'imageUrl'>
+  > = async ({ name }) => {
+    setIsRequesting(true);
 
-      const payload: Omit<User, '_id'> = { kakaoId, email, name };
-      if (imageChecked) {
-        payload.imageUrl = imageUrl;
-      }
+    const payload: Omit<User, '_id'> = { kakaoId, email, name };
+    if (imageChecked) {
+      payload.imageUrl = imageUrl;
+    }
 
-      try {
-        await postSignUp(payload);
-        router.push('/login');
-      } catch (error: any) {
-        if (error.response.status === 409) {
-          enqueueSnackbar(
-            formatMessage({ id: 'error.message.duplicateName' }),
-            {
-              variant: 'error',
-            }
-          );
-        } else {
-          enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
-            variant: 'error',
-          });
-          setIsError(true);
-        }
+    try {
+      await postSignUp(payload);
+      router.push('/login');
+    } catch (error: any) {
+      if (error.response.status === 409) {
+        enqueueSnackbar(formatMessage({ id: 'error.message.duplicateName' }), {
+          variant: 'error',
+        });
+      } else {
+        enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
+          variant: 'error',
+        });
+        setIsError(true);
       }
-    };
+    }
+  };
 
   const handleImageCheckedChange = (
     event: React.ChangeEvent<HTMLInputElement>,

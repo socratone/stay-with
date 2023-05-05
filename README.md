@@ -21,7 +21,7 @@
 ## Data Schema
 
 ```
-interface User {
+User {
   _id: string;
   kakaoId: number;
   name: string;
@@ -31,7 +31,7 @@ interface User {
 ```
 
 ```
-interface LexioDivina {
+LexioDivina {
   _id: string;
   bible: Bible;
   content: string;
@@ -78,6 +78,10 @@ interface LexioDivina {
 
 - no-else-return
 
+## Conventions
+
+- 가능하면 `interface` 보다 `type`을 사용한다.
+
 ## Environment
 
 - .env.development
@@ -102,12 +106,14 @@ MONGO_CLIENT_URL="????"
 재사용 가능한 컴포넌트\
 각 폴더 안에 컴포넌트에 필요한 모든 요소들을 둔다.
 
-- AlertDialog
-  - index.ts
-  - AlertDialog.tsx
-  - Button.tsx
-  - constants.ts
-  - helpers.ts
+```
+AlertDialog
+  index.ts
+  AlertDialog.tsx
+  Button.tsx
+  constants.ts
+  helpers.ts
+```
 
 index.ts를 이용해서 import시 path를 깔끔하게 한다.\
 index.ts로 이어지는 AlertDialog.tsx(메인 컴포넌트)를 제외하고는 AlertDialog 폴더 안에 있어 구분이 되니 prefix는 postfix 등을 붙이지 않는다.

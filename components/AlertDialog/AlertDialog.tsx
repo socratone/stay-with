@@ -6,14 +6,14 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import React from 'react';
 
-interface AlertDialogProps {
+type AlertDialogProps = {
   open: boolean;
   onClose: () => void;
   onSubmit: () => void;
   title: string;
   description: string;
   color?: ButtonProps['color'];
-}
+};
 
 const AlertDialog: React.FC<AlertDialogProps> = ({
   open,

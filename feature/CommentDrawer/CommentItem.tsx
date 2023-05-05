@@ -5,14 +5,14 @@ import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
 import { FormattedDate } from 'react-intl';
 
-interface CommentItemProps {
+type CommentItemProps = {
   imageUrl?: string;
   name: string;
   message: string;
   createdAt: Date;
   onClick: () => void;
   isSelected: boolean;
-}
+};
 
 const CommentItem: React.FC<CommentItemProps> = ({
   imageUrl,

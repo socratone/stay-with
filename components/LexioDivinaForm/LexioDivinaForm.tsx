@@ -13,7 +13,7 @@ import { Controller, SubmitHandler, UseFormReturn } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { AutocompleteOption } from 'types/mui';
 
-export interface LexioDivinaFormValues {
+export type LexioDivinaFormValues = {
   phrase: string;
   bible: AutocompleteOption<Bible>;
   chapter: string;
@@ -21,16 +21,16 @@ export interface LexioDivinaFormValues {
   endChapter?: string;
   endVerse?: string;
   content: string;
-}
+};
 
-interface LexioDivinaFormProps {
+type LexioDivinaFormProps = {
   form: UseFormReturn<LexioDivinaFormValues>;
   isRequested: boolean;
   defaultIsExpanded?: boolean;
   contentRows?: number;
   onSubmit: SubmitHandler<LexioDivinaFormValues>;
   onCancel: () => void;
-}
+};
 
 const LexioDivinaForm: React.FC<LexioDivinaFormProps> = ({
   form,

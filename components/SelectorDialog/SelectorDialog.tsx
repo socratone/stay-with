@@ -6,7 +6,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import React from 'react';
 
-interface SelectorDialogProps {
+type SelectorDialogProps = {
   open: boolean;
   onClose: () => void;
   buttons: {
@@ -17,7 +17,7 @@ interface SelectorDialogProps {
   }[];
   title: string;
   description: string;
-}
+};
 
 const SelectorDialog: React.FC<SelectorDialogProps> = ({
   open,

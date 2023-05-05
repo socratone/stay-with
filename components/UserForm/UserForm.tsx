@@ -5,16 +5,16 @@ import TextField from '@mui/material/TextField';
 import { SubmitHandler, UseFormReturn } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-export interface UserFormValues {
+export type UserFormValues = {
   name: string;
-}
+};
 
-interface UserFormProps {
+type UserFormProps = {
   form: UseFormReturn<UserFormValues>;
   isRequested: boolean;
   onSubmit: SubmitHandler<UserFormValues>;
   onCancel: () => void;
-}
+};
 
 const UserForm: React.FC<UserFormProps> = ({
   form,

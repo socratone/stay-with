@@ -1,6 +1,6 @@
-interface IconProps {
+type IconProps = {
   color?: string;
-}
+};
 
 const BubbleIcon: React.FC<IconProps> = ({ color }) => (
   <svg

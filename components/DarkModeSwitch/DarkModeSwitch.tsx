@@ -3,11 +3,11 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import * as React from 'react';
 
-interface DarkModeSwitchProps {
+type DarkModeSwitchProps = {
   checked: boolean;
   onChange: (checked: boolean) => void;
   sx?: SxProps;
-}
+};
 
 const SunIcon = () => (
   <Box

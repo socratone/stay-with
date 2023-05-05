@@ -11,10 +11,10 @@ import ListItemText from '@mui/material/ListItemText';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-interface GlobalHeaderDrawerProps {
+type GlobalHeaderDrawerProps = {
   open: boolean;
   onClose: () => void;
-}
+};
 
 const GlobalHeaderDrawer: React.FC<GlobalHeaderDrawerProps> = ({
   open,

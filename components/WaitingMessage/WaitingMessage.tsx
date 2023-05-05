@@ -2,9 +2,9 @@ import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 
-interface WaitingMessage {
+type WaitingMessage = {
   content?: string;
-}
+};
 
 const WaitingMessage: React.FC<WaitingMessage> = ({ content }) => {
   return (

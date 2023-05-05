@@ -22,11 +22,11 @@ import { useIntl } from 'react-intl';
 
 import CommentItem from './CommentItem';
 
-interface CommentDrawerProps {
+type CommentDrawerProps = {
   open: boolean;
   id?: string;
   onClose: () => void;
-}
+};
 
 const CommentDrawer: React.FC<CommentDrawerProps> = ({ open, id, onClose }) => {
   const { formatMessage } = useIntl();

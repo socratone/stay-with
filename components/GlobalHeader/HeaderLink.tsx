@@ -1,10 +1,10 @@
 import { Typography } from '@mui/material';
 import Link from 'next/link';
 
-interface HeaderLinkProps {
+type HeaderLinkProps = {
   children: string;
   href: string;
-}
+};
 
 const HeaderLink: React.FC<HeaderLinkProps> = ({ children, href }) => {
   return (

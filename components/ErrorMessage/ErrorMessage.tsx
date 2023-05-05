@@ -2,9 +2,9 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { FormattedMessage } from 'react-intl';
 
-interface ErrorMessageProps {
+type ErrorMessageProps = {
   content?: string;
-}
+};
 
 const ErrorMessage: React.FC<ErrorMessageProps> = ({ content }) => {
   return (

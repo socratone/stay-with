@@ -19,7 +19,7 @@ import BubbleIcon from './BubbleIcon';
 import LikedIcon from './LikedIcon';
 import OutlinedLikedIcon from './OutlinedLikedIcon';
 
-interface LexioDivinaCardProps {
+type LexioDivinaCardProps = {
   name: string;
   profileImageUrl?: string;
   phrase: string;
@@ -40,7 +40,7 @@ interface LexioDivinaCardProps {
   onCommentButtonClick: () => void;
   onUserClick: () => void;
   createdAt: Date;
-}
+};
 
 const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
   name,

@@ -16,9 +16,9 @@ declare module '@mui/material/styles/createPalette' {
   }
 }
 
-interface ThemeProviderProps {
+type ThemeProviderProps = {
   children: React.ReactNode;
-}
+};
 
 const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const { colorMode } = useColorMode();

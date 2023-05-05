@@ -4,11 +4,11 @@ import useColorMode from 'hooks/theme/useColorMode';
 import { useEffect } from 'react';
 import { BottomSheet, BottomSheetProps } from 'react-spring-bottom-sheet';
 
-interface LexioDivinaBottomSheetProps {
+type LexioDivinaBottomSheetProps = {
   defaultSnap?: BottomSheetProps['defaultSnap'];
   snapPoints?: BottomSheetProps['snapPoints'];
   children: React.ReactNode;
-}
+};
 
 const LexioDivinaBottomSheet: React.FC<LexioDivinaBottomSheetProps> = ({
   defaultSnap = 300,

@@ -21,11 +21,11 @@ import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { LexioDivina } from 'types/document';
 
-interface LexioDivinasProps {
+type LexioDivinasProps = {
   fetchOptions?: {
     userId?: string;
   };
-}
+};
 
 const PAGE_COUNT = 20;
 export const LEXIO_DIVINAS_KEY = { queryKey: ['/api/lexio-divinas'] };

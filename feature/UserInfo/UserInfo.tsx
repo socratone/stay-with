@@ -16,9 +16,9 @@ import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
-interface UserInfoProps {
+type UserInfoProps = {
   userId?: string;
-}
+};
 
 const UserInfo: React.FC<UserInfoProps> = ({ userId }) => {
   const { formatMessage } = useIntl();
