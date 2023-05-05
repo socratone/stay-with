@@ -13,6 +13,7 @@ import { Bible, BIBLE_LABEL } from 'constants/bible';
 import { isNewTestament } from 'helpers/bible';
 import { useState } from 'react';
 import { FormattedDate } from 'react-intl';
+import { useDebounce } from 'react-use';
 import { PRIMARY_SHADOW } from 'theme/shadows';
 
 import BubbleIcon from './BubbleIcon';
@@ -33,8 +34,8 @@ type LexioDivinaCardProps = {
   isMine: boolean;
   onEditMenuItemClick: () => void;
   onDeleteMenuItemClick: () => void;
-  onLikeButtonClick: () => void;
-  onUnlikeButtonClick: () => void;
+  likeButtonDisabled: boolean;
+  onIsLikedSubmit: (isLiked: boolean) => void;
   likedCount: number;
   commentCount: number;
   onCommentButtonClick: () => void;
@@ -56,8 +57,8 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
   isMine,
   onEditMenuItemClick,
   onDeleteMenuItemClick,
-  onLikeButtonClick,
-  onUnlikeButtonClick,
+  likeButtonDisabled,
+  onIsLikedSubmit,
   likedCount,
   commentCount,
   onCommentButtonClick,
@@ -67,6 +68,22 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const theme = useTheme();
+
+  const [isTempLiked, setIsTempLiked] = useState(isLiked);
+
+  useDebounce(
+    () => {
+      if (isLiked !== isTempLiked) {
+        onIsLikedSubmit(isTempLiked);
+      }
+    },
+    1000,
+    [isTempLiked]
+  );
+
+  const handleLikeButtonClick = () => {
+    setIsTempLiked((liked) => !liked);
+  };
 
   const handleOptionButtonClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -187,10 +204,11 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
       {/* footer */}
       <Stack direction="row" alignItems="center" p={1}>
         <IconButton
-          onClick={isLiked ? onUnlikeButtonClick : onLikeButtonClick}
+          disabled={likeButtonDisabled}
+          onClick={handleLikeButtonClick}
           size="small"
         >
-          {isLiked ? (
+          {isTempLiked ? (
             <LikedIcon color={theme.palette.error.main} />
           ) : (
             <OutlinedLikedIcon color={theme.palette.text.secondary} />

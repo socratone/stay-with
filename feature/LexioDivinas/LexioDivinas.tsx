@@ -77,7 +77,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
     }
   };
 
-  const handleLike = async (id: string) => {
+  const addLike = async (id: string) => {
     if (!user) return;
 
     try {
@@ -98,7 +98,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
     }
   };
 
-  const handleUnlike = async (id: string) => {
+  const deleteLike = async (id: string) => {
     if (!user) return;
 
     try {
@@ -178,9 +178,10 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
               onDeleteMenuItemClick={() =>
                 setSelectedLexioDivinaIdForDelete(lexioDivina._id)
               }
-              // TODO: 계속 클릭해도 한 번만 요청하도록
-              onLikeButtonClick={() => handleLike(lexioDivina._id)}
-              onUnlikeButtonClick={() => handleUnlike(lexioDivina._id)}
+              likeButtonDisabled={!user}
+              onIsLikedSubmit={(isLiked) =>
+                isLiked ? addLike(lexioDivina._id) : deleteLike(lexioDivina._id)
+              }
               likedCount={lexioDivina.likedUserIds.length}
               commentCount={lexioDivina.comments.length}
               onCommentButtonClick={() => handleCommentButtonClick(lexioDivina)}
@@ -231,9 +232,10 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
               onDeleteMenuItemClick={() =>
                 setSelectedLexioDivinaIdForDelete(lexioDivina._id)
               }
-              // TODO: 계속 클릭해도 한 번만 요청하도록
-              onLikeButtonClick={() => handleLike(lexioDivina._id)}
-              onUnlikeButtonClick={() => handleUnlike(lexioDivina._id)}
+              likeButtonDisabled={!user}
+              onIsLikedSubmit={(isLiked) =>
+                isLiked ? addLike(lexioDivina._id) : deleteLike(lexioDivina._id)
+              }
               likedCount={lexioDivina.likedUserIds.length}
               commentCount={lexioDivina.comments.length}
               onCommentButtonClick={() => handleCommentButtonClick(lexioDivina)}
