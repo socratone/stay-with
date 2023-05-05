@@ -38,11 +38,11 @@ const SelectorDialog: React.FC<SelectorDialogProps> = ({
         },
       }}
     >
-      <DialogTitle id="alert-dialog-title" sx={{ p: 2 }}>
+      <DialogTitle id="selector-dialog-title" sx={{ p: 2 }}>
         {title}
       </DialogTitle>
       <DialogContent sx={{ px: 2, py: 0 }}>
-        <DialogContentText id="alert-dialog-description">
+        <DialogContentText id="selector-dialog-description">
           {description}
         </DialogContentText>
       </DialogContent>
