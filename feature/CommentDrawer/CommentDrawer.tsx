@@ -117,6 +117,7 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({ open, id, onClose }) => {
   };
 
   const handleCommentItemClick = (commentId: string) => {
+    if (!user) return;
     setSelectedCommentId(commentId);
   };
 
@@ -214,9 +215,10 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({ open, id, onClose }) => {
               onChange={handleCommentChange}
               size="small"
               fullWidth
+              disabled={!user}
             />
             <Box mr={-1}>
-              <IconButton onClick={handleCommentSend}>
+              <IconButton onClick={handleCommentSend} disabled={!user}>
                 <SendIcon />
               </IconButton>
             </Box>
