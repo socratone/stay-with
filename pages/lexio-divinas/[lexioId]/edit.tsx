@@ -18,7 +18,7 @@ import useLexioDivina from 'hooks/api/useLexioDivina';
 import useAuth from 'hooks/auth/useAuth';
 import useTempLexioDivina from 'hooks/form/useTempLexioDivina';
 import useTempLexioDivinaRecorder from 'hooks/form/useTempLexioDivinaRecorder';
-import useQueryString from 'hooks/router/useQueryString';
+import useQueryString from 'hooks/url/useQueryString';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
