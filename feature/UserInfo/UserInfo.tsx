@@ -10,7 +10,7 @@ import UserForm, { UserFormValues } from 'components/UserForm/UserForm';
 import { LEXIO_DIVINAS_KEY } from 'feature/LexioDivinas/LexioDivinas';
 import { patchUser } from 'helpers/axios';
 import useUser from 'hooks/api/useUser';
-import useAuth from 'hooks/context/useAuth';
+import useAuth from 'hooks/auth/useAuth';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';

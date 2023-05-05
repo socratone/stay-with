@@ -1,5 +1,5 @@
 import { createTheme, ThemeProvider as MuiThemeProvider } from '@mui/material';
-import useColorMode from 'hooks/context/useColorMode';
+import useColorMode from 'hooks/theme/useColorMode';
 import { useEffect, useMemo } from 'react';
 import { components } from 'theme/components';
 import { darkPalette, lightPalette } from 'theme/palette';

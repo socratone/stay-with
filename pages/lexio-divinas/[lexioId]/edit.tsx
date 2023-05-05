@@ -15,21 +15,29 @@ import Meta from 'components/Meta';
 import { Bible, BIBLE_LABEL } from 'constants/bible';
 import { putLexioDivina } from 'helpers/axios';
 import useLexioDivina from 'hooks/api/useLexioDivina';
-import useAuth from 'hooks/context/useAuth';
+import useAuth from 'hooks/auth/useAuth';
+import useTempLexioDivina from 'hooks/form/useTempLexioDivina';
+import useTempLexioDivinaRecorder from 'hooks/form/useTempLexioDivinaRecorder';
+import useQueryString from 'hooks/router/useQueryString';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
+import { useMount } from 'react-use';
 
 const LexioDivinaEdit = () => {
   const { formatMessage } = useIntl();
   const router = useRouter();
   const theme = useTheme();
   const isTabletOrSmaller = useMediaQuery(theme.breakpoints.down('md'));
+  const tempLexioDivina = useTempLexioDivina();
+
+  const { temp } = useQueryString();
 
   const lexioId =
     typeof router.query.lexioId === 'string' ? router.query.lexioId : undefined;
+
   const { data: lexioDivinaData, isLoading, isError } = useLexioDivina(lexioId);
   const { enqueueSnackbar } = useSnackbar();
   const { user, logout } = useAuth();
@@ -44,8 +52,15 @@ const LexioDivinaEdit = () => {
 
   const setValue = form.setValue;
 
+  const { reset: resetTempLexioDivina } = useTempLexioDivinaRecorder({
+    value: form.watch(),
+    id: lexioId,
+    enabled: form.formState.isDirty,
+  });
+
+  // 서버에 저장된 값을 불러와 form에 입력한다.
   useEffect(() => {
-    if (lexioDivinaData) {
+    if (lexioDivinaData && !temp) {
       const { phrase, bible, chapter, verse, content, endChapter, endVerse } =
         lexioDivinaData;
 
@@ -60,7 +75,23 @@ const LexioDivinaEdit = () => {
         setValue('endVerse', String(endVerse));
       }
     }
-  }, [lexioDivinaData, setValue]);
+  }, [lexioDivinaData, temp, setValue]);
+
+  // ?temp=true인 경우 임시 저장된 값을 form에 입력한다.
+  useMount(() => {
+    if (temp) {
+      const { phrase, bible, chapter, verse, content, endChapter, endVerse } =
+        tempLexioDivina;
+
+      phrase && setValue('phrase', phrase);
+      bible && setValue('bible', bible);
+      chapter && setValue('chapter', chapter);
+      verse && setValue('verse', verse);
+      content && setValue('content', content);
+      setValue('endChapter', endChapter);
+      setValue('endVerse', endVerse);
+    }
+  });
 
   const handleCancel = () => {
     router.back();
@@ -92,6 +123,7 @@ const LexioDivinaEdit = () => {
 
       await putLexioDivina(lexioId, payload);
 
+      resetTempLexioDivina();
       router.push('/');
     } catch (error: any) {
       const status = error?.response?.status;

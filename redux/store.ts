@@ -11,17 +11,19 @@ import {
 import storage from 'redux-persist/lib/storage';
 
 import colorReducer from './colorSlice';
+import tempLexioDivinaReducer from './tempLexioDivinaSlice';
 import userReducer from './userSlice';
 
 const reducers = combineReducers({
   user: userReducer,
   color: colorReducer,
+  tempLexioDivina: tempLexioDivinaReducer,
 });
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['user', 'color'],
+  whitelist: ['user', 'color', 'tempLexioDivina'],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);

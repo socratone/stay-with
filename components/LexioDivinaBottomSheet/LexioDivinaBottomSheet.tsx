@@ -1,6 +1,6 @@
 import 'react-spring-bottom-sheet/dist/style.css';
 
-import useColorMode from 'hooks/context/useColorMode';
+import useColorMode from 'hooks/theme/useColorMode';
 import { useEffect } from 'react';
 import { BottomSheet, BottomSheetProps } from 'react-spring-bottom-sheet';
 
