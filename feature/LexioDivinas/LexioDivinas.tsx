@@ -15,6 +15,7 @@ import {
 } from 'helpers/axios';
 import useLexioDivinas from 'hooks/api/useLexioDivinas';
 import useAuth from 'hooks/auth/useAuth';
+import useIsBreakpointsDown from 'hooks/theme/useViewport';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
@@ -34,8 +35,10 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
   const { formatMessage } = useIntl();
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-  const { user, logout } = useAuth();
   const queryClient = useQueryClient();
+
+  const { user, logout } = useAuth();
+  const isSmall = useIsBreakpointsDown('sm');
 
   const [page, setPage] = useState(1);
 
@@ -148,113 +151,123 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
   return (
     <>
       {/* desktop, tablet view */}
-      <Box
-        component="main"
-        maxWidth="xl"
-        sx={{
-          py: 2,
-          pl: 2,
-          display: { xs: 'none', sm: 'block', md: 'block', xl: 'block' },
-        }}
-      >
-        <Masonry spacing={2} columns={{ sm: 2, md: 3, lg: 4 }}>
-          {lexioDivinas.map((lexioDivina) => (
-            <LexioDivinaCard
-              key={lexioDivina._id}
-              name={lexioDivina.user.name}
-              profileImageUrl={lexioDivina.user.imageUrl}
-              phrase={lexioDivina.phrase}
-              bible={lexioDivina.bible}
-              chapter={lexioDivina.chapter}
-              verse={lexioDivina.verse}
-              endChapter={lexioDivina.endChapter}
-              endVerse={lexioDivina.endVerse}
-              content={lexioDivina.content}
-              isMine={lexioDivina.user._id === user?._id}
-              isLiked={
-                !!lexioDivina.likedUserIds.find((id) => id === user?._id)
-              }
-              onEditMenuItemClick={() => handleEdit(lexioDivina._id)}
-              onDeleteMenuItemClick={() =>
-                setSelectedLexioDivinaIdForDelete(lexioDivina._id)
-              }
-              likeButtonDisabled={!user}
-              onIsLikedSubmit={(isLiked) =>
-                isLiked ? addLike(lexioDivina._id) : deleteLike(lexioDivina._id)
-              }
-              likedCount={lexioDivina.likedUserIds.length}
-              commentCount={lexioDivina.comments.length}
-              onCommentButtonClick={() => handleCommentButtonClick(lexioDivina)}
-              onUserClick={() => handleUserClick(lexioDivina.user._id)}
-              createdAt={lexioDivina.createdAt}
-            />
-          ))}
-        </Masonry>
+      {!isSmall ? (
+        <Box
+          component="main"
+          maxWidth="xl"
+          sx={{
+            py: 2,
+            pl: 2,
+          }}
+        >
+          <Masonry spacing={2} columns={{ sm: 2, md: 3, lg: 4 }}>
+            {lexioDivinas.map((lexioDivina) => (
+              <LexioDivinaCard
+                key={lexioDivina._id}
+                name={lexioDivina.user.name}
+                profileImageUrl={lexioDivina.user.imageUrl}
+                phrase={lexioDivina.phrase}
+                bible={lexioDivina.bible}
+                chapter={lexioDivina.chapter}
+                verse={lexioDivina.verse}
+                endChapter={lexioDivina.endChapter}
+                endVerse={lexioDivina.endVerse}
+                content={lexioDivina.content}
+                isMine={lexioDivina.user._id === user?._id}
+                isLiked={
+                  !!lexioDivina.likedUserIds.find((id) => id === user?._id)
+                }
+                onEditMenuItemClick={() => handleEdit(lexioDivina._id)}
+                onDeleteMenuItemClick={() =>
+                  setSelectedLexioDivinaIdForDelete(lexioDivina._id)
+                }
+                likeButtonDisabled={!user}
+                onIsLikedSubmit={(isLiked) =>
+                  isLiked
+                    ? addLike(lexioDivina._id)
+                    : deleteLike(lexioDivina._id)
+                }
+                likedCount={lexioDivina.likedUserIds.length}
+                commentCount={lexioDivina.comments.length}
+                onCommentButtonClick={() =>
+                  handleCommentButtonClick(lexioDivina)
+                }
+                onUserClick={() => handleUserClick(lexioDivina.user._id)}
+                createdAt={lexioDivina.createdAt}
+              />
+            ))}
+          </Masonry>
 
-        <Box display="flex" justifyContent="center">
-          {lexioDivinasData?.total ?? 0 <= PAGE_COUNT ? null : (
-            <Pagination
-              page={page}
-              onChange={(_, page) => setPage(page)}
-              count={Math.ceil(Number(lexioDivinasData?.total) / PAGE_COUNT)}
-            />
-          )}
+          <Box display="flex" justifyContent="center">
+            {lexioDivinasData?.total ?? 0 <= PAGE_COUNT ? null : (
+              <Pagination
+                page={page}
+                onChange={(_, page) => setPage(page)}
+                count={Math.ceil(Number(lexioDivinasData?.total) / PAGE_COUNT)}
+              />
+            )}
+          </Box>
         </Box>
-      </Box>
+      ) : null}
 
       {/* mobile view */}
-      <Container
-        component="main"
-        maxWidth="sm"
-        sx={{
-          px: { xs: 0 },
-          pt: 1,
-          display: { xs: 'block', sm: 'none', md: 'none', xl: 'none' },
-        }}
-      >
-        {lexioDivinas?.map((lexioDivina) => (
-          <Box key={lexioDivina._id} pt={1} pb={1} px={2}>
-            <LexioDivinaCard
-              name={lexioDivina.user.name}
-              profileImageUrl={lexioDivina.user.imageUrl}
-              phrase={lexioDivina.phrase}
-              bible={lexioDivina.bible}
-              chapter={lexioDivina.chapter}
-              verse={lexioDivina.verse}
-              endChapter={lexioDivina.endChapter}
-              endVerse={lexioDivina.endVerse}
-              content={lexioDivina.content}
-              isMine={lexioDivina.user.email === user?.email}
-              isLiked={
-                !!lexioDivina.likedUserIds.find((id) => id === user?._id)
-              }
-              onEditMenuItemClick={() => handleEdit(lexioDivina._id)}
-              onDeleteMenuItemClick={() =>
-                setSelectedLexioDivinaIdForDelete(lexioDivina._id)
-              }
-              likeButtonDisabled={!user}
-              onIsLikedSubmit={(isLiked) =>
-                isLiked ? addLike(lexioDivina._id) : deleteLike(lexioDivina._id)
-              }
-              likedCount={lexioDivina.likedUserIds.length}
-              commentCount={lexioDivina.comments.length}
-              onCommentButtonClick={() => handleCommentButtonClick(lexioDivina)}
-              onUserClick={() => handleUserClick(lexioDivina.user._id)}
-              createdAt={lexioDivina.createdAt}
-            />
-          </Box>
-        ))}
+      {isSmall ? (
+        <Container
+          component="main"
+          maxWidth="sm"
+          sx={{
+            px: { xs: 0 },
+            pt: 1,
+          }}
+        >
+          {lexioDivinas?.map((lexioDivina) => (
+            <Box key={lexioDivina._id} pt={1} pb={1} px={2}>
+              <LexioDivinaCard
+                name={lexioDivina.user.name}
+                profileImageUrl={lexioDivina.user.imageUrl}
+                phrase={lexioDivina.phrase}
+                bible={lexioDivina.bible}
+                chapter={lexioDivina.chapter}
+                verse={lexioDivina.verse}
+                endChapter={lexioDivina.endChapter}
+                endVerse={lexioDivina.endVerse}
+                content={lexioDivina.content}
+                isMine={lexioDivina.user.email === user?.email}
+                isLiked={
+                  !!lexioDivina.likedUserIds.find((id) => id === user?._id)
+                }
+                onEditMenuItemClick={() => handleEdit(lexioDivina._id)}
+                onDeleteMenuItemClick={() =>
+                  setSelectedLexioDivinaIdForDelete(lexioDivina._id)
+                }
+                likeButtonDisabled={!user}
+                onIsLikedSubmit={(isLiked) =>
+                  isLiked
+                    ? addLike(lexioDivina._id)
+                    : deleteLike(lexioDivina._id)
+                }
+                likedCount={lexioDivina.likedUserIds.length}
+                commentCount={lexioDivina.comments.length}
+                onCommentButtonClick={() =>
+                  handleCommentButtonClick(lexioDivina)
+                }
+                onUserClick={() => handleUserClick(lexioDivina.user._id)}
+                createdAt={lexioDivina.createdAt}
+              />
+            </Box>
+          ))}
 
-        <Box display="flex" justifyContent="center">
-          {lexioDivinasData?.total ?? 0 <= PAGE_COUNT ? null : (
-            <Pagination
-              page={page}
-              onChange={(_, page) => setPage(page)}
-              count={Math.ceil(Number(lexioDivinasData?.total) / PAGE_COUNT)}
-            />
-          )}
-        </Box>
-      </Container>
+          <Box display="flex" justifyContent="center">
+            {lexioDivinasData?.total ?? 0 <= PAGE_COUNT ? null : (
+              <Pagination
+                page={page}
+                onChange={(_, page) => setPage(page)}
+                count={Math.ceil(Number(lexioDivinasData?.total) / PAGE_COUNT)}
+              />
+            )}
+          </Box>
+        </Container>
+      ) : null}
 
       <CommentDrawer
         open={!!selectedLexioDivinaForComment}
