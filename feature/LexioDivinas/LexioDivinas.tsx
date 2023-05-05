@@ -15,7 +15,7 @@ import {
 } from 'helpers/axios';
 import useLexioDivinas from 'hooks/api/useLexioDivinas';
 import useAuth from 'hooks/auth/useAuth';
-import useIsBreakpointsDown from 'hooks/theme/useViewport';
+import useIsBreakpointsDown from 'hooks/theme/useIsBreakpointsDown';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';

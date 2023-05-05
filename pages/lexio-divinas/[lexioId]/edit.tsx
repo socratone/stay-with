@@ -17,7 +17,7 @@ import useLexioDivina from 'hooks/api/useLexioDivina';
 import useAuth from 'hooks/auth/useAuth';
 import useTempLexioDivina from 'hooks/form/useTempLexioDivina';
 import useTempLexioDivinaRecorder from 'hooks/form/useTempLexioDivinaRecorder';
-import useIsBreakpointsDown from 'hooks/theme/useViewport';
+import useIsBreakpointsDown from 'hooks/theme/useIsBreakpointsDown';
 import useQueryString from 'hooks/url/useQueryString';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
