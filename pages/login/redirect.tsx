@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import ErrorMessage from 'components/ErrorMessage';
 import WaitingMessage from 'components/WaitingMessage';
 import useKakaoLoginRedirect from 'hooks/auth/useKakaoLoginRedirect';
-import useQueryString from 'hooks/router/useQueryString';
+import useQueryString from 'hooks/url/useQueryString';
 
 const LoginRedirect = () => {
   const { code } = useQueryString();

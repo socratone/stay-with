@@ -27,4 +27,9 @@ export const components: ThemeOptions['components'] = {
       },
     },
   },
+  MuiIconButton: {
+    defaultProps: {
+      disableRipple: true,
+    },
+  },
 };

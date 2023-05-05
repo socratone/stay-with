@@ -1,4 +1,3 @@
-import { useMediaQuery, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import DailyMissa from 'components/DailyMissa/DailyMissa';
 import GlobalHeader from 'components/GlobalHeader';
@@ -14,7 +13,8 @@ import { postLexioDivina } from 'helpers/axios';
 import useAuth from 'hooks/auth/useAuth';
 import useTempLexioDivina from 'hooks/form/useTempLexioDivina';
 import useTempLexioDivinaRecorder from 'hooks/form/useTempLexioDivinaRecorder';
-import useQueryString from 'hooks/router/useQueryString';
+import useIsBreakpointsDown from 'hooks/theme/useIsBreakpointsDown';
+import useQueryString from 'hooks/url/useQueryString';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
@@ -25,8 +25,7 @@ import { useMount } from 'react-use';
 const LexioDivinaCreate = () => {
   const { formatMessage } = useIntl();
   const router = useRouter();
-  const theme = useTheme();
-  const isTabletOrSmaller = useMediaQuery(theme.breakpoints.down('md'));
+  const isMediumOrSmaller = useIsBreakpointsDown('md');
 
   const tempLexioDivina = useTempLexioDivina();
 
@@ -153,7 +152,7 @@ const LexioDivinaCreate = () => {
           </Box>
 
           {/* right */}
-          {!isTabletOrSmaller ? (
+          {!isMediumOrSmaller ? (
             <Box
               display="flex"
               flexDirection="column"
@@ -175,7 +174,7 @@ const LexioDivinaCreate = () => {
         </Box>
       </Box>
 
-      {isTabletOrSmaller ? (
+      {isMediumOrSmaller ? (
         <LexioDivinaBottomSheet>
           <LexioDivinaForm
             form={form}
