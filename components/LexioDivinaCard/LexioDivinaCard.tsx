@@ -33,6 +33,7 @@ type LexioDivinaCardProps = {
   isMine: boolean;
   onEditMenuItemClick: () => void;
   onDeleteMenuItemClick: () => void;
+  likeButtonDisabled: boolean;
   onLikeButtonClick: () => void;
   onUnlikeButtonClick: () => void;
   likedCount: number;
@@ -56,6 +57,7 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
   isMine,
   onEditMenuItemClick,
   onDeleteMenuItemClick,
+  likeButtonDisabled,
   onLikeButtonClick,
   onUnlikeButtonClick,
   likedCount,
@@ -187,6 +189,7 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
       {/* footer */}
       <Stack direction="row" alignItems="center" p={1}>
         <IconButton
+          disabled={likeButtonDisabled}
           onClick={isLiked ? onUnlikeButtonClick : onLikeButtonClick}
           size="small"
         >

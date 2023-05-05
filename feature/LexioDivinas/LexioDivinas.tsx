@@ -178,7 +178,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
               onDeleteMenuItemClick={() =>
                 setSelectedLexioDivinaIdForDelete(lexioDivina._id)
               }
-              // TODO: 계속 클릭해도 한 번만 요청하도록
+              likeButtonDisabled={!user}
               onLikeButtonClick={() => handleLike(lexioDivina._id)}
               onUnlikeButtonClick={() => handleUnlike(lexioDivina._id)}
               likedCount={lexioDivina.likedUserIds.length}
@@ -231,7 +231,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
               onDeleteMenuItemClick={() =>
                 setSelectedLexioDivinaIdForDelete(lexioDivina._id)
               }
-              // TODO: 계속 클릭해도 한 번만 요청하도록
+              likeButtonDisabled={!user}
               onLikeButtonClick={() => handleLike(lexioDivina._id)}
               onUnlikeButtonClick={() => handleUnlike(lexioDivina._id)}
               likedCount={lexioDivina.likedUserIds.length}
