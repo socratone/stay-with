@@ -12,17 +12,25 @@ import Meta from 'components/Meta';
 import { Bible, BIBLE_LABEL } from 'constants/bible';
 import { postLexioDivina } from 'helpers/axios';
 import useAuth from 'hooks/auth/useAuth';
+import useTempLexioDivina from 'hooks/form/useTempLexioDivina';
+import useTempLexioDivinaRecorder from 'hooks/form/useTempLexioDivinaRecorder';
+import useQueryString from 'hooks/router/useQueryString';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
+import { useMount } from 'react-use';
 
 const LexioDivinaCreate = () => {
   const { formatMessage } = useIntl();
   const router = useRouter();
   const theme = useTheme();
   const isTabletOrSmaller = useMediaQuery(theme.breakpoints.down('md'));
+
+  const tempLexioDivina = useTempLexioDivina();
+
+  const { temp } = useQueryString();
 
   const { enqueueSnackbar } = useSnackbar();
   const { user, logout } = useAuth();
@@ -33,6 +41,29 @@ const LexioDivinaCreate = () => {
     defaultValues: {
       bible: { value: Bible.Genesis, label: BIBLE_LABEL[Bible.Genesis] },
     },
+  });
+
+  const setValue = form.setValue;
+
+  const { reset: resetTempLexioDivina } = useTempLexioDivinaRecorder({
+    value: form.watch(),
+    enabled: form.formState.isDirty,
+  });
+
+  // ?temp=true인 경우 임시 저장된 값을 form에 입력한다.
+  useMount(() => {
+    if (temp) {
+      const { phrase, bible, chapter, verse, content, endChapter, endVerse } =
+        tempLexioDivina;
+
+      phrase && setValue('phrase', phrase);
+      bible && setValue('bible', bible);
+      chapter && setValue('chapter', chapter);
+      verse && setValue('verse', verse);
+      content && setValue('content', content);
+      setValue('endChapter', endChapter);
+      setValue('endVerse', endVerse);
+    }
   });
 
   const handleCancel = () => {
@@ -70,6 +101,7 @@ const LexioDivinaCreate = () => {
         comments: [],
       });
 
+      resetTempLexioDivina();
       router.push('/');
     } catch (error: any) {
       const status = error?.response?.status;

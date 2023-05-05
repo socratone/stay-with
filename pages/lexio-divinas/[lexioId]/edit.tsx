@@ -24,6 +24,7 @@ import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
+import { useMount } from 'react-use';
 
 const LexioDivinaEdit = () => {
   const { formatMessage } = useIntl();
@@ -57,6 +58,7 @@ const LexioDivinaEdit = () => {
     enabled: form.formState.isDirty,
   });
 
+  // 서버에 저장된 값을 불러와 form에 입력한다.
   useEffect(() => {
     if (lexioDivinaData && !temp) {
       const { phrase, bible, chapter, verse, content, endChapter, endVerse } =
@@ -75,7 +77,8 @@ const LexioDivinaEdit = () => {
     }
   }, [lexioDivinaData, temp, setValue]);
 
-  useEffect(() => {
+  // ?temp=true인 경우 임시 저장된 값을 form에 입력한다.
+  useMount(() => {
     if (temp) {
       const { phrase, bible, chapter, verse, content, endChapter, endVerse } =
         tempLexioDivina;
@@ -88,7 +91,7 @@ const LexioDivinaEdit = () => {
       setValue('endChapter', endChapter);
       setValue('endVerse', endVerse);
     }
-  }, [temp, tempLexioDivina, setValue]);
+  });
 
   const handleCancel = () => {
     router.back();
