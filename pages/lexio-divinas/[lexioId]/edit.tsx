@@ -16,6 +16,7 @@ import { Bible, BIBLE_LABEL } from 'constants/bible';
 import { putLexioDivina } from 'helpers/axios';
 import useLexioDivina from 'hooks/api/useLexioDivina';
 import useAuth from 'hooks/auth/useAuth';
+import useTempLexioDivina from 'hooks/form/useTempLexioDivina';
 import useTempLexioDivinaRecorder from 'hooks/form/useTempLexioDivinaRecorder';
 import useQueryString from 'hooks/router/useQueryString';
 import { useRouter } from 'next/router';
@@ -23,14 +24,13 @@ import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import { useAppSelector } from 'redux/hooks';
 
 const LexioDivinaEdit = () => {
   const { formatMessage } = useIntl();
   const router = useRouter();
   const theme = useTheme();
   const isTabletOrSmaller = useMediaQuery(theme.breakpoints.down('md'));
-  const tempLexioDivina = useAppSelector((state) => state.tempLexioDivina);
+  const tempLexioDivina = useTempLexioDivina();
 
   const { temp } = useQueryString();
 

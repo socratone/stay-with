@@ -1,4 +1,4 @@
-import { useAppSelector } from 'redux/hooks';
+import useTempLexioDivina from './useTempLexioDivina';
 
 type UseTempLexioDivinaStatusReturn = {
   id?: string;
@@ -12,7 +12,7 @@ const isEmptyObjectExceptId = (object: object) => {
 };
 
 const useTempLexioDivinaStatus = (): UseTempLexioDivinaStatusReturn => {
-  const tempLexioDivina = useAppSelector((state) => state.tempLexioDivina);
+  const tempLexioDivina = useTempLexioDivina();
 
   if (tempLexioDivina.id) {
     return {
