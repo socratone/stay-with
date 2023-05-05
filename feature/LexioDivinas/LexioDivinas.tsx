@@ -13,7 +13,9 @@ import {
   deleteLikedInLexioDivina,
   postLikedToLexioDivina,
 } from 'helpers/axios';
-import useLexioDivinas from 'hooks/api/useLexioDivinas';
+import useLexioDivinas, {
+  LEXIO_DIVINAS_QUERY_KEY,
+} from 'hooks/api/useLexioDivinas';
 import useAuth from 'hooks/auth/useAuth';
 import useIsBreakpointsDown from 'hooks/theme/useIsBreakpointsDown';
 import { useRouter } from 'next/router';
@@ -29,7 +31,6 @@ type LexioDivinasProps = {
 };
 
 const PAGE_COUNT = 20;
-export const LEXIO_DIVINAS_KEY = { queryKey: ['/api/lexio-divinas'] };
 
 const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
   const { formatMessage } = useIntl();
@@ -70,7 +71,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
 
     try {
       await deleteLexioDivina(selectedLexioDivinaIdForDelete);
-      queryClient.invalidateQueries(LEXIO_DIVINAS_KEY);
+      queryClient.invalidateQueries({ queryKey: [LEXIO_DIVINAS_QUERY_KEY] });
     } catch (error) {
       enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
         variant: 'error',
@@ -87,7 +88,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
       await postLikedToLexioDivina(id, {
         userId: user._id,
       });
-      queryClient.invalidateQueries(LEXIO_DIVINAS_KEY);
+      queryClient.invalidateQueries({ queryKey: [LEXIO_DIVINAS_QUERY_KEY] });
     } catch (error: any) {
       const status = error?.response?.status;
       if (status === 401) {
@@ -106,7 +107,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
 
     try {
       await deleteLikedInLexioDivina(id, user._id);
-      queryClient.invalidateQueries(LEXIO_DIVINAS_KEY);
+      queryClient.invalidateQueries({ queryKey: [LEXIO_DIVINAS_QUERY_KEY] });
     } catch (error: any) {
       const status = error?.response?.status;
       if (status === 401) {

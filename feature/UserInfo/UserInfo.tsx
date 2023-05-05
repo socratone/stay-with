@@ -7,9 +7,9 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { useQueryClient } from '@tanstack/react-query';
 import UserForm, { UserFormValues } from 'components/UserForm/UserForm';
-import { LEXIO_DIVINAS_KEY } from 'feature/LexioDivinas/LexioDivinas';
 import { patchUser } from 'helpers/axios';
-import useUser from 'hooks/api/useUser';
+import { LEXIO_DIVINAS_QUERY_KEY } from 'hooks/api/useLexioDivinas';
+import useUser, { USER_QUERY_KEY } from 'hooks/api/useUser';
 import useAuth from 'hooks/auth/useAuth';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
@@ -54,8 +54,8 @@ const UserInfo: React.FC<UserInfoProps> = ({ userId }) => {
     try {
       await patchUser(userId, { name });
       setIsEdit(false);
-      queryClient.invalidateQueries({ queryKey: ['/api/users'] });
-      queryClient.invalidateQueries(LEXIO_DIVINAS_KEY);
+      queryClient.invalidateQueries({ queryKey: [USER_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: [LEXIO_DIVINAS_QUERY_KEY] });
     } catch (error: any) {
       if (error.response.status === 409) {
         enqueueSnackbar(formatMessage({ id: 'error.message.duplicateName' }), {
