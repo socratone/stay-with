@@ -77,7 +77,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
     }
   };
 
-  const handleLike = async (id: string) => {
+  const addLike = async (id: string) => {
     if (!user) return;
 
     try {
@@ -98,7 +98,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
     }
   };
 
-  const handleUnlike = async (id: string) => {
+  const deleteLike = async (id: string) => {
     if (!user) return;
 
     try {
@@ -179,8 +179,9 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
                 setSelectedLexioDivinaIdForDelete(lexioDivina._id)
               }
               likeButtonDisabled={!user}
-              onLikeButtonClick={() => handleLike(lexioDivina._id)}
-              onUnlikeButtonClick={() => handleUnlike(lexioDivina._id)}
+              onIsLikedSubmit={(isLiked) =>
+                isLiked ? addLike(lexioDivina._id) : deleteLike(lexioDivina._id)
+              }
               likedCount={lexioDivina.likedUserIds.length}
               commentCount={lexioDivina.comments.length}
               onCommentButtonClick={() => handleCommentButtonClick(lexioDivina)}
@@ -232,8 +233,9 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
                 setSelectedLexioDivinaIdForDelete(lexioDivina._id)
               }
               likeButtonDisabled={!user}
-              onLikeButtonClick={() => handleLike(lexioDivina._id)}
-              onUnlikeButtonClick={() => handleUnlike(lexioDivina._id)}
+              onIsLikedSubmit={(isLiked) =>
+                isLiked ? addLike(lexioDivina._id) : deleteLike(lexioDivina._id)
+              }
               likedCount={lexioDivina.likedUserIds.length}
               commentCount={lexioDivina.comments.length}
               onCommentButtonClick={() => handleCommentButtonClick(lexioDivina)}
