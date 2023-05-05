@@ -27,7 +27,7 @@ const useTempLexioDivinaRecorder = ({
         dispatch(setTempLexioDivina({ ...value, id }));
       }
     },
-    4000,
+    2000,
     [stringifiedValue]
   );
 
