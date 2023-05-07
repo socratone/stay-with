@@ -23,12 +23,11 @@ import { useIntl } from 'react-intl';
 import CommentItem from './CommentItem';
 
 type CommentDrawerProps = {
-  open: boolean;
-  id?: string;
+  id: string | null;
   onClose: () => void;
 };
 
-const CommentDrawer: React.FC<CommentDrawerProps> = ({ open, id, onClose }) => {
+const CommentDrawer: React.FC<CommentDrawerProps> = ({ id, onClose }) => {
   const { formatMessage } = useIntl();
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
@@ -146,7 +145,7 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({ open, id, onClose }) => {
     <>
       <Drawer
         anchor="right"
-        open={open}
+        open={!!id}
         onClose={handleClose}
         PaperProps={{
           sx: {

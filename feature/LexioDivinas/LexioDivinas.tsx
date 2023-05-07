@@ -23,6 +23,7 @@ import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { LexioDivina } from 'types/document';
+import { addQuery, removeQuery } from 'utils/url';
 
 type LexioDivinasProps = {
   fetchOptions?: {
@@ -45,8 +46,6 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
 
   const [selectedLexioDivinaIdForDelete, setSelectedLexioDivinaIdForDelete] =
     useState<string | null>(null);
-  const [selectedLexioDivinaForComment, setSelectedLexioDivinaForComment] =
-    useState<LexioDivina | null>(null);
 
   const lexioDivinasParams = {
     offset: page,
@@ -122,11 +121,13 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
   };
 
   const handleCommentButtonClick = (lexioDivina: LexioDivina) => {
-    setSelectedLexioDivinaForComment(lexioDivina);
+    const mutatedUrl = addQuery(router.asPath, `comments=${lexioDivina._id}`);
+    router.push(mutatedUrl);
   };
 
   const handleCommentDrawerClose = () => {
-    setSelectedLexioDivinaForComment(null);
+    const mutatedUrl = removeQuery(router.asPath, 'comments');
+    router.push(mutatedUrl);
   };
 
   const handleUserClick = (id: string) => {
@@ -271,8 +272,11 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
       ) : null}
 
       <CommentDrawer
-        open={!!selectedLexioDivinaForComment}
-        id={selectedLexioDivinaForComment?._id}
+        id={
+          typeof router.query?.comments === 'string'
+            ? router.query?.comments
+            : null
+        }
         onClose={handleCommentDrawerClose}
       />
 
