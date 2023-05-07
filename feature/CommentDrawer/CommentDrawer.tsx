@@ -118,7 +118,9 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({ open, id, onClose }) => {
 
   const handleCommentItemClick = (commentId: string) => {
     if (!user) return;
-    setSelectedCommentId(commentId);
+    setSelectedCommentId((previousId) =>
+      previousId === commentId ? null : commentId
+    );
   };
 
   const handleClose = () => {
