@@ -27,7 +27,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
   return (
     <ButtonBase
       onClick={onClick}
-      sx={{ bgcolor: isSelected ? theme.palette.primary.main : undefined }}
+      sx={{ bgcolor: isSelected ? theme.palette.action.selected : undefined }}
     >
       <Box display="flex" gap={1} px={2} py={1} width="100%">
         <Avatar alt="profile" src={imageUrl} sx={{ width: 34, height: 34 }}>
