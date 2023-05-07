@@ -1,4 +1,4 @@
-import { filterUrlQuery, getUrlPath } from './url';
+import { getUrlPath, removeQuery } from './url';
 
 describe('getUrlPath', () => {
   it('should only return the URL path.', () => {
@@ -14,10 +14,10 @@ describe('getUrlPath', () => {
   });
 });
 
-describe('filterUrlQuery', () => {
+describe('removeQuery', () => {
   it('should delete the correct query.', () => {
     expect(
-      filterUrlQuery(
+      removeQuery(
         'https://example.com/blog?count=10&offset=20&search=apple',
         'offset'
       )
@@ -25,7 +25,7 @@ describe('filterUrlQuery', () => {
   });
 
   it('should work even when there is no query.', () => {
-    expect(filterUrlQuery('https://example.com/blog', 'offset')).toBe(
+    expect(removeQuery('https://example.com/blog', 'offset')).toBe(
       'https://example.com/blog'
     );
   });

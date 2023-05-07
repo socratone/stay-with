@@ -5,7 +5,7 @@ export const getUrlPath = (url: string) => {
   return path;
 };
 
-export const filterUrlQuery = (url: string, query: string) => {
+export const removeQuery = (url: string, query: string) => {
   const [path, rawQueryString] = url.split('?');
   const parsedQuery = queryString.parse(rawQueryString);
   delete parsedQuery[query];
