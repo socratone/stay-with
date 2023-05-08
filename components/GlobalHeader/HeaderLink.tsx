@@ -11,7 +11,7 @@ const HeaderLink: React.FC<HeaderLinkProps> = ({ children, href }) => {
     <Link href={href}>
       <Typography
         component="a"
-        color="text.primary"
+        color="text.secondary"
         sx={{
           cursor: 'pointer',
           height: '100%',
