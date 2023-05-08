@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import ErrorMessage from 'components/ErrorMessage/ErrorMessage';
 import GlobalHeader from 'components/GlobalHeader';
+import KakaoLoginButton from 'components/KakaoLoginButton/KakaoLoginButton';
 import WaitingMessage from 'components/WaitingMessage/WaitingMessage';
 import Script from 'next/script';
 import { useSnackbar } from 'notistack';
@@ -13,7 +13,7 @@ type Error = {
 
 const Login = () => {
   const { enqueueSnackbar } = useSnackbar();
-  const KakaoRef = useRef<any | null>(null);
+  const kakaoRef = useRef<any | null>(null);
   const [isRequested, setIsRequested] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
@@ -34,7 +34,7 @@ const Login = () => {
   const handleScriptLoad = () => {
     const { Kakao }: any = window;
     Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY);
-    KakaoRef.current = Kakao;
+    kakaoRef.current = Kakao;
   };
 
   const handleScriptError = () => {
@@ -44,8 +44,8 @@ const Login = () => {
   };
 
   const handleKakaoLoginClick = () => {
-    if (KakaoRef.current?.Auth) {
-      KakaoRef.current.Auth.authorize({
+    if (kakaoRef.current?.Auth) {
+      kakaoRef.current.Auth.authorize({
         redirectUri: `${process.env.NEXT_PUBLIC_BASE_URL}/login/redirect`,
       });
 
@@ -105,9 +105,7 @@ const Login = () => {
           gap={1}
           p={2}
         >
-          <Button variant="outlined" onClick={handleKakaoLoginClick}>
-            카카오 아이디로 로그인하기
-          </Button>
+          <KakaoLoginButton onClick={handleKakaoLoginClick} />
         </Box>
       </Box>
 
