@@ -43,7 +43,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
   const { user, logout } = useAuth();
   const isSmall = useIsBreakpointsDown('sm');
 
-  const [page, setPage] = useState(Number(useSearchParam('page')) || 1);
+  const page = Number(useSearchParam('page')) || 1;
 
   const [selectedLexioDivinaIdForDelete, setSelectedLexioDivinaIdForDelete] =
     useState<string | null>(null);
@@ -137,8 +137,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
 
   const handlePageChange = (page: number) => {
     const mutatedUrl = addQuery(router.asPath, `page=${page}`);
-    router.replace(mutatedUrl);
-    setPage(page);
+    router.push(mutatedUrl);
   };
 
   if (lexioDivinasLoading) {
