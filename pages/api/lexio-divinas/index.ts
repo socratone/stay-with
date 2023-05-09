@@ -1,5 +1,5 @@
 import { CollectionName } from 'constants/mongodb';
-import { InsertOneResult, ObjectId } from 'mongodb';
+import { Document, InsertOneResult, ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { LexioDivina, User } from 'types/document';
 import { ApiErrorData, isLoggedIn } from 'utils/auth';
@@ -22,13 +22,15 @@ const handler = async (
 ) => {
   if (req.method === 'GET') {
     const db = new Mongodb();
-    const offset = req.query.offset
-      ? (Number(req.query.offset) - 1) * Number(req.query.count)
-      : 0;
-    const count = req.query.count ? Number(req.query.count) : 10;
-    const userId = req.query.userId ? String(req.query.userId) : null;
+    const skip =
+      typeof req.query?.skip === 'string' ? Number(req.query.skip) : null;
+    const limit =
+      typeof req.query?.limit === 'string' ? Number(req.query.limit) : 100; // 제한값
+    const userId =
+      typeof req.query?.userId === 'string' ? req.query.userId : null;
 
-    const pipeline: any[] = [
+    const pipeline: Document[] = [
+      { $match: userId ? { userId: new ObjectId(userId) } : null },
       {
         // https://www.mongodb.com/docs/v6.0/reference/operator/aggregation/lookup/#syntax
         $lookup: {
@@ -47,10 +49,10 @@ const handler = async (
         },
       },
       {
-        $skip: offset,
+        $skip: skip,
       },
       {
-        $limit: count,
+        $limit: limit,
       },
       {
         $addFields: {
@@ -59,15 +61,18 @@ const handler = async (
       },
     ];
 
-    if (userId) {
-      pipeline.unshift({ $match: { userId: new ObjectId(userId) } });
-    }
+    const filteredPipeline = pipeline.filter((document) => {
+      for (const value of Object.values(document)) {
+        if (value === null) return false;
+      }
+      return true;
+    });
 
     try {
       // https://stackoverflow.com/questions/69978663/get-data-from-another-collection-string-objectid
       const lexioDivinas = await db.aggregate<
         ApiLexioDivinasData['lexioDivinas']
-      >(CollectionName.LexioDivinas, pipeline);
+      >(CollectionName.LexioDivinas, filteredPipeline);
 
       let total = 0;
 

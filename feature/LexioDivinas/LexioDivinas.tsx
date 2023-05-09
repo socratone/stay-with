@@ -48,8 +48,8 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
     useState<string | null>(null);
 
   const lexioDivinasParams = {
-    offset: page,
-    count: PAGE_COUNT,
+    skip: (page - 1) * PAGE_COUNT,
+    limit: PAGE_COUNT,
     userId: fetchOptions?.userId,
   };
 
