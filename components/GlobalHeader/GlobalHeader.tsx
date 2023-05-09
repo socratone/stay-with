@@ -9,8 +9,9 @@ import DarkModeSwitch from 'components/DarkModeSwitch';
 import useAuth from 'hooks/auth/useAuth';
 import useColorMode from 'hooks/theme/useColorMode';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React from 'react';
 import { PRIMARY_SHADOW } from 'theme/shadows';
+import { addQuery, removeQuery } from 'utils/url';
 
 import EnvChip from './EnvChip';
 import GlobalHeaderDrawer from './GlobalHeaderDrawer';
@@ -25,11 +26,15 @@ const GlobalHeader = () => {
   const { user } = useAuth();
   const { colorMode, setColorMode } = useColorMode();
 
-  const [menuOpen, setMenuOpen] = useState(false);
+  const openMenu = () => {
+    const mutatedUrl = addQuery(router.asPath, 'menu=true');
+    router.push(mutatedUrl);
+  };
 
-  const openMenu = () => setMenuOpen(true);
-
-  const closeMenu = () => setMenuOpen(false);
+  const closeMenu = () => {
+    const mutatedUrl = removeQuery(router.asPath, 'menu');
+    router.push(mutatedUrl);
+  };
 
   const handleDarkModeSwitchChange = (checked: boolean) => {
     setColorMode(checked ? 'dark' : 'light');
@@ -92,7 +97,10 @@ const GlobalHeader = () => {
         <EnvChip />
       </Box>
 
-      <GlobalHeaderDrawer open={menuOpen} onClose={closeMenu} />
+      <GlobalHeaderDrawer
+        open={typeof router.query?.menu === 'string'}
+        onClose={closeMenu}
+      />
     </>
   );
 };
