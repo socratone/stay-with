@@ -10,8 +10,7 @@ const HeaderLink: React.FC<HeaderLinkProps> = ({ children, href }) => {
   return (
     <Link href={href}>
       <Typography
-        component="a"
-        color="text.secondary"
+        color={(theme) => theme.palette.text.secondary}
         sx={{
           cursor: 'pointer',
           height: '100%',
