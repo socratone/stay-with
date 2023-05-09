@@ -268,7 +268,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
           ))}
 
           <Box display="flex" justifyContent="center">
-            {lexioDivinasData?.total ?? 0 <= ITEM_COUNT_PER_PAGE ? null : (
+            {(lexioDivinasData?.total ?? 0) <= ITEM_COUNT_PER_PAGE ? null : (
               <Pagination
                 page={page}
                 onChange={(_, page) => handlePageChange(page)}
