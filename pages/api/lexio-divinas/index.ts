@@ -61,6 +61,7 @@ const handler = async (
       },
     ];
 
+    // value의 값이 null인 invalid한 object 제거
     const filteredPipeline = pipeline.filter((document) => {
       for (const value of Object.values(document)) {
         if (value === null) return false;
