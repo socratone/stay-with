@@ -125,8 +125,9 @@ export const getLexioDivina = (id: string): Promise<ApiLexioDivinaData> => {
 };
 
 export type GetLexioDivinasParams = {
-  offset?: number;
-  count?: number;
+  skip: number;
+  limit: number;
+  userId?: string;
 };
 
 export const getLexioDivinas = (
