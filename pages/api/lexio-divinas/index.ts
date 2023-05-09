@@ -76,10 +76,12 @@ const handler = async (
 
       let total = 0;
 
+      // FIXME: 리소스 문제로 삭제
       if (userId) {
-        total = await db.find(CollectionName.LexioDivinas, {
+        const result = await db.find<any[]>(CollectionName.LexioDivinas, {
           filter: { userId: new ObjectId(userId) },
         });
+        total = result.length;
       } else {
         total = await db.count(CollectionName.LexioDivinas);
       }

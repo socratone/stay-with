@@ -22,6 +22,7 @@ import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
+import { useSearchParam } from 'react-use';
 import { LexioDivina } from 'types/document';
 import { addQuery, removeQuery } from 'utils/url';
 
@@ -31,7 +32,7 @@ type LexioDivinasProps = {
   };
 };
 
-const PAGE_COUNT = 20;
+const ITEM_COUNT_PER_PAGE = 20;
 
 const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
   const { formatMessage } = useIntl();
@@ -42,14 +43,14 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
   const { user, logout } = useAuth();
   const isSmall = useIsBreakpointsDown('sm');
 
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(Number(useSearchParam('page')) || 1);
 
   const [selectedLexioDivinaIdForDelete, setSelectedLexioDivinaIdForDelete] =
     useState<string | null>(null);
 
   const lexioDivinasParams = {
-    skip: (page - 1) * PAGE_COUNT,
-    limit: PAGE_COUNT,
+    skip: (page - 1) * ITEM_COUNT_PER_PAGE,
+    limit: ITEM_COUNT_PER_PAGE,
     userId: fetchOptions?.userId,
   };
 
@@ -134,6 +135,12 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
     router.push(`/user/${id}`);
   };
 
+  const handlePageChange = (page: number) => {
+    const mutatedUrl = addQuery(router.asPath, `page=${page}`);
+    router.replace(mutatedUrl);
+    setPage(page);
+  };
+
   if (lexioDivinasLoading) {
     return (
       <Box p={2}>
@@ -201,11 +208,13 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
           </Masonry>
 
           <Box display="flex" justifyContent="center">
-            {lexioDivinasData?.total ?? 0 <= PAGE_COUNT ? null : (
+            {(lexioDivinasData?.total ?? 0) <= ITEM_COUNT_PER_PAGE ? null : (
               <Pagination
                 page={page}
-                onChange={(_, page) => setPage(page)}
-                count={Math.ceil(Number(lexioDivinasData?.total) / PAGE_COUNT)}
+                onChange={(_, page) => handlePageChange(page)}
+                count={Math.ceil(
+                  Number(lexioDivinasData?.total) / ITEM_COUNT_PER_PAGE
+                )}
               />
             )}
           </Box>
@@ -260,11 +269,13 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
           ))}
 
           <Box display="flex" justifyContent="center">
-            {lexioDivinasData?.total ?? 0 <= PAGE_COUNT ? null : (
+            {lexioDivinasData?.total ?? 0 <= ITEM_COUNT_PER_PAGE ? null : (
               <Pagination
                 page={page}
-                onChange={(_, page) => setPage(page)}
-                count={Math.ceil(Number(lexioDivinasData?.total) / PAGE_COUNT)}
+                onChange={(_, page) => handlePageChange(page)}
+                count={Math.ceil(
+                  Number(lexioDivinasData.total) / ITEM_COUNT_PER_PAGE
+                )}
               />
             )}
           </Box>
