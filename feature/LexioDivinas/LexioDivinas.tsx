@@ -69,15 +69,16 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
   const handleLexioDivinaDelete = async () => {
     if (!selectedLexioDivinaIdForDelete) return;
 
+    const lexioDivinaId = selectedLexioDivinaIdForDelete;
+    setSelectedLexioDivinaIdForDelete(null);
+
     try {
-      await deleteLexioDivina(selectedLexioDivinaIdForDelete);
+      await deleteLexioDivina(lexioDivinaId);
       queryClient.invalidateQueries({ queryKey: [LEXIO_DIVINAS_QUERY_KEY] });
     } catch (error) {
       enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
         variant: 'error',
       });
-    } finally {
-      setSelectedLexioDivinaIdForDelete(null);
     }
   };
 
