@@ -6,6 +6,15 @@ const nextConfig = {
     locales: ['ko', 'en'],
     defaultLocale: 'ko',
   },
+  async redirects() {
+    return [
+      {
+        source: '/settings',
+        destination: '/settings/profile',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;
