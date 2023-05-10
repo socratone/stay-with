@@ -1,15 +1,13 @@
 import CloseIcon from '@mui/icons-material/Close';
 import HomeIcon from '@mui/icons-material/Home';
+import SettingsIcon from '@mui/icons-material/Settings';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import { useRouter } from 'next/router';
 import React from 'react';
+
+import ListLinkItem from './ListLinkItem';
 
 type GlobalHeaderDrawerProps = {
   open: boolean;
@@ -20,13 +18,6 @@ const GlobalHeaderDrawer: React.FC<GlobalHeaderDrawerProps> = ({
   open,
   onClose,
 }) => {
-  const router = useRouter();
-
-  const handleClick = (link: string) => {
-    router.push(link);
-    onClose();
-  };
-
   return (
     <Drawer
       anchor="left"
@@ -46,14 +37,12 @@ const GlobalHeaderDrawer: React.FC<GlobalHeaderDrawerProps> = ({
           </IconButton>
         </Box>
         <List sx={{ pt: 0 }}>
-          <ListItem disablePadding>
-            <ListItemButton onClick={() => handleClick('/')}>
-              <ListItemIcon sx={{ minWidth: 40 }}>
-                <HomeIcon />
-              </ListItemIcon>
-              <ListItemText primary="홈" />
-            </ListItemButton>
-          </ListItem>
+          <ListLinkItem href="/" icon={<HomeIcon />} label="홈" />
+          <ListLinkItem
+            href="/settings/profile"
+            icon={<SettingsIcon />}
+            label="설정"
+          />
         </List>
       </Box>
     </Drawer>
