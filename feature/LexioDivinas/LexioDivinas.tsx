@@ -1,6 +1,5 @@
 import { Masonry } from '@mui/lab';
 import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
 import Pagination from '@mui/material/Pagination';
 import { useQueryClient } from '@tanstack/react-query';
 import AlertDialog from 'components/AlertDialog';
@@ -17,7 +16,6 @@ import useLexioDivinas, {
   LEXIO_DIVINAS_QUERY_KEY,
 } from 'hooks/api/useLexioDivinas';
 import useAuth from 'hooks/auth/useAuth';
-import useIsBreakpointsDown from 'hooks/theme/useIsBreakpointsDown';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
@@ -41,24 +39,21 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
   const queryClient = useQueryClient();
 
   const { user, logout } = useAuth();
-  const isSmall = useIsBreakpointsDown('sm');
 
   const page = Number(useSearchParam('page')) || 1;
 
   const [selectedLexioDivinaIdForDelete, setSelectedLexioDivinaIdForDelete] =
     useState<string | null>(null);
 
-  const lexioDivinasParams = {
-    skip: (page - 1) * ITEM_COUNT_PER_PAGE,
-    limit: ITEM_COUNT_PER_PAGE,
-    userId: fetchOptions?.userId,
-  };
-
   const {
     data: lexioDivinasData,
     isLoading: lexioDivinasLoading,
     isError: lexioDivinasError,
-  } = useLexioDivinas(lexioDivinasParams);
+  } = useLexioDivinas({
+    skip: (page - 1) * ITEM_COUNT_PER_PAGE,
+    limit: ITEM_COUNT_PER_PAGE,
+    userId: fetchOptions?.userId,
+  });
 
   const lexioDivinas = lexioDivinasData?.lexioDivinas ?? [];
 
@@ -159,128 +154,60 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
 
   return (
     <>
-      {/* desktop, tablet view */}
-      {!isSmall ? (
-        <Box
-          component="main"
-          maxWidth="xl"
-          sx={{
-            py: 2,
-            pl: 2,
-          }}
-        >
-          <Masonry spacing={2} columns={{ sm: 2, md: 3, lg: 4 }}>
-            {lexioDivinas.map((lexioDivina) => (
-              <LexioDivinaCard
-                key={lexioDivina._id}
-                name={lexioDivina.user.name}
-                profileImageUrl={lexioDivina.user.imageUrl}
-                phrase={lexioDivina.phrase}
-                bible={lexioDivina.bible}
-                chapter={lexioDivina.chapter}
-                verse={lexioDivina.verse}
-                endChapter={lexioDivina.endChapter}
-                endVerse={lexioDivina.endVerse}
-                content={lexioDivina.content}
-                isMine={lexioDivina.user._id === user?._id}
-                isLiked={
-                  !!lexioDivina.likedUserIds.find((id) => id === user?._id)
-                }
-                onEditMenuItemClick={() => handleEdit(lexioDivina._id)}
-                onDeleteMenuItemClick={() =>
-                  setSelectedLexioDivinaIdForDelete(lexioDivina._id)
-                }
-                likeButtonDisabled={!user}
-                onIsLikedSubmit={(isLiked) =>
-                  isLiked
-                    ? addLike(lexioDivina._id)
-                    : deleteLike(lexioDivina._id)
-                }
-                likedCount={lexioDivina.likedUserIds.length}
-                commentCount={lexioDivina.comments.length}
-                onCommentButtonClick={() =>
-                  handleCommentButtonClick(lexioDivina)
-                }
-                onUserClick={() => handleUserClick(lexioDivina.user._id)}
-                createdAt={lexioDivina.createdAt}
-              />
-            ))}
-          </Masonry>
-
-          <Box display="flex" justifyContent="center">
-            {(lexioDivinasData?.total ?? 0) <= ITEM_COUNT_PER_PAGE ? null : (
-              <Pagination
-                page={page}
-                onChange={(_, page) => handlePageChange(page)}
-                count={Math.ceil(
-                  Number(lexioDivinasData?.total) / ITEM_COUNT_PER_PAGE
-                )}
-              />
-            )}
-          </Box>
-        </Box>
-      ) : null}
-
-      {/* mobile view */}
-      {isSmall ? (
-        <Container
-          component="main"
-          maxWidth="sm"
-          sx={{
-            px: { xs: 0 },
-            pt: 1,
-          }}
-        >
-          {lexioDivinas?.map((lexioDivina) => (
-            <Box key={lexioDivina._id} pt={1} pb={1} px={2}>
-              <LexioDivinaCard
-                name={lexioDivina.user.name}
-                profileImageUrl={lexioDivina.user.imageUrl}
-                phrase={lexioDivina.phrase}
-                bible={lexioDivina.bible}
-                chapter={lexioDivina.chapter}
-                verse={lexioDivina.verse}
-                endChapter={lexioDivina.endChapter}
-                endVerse={lexioDivina.endVerse}
-                content={lexioDivina.content}
-                isMine={lexioDivina.user.email === user?.email}
-                isLiked={
-                  !!lexioDivina.likedUserIds.find((id) => id === user?._id)
-                }
-                onEditMenuItemClick={() => handleEdit(lexioDivina._id)}
-                onDeleteMenuItemClick={() =>
-                  setSelectedLexioDivinaIdForDelete(lexioDivina._id)
-                }
-                likeButtonDisabled={!user}
-                onIsLikedSubmit={(isLiked) =>
-                  isLiked
-                    ? addLike(lexioDivina._id)
-                    : deleteLike(lexioDivina._id)
-                }
-                likedCount={lexioDivina.likedUserIds.length}
-                commentCount={lexioDivina.comments.length}
-                onCommentButtonClick={() =>
-                  handleCommentButtonClick(lexioDivina)
-                }
-                onUserClick={() => handleUserClick(lexioDivina.user._id)}
-                createdAt={lexioDivina.createdAt}
-              />
-            </Box>
+      <Box
+        component="main"
+        maxWidth="xl"
+        sx={{
+          py: 2,
+          pl: 2,
+        }}
+      >
+        <Masonry spacing={2} columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}>
+          {lexioDivinas.map((lexioDivina) => (
+            <LexioDivinaCard
+              key={lexioDivina._id}
+              name={lexioDivina.user.name}
+              profileImageUrl={lexioDivina.user.imageUrl}
+              phrase={lexioDivina.phrase}
+              bible={lexioDivina.bible}
+              chapter={lexioDivina.chapter}
+              verse={lexioDivina.verse}
+              endChapter={lexioDivina.endChapter}
+              endVerse={lexioDivina.endVerse}
+              content={lexioDivina.content}
+              isMine={lexioDivina.user._id === user?._id}
+              isLiked={
+                !!lexioDivina.likedUserIds.find((id) => id === user?._id)
+              }
+              onEditMenuItemClick={() => handleEdit(lexioDivina._id)}
+              onDeleteMenuItemClick={() =>
+                setSelectedLexioDivinaIdForDelete(lexioDivina._id)
+              }
+              likeButtonDisabled={!user}
+              onIsLikedSubmit={(isLiked) =>
+                isLiked ? addLike(lexioDivina._id) : deleteLike(lexioDivina._id)
+              }
+              likedCount={lexioDivina.likedUserIds.length}
+              commentCount={lexioDivina.comments.length}
+              onCommentButtonClick={() => handleCommentButtonClick(lexioDivina)}
+              onUserClick={() => handleUserClick(lexioDivina.user._id)}
+              createdAt={lexioDivina.createdAt}
+            />
           ))}
+        </Masonry>
 
-          <Box display="flex" justifyContent="center">
-            {(lexioDivinasData?.total ?? 0) <= ITEM_COUNT_PER_PAGE ? null : (
-              <Pagination
-                page={page}
-                onChange={(_, page) => handlePageChange(page)}
-                count={Math.ceil(
-                  Number(lexioDivinasData.total) / ITEM_COUNT_PER_PAGE
-                )}
-              />
-            )}
-          </Box>
-        </Container>
-      ) : null}
+        <Box display="flex" justifyContent="center">
+          {(lexioDivinasData?.total ?? 0) <= ITEM_COUNT_PER_PAGE ? null : (
+            <Pagination
+              page={page}
+              onChange={(_, page) => handlePageChange(page)}
+              count={Math.ceil(
+                Number(lexioDivinasData?.total) / ITEM_COUNT_PER_PAGE
+              )}
+            />
+          )}
+        </Box>
+      </Box>
 
       <CommentDrawer
         id={
