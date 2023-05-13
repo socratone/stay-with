@@ -18,7 +18,7 @@ type ListLinkItemProps = {
 
 const ListLinkItem: React.FC<ListLinkItemProps> = ({ href, icon, label }) => {
   return (
-    <StyledLink href={href}>
+    <StyledLink href={href} replace>
       <ListItem disablePadding>
         <ListItemButton>
           <ListItemIcon sx={{ minWidth: 40 }}>{icon}</ListItemIcon>
