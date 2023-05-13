@@ -17,7 +17,7 @@ import useLexioDivinas, {
 } from 'hooks/api/useLexioDivinas';
 import useAuth from 'hooks/auth/useAuth';
 import { useRouter } from 'next/router';
-import { useSnackbar } from 'notistack';
+import { enqueueSnackbar } from 'notistack';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useSearchParam } from 'react-use';
@@ -35,7 +35,6 @@ const ITEM_COUNT_PER_PAGE = 20;
 const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
   const { formatMessage } = useIntl();
   const router = useRouter();
-  const { enqueueSnackbar } = useSnackbar();
   const queryClient = useQueryClient();
 
   const { user, logout } = useAuth();

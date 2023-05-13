@@ -20,7 +20,7 @@ import useTempLexioDivinaRecorder from 'hooks/form/useTempLexioDivinaRecorder';
 import useIsBreakpointsDown from 'hooks/theme/useIsBreakpointsDown';
 import useQueryString from 'hooks/url/useQueryString';
 import { useRouter } from 'next/router';
-import { useSnackbar } from 'notistack';
+import { enqueueSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
@@ -38,7 +38,6 @@ const LexioDivinaEdit = () => {
     typeof router.query.lexioId === 'string' ? router.query.lexioId : undefined;
 
   const { data: lexioDivinaData, isLoading, isError } = useLexioDivina(lexioId);
-  const { enqueueSnackbar } = useSnackbar();
   const { user, logout } = useAuth();
 
   const [isRequested, setIsRequested] = useState(false);

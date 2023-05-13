@@ -4,7 +4,7 @@ import GlobalHeader from 'components/GlobalHeader';
 import KakaoLoginButton from 'components/KakaoLoginButton/KakaoLoginButton';
 import WaitingMessage from 'components/WaitingMessage/WaitingMessage';
 import Script from 'next/script';
-import { useSnackbar } from 'notistack';
+import { enqueueSnackbar } from 'notistack';
 import { useEffect, useRef, useState } from 'react';
 
 type Error = {
@@ -12,7 +12,6 @@ type Error = {
 };
 
 const Login = () => {
-  const { enqueueSnackbar } = useSnackbar();
   const kakaoRef = useRef<any | null>(null);
   const [isRequested, setIsRequested] = useState(false);
   const [error, setError] = useState<Error | null>(null);
