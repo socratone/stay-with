@@ -41,7 +41,7 @@ export const assignTruthyValues = (array: number[][], truthyCount: number) => {
 
 export const addCoordinateFrom2DArray = (
   values: { [key: string]: any }[],
-  array: any[][]
+  array: (0 | 1)[][]
 ) => {
   let valueIndex = 0;
   // Iterate over each row in the array
