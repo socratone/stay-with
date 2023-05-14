@@ -1,9 +1,12 @@
-/* eslint-disable prefer-spread */
 import { styled } from '@mui/material';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
 import GlobalHeader from 'components/GlobalHeader/GlobalHeader';
 import Meta from 'components/Meta/Meta';
-import { useRef } from 'react';
+import ThemeProvider from 'contexts/ThemeProvider';
+import { useRef, useState } from 'react';
 import { useMount } from 'react-use';
 import {
   addCoordinateFrom2DArray,
@@ -11,6 +14,7 @@ import {
   create2DArray,
 } from 'utils/array';
 
+// TODO: api 생성
 const MOCK_VALUES = [
   { name: 'John', message: 'pray 1' },
   { name: 'John', message: 'pray 2' },
@@ -24,7 +28,6 @@ const CANDLE_HEIGHT = 24;
 const StyledBox = styled(Box)`
   .candle {
     position: absolute;
-    z-index: 10;
     width: ${CANDLE_WIDTH}px;
     display: block;
 
@@ -37,6 +40,8 @@ const StyledBox = styled(Box)`
 
 const Arrows = () => {
   const divRef = useRef<HTMLDivElement>(null);
+
+  const [message, setMessage] = useState('');
 
   const getRandomCandleImageSrc = (index: number) => {
     const order = index % 8;
@@ -61,6 +66,7 @@ const Arrows = () => {
     }
   };
 
+  // TODO: message 정보 등이 표시 되도록 개선
   const drawCandle = (row: number, column: number, index: number) => {
     if (divRef.current) {
       divRef.current.insertAdjacentHTML(
@@ -74,6 +80,7 @@ const Arrows = () => {
     }
   };
 
+  // TODO: viewport가 변할 때마다 갱신
   useMount(() => {
     const screen = divRef.current;
 
@@ -92,16 +99,47 @@ const Arrows = () => {
     }
   });
 
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(event.target.value);
+  };
+
+  const handleSubmit = () => {
+    // TODO: send message
+  };
+
   return (
-    <Box height="100vh" display="flex" flexDirection="column">
-      <Meta />
-      <GlobalHeader colorMode="dark" />
-      <StyledBox
-        ref={divRef}
-        flexGrow={1}
-        sx={{ bgcolor: 'black', position: 'relative' }}
-      />
-    </Box>
+    <ThemeProvider colorMode="dark">
+      <Box height="100vh" display="flex" flexDirection="column">
+        <Meta />
+        <GlobalHeader colorMode="dark" />
+        <StyledBox
+          ref={divRef}
+          flexGrow={1}
+          sx={{ bgcolor: 'black', position: 'relative' }}
+        />
+        <Stack
+          direction="row"
+          p={1}
+          position="relative"
+          justifyContent="center"
+          sx={{ bgcolor: 'black' }}
+        >
+          <TextField
+            value={message}
+            onChange={handleChange}
+            size="small"
+            fullWidth
+            multiline
+            sx={{
+              maxWidth: 300,
+            }}
+          />
+          <Button size="small" onClick={handleSubmit}>
+            저장
+          </Button>
+        </Stack>
+      </Box>
+    </ThemeProvider>
   );
 };
 
