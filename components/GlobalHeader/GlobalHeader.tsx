@@ -1,10 +1,13 @@
 import AddIcon from '@mui/icons-material/Add';
 import MenuIcon from '@mui/icons-material/Menu';
+import { ThemeProvider } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
 import DarkModeSwitch from 'components/DarkModeSwitch';
+import { ColorMode } from 'contexts/ThemeProvider';
 import useAuth from 'hooks/auth/useAuth';
 import useColorMode from 'hooks/theme/useColorMode';
 import { useRouter } from 'next/router';
@@ -16,9 +19,15 @@ import EnvChip from './EnvChip';
 import GlobalHeaderDrawer from './GlobalHeaderDrawer';
 import HeaderLink from './HeaderLink';
 
+type GlobalHeaderProps = {
+  colorMode?: ColorMode;
+};
+
 export const GLOBAL_HEADER_HEIGHT = 50;
 
-const GlobalHeader = () => {
+const GlobalHeader: React.FC<GlobalHeaderProps> = ({
+  colorMode: localColorMode,
+}) => {
   const router = useRouter();
 
   const { user } = useAuth();
@@ -37,14 +46,9 @@ const GlobalHeader = () => {
   const handleAvatarClick = () => router.push(`/user/${user?._id}`);
 
   return (
-    <>
+    <ThemeProvider theme={colorMode === ColorMode.Dark ? darkTh}>
       <Box
         component="header"
-        display="flex"
-        justifyContent="space-between"
-        boxShadow={PRIMARY_SHADOW}
-        height={GLOBAL_HEADER_HEIGHT}
-        px={2}
         sx={{
           position: 'sticky',
           top: 0,
@@ -52,50 +56,60 @@ const GlobalHeader = () => {
           bgcolor: (theme) => theme.palette.background.default,
         }}
       >
-        <Box display="flex" alignItems="center" ml={-1}>
-          <IconButton onClick={openMenu}>
-            <MenuIcon />
-          </IconButton>
-        </Box>
-        <Box display="flex" alignItems="center" height="100%" gap={1}>
-          {user ? (
-            <IconButton
-              size="small"
-              onClick={() => router.push('/lexio-divinas/create')}
-              sx={{ mr: -1 }}
-            >
-              <AddIcon />
+        <Box
+          component={Paper}
+          display="flex"
+          justifyContent="space-between"
+          boxShadow={PRIMARY_SHADOW}
+          height={GLOBAL_HEADER_HEIGHT}
+          px={2}
+        >
+          <Box display="flex" alignItems="center" ml={-1}>
+            <IconButton onClick={openMenu}>
+              <MenuIcon />
             </IconButton>
-          ) : null}
-          <DarkModeSwitch
-            checked={colorMode === 'dark'}
-            onClick={toggleColorMode}
-          />
-          {user ? (
-            <ButtonBase
-              onClick={handleAvatarClick}
-              sx={{ borderRadius: '50%' }}
-            >
-              <Avatar
-                sx={{ width: 32, height: 32 }}
-                src={user?.imageUrl ?? undefined}
+          </Box>
+          <Box display="flex" alignItems="center" height="100%" gap={1}>
+            {user ? (
+              <IconButton
+                size="small"
+                onClick={() => router.push('/lexio-divinas/create')}
+                sx={{ mr: -1 }}
               >
-                {user.name[0]}
-              </Avatar>
-            </ButtonBase>
-          ) : (
-            <HeaderLink href="/login">Login</HeaderLink>
-          )}
-        </Box>
+                <AddIcon />
+              </IconButton>
+            ) : null}
+            <DarkModeSwitch
+              checked={colorMode === 'dark'}
+              disabled={!!localColorMode}
+              onClick={toggleColorMode}
+            />
+            {user ? (
+              <ButtonBase
+                onClick={handleAvatarClick}
+                sx={{ borderRadius: '50%' }}
+              >
+                <Avatar
+                  sx={{ width: 32, height: 32 }}
+                  src={user?.imageUrl ?? undefined}
+                >
+                  {user.name[0]}
+                </Avatar>
+              </ButtonBase>
+            ) : (
+              <HeaderLink href="/login">Login</HeaderLink>
+            )}
+          </Box>
 
-        <EnvChip />
+          <EnvChip />
+        </Box>
       </Box>
 
       <GlobalHeaderDrawer
         open={typeof router.query?.menu === 'string'}
         onClose={closeMenu}
       />
-    </>
+    </ThemeProvider>
   );
 };
 
