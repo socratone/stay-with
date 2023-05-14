@@ -1,5 +1,6 @@
 import CloseIcon from '@mui/icons-material/Close';
-import HomeIcon from '@mui/icons-material/Home';
+import ImportContactsIcon from '@mui/icons-material/ImportContacts';
+import NearMeIcon from '@mui/icons-material/NearMe';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -37,7 +38,16 @@ const GlobalHeaderDrawer: React.FC<GlobalHeaderDrawerProps> = ({
           </IconButton>
         </Box>
         <List sx={{ pt: 0 }}>
-          <ListLinkItem href="/" icon={<HomeIcon />} label="홈" />
+          <ListLinkItem
+            href="/"
+            icon={<ImportContactsIcon />}
+            label="렉시오 디비나"
+          />
+          <ListLinkItem
+            href="/arrows"
+            icon={<NearMeIcon />}
+            label="화살 기도"
+          />
           <ListLinkItem
             href="/settings/profile"
             icon={<SettingsIcon />}
