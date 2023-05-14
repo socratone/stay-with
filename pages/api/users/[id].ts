@@ -45,6 +45,7 @@ const handler = async (
     const accessToken = req.headers.authorization;
     const user: User = jwtDecode(accessToken as string);
 
+    // 본인이 요청하지 않은 경우
     if (id !== user._id) {
       db.close();
       return res.status(400).json({
@@ -57,11 +58,12 @@ const handler = async (
     try {
       // name 수정 요청을 한 경우에만 중복 검사
       if (payload.name) {
-        const duplicateNameUser = await db.findOne(CollectionName.Users, {
+        const duplicateNameUser = await db.findOne<User>(CollectionName.Users, {
           name: payload.name,
         });
 
-        if (duplicateNameUser) {
+        // 중복된 이름이 존재하면서 내가 아닌 다른 유저의 이름인 경우
+        if (duplicateNameUser && id !== duplicateNameUser._id.toString()) {
           return res.status(409).send({ message: 'Duplicate name.' });
         }
       }

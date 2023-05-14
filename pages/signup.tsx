@@ -11,7 +11,7 @@ import Meta from 'components/Meta';
 import { postSignUp } from 'helpers/axios';
 import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useSnackbar } from 'notistack';
+import { enqueueSnackbar } from 'notistack';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -48,7 +48,6 @@ export const getServerSideProps: GetServerSideProps<SignUpProps> = async ({
 const SignUp: NextPage<SignUpProps> = ({ kakaoId, email, imageUrl }) => {
   const router = useRouter();
   const { formatMessage } = useIntl();
-  const { enqueueSnackbar } = useSnackbar();
 
   const [imageChecked, setImageChecked] = useState(true);
   const [isError, setIsError] = useState(false);

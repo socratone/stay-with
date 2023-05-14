@@ -1,115 +1,37 @@
-import EditIcon from '@mui/icons-material/Edit';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { useQueryClient } from '@tanstack/react-query';
-import UserForm, { UserFormValues } from 'components/UserForm/UserForm';
-import { patchUser } from 'helpers/axios';
-import { LEXIO_DIVINAS_QUERY_KEY } from 'hooks/api/useLexioDivinas';
-import useUser, { USER_QUERY_KEY } from 'hooks/api/useUser';
+import useUser from 'hooks/api/useUser';
 import useAuth from 'hooks/auth/useAuth';
-import { useSnackbar } from 'notistack';
-import { useEffect, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { useIntl } from 'react-intl';
 
 type UserInfoProps = {
   userId?: string;
 };
 
 const UserInfo: React.FC<UserInfoProps> = ({ userId }) => {
-  const { formatMessage } = useIntl();
-  const { enqueueSnackbar } = useSnackbar();
-  const queryClient = useQueryClient();
-
   const { data: userData } = useUser(userId);
   const { user: me, logout } = useAuth();
   const isMyself = me?._id === userId;
 
-  const [isEdit, setIsEdit] = useState(false);
-  const [isRequested, setIsRequested] = useState(false);
-
-  const form = useForm<UserFormValues>();
-  const setValue = form.setValue;
-
-  useEffect(() => {
-    if (userData) {
-      const { user } = userData;
-      setValue('name', user.name);
-    }
-  }, [userData, setValue]);
-
-  const handleNameEditButtonClick = () => {
-    setIsEdit(true);
-  };
-
-  const handleSubmit: SubmitHandler<UserFormValues> = async ({ name }) => {
-    if (!userId) return;
-
-    setIsRequested(true);
-
-    try {
-      await patchUser(userId, { name });
-      setIsEdit(false);
-      queryClient.invalidateQueries({ queryKey: [USER_QUERY_KEY] });
-      queryClient.invalidateQueries({ queryKey: [LEXIO_DIVINAS_QUERY_KEY] });
-    } catch (error: any) {
-      if (error.response.status === 409) {
-        enqueueSnackbar(formatMessage({ id: 'error.message.duplicateName' }), {
-          variant: 'error',
-        });
-      } else {
-        enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
-          variant: 'error',
-        });
-      }
-    } finally {
-      setIsRequested(false);
-    }
-  };
-
-  const handleCancel = () => {
-    setIsEdit(false);
-  };
-
   return (
     <Box pt={2} px={2}>
-      {isEdit ? (
-        <UserForm
-          form={form}
-          isRequested={isRequested}
-          onSubmit={handleSubmit}
-          onCancel={handleCancel}
-        />
-      ) : (
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-        >
-          <Stack direction="row" gap={1} alignItems="center">
-            <Avatar
-              alt="profile"
-              src={userData?.user.imageUrl}
-              sx={{ width: 34, height: 34 }}
-            >
-              {userData?.user.name?.[0] ?? 'P'}
-            </Avatar>
-            <Typography color="text.primary" fontWeight={500}>
-              {userData?.user.name}
-            </Typography>
-            {isMyself ? (
-              <IconButton onClick={handleNameEditButtonClick} size="small">
-                <EditIcon fontSize="small" />
-              </IconButton>
-            ) : null}
-          </Stack>
-          {isMyself ? <Button onClick={logout}>로그아웃</Button> : null}
+      <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <Stack direction="row" gap={1} alignItems="center">
+          <Avatar
+            alt="profile"
+            src={userData?.user.imageUrl}
+            sx={{ width: 34, height: 34 }}
+          >
+            {userData?.user.name?.[0] ?? 'P'}
+          </Avatar>
+          <Typography color="text.primary" fontWeight={500}>
+            {userData?.user.name}
+          </Typography>
         </Stack>
-      )}
+        {isMyself ? <Button onClick={logout}>로그아웃</Button> : null}
+      </Stack>
     </Box>
   );
 };

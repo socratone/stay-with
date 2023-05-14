@@ -16,7 +16,7 @@ import {
 import useLexioDivina from 'hooks/api/useLexioDivina';
 import useAuth from 'hooks/auth/useAuth';
 import { useRouter } from 'next/router';
-import { useSnackbar } from 'notistack';
+import { enqueueSnackbar } from 'notistack';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
 
@@ -30,7 +30,6 @@ type CommentDrawerProps = {
 const CommentDrawer: React.FC<CommentDrawerProps> = ({ id, onClose }) => {
   const { formatMessage } = useIntl();
   const router = useRouter();
-  const { enqueueSnackbar } = useSnackbar();
   const { user, logout } = useAuth();
   const {
     data: lexioDivinaData,
