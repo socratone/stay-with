@@ -5,3 +5,7 @@ export const getAscendNumbers = (length: number) => {
     return index;
   });
 };
+
+export const randomFrom = (array: number[]) => {
+  return array[Math.floor(Math.random() * array.length)];
+};
