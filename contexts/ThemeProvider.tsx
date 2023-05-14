@@ -86,10 +86,25 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     }
   }, []);
 
-  const currentTheme =
-    (colorMode ?? prefersColorMode) === ColorMode.Light
-      ? lightTheme
-      : darkTheme;
+  const getCurrentTheme = () => {
+    if (colorMode) {
+      switch (colorMode) {
+        case ColorMode.Dark:
+          return darkTheme;
+
+        case ColorMode.Light:
+          return lightTheme;
+      }
+    }
+
+    switch (prefersColorMode) {
+      case ColorMode.Dark:
+        return darkTheme;
+
+      case ColorMode.Light:
+        return lightTheme;
+    }
+  };
 
   const toggleColorMode = () => {
     setColorMode((prevMode) => {
@@ -107,7 +122,7 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 
   return (
     <ColorModeContext.Provider value={{ colorMode, toggleColorMode }}>
-      <MuiThemeProvider theme={currentTheme}>{children}</MuiThemeProvider>
+      <MuiThemeProvider theme={getCurrentTheme()}>{children}</MuiThemeProvider>
     </ColorModeContext.Provider>
   );
 };
