@@ -5,22 +5,38 @@ import GlobalHeader from 'components/GlobalHeader/GlobalHeader';
 import Meta from 'components/Meta/Meta';
 import { useRef } from 'react';
 import { useMount } from 'react-use';
-import { getAscendNumbers, randomFrom } from 'utils/array';
+import {
+  addCoordinateFrom2DArray,
+  assignTruthyValues,
+  create2DArray,
+} from 'utils/array';
+
+const MOCK_VALUES = [
+  { name: 'John', message: 'pray 1' },
+  { name: 'John', message: 'pray 2' },
+  { name: 'John', message: 'pray 3' },
+  { name: 'John', message: 'pray 4' },
+];
+
+const CANDLE_WIDTH = 10;
+const CANDLE_HEIGHT = 24;
 
 const StyledBox = styled(Box)`
   .candle {
     position: absolute;
     z-index: 10;
-    width: 10px;
+    width: ${CANDLE_WIDTH}px;
     display: block;
-    transform: translate(-50%, -50%);
+
+    :hover {
+      transform: scale(2);
+      transition: all 0.3s ease;
+    }
   }
 `;
 
 const Arrows = () => {
   const divRef = useRef<HTMLDivElement>(null);
-
-  const bigRange = getAscendNumbers(100);
 
   const getRandomCandleImageSrc = (index: number) => {
     const order = index % 8;
@@ -45,30 +61,41 @@ const Arrows = () => {
     }
   };
 
-  const drawStar = (index: number) => {
-    const top = randomFrom(bigRange);
-    const left = randomFrom(bigRange);
-
+  const drawCandle = (row: number, column: number, index: number) => {
     if (divRef.current) {
       divRef.current.insertAdjacentHTML(
         'beforeend',
         `<img src="${getRandomCandleImageSrc(
           index
-        )}" alt="small candle" class="candle" style="top: ${top}%; left: ${left}%;">`
+        )}" alt="small candle" class="candle" style="top: ${
+          row * CANDLE_HEIGHT
+        }px; left: ${column * CANDLE_WIDTH}px;">`
       );
     }
   };
 
   useMount(() => {
-    for (let i = 0; i < 100; i++) {
-      drawStar(i);
+    const screen = divRef.current;
+
+    if (screen) {
+      const screenWidth = screen.offsetWidth;
+      const screenHeight = screen.offsetHeight;
+      const columnColunt = Math.floor(screenWidth / CANDLE_WIDTH);
+      const rowColunt = Math.floor(screenHeight / CANDLE_HEIGHT);
+
+      const array = create2DArray(rowColunt, columnColunt);
+      assignTruthyValues(array, MOCK_VALUES.length);
+      const candles = addCoordinateFrom2DArray(MOCK_VALUES, array);
+      candles.map((candle, index) => {
+        drawCandle(candle.row, candle.column, index);
+      });
     }
   });
 
   return (
     <Box height="100vh" display="flex" flexDirection="column">
       <Meta />
-      <GlobalHeader />
+      <GlobalHeader colorMode="dark" />
       <StyledBox
         ref={divRef}
         flexGrow={1}
