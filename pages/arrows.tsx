@@ -5,7 +5,7 @@ import GlobalHeader from 'components/GlobalHeader/GlobalHeader';
 import Meta from 'components/Meta/Meta';
 import { useRef } from 'react';
 import { useMount } from 'react-use';
-import { getAscendNumbers } from 'utils/array';
+import { getAscendNumbers, randomFrom } from 'utils/array';
 
 const StyledBox = styled(Box)`
   .candle {
@@ -19,10 +19,6 @@ const StyledBox = styled(Box)`
 
 const Arrows = () => {
   const divRef = useRef<HTMLDivElement>(null);
-
-  const randomFrom = (array: number[]) => {
-    return array[Math.floor(Math.random() * array.length)];
-  };
 
   const bigRange = getAscendNumbers(100);
 
@@ -58,7 +54,7 @@ const Arrows = () => {
         'beforeend',
         `<img src="${getRandomCandleImageSrc(
           index
-        )}" alt="small candle" class="candle" style="top: ${top}%; left: ${left}%;"></div>`
+        )}" alt="small candle" class="candle" style="top: ${top}%; left: ${left}%;">`
       );
     }
   };
