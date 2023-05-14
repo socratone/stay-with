@@ -8,15 +8,16 @@ import { useMount } from 'react-use';
 import { getAscendNumbers } from 'utils/array';
 
 const StyledBox = styled(Box)`
-  .stars {
+  .candle {
     position: absolute;
-    background: gold;
-    z-index: 18;
-    border-radius: 100%;
+    z-index: 10;
+    width: 10px;
+    display: block;
+    transform: translate(-50%, -50%);
   }
 `;
 
-const Arrow = () => {
+const Arrows = () => {
   const divRef = useRef<HTMLDivElement>(null);
 
   const randomFrom = (array: number[]) => {
@@ -24,17 +25,15 @@ const Arrow = () => {
   };
 
   const bigRange = getAscendNumbers(100);
-  const smallRange = getAscendNumbers(3);
 
   const drawStar = () => {
     const top = randomFrom(bigRange);
-    const right = randomFrom(bigRange);
-    const width = randomFrom(smallRange);
+    const left = randomFrom(bigRange);
 
     if (divRef.current) {
       divRef.current.insertAdjacentHTML(
         'beforeend',
-        `<div class="stars" style="top: ${top}%; right: ${right}%; width: ${width}px; height: ${width}px; box-shadow: 0px 0px 1vw rgba(255, 255, 255, 0.2);"></div>`
+        `<img src="/candle.gif" alt="small candle" class="candle" style="top: ${top}%; left: ${left}%;"></div>`
       );
     }
   };
@@ -58,4 +57,4 @@ const Arrow = () => {
   );
 };
 
-export default Arrow;
+export default Arrows;
