@@ -32,4 +32,9 @@ export const components: ThemeOptions['components'] = {
       disableRipple: true,
     },
   },
+  MuiPaper: {
+    defaultProps: {
+      square: true,
+    },
+  },
 };
