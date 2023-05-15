@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+import { ApiArrowPayload, ApiArrowsData } from 'pages/api/arrows';
 import {
   ApiLexioDivinaPayload,
   ApiLexioDivinasData,
@@ -149,6 +150,27 @@ export const getUser = (id: string): Promise<ApiUserData> => {
 export const patchUser = (id: string, payload: ApiPatchUserPayload) => {
   return axiosInstance.patch<any, AxiosResponse, ApiPatchUserPayload>(
     `/api/users/${id}`,
+    payload
+  );
+};
+
+export type GetArrowsParams = {
+  skip: number;
+  limit: number;
+  userId?: string;
+};
+
+export const getArrows = (params?: GetArrowsParams): Promise<ApiArrowsData> => {
+  return axiosInstance
+    .get<any, AxiosResponse<ApiArrowsData>>('/api/arrows', {
+      params,
+    })
+    .then((value) => value.data);
+};
+
+export const postArrow = (payload: ApiArrowPayload) => {
+  return axiosInstance.post<any, AxiosResponse, ApiArrowPayload>(
+    '/api/arrows',
     payload
   );
 };
