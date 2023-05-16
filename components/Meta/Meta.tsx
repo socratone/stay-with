@@ -13,6 +13,15 @@ const Meta: React.FC<MetaProps> = ({ title, description }) => {
     <NextSeo
       title={title || formatMessage({ id: 'meta.title' })}
       description={description || formatMessage({ id: 'meta.description' })}
+      openGraph={{
+        title,
+        description,
+        images: [
+          {
+            url: '/images/candle-og.jpg',
+          },
+        ],
+      }}
     />
   );
 };
