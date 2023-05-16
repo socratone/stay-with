@@ -18,7 +18,7 @@ const Meta: React.FC<MetaProps> = ({ title, description }) => {
         description,
         images: [
           {
-            url: '/images/candle-og.jpg',
+            url: 'https://staywith.kr/images/candle-og.jpg',
           },
         ],
       }}
