@@ -1,4 +1,4 @@
-# 머무름 (meo-mu-reum)
+# 머무름 (stay-with)
 
 가톨릭 묵상 SNS
 
