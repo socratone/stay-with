@@ -18,6 +18,7 @@ import useLexioDivinas, {
 import useAuth from 'hooks/auth/useAuth';
 import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
+import { ApiLexioDivinasData } from 'pages/api/lexio-divinas';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useSearchParam } from 'react-use';
@@ -25,14 +26,18 @@ import { LexioDivina } from 'types/document';
 import { addQuery, removeQuery } from 'utils/url';
 
 type LexioDivinasProps = {
+  firstPageItems?: ApiLexioDivinasData['lexioDivinas'];
   fetchOptions?: {
     userId?: string;
   };
 };
 
-const ITEM_COUNT_PER_PAGE = 20;
+export const ITEM_COUNT_PER_PAGE = 20;
 
-const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
+const LexioDivinas: React.FC<LexioDivinasProps> = ({
+  firstPageItems,
+  fetchOptions,
+}) => {
   const { formatMessage } = useIntl();
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -54,7 +59,10 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
     userId: fetchOptions?.userId,
   });
 
-  const lexioDivinas = lexioDivinasData?.lexioDivinas ?? [];
+  // temporary 1 페이지 아이템이 있는 경우에는 loading이 필요 없다.
+  const isLoading = firstPageItems ? false : lexioDivinasLoading;
+  // temporary 1 페이지 아이템이 있는 경우에 로딩되기 전까지 임시로 보여준다.
+  const lexioDivinas = lexioDivinasData?.lexioDivinas ?? firstPageItems ?? [];
 
   const handleEdit = (id: string) => {
     router.push(`/lexio-divinas/${id}/edit`);
@@ -135,7 +143,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
     router.push(mutatedUrl);
   };
 
-  if (lexioDivinasLoading) {
+  if (isLoading) {
     return (
       <Box p={2}>
         <LoadingCircular />
