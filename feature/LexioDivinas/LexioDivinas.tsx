@@ -51,20 +51,18 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({
 
   const {
     data: lexioDivinasData,
-    isFetching: lexioDivinasLoading,
+    isLoading: lexioDivinasLoading,
     isError: lexioDivinasError,
   } = useLexioDivinas({
     skip: (page - 1) * ITEM_COUNT_PER_PAGE,
     limit: ITEM_COUNT_PER_PAGE,
     userId: fetchOptions?.userId,
-    // TODO: count 로직을 따로 분리한 후 commented 제거
-    // enabled: !firstPageItems || page !== 1,
   });
 
-  const lexioDivinas =
-    firstPageItems && page === 1
-      ? firstPageItems
-      : lexioDivinasData?.lexioDivinas ?? [];
+  // temporary 1 페이지 아이템이 있는 경우에는 loading이 필요 없다.
+  const isLoading = firstPageItems ? false : lexioDivinasLoading;
+  // temporary 1 페이지 아이템이 있는 경우에 로딩되기 전까지 임시로 보여준다.
+  const lexioDivinas = lexioDivinasData?.lexioDivinas ?? firstPageItems ?? [];
 
   const handleEdit = (id: string) => {
     router.push(`/lexio-divinas/${id}/edit`);
@@ -145,7 +143,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({
     router.push(mutatedUrl);
   };
 
-  if (lexioDivinasLoading) {
+  if (isLoading) {
     return (
       <Box p={2}>
         <LoadingCircular />
