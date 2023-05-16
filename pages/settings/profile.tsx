@@ -14,7 +14,6 @@ import Typography from '@mui/material/Typography';
 import { useQueryClient } from '@tanstack/react-query';
 import GlobalHeader from 'components/GlobalHeader/GlobalHeader';
 import Meta from 'components/Meta/Meta';
-import { UserFormValues } from 'components/UserForm/UserForm';
 import { patchUser } from 'helpers/axios';
 import { LEXIO_DIVINAS_QUERY_KEY } from 'hooks/api/useLexioDivinas';
 import useUser, { USER_QUERY_KEY } from 'hooks/api/useUser';
@@ -24,6 +23,11 @@ import { enqueueSnackbar } from 'notistack';
 import { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
+
+type UserFormValues = {
+  name: string;
+  description: string;
+};
 
 const StyledLink = styled(Link)`
   display: block;
@@ -48,16 +52,18 @@ const SettingsProfile = () => {
     if (userData) {
       const { user } = userData;
       setValue('name', user.name);
+      setValue('description', user?.description ?? '');
     }
   }, [userData, setValue]);
 
   const handleProfileSubmit: SubmitHandler<UserFormValues> = async ({
     name,
+    description,
   }) => {
     if (!user?._id) return;
 
     try {
-      await patchUser(user._id, { name });
+      await patchUser(user._id, { name, description });
       queryClient.invalidateQueries({ queryKey: [USER_QUERY_KEY] });
       queryClient.invalidateQueries({ queryKey: [LEXIO_DIVINAS_QUERY_KEY] });
     } catch (error: any) {
@@ -102,26 +108,63 @@ const SettingsProfile = () => {
             onSubmit={handleSubmit(handleProfileSubmit)}
             py={1.5}
           >
-            <Stack spacing={1}>
-              <Typography
-                color="text.primary"
-                component="h2"
-                fontWeight={500}
-                variant="body1"
-              >
-                이름
-              </Typography>
-              <Controller
-                control={control}
-                name="name"
-                rules={{
-                  required: true,
-                  maxLength: 30,
-                }}
-                render={({ field }) => (
-                  <TextField {...field} error={!!errors.name} size="small" />
-                )}
-              />
+            <Stack spacing={1.5}>
+              <Box component="label">
+                <Typography
+                  color="text.primary"
+                  component="h2"
+                  fontWeight={500}
+                  variant="body1"
+                  mb={0.5}
+                >
+                  이름
+                </Typography>
+                <Controller
+                  control={control}
+                  name="name"
+                  rules={{
+                    required: true,
+                    maxLength: 30,
+                  }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      error={!!errors.name}
+                      size="small"
+                      fullWidth
+                      sx={{ maxWidth: 250 }}
+                    />
+                  )}
+                />
+              </Box>
+              <Box component="label">
+                <Typography
+                  color="text.primary"
+                  component="h2"
+                  fontWeight={500}
+                  variant="body1"
+                  mb={0.5}
+                >
+                  소개
+                </Typography>
+                <Controller
+                  control={control}
+                  name="description"
+                  rules={{
+                    maxLength: 50,
+                  }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      error={!!errors.description}
+                      size="small"
+                      multiline
+                      rows={4}
+                      fullWidth
+                    />
+                  )}
+                />
+              </Box>
               <Box>
                 <Button variant="contained" type="submit">
                   저장하기

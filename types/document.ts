@@ -6,6 +6,7 @@ export type User = {
   name: string;
   email: string;
   imageUrl?: string;
+  description?: string;
 };
 
 export type LexioDivinaComment = {
