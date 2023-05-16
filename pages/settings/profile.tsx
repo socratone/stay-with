@@ -151,7 +151,6 @@ const SettingsProfile = () => {
                   control={control}
                   name="description"
                   rules={{
-                    required: true,
                     maxLength: 50,
                   }}
                   render={({ field }) => (
