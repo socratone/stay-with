@@ -18,6 +18,7 @@ import useLexioDivinas, {
 import useAuth from 'hooks/auth/useAuth';
 import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
+import { ApiLexioDivinasData } from 'pages/api/lexio-divinas';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useSearchParam } from 'react-use';
@@ -25,14 +26,18 @@ import { LexioDivina } from 'types/document';
 import { addQuery, removeQuery } from 'utils/url';
 
 type LexioDivinasProps = {
+  firstPageItems?: ApiLexioDivinasData['lexioDivinas'];
   fetchOptions?: {
     userId?: string;
   };
 };
 
-const ITEM_COUNT_PER_PAGE = 20;
+export const ITEM_COUNT_PER_PAGE = 20;
 
-const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
+const LexioDivinas: React.FC<LexioDivinasProps> = ({
+  firstPageItems,
+  fetchOptions,
+}) => {
   const { formatMessage } = useIntl();
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -46,15 +51,20 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
 
   const {
     data: lexioDivinasData,
-    isLoading: lexioDivinasLoading,
+    isFetching: lexioDivinasLoading,
     isError: lexioDivinasError,
   } = useLexioDivinas({
     skip: (page - 1) * ITEM_COUNT_PER_PAGE,
     limit: ITEM_COUNT_PER_PAGE,
     userId: fetchOptions?.userId,
+    // TODO: count 로직을 따로 분리한 후 commented 제거
+    // enabled: !firstPageItems || page !== 1,
   });
 
-  const lexioDivinas = lexioDivinasData?.lexioDivinas ?? [];
+  const lexioDivinas =
+    firstPageItems && page === 1
+      ? firstPageItems
+      : lexioDivinasData?.lexioDivinas ?? [];
 
   const handleEdit = (id: string) => {
     router.push(`/lexio-divinas/${id}/edit`);
