@@ -157,7 +157,7 @@ const SettingsProfile = () => {
                   render={({ field }) => (
                     <TextField
                       {...field}
-                      error={!!errors.name}
+                      error={!!errors.description}
                       size="small"
                       multiline
                       rows={4}
