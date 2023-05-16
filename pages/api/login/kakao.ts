@@ -106,7 +106,7 @@ const handler = async (
       }
 
       const accessToken = jwt.sign(user, process.env.AUTH_SECRET as string, {
-        expiresIn: '1 days',
+        expiresIn: '2 days',
       });
 
       db.close();

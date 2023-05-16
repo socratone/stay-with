@@ -1,11 +1,17 @@
+import Cookies from 'js-cookie';
+
+const ACCESS_TOKEN = 'access-token';
+
 export const saveAccessToken = (accessToken: string) => {
-  localStorage.setItem('accessToken', accessToken);
+  Cookies.set(ACCESS_TOKEN, accessToken, {
+    expires: 1,
+  });
 };
 
 export const removeAccessToken = () => {
-  localStorage.removeItem('accessToken');
+  Cookies.remove(ACCESS_TOKEN);
 };
 
 export const getAccessToken = () => {
-  return localStorage.getItem('accessToken');
+  return Cookies.get(ACCESS_TOKEN) ?? null;
 };
