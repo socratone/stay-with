@@ -1,15 +1,16 @@
 import GlobalHeader from 'components/GlobalHeader';
 import Meta from 'components/Meta';
 import SelectorDialog from 'components/SelectorDialog/SelectorDialog';
+import { CollectionName } from 'constants/mongodb';
 import LexioDivinas from 'feature/LexioDivinas';
 import { ITEM_COUNT_PER_PAGE } from 'feature/LexioDivinas/LexioDivinas';
-import { getLexioDivinas } from 'helpers/axios';
 import useTempLexioDivinaStatus from 'hooks/form/useTempLexioDivinaStatus';
 import type { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { resetTempLexioDivina } from 'redux/tempLexioDivinaSlice';
+import Mongodb from 'utils/mongodb';
 
 import { ApiLexioDivinasData } from './api/lexio-divinas';
 
@@ -18,14 +19,48 @@ type HomeProps = {
 };
 
 export const getStaticProps: GetStaticProps<HomeProps> = async () => {
-  const { lexioDivinas } = await getLexioDivinas({
-    limit: ITEM_COUNT_PER_PAGE,
-    skip: 0,
-  });
+  const db = new Mongodb();
+
+  // https://stackoverflow.com/questions/69978663/get-data-from-another-collection-string-objectid
+  const lexioDivinas = await db.aggregate<ApiLexioDivinasData['lexioDivinas']>(
+    CollectionName.LexioDivinas,
+    [
+      {
+        // https://www.mongodb.com/docs/v6.0/reference/operator/aggregation/lookup/#syntax
+        $lookup: {
+          from: CollectionName.Users,
+          localField: 'userId',
+          foreignField: '_id',
+          as: 'user',
+        },
+      },
+      {
+        $unwind: '$user',
+      },
+      {
+        $sort: {
+          _id: -1,
+        },
+      },
+      {
+        $skip: 0,
+      },
+      {
+        $limit: ITEM_COUNT_PER_PAGE,
+      },
+      {
+        $addFields: {
+          createdAt: { $toDate: '$_id' },
+        },
+      },
+    ]
+  );
+
+  db.close();
 
   return {
     props: {
-      firstPageItems: lexioDivinas,
+      firstPageItems: JSON.parse(JSON.stringify(lexioDivinas)),
     },
     revalidate: 10,
   };
