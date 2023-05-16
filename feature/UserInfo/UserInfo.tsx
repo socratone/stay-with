@@ -16,13 +16,13 @@ const UserInfo: React.FC<UserInfoProps> = ({ userId }) => {
   const isMyself = me?._id === userId;
 
   return (
-    <Box pt={2} px={2}>
+    <Stack spacing={1} pt={2} px={2}>
       <Stack direction="row" alignItems="center" justifyContent="space-between">
         <Stack direction="row" gap={1} alignItems="center">
           <Avatar
             alt="profile"
             src={userData?.user.imageUrl}
-            sx={{ width: 34, height: 34 }}
+            sx={{ width: 48, height: 48 }}
           >
             {userData?.user.name?.[0] ?? 'P'}
           </Avatar>
@@ -32,7 +32,16 @@ const UserInfo: React.FC<UserInfoProps> = ({ userId }) => {
         </Stack>
         {isMyself ? <Button onClick={logout}>로그아웃</Button> : null}
       </Stack>
-    </Box>
+      {userData?.user.description ? (
+        <Typography
+          color="text.secondary"
+          variant="body2"
+          sx={{ whiteSpace: 'pre-line' }}
+        >
+          {userData.user.description}
+        </Typography>
+      ) : null}
+    </Stack>
   );
 };
 

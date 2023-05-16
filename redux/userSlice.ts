@@ -2,7 +2,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import { User } from 'types/document';
 
-const initialState: Required<User> = {
+const initialState: Omit<Required<User>, 'description'> = {
   _id: '',
   kakaoId: 0,
   name: '',

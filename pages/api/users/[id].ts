@@ -12,6 +12,7 @@ export type ApiUserData = {
 
 export type ApiPatchUserPayload = {
   name?: User['name'];
+  description?: User['description'];
 };
 
 type ApiPutResultData = UpdateResult;
@@ -74,7 +75,10 @@ const handler = async (
           _id: new ObjectId(id),
         },
         {
-          $set: payload,
+          $set: {
+            name: payload.name,
+            description: payload.description,
+          },
         }
       );
 
