@@ -19,7 +19,7 @@ type HomeProps = {
 };
 
 export const getStaticProps: GetStaticProps<HomeProps> = async () => {
-  const db = new Mongodb();
+  const db = new Mongodb(process.env.MONGO_CLIENT_URL);
 
   // https://stackoverflow.com/questions/69978663/get-data-from-another-collection-string-objectid
   const lexioDivinas = await db.aggregate<ApiLexioDivinasData['lexioDivinas']>(
