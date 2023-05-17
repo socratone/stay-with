@@ -1,3 +1,5 @@
+import cloneDeep from 'lodash/cloneDeep';
+
 export const create2DArray = (x: number, y: number) => {
   const array2D = new Array(x);
   for (let i = 0; i < x; i++) {
@@ -39,10 +41,11 @@ export const assignTruthyValues = (array: number[][], truthyCount: number) => {
   }
 };
 
-export const addCoordinateFrom2DArray = (
-  values: { [key: string]: any }[],
+export const addCoordinateFrom2DArray = <T>(
+  values: T[],
   array: (0 | 1)[][]
 ) => {
+  const newValues = cloneDeep(values);
   let valueIndex = 0;
   // Iterate over each row in the array
   for (let i = 0; i < array.length; i++) {
@@ -51,11 +54,11 @@ export const addCoordinateFrom2DArray = (
       // Check if the element is 1
       if (array[i][j] === 1) {
         // Replace 1 with value and coordinate
-        values[valueIndex] = { ...values[valueIndex], row: i, column: j };
+        newValues[valueIndex] = { ...values[valueIndex], row: i, column: j };
         valueIndex++;
       }
     }
   }
 
-  return values;
+  return newValues as (T & { row: number; column: number })[];
 };
