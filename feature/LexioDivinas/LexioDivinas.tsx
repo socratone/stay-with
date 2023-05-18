@@ -167,6 +167,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({
         sx={{
           py: 2,
           pl: 2,
+          mx: 'auto',
         }}
       >
         <Masonry spacing={2} columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}>
