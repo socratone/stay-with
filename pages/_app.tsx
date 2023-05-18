@@ -36,27 +36,31 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <QueryClientProvider client={queryClient}>
-          <ThemeProvider>
-            <SnackbarProvider
-              maxSnack={3}
-              autoHideDuration={8000}
-              disableWindowBlurListener
-              Components={{
-                // default is success
-                default: Snackbar,
-                success: Snackbar,
-                error: Snackbar,
-                info: Snackbar,
-                warning: Snackbar,
-              }}
-            >
-              <IntlProvider locale={locale ?? 'ko'} messages={messages}>
-                <Component {...pageProps} />
-              </IntlProvider>
-            </SnackbarProvider>
-          </ThemeProvider>
-        </QueryClientProvider>
+        {/* redux-persist SSR 렌더링 이슈 */}
+        {/* https://stackoverflow.com/a/72967026 */}
+        {() => (
+          <QueryClientProvider client={queryClient}>
+            <ThemeProvider>
+              <SnackbarProvider
+                maxSnack={3}
+                autoHideDuration={8000}
+                disableWindowBlurListener
+                Components={{
+                  // default is success
+                  default: Snackbar,
+                  success: Snackbar,
+                  error: Snackbar,
+                  info: Snackbar,
+                  warning: Snackbar,
+                }}
+              >
+                <IntlProvider locale={locale ?? 'ko'} messages={messages}>
+                  <Component {...pageProps} />
+                </IntlProvider>
+              </SnackbarProvider>
+            </ThemeProvider>
+          </QueryClientProvider>
+        )}
       </PersistGate>
     </Provider>
   );
