@@ -1,5 +1,6 @@
 import 'react-spring-bottom-sheet/dist/style.css';
 
+import { ColorMode } from 'contexts/ThemeProvider';
 import useColorMode from 'hooks/theme/useColorMode';
 import { useEffect } from 'react';
 import { BottomSheet, BottomSheetProps } from 'react-spring-bottom-sheet';
@@ -33,9 +34,9 @@ const LexioDivinaBottomSheet: React.FC<LexioDivinaBottomSheetProps> = ({
     root.style.setProperty('--rsbs-ml', 'auto');
     root.style.setProperty('--rsbs-mr', 'auto');
 
-    if (colorMode === 'dark') {
-      root.style.setProperty('--rsbs-bg', 'black');
-      root.style.setProperty('--rsbs-handle-bg', 'white');
+    if (colorMode === ColorMode.Dark) {
+      root.style.setProperty('--rsbs-bg', '#121212');
+      root.style.setProperty('--rsbs-handle-bg', '#fff');
     } else {
       root.style.setProperty('--rsbs-bg', '');
       root.style.setProperty('--rsbs-handle-bg', '');

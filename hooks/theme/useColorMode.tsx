@@ -1,22 +1,8 @@
-import { useMediaQuery } from '@mui/material';
-import { setMode } from 'redux/colorSlice';
-import { useAppDispatch, useAppSelector } from 'redux/hooks';
-import { RootState } from 'redux/store';
+import { ColorModeContext } from 'contexts/ThemeProvider';
+import { useContext } from 'react';
 
 const useColorMode = () => {
-  const dispatch = useAppDispatch();
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const prefersColorMode = prefersDarkMode ? 'dark' : 'light';
-  const colorMode = useAppSelector((state: RootState) => state.color.mode);
-
-  const setColorMode = (colorMode: 'dark' | 'light') => {
-    dispatch(setMode(colorMode));
-  };
-
-  return {
-    colorMode: colorMode === 'none' ? prefersColorMode : colorMode,
-    setColorMode,
-  };
+  return useContext(ColorModeContext);
 };
 
 export default useColorMode;

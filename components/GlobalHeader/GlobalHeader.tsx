@@ -24,7 +24,7 @@ const GlobalHeader = () => {
   const theme = useTheme();
 
   const { user } = useAuth();
-  const { colorMode, setColorMode } = useColorMode();
+  const { colorMode, toggleColorMode } = useColorMode();
 
   const openMenu = () => {
     const mutatedUrl = addQuery(router.asPath, 'menu=true');
@@ -34,10 +34,6 @@ const GlobalHeader = () => {
   const closeMenu = () => {
     const mutatedUrl = removeQuery(router.asPath, 'menu');
     router.push(mutatedUrl);
-  };
-
-  const handleDarkModeSwitchChange = (checked: boolean) => {
-    setColorMode(checked ? 'dark' : 'light');
   };
 
   const handleAvatarClick = () => router.push(`/user/${user?._id}`);
@@ -75,7 +71,7 @@ const GlobalHeader = () => {
           ) : null}
           <DarkModeSwitch
             checked={colorMode === 'dark'}
-            onChange={handleDarkModeSwitchChange}
+            onClick={toggleColorMode}
           />
           {user ? (
             <ButtonBase
