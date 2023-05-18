@@ -11,11 +11,8 @@ import { SnackbarProvider } from 'notistack';
 import { useMemo } from 'react';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
-import store from 'redux/store';
-import { PersistGate } from 'redux-persist/integration/react';
-import persistStore from 'redux-persist/lib/persistStore';
+import { store } from 'redux/store';
 
-const persistor = persistStore(store);
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -35,8 +32,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
+      <ThemeProvider>
+        <QueryClientProvider client={queryClient}>
           <SnackbarProvider
             maxSnack={3}
             autoHideDuration={8000}
@@ -51,15 +48,11 @@ function MyApp({ Component, pageProps }: AppProps) {
             }}
           >
             <IntlProvider locale={locale ?? 'ko'} messages={messages}>
-              {/* redux-persist SSR 렌더링 이슈 */}
-              {/* https://stackoverflow.com/a/72967026 */}
-              <PersistGate loading={null} persistor={persistor}>
-                {() => <Component {...pageProps} />}
-              </PersistGate>
+              <Component {...pageProps} />
             </IntlProvider>
           </SnackbarProvider>
-        </ThemeProvider>
-      </QueryClientProvider>
+        </QueryClientProvider>
+      </ThemeProvider>
     </Provider>
   );
 }

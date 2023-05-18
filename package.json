@@ -1,5 +1,5 @@
 {
-  "name": "mmm",
+  "name": "stay-with",
   "version": "0.1.1",
   "private": true,
   "scripts": {
@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "build:staging": "env-cmd -f .env.staging next build && env-cmd -f .env.staging next start",
-    "build:development": "env-cmd -f .env.development next build && env-cmd -f .env.development next start",
+    "build:dev": "env-cmd -f .env.development next build && env-cmd -f .env.development next start",
     "lint": "next lint",
     "test": "jest",
     "clone-database": "ts-node ./scripts/clone-database.ts"
@@ -35,8 +35,7 @@
     "react-intl": "^6.2.10",
     "react-redux": "^8.0.5",
     "react-spring-bottom-sheet": "^3.4.1",
-    "react-use": "^17.4.0",
-    "redux-persist": "^6.0.0"
+    "react-use": "^17.4.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",

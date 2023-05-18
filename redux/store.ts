@@ -1,47 +1,18 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import {
-  FLUSH,
-  PAUSE,
-  PERSIST,
-  persistReducer,
-  PURGE,
-  REGISTER,
-  REHYDRATE,
-} from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+import { configureStore } from '@reduxjs/toolkit';
 
 import colorReducer from './colorSlice';
 import tempLexioDivinaReducer from './tempLexioDivinaSlice';
 import userReducer from './userSlice';
 
-const reducers = combineReducers({
-  user: userReducer,
-  color: colorReducer,
-  tempLexioDivina: tempLexioDivinaReducer,
-});
-
-const persistConfig = {
-  key: 'root',
-  storage,
-  whitelist: ['user', 'color', 'tempLexioDivina'],
-};
-
-const persistedReducer = persistReducer(persistConfig, reducers);
-
-const store = configureStore({
-  // https://redux-toolkit.js.org/usage/usage-guide#use-with-redux-persist
-  reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }),
+export const store = configureStore({
+  reducer: {
+    user: userReducer,
+    color: colorReducer,
+    tempLexioDivina: tempLexioDivinaReducer,
+  },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;
-
-export default store;
