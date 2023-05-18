@@ -32,8 +32,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <Provider store={store}>
-      <ThemeProvider>
-        <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
           <SnackbarProvider
             maxSnack={3}
             autoHideDuration={8000}
@@ -51,8 +51,8 @@ function MyApp({ Component, pageProps }: AppProps) {
               <Component {...pageProps} />
             </IntlProvider>
           </SnackbarProvider>
-        </QueryClientProvider>
-      </ThemeProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
     </Provider>
   );
 }
