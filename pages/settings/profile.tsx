@@ -137,6 +137,7 @@ const SettingsProfile = () => {
                       error={!!errors.name}
                       size="small"
                       fullWidth
+                      disabled={!user}
                       sx={{ maxWidth: 250 }}
                     />
                   )}
@@ -166,12 +167,13 @@ const SettingsProfile = () => {
                       multiline
                       rows={4}
                       fullWidth
+                      disabled={!user}
                     />
                   )}
                 />
               </Box>
               <Box>
-                <Button variant="contained" type="submit">
+                <Button variant="contained" type="submit" disabled={!user}>
                   저장하기
                 </Button>
               </Box>
