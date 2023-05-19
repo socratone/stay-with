@@ -46,7 +46,12 @@ const SettingsProfile = () => {
     handleSubmit,
     formState: { errors },
     setValue,
-  } = useForm<UserFormValues>();
+  } = useForm<UserFormValues>({
+    defaultValues: {
+      name: '',
+      description: '',
+    },
+  });
 
   useEffect(() => {
     if (userData) {
