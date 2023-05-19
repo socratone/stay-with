@@ -59,10 +59,7 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     ...theme,
   });
 
-  const [colorMode, setColorMode] = useState<ColorMode>(() => {
-    const savedMode = getValue<ColorMode>('colorMode');
-    return savedMode ? savedMode : ColorMode.Light;
-  });
+  const [colorMode, setColorMode] = useState<ColorMode>(ColorMode.Light);
 
   const currentTheme = colorMode === 'light' ? lightTheme : darkTheme;
 
