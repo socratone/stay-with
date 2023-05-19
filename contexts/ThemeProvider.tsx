@@ -1,10 +1,14 @@
-import { createTheme, ThemeProvider as MuiThemeProvider } from '@mui/material';
+import {
+  createTheme,
+  ThemeProvider as MuiThemeProvider,
+  useMediaQuery,
+} from '@mui/material';
 import { createContext, useEffect, useState } from 'react';
 import { components } from 'theme/components';
 import { darkPalette, lightPalette } from 'theme/palette';
 import { shadows } from 'theme/shadows';
 import { typography } from 'theme/typography';
-import { getValue, saveValue } from 'utils/persist';
+import { saveValue } from 'utils/persist';
 
 // https://stackoverflow.com/questions/60424596/cant-customize-color-palette-types-on-material-ui-theme-in-typescript
 declare module '@mui/material/styles/createPalette' {
@@ -22,7 +26,7 @@ export enum ColorMode {
 }
 
 type ColorModeContextValue = {
-  colorMode: ColorMode;
+  colorMode: ColorMode | null;
   toggleColorMode: () => void;
 };
 
@@ -59,16 +63,24 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     ...theme,
   });
 
-  const [colorMode, setColorMode] = useState<ColorMode>(ColorMode.Light);
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const prefersColorMode = prefersDarkMode ? 'dark' : 'light';
+
+  const [colorMode, setColorMode] = useState<ColorMode | null>(null);
 
   useEffect(() => {
-    const savedColorMode = getValue<ColorMode>('colorMode');
-    if (savedColorMode) {
-      setColorMode(savedColorMode);
+    const root = document.documentElement;
+    const backgroundColor =
+      getComputedStyle(root).getPropertyValue('--background-color');
+    if (backgroundColor === '#fff') {
+      setColorMode(ColorMode.Light);
+    } else {
+      setColorMode(ColorMode.Dark);
     }
   }, []);
 
-  const currentTheme = colorMode === 'light' ? lightTheme : darkTheme;
+  const currentTheme =
+    (colorMode ?? prefersColorMode) === 'light' ? lightTheme : darkTheme;
 
   const toggleColorMode = () => {
     setColorMode((prevMode) => {

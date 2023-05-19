@@ -1,6 +1,5 @@
 import AddIcon from '@mui/icons-material/Add';
 import MenuIcon from '@mui/icons-material/Menu';
-import { useTheme } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
@@ -21,7 +20,6 @@ export const GLOBAL_HEADER_HEIGHT = 50;
 
 const GlobalHeader = () => {
   const router = useRouter();
-  const theme = useTheme();
 
   const { user } = useAuth();
   const { colorMode, toggleColorMode } = useColorMode();
@@ -51,7 +49,7 @@ const GlobalHeader = () => {
           position: 'sticky',
           top: 0,
           zIndex: 10,
-          bgcolor: theme.palette.paper?.main,
+          bgcolor: (theme) => theme.palette.paper?.main,
         }}
       >
         <Box display="flex" alignItems="center" ml={-1}>
