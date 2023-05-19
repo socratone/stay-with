@@ -1,5 +1,5 @@
 import { createTheme, ThemeProvider as MuiThemeProvider } from '@mui/material';
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { components } from 'theme/components';
 import { darkPalette, lightPalette } from 'theme/palette';
 import { shadows } from 'theme/shadows';
@@ -60,6 +60,13 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   });
 
   const [colorMode, setColorMode] = useState<ColorMode>(ColorMode.Light);
+
+  useEffect(() => {
+    const savedColorMode = getValue<ColorMode>('colorMode');
+    if (savedColorMode) {
+      setColorMode(savedColorMode);
+    }
+  }, []);
 
   const currentTheme = colorMode === 'light' ? lightTheme : darkTheme;
 
