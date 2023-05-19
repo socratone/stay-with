@@ -102,7 +102,15 @@ const SettingsProfile = () => {
                     <ListItemIcon sx={{ minWidth: 40 }}>
                       <AccessibilityIcon />
                     </ListItemIcon>
-                    <ListItemText primary="프로필" />
+                    <ListItemText
+                      primary={
+                        <Typography
+                          color={(theme) => theme.palette.text.primary}
+                        >
+                          프로필
+                        </Typography>
+                      }
+                    />
                   </ListItemButton>
                 </StyledLink>
               </ListItem>

@@ -49,7 +49,7 @@ const GlobalHeader = () => {
           position: 'sticky',
           top: 0,
           zIndex: 10,
-          bgcolor: (theme) => theme.palette.paper?.main,
+          bgcolor: (theme) => theme.palette.background.default,
         }}
       >
         <Box display="flex" alignItems="center" ml={-1}>

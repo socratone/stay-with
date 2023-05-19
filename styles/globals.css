@@ -1,3 +1,7 @@
+:root {
+  --background-color: #fff;
+}
+
 html,
 body {
   padding: 0;
@@ -8,6 +12,7 @@ body {
 
 body {
   height: 100vh;
+  background-color: var(--background-color);
 }
 
 a {

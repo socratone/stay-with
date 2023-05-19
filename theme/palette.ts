@@ -2,8 +2,9 @@ import { PaletteOptions } from '@mui/material';
 import { grey } from '@mui/material/colors';
 
 export const lightPalette: PaletteOptions = {
-  paper: {
-    main: '#fff',
+  background: {
+    default: 'var(--background-color)',
+    paper: 'var(--background-color)',
   },
   text: {
     primary: grey[900],
@@ -12,8 +13,9 @@ export const lightPalette: PaletteOptions = {
 };
 
 export const darkPalette: PaletteOptions = {
-  paper: {
-    main: grey[900],
+  background: {
+    default: 'var(--background-color)',
+    paper: 'var(--background-color)',
   },
   text: {
     primary: grey[300],

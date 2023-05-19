@@ -5,7 +5,6 @@ import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
-import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import SmallMenu from 'components/SmallMenu';
@@ -123,7 +122,14 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
   };
 
   return (
-    <Paper component="article" sx={{ borderRadius: 6 }}>
+    <Box
+      component="article"
+      sx={{
+        borderRadius: 6,
+        border: 1,
+        borderColor: (theme) => theme.palette.divider,
+      }}
+    >
       {/* header */}
       <Box
         display="flex"
@@ -224,7 +230,7 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
           <Typography fontSize={14}>{commentCount}</Typography>
         ) : null}
       </Stack>
-    </Paper>
+    </Box>
   );
 };
 

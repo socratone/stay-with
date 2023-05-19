@@ -1,6 +1,5 @@
 import 'styles/globals.css';
 
-import Paper from '@mui/material/Paper';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Snackbar from 'components/Snackbar';
 import English from 'content/locales/en.json';
@@ -49,15 +48,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             }}
           >
             <IntlProvider locale={locale ?? 'ko'} messages={messages}>
-              <Paper
-                sx={{
-                  minHeight: '100vh',
-                  bgcolor: (theme) =>
-                    theme.palette.mode === 'dark' ? '#000' : '#fff',
-                }}
-              >
-                <Component {...pageProps} />
-              </Paper>
+              <Component {...pageProps} />
             </IntlProvider>
           </SnackbarProvider>
         </ThemeProvider>
