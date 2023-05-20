@@ -36,6 +36,12 @@ export const assignValues = <V>(board: (V | null)[][], values: V[]) => {
   const totalCells = board.length * board[0].length;
   const newValues = cloneDeep(values);
 
+  if (totalCells < newValues.length) {
+    // eslint-disable-next-line no-console
+    console.warn('The number of candles exceeded the limit.');
+    return;
+  }
+
   // Create a flat array of all cells in the board
   const flatArray = board.flat();
 
