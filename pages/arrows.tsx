@@ -4,6 +4,7 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import GlobalHeader from 'components/GlobalHeader/GlobalHeader';
 import Meta from 'components/Meta/Meta';
+import DarkThemeProvider from 'contexts/DarkThemeProvider';
 import Candles from 'feature/Candles';
 import { Candle } from 'feature/Candles/Candles';
 import { postArrow } from 'helpers/axios';
@@ -56,38 +57,40 @@ const Arrows = () => {
   };
 
   return (
-    <Box height="100vh" display="flex" flexDirection="column">
-      <Meta />
-      <GlobalHeader dark />
-      <Candles additionalCandles={additionalCandles} />
-      {user ? (
-        <Stack
-          direction="row"
-          p={1}
-          position="relative"
-          justifyContent="center"
-          sx={{ bgcolor: 'black' }}
-        >
-          <TextField
-            value={message}
-            onChange={handleChange}
-            size="small"
-            fullWidth
-            multiline
-            sx={{
-              maxWidth: 300,
-            }}
-          />
-          <Button
-            size="small"
-            disabled={message.length === 0}
-            onClick={handleSubmit}
+    <DarkThemeProvider>
+      <Box height="100vh" display="flex" flexDirection="column">
+        <Meta />
+        <GlobalHeader dark />
+        <Candles additionalCandles={additionalCandles} />
+        {user ? (
+          <Stack
+            direction="row"
+            p={1}
+            position="relative"
+            justifyContent="center"
+            sx={{ bgcolor: 'black' }}
           >
-            저장
-          </Button>
-        </Stack>
-      ) : null}
-    </Box>
+            <TextField
+              value={message}
+              onChange={handleChange}
+              size="small"
+              fullWidth
+              multiline
+              sx={{
+                maxWidth: 300,
+              }}
+            />
+            <Button
+              size="small"
+              disabled={message.length === 0}
+              onClick={handleSubmit}
+            >
+              저장
+            </Button>
+          </Stack>
+        ) : null}
+      </Box>
+    </DarkThemeProvider>
   );
 };
 
