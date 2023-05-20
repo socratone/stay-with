@@ -1,5 +1,6 @@
+import WhatshotIcon from '@mui/icons-material/Whatshot';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import GlobalHeader from 'components/GlobalHeader/GlobalHeader';
@@ -80,13 +81,13 @@ const Arrows = () => {
                 maxWidth: 300,
               }}
             />
-            <Button
+            <IconButton
               size="small"
               disabled={message.length === 0}
               onClick={handleSubmit}
             >
-              저장
-            </Button>
+              <WhatshotIcon />
+            </IconButton>
           </Stack>
         ) : null}
       </Box>
