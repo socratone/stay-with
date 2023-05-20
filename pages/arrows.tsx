@@ -42,7 +42,7 @@ const Arrows = () => {
       });
       setAdditionalCandles((candles) => [
         ...candles,
-        { _id: createUniqueId(), message: requestedMessage },
+        { _id: createUniqueId(), message: requestedMessage, user },
       ]);
     } catch (error: any) {
       const status = error?.response?.status;
@@ -67,6 +67,7 @@ const Arrows = () => {
           <Stack
             direction="row"
             p={1}
+            spacing={0.5}
             position="relative"
             justifyContent="center"
             sx={{ bgcolor: 'black' }}

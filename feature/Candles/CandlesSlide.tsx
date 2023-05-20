@@ -102,6 +102,9 @@ const CandlesSlide: React.FC<CandlesSlideProps> = ({
             column={candle.column}
             rowOffset={candle.column % 2 === 0 ? ROW_OFFSET : undefined}
             imageSrc={getRandomCandleImageSrc(index)}
+            message={candle.message}
+            name={candle.user?.name}
+            profileUrl={candle.user?.imageUrl}
           />
         ))
       )}
