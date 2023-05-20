@@ -1,7 +1,8 @@
-import { CircularProgress } from '@mui/material';
 import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 import ErrorMessage from 'components/ErrorMessage/ErrorMessage';
 import useArrows from 'hooks/api/useArrows';
+import useResizeListener from 'hooks/dom/useResizeListener';
 import { cloneDeep } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 import { Arrow, User } from 'types/document';
@@ -49,6 +50,7 @@ type CandlesProps = {
 const Candles: React.FC<CandlesProps> = ({ additionalCandles }) => {
   const divRef = useRef<HTMLDivElement>(null);
 
+  const [resizedCount, setResizedCount] = useState(0);
   const [board, setBoard] = useState<(Candle | null)[][]>([]);
 
   const {
@@ -62,7 +64,9 @@ const Candles: React.FC<CandlesProps> = ({ additionalCandles }) => {
 
   const candles = arrowsData ? parseBoardToArrayWithCoordinate(board) : [];
 
-  // TODO: viewport가 변할 때마다 갱신
+  useResizeListener({
+    onResize: () => setResizedCount((count) => count + 1),
+  });
 
   // data를 받아서 board에 넣는다.
   useEffect(() => {
@@ -78,7 +82,7 @@ const Candles: React.FC<CandlesProps> = ({ additionalCandles }) => {
       assignValues(board, arrowsData.arrows);
       setBoard(board);
     }
-  }, [arrowsData]);
+  }, [arrowsData, resizedCount]);
 
   // message를 입력하여 candle이 추가되면 board에 넣는다.
   useEffect(() => {
@@ -94,6 +98,7 @@ const Candles: React.FC<CandlesProps> = ({ additionalCandles }) => {
     }
   }, [additionalCandles]);
 
+  // TODO: swiper를 이용한 페이지네이션
   return (
     <Box
       ref={divRef}
