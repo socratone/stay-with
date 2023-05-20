@@ -24,6 +24,7 @@ type CandlesSlideProps = {
 };
 
 const COUNT_PER_SLIDE = 50;
+const ROW_OFFSET = 0.5 * CANDLE_HEIGHT;
 
 const CandlesSlide: React.FC<CandlesSlideProps> = ({
   additionalCandles = [],
@@ -52,7 +53,8 @@ const CandlesSlide: React.FC<CandlesSlideProps> = ({
 
     if (screen && arrowsData) {
       const screenWidth = screen.offsetWidth;
-      const screenHeight = screen.offsetHeight;
+      // ROW_OFFSET을 넣은 이유는 offset된 candle item이 bottom을 overflow하지 않도록
+      const screenHeight = screen.offsetHeight - ROW_OFFSET;
       const columnColunt = Math.floor(screenWidth / CANDLE_WIDTH);
       const rowColunt = Math.floor(screenHeight / CANDLE_HEIGHT);
 
@@ -98,6 +100,7 @@ const CandlesSlide: React.FC<CandlesSlideProps> = ({
             key={candle._id}
             row={candle.row}
             column={candle.column}
+            rowOffset={candle.column % 2 === 0 ? ROW_OFFSET : undefined}
             imageSrc={getRandomCandleImageSrc(index)}
           />
         ))
