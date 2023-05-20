@@ -4,9 +4,7 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import IconButton from '@mui/material/IconButton';
-import Paper from '@mui/material/Paper';
 import DarkModeSwitch from 'components/DarkModeSwitch';
-import { ColorMode } from 'contexts/ThemeProvider';
 import useAuth from 'hooks/auth/useAuth';
 import useColorMode from 'hooks/theme/useColorMode';
 import { useRouter } from 'next/router';
@@ -19,14 +17,12 @@ import GlobalHeaderDrawer from './GlobalHeaderDrawer';
 import HeaderLink from './HeaderLink';
 
 type GlobalHeaderProps = {
-  colorMode?: ColorMode;
+  dark?: true;
 };
 
 export const GLOBAL_HEADER_HEIGHT = 50;
 
-const GlobalHeader: React.FC<GlobalHeaderProps> = ({
-  colorMode: localColorMode,
-}) => {
+const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark }) => {
   const router = useRouter();
 
   const { user } = useAuth();
@@ -52,11 +48,11 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({
           position: 'sticky',
           top: 0,
           zIndex: 10,
-          bgcolor: (theme) => theme.palette.background.default,
+          bgcolor: (theme) =>
+            dark ? '#000' : theme.palette.background.default,
         }}
       >
         <Box
-          component={Paper}
           display="flex"
           justifyContent="space-between"
           boxShadow={PRIMARY_SHADOW}
@@ -64,7 +60,10 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({
           px={2}
         >
           <Box display="flex" alignItems="center" ml={-1}>
-            <IconButton onClick={openMenu}>
+            <IconButton
+              onClick={openMenu}
+              sx={{ color: dark ? '#fff' : undefined }}
+            >
               <MenuIcon />
             </IconButton>
           </Box>
@@ -73,14 +72,14 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({
               <IconButton
                 size="small"
                 onClick={() => router.push('/lexio-divinas/create')}
-                sx={{ mr: -1 }}
+                sx={{ mr: -1, color: dark ? '#fff' : undefined }}
               >
                 <AddIcon />
               </IconButton>
             ) : null}
             <DarkModeSwitch
-              checked={colorMode === 'dark'}
-              disabled={!!localColorMode}
+              checked={dark ? dark : colorMode === 'dark'}
+              disabled={dark}
               onClick={toggleColorMode}
             />
             {user ? (

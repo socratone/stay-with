@@ -58,7 +58,7 @@ const Arrows = () => {
   return (
     <Box height="100vh" display="flex" flexDirection="column">
       <Meta />
-      <GlobalHeader />
+      <GlobalHeader dark />
       <Candles additionalCandles={additionalCandles} />
       {user ? (
         <Stack

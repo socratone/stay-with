@@ -12,6 +12,7 @@ import ListLinkItem from './ListLinkItem';
 
 type GlobalHeaderDrawerProps = {
   open: boolean;
+  dark?: true;
   onClose: () => void;
 };
 
