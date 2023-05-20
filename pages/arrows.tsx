@@ -6,7 +6,7 @@ import GlobalHeader from 'components/GlobalHeader/GlobalHeader';
 import Meta from 'components/Meta/Meta';
 import DarkThemeProvider from 'contexts/DarkThemeProvider';
 import Candles from 'feature/Candles';
-import { Candle } from 'feature/Candles/Candles';
+import { Candle } from 'feature/Candles/types';
 import { postArrow } from 'helpers/axios';
 import useAuth from 'hooks/auth/useAuth';
 import { useRouter } from 'next/router';
