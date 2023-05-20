@@ -10,16 +10,15 @@ const InitialBackgroundColorScript = () => {
     <script
       dangerouslySetInnerHTML={{
         __html: `
-          (() => {
-            if (typeof window !== 'undefined') {
-              const savedColorMode = localStorage.getItem('colorMode');
-              const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-              const colorMode = savedColorMode ?? prefersDarkMode;
-              const backgroundColor = colorMode === 'dark' ? '#000' : '#fff';
-              const root = document.documentElement;
-              root.style.setProperty('--background-color', backgroundColor);
-            }
-          })()`,
+          if (typeof window !== 'undefined') {
+            const savedColorMode = localStorage.getItem('colorMode');
+            const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const colorMode = savedColorMode ?? prefersDarkMode;
+            const backgroundColor = colorMode === 'dark' ? '#000' : '#fff';
+            const root = document.documentElement;
+            root.style.setProperty('--background-color', backgroundColor);
+          }
+        `,
       }}
     />
   );
