@@ -1,6 +1,5 @@
 import AddIcon from '@mui/icons-material/Add';
 import MenuIcon from '@mui/icons-material/Menu';
-import { ThemeProvider } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
@@ -46,7 +45,7 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({
   const handleAvatarClick = () => router.push(`/user/${user?._id}`);
 
   return (
-    <ThemeProvider theme={colorMode === ColorMode.Dark ? darkTh}>
+    <>
       <Box
         component="header"
         sx={{
@@ -109,7 +108,7 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({
         open={typeof router.query?.menu === 'string'}
         onClose={closeMenu}
       />
-    </ThemeProvider>
+    </>
   );
 };
 
