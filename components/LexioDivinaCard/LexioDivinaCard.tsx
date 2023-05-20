@@ -221,13 +221,17 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
           )}
         </IconButton>
         {likedCount ? (
-          <Typography fontSize={14}>{likedCount}</Typography>
+          <Typography color="text.secondary" fontSize={14}>
+            {likedCount}
+          </Typography>
         ) : null}
         <IconButton onClick={onCommentButtonClick} size="small">
           <BubbleIcon color={theme.palette.text.secondary} />
         </IconButton>
         {commentCount ? (
-          <Typography fontSize={14}>{commentCount}</Typography>
+          <Typography color="text.secondary" fontSize={14}>
+            {commentCount}
+          </Typography>
         ) : null}
       </Stack>
     </Box>
