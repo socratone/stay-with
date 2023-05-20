@@ -30,7 +30,7 @@ const EnvChip = () => {
       return (
         <Chip
           label="Development"
-          color="error"
+          color="success"
           onClick={handleClick}
           icon={<CloseIcon />}
           sx={sx}
@@ -41,7 +41,7 @@ const EnvChip = () => {
       return (
         <Chip
           label="Staging"
-          color="success"
+          color="warning"
           onClick={handleClick}
           icon={<CloseIcon />}
           sx={sx}
