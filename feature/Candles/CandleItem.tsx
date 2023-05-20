@@ -7,8 +7,8 @@ type CandleItemProps = {
   column: number;
 };
 
-export const CANDLE_WIDTH = 10;
-export const CANDLE_HEIGHT = 24;
+export const CANDLE_WIDTH = 10 * 2;
+export const CANDLE_HEIGHT = 24 * 2;
 
 const CandleItem: React.FC<CandleItemProps> = ({ imageSrc, row, column }) => {
   return (
