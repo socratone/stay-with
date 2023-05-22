@@ -3,9 +3,8 @@ import jwtDecode from 'jwt-decode';
 import { ObjectId, UpdateResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { User, UserPatchPayload, userPatchSchema } from 'schemas/user';
-import { ApiErrorData } from 'utils/auth';
+import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
-import { ValidationError } from 'yup';
 
 export type ApiUserData = {
   user: User;
@@ -15,7 +14,7 @@ type ApiPutResultData = UpdateResult;
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<ApiUserData | ApiErrorData | ApiPutResultData>
+  res: NextApiResponse<ApiUserData | ServerError | ApiPutResultData>
 ) => {
   const id = String(req.query.id);
   const db = new Mongodb();
@@ -80,13 +79,7 @@ const handler = async (
       db.close();
       return res.status(200).json(result);
     } catch (error) {
-      if (error instanceof ValidationError) {
-        return res.status(400).send({ message: error.message });
-      }
-
-      // TODO: mongodb error
-      const { status, message } = Mongodb.parseError(error);
-      return res.status(status).send({ message });
+      sendServerError(res, error);
     }
   }
 };
