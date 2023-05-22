@@ -48,7 +48,7 @@ const LexioDivinaEdit = () => {
     },
   });
 
-  const setValue = form.setValue;
+  const { reset } = form;
 
   const { reset: resetTempLexioDivina } = useTempLexioDivinaRecorder({
     value: form.watch(),
@@ -62,32 +62,30 @@ const LexioDivinaEdit = () => {
       const { phrase, bible, chapter, verse, content, endChapter, endVerse } =
         lexioDivinaData;
 
-      setValue('phrase', phrase);
-      setValue('bible', { value: bible, label: BIBLE_LABEL[bible] });
-      setValue('chapter', String(chapter));
-      setValue('verse', String(verse));
-      setValue('content', content);
+      let values: LexioDivinaFormValues = {
+        phrase,
+        bible: { value: bible, label: BIBLE_LABEL[bible] },
+        chapter: String(chapter),
+        verse: String(verse),
+        content,
+      };
 
       if (endChapter && endVerse) {
-        setValue('endChapter', String(endChapter));
-        setValue('endVerse', String(endVerse));
+        values = {
+          ...values,
+          endChapter: String(endChapter),
+          endVerse: String(endVerse),
+        };
       }
+
+      reset(values);
     }
-  }, [lexioDivinaData, temp, setValue]);
+  }, [lexioDivinaData, temp, reset]);
 
   // ?temp=true인 경우 임시 저장된 값을 form에 입력한다.
   useMount(() => {
     if (temp) {
-      const { phrase, bible, chapter, verse, content, endChapter, endVerse } =
-        tempLexioDivina;
-
-      phrase && setValue('phrase', phrase);
-      bible && setValue('bible', bible);
-      chapter && setValue('chapter', chapter);
-      verse && setValue('verse', verse);
-      content && setValue('content', content);
-      setValue('endChapter', endChapter);
-      setValue('endVerse', endVerse);
+      reset(tempLexioDivina);
     }
   });
 
