@@ -1,5 +1,8 @@
 import { Bible } from 'constants/bible';
 
+/**
+ * @deprecated
+ */
 export type User = {
   _id: string;
   kakaoId: number;

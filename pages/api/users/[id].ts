@@ -2,17 +2,13 @@ import { CollectionName } from 'constants/mongodb';
 import jwtDecode from 'jwt-decode';
 import { ObjectId, UpdateResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { User } from 'types/document';
+import { User, UserPatchPayload, userPatchSchema } from 'schemas/user';
 import { ApiErrorData } from 'utils/auth';
 import Mongodb from 'utils/mongodb';
+import { ValidationError } from 'yup';
 
 export type ApiUserData = {
   user: User;
-};
-
-export type ApiPatchUserPayload = {
-  name?: User['name'];
-  description?: User['description'];
 };
 
 type ApiPutResultData = UpdateResult;
@@ -54,11 +50,13 @@ const handler = async (
       });
     }
 
-    const payload: ApiPatchUserPayload = req.body;
+    const payload: UserPatchPayload = req.body;
 
     try {
+      const validatedUser = await userPatchSchema.validate(payload);
+
       // name 수정 요청을 한 경우에만 중복 검사
-      if (payload.name) {
+      if (validatedUser.name) {
         const duplicateNameUser = await db.findOne<User>(CollectionName.Users, {
           name: payload.name,
         });
@@ -75,16 +73,18 @@ const handler = async (
           _id: new ObjectId(id),
         },
         {
-          $set: {
-            name: payload.name,
-            description: payload.description,
-          },
+          $set: { ...validatedUser },
         }
       );
 
       db.close();
       return res.status(200).json(result);
     } catch (error) {
+      if (error instanceof ValidationError) {
+        return res.status(400).send({ message: error.message });
+      }
+
+      // TODO: mongodb error
       const { status, message } = Mongodb.parseError(error);
       return res.status(status).send({ message });
     }
