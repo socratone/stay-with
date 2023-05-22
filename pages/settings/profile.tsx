@@ -45,7 +45,7 @@ const SettingsProfile = () => {
     control,
     handleSubmit,
     formState: { errors },
-    setValue,
+    reset,
   } = useForm<UserFormValues>({
     defaultValues: {
       name: '',
@@ -56,10 +56,12 @@ const SettingsProfile = () => {
   useEffect(() => {
     if (userData) {
       const { user } = userData;
-      setValue('name', user.name);
-      setValue('description', user?.description ?? '');
+      reset({
+        name: user.name,
+        description: user.description ?? '',
+      });
     }
-  }, [userData, setValue]);
+  }, [userData, reset]);
 
   const handleProfileSubmit: SubmitHandler<UserFormValues> = async ({
     name,
