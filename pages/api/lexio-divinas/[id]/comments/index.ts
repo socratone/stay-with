@@ -5,7 +5,7 @@ import { LexioDivinaComment } from 'types/document';
 import { ApiErrorData, isLoggedIn } from 'utils/auth';
 import Mongodb from 'utils/mongodb';
 
-export type ApiCommentPayload = Omit<LexioDivinaComment, '_id'>;
+export type LexioDivinaCommentPostPayload = Omit<LexioDivinaComment, '_id'>;
 
 type ApiCommentResultData = UpdateResult;
 
@@ -14,7 +14,7 @@ const handler = async (
   res: NextApiResponse<ApiCommentResultData | ApiErrorData>
 ) => {
   const id = String(req.query.id);
-  const payload: ApiCommentPayload = req.body;
+  const payload: LexioDivinaCommentPostPayload = req.body;
 
   if (req.method === 'POST') {
     const accessToken = req.headers.authorization;

@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { ApiErrorData, isLoggedIn } from 'utils/auth';
 import Mongodb from 'utils/mongodb';
 
-export type ApiLikedPayload = {
+export type LexioDivinaLikedPostPayload = {
   userId: string;
 };
 
@@ -15,7 +15,7 @@ const handler = async (
   res: NextApiResponse<ApiLikedResultData | ApiErrorData>
 ) => {
   const id = String(req.query.id);
-  const payload: ApiLikedPayload = req.body;
+  const payload: LexioDivinaLikedPostPayload = req.body;
 
   if (req.method === 'POST') {
     const accessToken = req.headers.authorization;

@@ -1,24 +1,23 @@
 import { CollectionName } from 'constants/mongodb';
 import { Document, InsertOneResult, ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { LexioDivina, User } from 'types/document';
+import { User } from 'schemas/user';
+import { LexioDivina } from 'types/document';
 import { ApiErrorData, isLoggedIn } from 'utils/auth';
 import Mongodb from 'utils/mongodb';
 
-export type ApiLexioDivinaPayload = Omit<LexioDivina, '_id'>;
+export type LexioDivinaPostPayload = Omit<LexioDivina, '_id'>;
 
-export type ApiLexioDivinasData = {
+export type LexioDivinasData = {
   lexioDivinas: (LexioDivina & { user: User; createdAt: Date })[];
   total: number;
 };
 
-export type ApiLexioDivinaResultData = InsertOneResult<Document>;
+type LexioDivinaPostResult = InsertOneResult<Document>;
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<
-    ApiLexioDivinasData | ApiLexioDivinaResultData | ApiErrorData
-  >
+  res: NextApiResponse<LexioDivinasData | LexioDivinaPostResult | ApiErrorData>
 ) => {
   if (req.method === 'GET') {
     const db = new Mongodb();
@@ -71,9 +70,10 @@ const handler = async (
 
     try {
       // https://stackoverflow.com/questions/69978663/get-data-from-another-collection-string-objectid
-      const lexioDivinas = await db.aggregate<
-        ApiLexioDivinasData['lexioDivinas']
-      >(CollectionName.LexioDivinas, filteredPipeline);
+      const lexioDivinas = await db.aggregate<LexioDivinasData['lexioDivinas']>(
+        CollectionName.LexioDivinas,
+        filteredPipeline
+      );
 
       let total = 0;
 

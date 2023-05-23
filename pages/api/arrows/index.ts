@@ -1,13 +1,14 @@
 import { CollectionName } from 'constants/mongodb';
 import { Document, InsertOneResult, ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { Arrow, User } from 'types/document';
+import { User } from 'schemas/user';
+import { Arrow } from 'types/document';
 import { ApiErrorData, isLoggedIn } from 'utils/auth';
 import Mongodb from 'utils/mongodb';
 
-export type ApiArrowPayload = Omit<Arrow, '_id'>;
+export type ArrowPostPayload = Omit<Arrow, '_id'>;
 
-export type ApiArrowsData = {
+export type ArrowsData = {
   arrows: (Arrow & { user: User; createdAt: Date })[];
   total: number; // TODO: count api를 따로 만드는 게 좋은가?
 };
@@ -16,7 +17,7 @@ export type ApiArrowResultData = InsertOneResult<Document>;
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<ApiArrowsData | ApiArrowResultData | ApiErrorData>
+  res: NextApiResponse<ArrowsData | ApiArrowResultData | ApiErrorData>
 ) => {
   if (req.method === 'GET') {
     const db = new Mongodb();
@@ -69,7 +70,7 @@ const handler = async (
 
     try {
       // https://stackoverflow.com/questions/69978663/get-data-from-another-collection-string-objectid
-      const arrows = await db.aggregate<ApiArrowsData['arrows']>(
+      const arrows = await db.aggregate<ArrowsData['arrows']>(
         CollectionName.Arrows,
         filteredPipeline
       );

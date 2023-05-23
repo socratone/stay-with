@@ -1,4 +1,5 @@
-import { Arrow, User } from 'types/document';
+import { User } from 'schemas/user';
+import { Arrow } from 'types/document';
 
 export type Candle = Partial<Arrow> & {
   user?: User;

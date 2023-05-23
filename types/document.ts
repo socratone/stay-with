@@ -1,17 +1,5 @@
 import { Bible } from 'constants/bible';
 
-/**
- * @deprecated
- */
-export type User = {
-  _id: string;
-  kakaoId: number;
-  name: string;
-  email: string;
-  imageUrl?: string;
-  description?: string;
-};
-
 export type LexioDivinaComment = {
   _id: string;
   userId: string;

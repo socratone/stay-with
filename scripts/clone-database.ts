@@ -1,9 +1,10 @@
 /* eslint-disable no-console */
 import * as dotenv from 'dotenv';
 import inquirer from 'inquirer';
+import { User } from 'schemas/user';
 
 import { CollectionName } from '../constants/mongodb';
-import { LexioDivina, User } from '../types/document';
+import { LexioDivina } from '../types/document';
 import Mongodb from '../utils/mongodb';
 
 dotenv.config({ path: './.env.development' });

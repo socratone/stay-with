@@ -15,7 +15,7 @@ import { enqueueSnackbar } from 'notistack';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { User } from 'types/document';
+import { User } from 'schemas/user';
 
 type SignUpProps = {
   kakaoId: number;

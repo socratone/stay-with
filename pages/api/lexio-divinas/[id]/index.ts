@@ -2,16 +2,17 @@ import { CollectionName } from 'constants/mongodb';
 import jwtDecode from 'jwt-decode';
 import { DeleteResult, ObjectId, UpdateResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { LexioDivina, User } from 'types/document';
+import { User } from 'schemas/user';
+import { LexioDivina } from 'types/document';
 import { ApiErrorData, isLoggedIn } from 'utils/auth';
 import Mongodb from 'utils/mongodb';
 
-export type ApiPutLexioDivinaPayload = Omit<
+export type LexioDivinaPutPayload = Omit<
   LexioDivina,
   '_id' | 'userId' | 'likedUserIds' | 'comments'
 >;
 
-export interface ApiLexioDivinaData extends AggregatedLexioDivina {
+export interface LexioDivinaData extends AggregatedLexioDivina {
   comments: {
     _id: string;
     userId: string;
@@ -41,7 +42,7 @@ type ApiDeleteResultData = DeleteResult;
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<
-    ApiLexioDivinaData | ApiPutResultData | ApiDeleteResultData | ApiErrorData
+    LexioDivinaData | ApiPutResultData | ApiDeleteResultData | ApiErrorData
   >
 ) => {
   const id = String(req.query.id);
@@ -122,7 +123,7 @@ const handler = async (
     }
   }
 
-  const payload: ApiPutLexioDivinaPayload = req.body;
+  const payload: LexioDivinaPutPayload = req.body;
   const accessToken = req.headers.authorization;
 
   if (!isLoggedIn(accessToken)) {
