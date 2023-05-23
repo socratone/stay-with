@@ -11,9 +11,9 @@ import {
 import { ApiCommentPayload } from 'pages/api/lexio-divinas/[id]/comments';
 import { ApiLikedPayload } from 'pages/api/lexio-divinas/[id]/likeds/index';
 import { ApiLoginKakaoData, ApiLoginKakaoPayload } from 'pages/api/login/kakao';
-import { ApiSignUpData, ApiSignUpPayload } from 'pages/api/signup';
+import { UserPostResult } from 'pages/api/signup';
 import { UserData } from 'pages/api/users/[id]';
-import { UserPatchPayload } from 'schemas/user';
+import { UserPatchPayload, UserPostPayload } from 'schemas/user';
 import { getAccessToken } from 'utils/token';
 
 const axiosInstance = axios.create({
@@ -48,10 +48,10 @@ axiosInstance.interceptors.response.use(
 );
 
 export const postSignUp = (
-  payload: ApiSignUpPayload
-): Promise<ApiSignUpData> => {
+  payload: UserPostPayload
+): Promise<UserPostResult> => {
   return axiosInstance
-    .post<any, AxiosResponse<ApiSignUpData>, ApiSignUpPayload>(
+    .post<any, AxiosResponse<UserPostResult>, UserPostPayload>(
       '/api/signup',
       payload
     )

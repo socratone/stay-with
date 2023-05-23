@@ -10,11 +10,11 @@ export type UserData = {
   user: User;
 };
 
-type PutResultData = UpdateResult;
+type UserPatchResult = UpdateResult;
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<UserData | ServerError | PutResultData>
+  res: NextApiResponse<UserData | UserPatchResult | ServerError>
 ) => {
   const id = String(req.query.id);
   const db = new Mongodb();
