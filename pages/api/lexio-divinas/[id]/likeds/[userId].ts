@@ -1,14 +1,15 @@
 import { CollectionName } from 'constants/mongodb';
 import { ObjectId, UpdateResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { ApiErrorData, isLoggedIn } from 'utils/auth';
+import { isLoggedIn } from 'utils/auth';
+import { ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
 type ApiDeleteLikedResultData = UpdateResult;
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<ApiDeleteLikedResultData | ApiErrorData>
+  res: NextApiResponse<ApiDeleteLikedResultData | ServerError>
 ) => {
   const id = String(req.query.id);
   const userId = String(req.query.userId);

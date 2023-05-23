@@ -1,7 +1,8 @@
 import { CollectionName } from 'constants/mongodb';
 import { ObjectId, UpdateResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { ApiErrorData, isLoggedIn } from 'utils/auth';
+import { isLoggedIn } from 'utils/auth';
+import { ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
 export type LexioDivinaLikedPostPayload = {
@@ -12,7 +13,7 @@ type ApiLikedResultData = UpdateResult;
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<ApiLikedResultData | ApiErrorData>
+  res: NextApiResponse<ApiLikedResultData | ServerError>
 ) => {
   const id = String(req.query.id);
   const payload: LexioDivinaLikedPostPayload = req.body;

@@ -4,7 +4,8 @@ import { DeleteResult, ObjectId, UpdateResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { User } from 'schemas';
 import { LexioDivina } from 'types/document';
-import { ApiErrorData, isLoggedIn } from 'utils/auth';
+import { isLoggedIn } from 'utils/auth';
+import { ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
 export type LexioDivinaPutPayload = Omit<
@@ -42,7 +43,7 @@ type ApiDeleteResultData = DeleteResult;
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<
-    LexioDivinaData | ApiPutResultData | ApiDeleteResultData | ApiErrorData
+    LexioDivinaData | ApiPutResultData | ApiDeleteResultData | ServerError
   >
 ) => {
   const id = String(req.query.id);

@@ -2,14 +2,15 @@ import { CollectionName } from 'constants/mongodb';
 import { ObjectId, UpdateResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { LexioDivina } from 'types/document';
-import { ApiErrorData, isLoggedIn } from 'utils/auth';
+import { isLoggedIn } from 'utils/auth';
+import { ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
 type ApiDeleteCommentResultData = UpdateResult;
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<ApiDeleteCommentResultData | ApiErrorData>
+  res: NextApiResponse<ApiDeleteCommentResultData | ServerError>
 ) => {
   const id = String(req.query.id);
   const commentId = String(req.query.commentId);

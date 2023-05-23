@@ -3,7 +3,8 @@ import { Document, InsertOneResult, ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { User } from 'schemas';
 import { LexioDivina } from 'types/document';
-import { ApiErrorData, isLoggedIn } from 'utils/auth';
+import { isLoggedIn } from 'utils/auth';
+import { ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
 export type LexioDivinaPostPayload = Omit<LexioDivina, '_id'>;
@@ -17,7 +18,7 @@ type LexioDivinaPostResult = InsertOneResult<Document>;
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<LexioDivinasData | LexioDivinaPostResult | ApiErrorData>
+  res: NextApiResponse<LexioDivinasData | LexioDivinaPostResult | ServerError>
 ) => {
   if (req.method === 'GET') {
     const db = new Mongodb();

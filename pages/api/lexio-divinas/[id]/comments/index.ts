@@ -2,7 +2,8 @@ import { CollectionName } from 'constants/mongodb';
 import { ObjectId, UpdateResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { LexioDivinaComment } from 'types/document';
-import { ApiErrorData, isLoggedIn } from 'utils/auth';
+import { isLoggedIn } from 'utils/auth';
+import { ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
 export type LexioDivinaCommentPostPayload = Omit<LexioDivinaComment, '_id'>;
@@ -11,7 +12,7 @@ type ApiCommentResultData = UpdateResult;
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<ApiCommentResultData | ApiErrorData>
+  res: NextApiResponse<ApiCommentResultData | ServerError>
 ) => {
   const id = String(req.query.id);
   const payload: LexioDivinaCommentPostPayload = req.body;

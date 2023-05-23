@@ -6,6 +6,9 @@ export type LexioDivinaComment = {
   message: string;
 };
 
+/**
+ * @deprecated
+ */
 export type LexioDivina = {
   _id: string;
   bible: Bible;

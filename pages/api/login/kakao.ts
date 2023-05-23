@@ -3,7 +3,7 @@ import { CollectionName } from 'constants/mongodb';
 import jwt from 'jsonwebtoken';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { User } from 'schemas';
-import { ApiErrorData } from 'utils/auth';
+import { ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
 export type KakaoLoginPostPayload = {
@@ -36,7 +36,7 @@ type KakaoUser = {
   };
 };
 
-export type KakaoLoginError = ApiErrorData & {
+export type KakaoLoginError = ServerError & {
   kakaoUser?: KakaoUser;
 };
 

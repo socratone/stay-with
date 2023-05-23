@@ -2,15 +2,14 @@ import { CollectionName } from 'constants/mongodb';
 import { InsertOneResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { UserPostPayload, userPostSchema } from 'schemas';
-import { ApiErrorData } from 'utils/auth';
-import { sendServerError } from 'utils/error';
+import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
 export type UserPostResult = InsertOneResult<Document>;
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<UserPostResult | ApiErrorData>
+  res: NextApiResponse<UserPostResult | ServerError>
 ) => {
   const db = new Mongodb();
   const payload: UserPostPayload = req.body;

@@ -2,7 +2,8 @@ import { CollectionName } from 'constants/mongodb';
 import { Document, InsertOneResult, ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Arrow, User } from 'schemas';
-import { ApiErrorData, isLoggedIn } from 'utils/auth';
+import { isLoggedIn } from 'utils/auth';
+import { ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
 export type ArrowPostPayload = Omit<Arrow, '_id'>;
@@ -16,7 +17,7 @@ export type ArrowPostResult = InsertOneResult<Document>;
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<ArrowsData | ArrowPostResult | ApiErrorData>
+  res: NextApiResponse<ArrowsData | ArrowPostResult | ServerError>
 ) => {
   if (req.method === 'GET') {
     const db = new Mongodb();
