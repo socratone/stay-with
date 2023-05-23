@@ -2,7 +2,7 @@ import jwtDecode from 'jwt-decode';
 import { useCallback, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { resetUser, setUser } from 'redux/userSlice';
-import { User } from 'schemas/user';
+import { User } from 'schemas';
 import {
   getAccessToken,
   removeAccessToken,

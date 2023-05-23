@@ -1,7 +1,7 @@
 import { CollectionName } from 'constants/mongodb';
 import { InsertOneResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { UserPostPayload, userPostSchema } from 'schemas/user';
+import { UserPostPayload, userPostSchema } from 'schemas';
 import { ApiErrorData } from 'utils/auth';
 import { sendServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';

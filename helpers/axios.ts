@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { ArrowPostPayload, ArrowsData } from 'pages/api/arrows';
+import { ArrowsData } from 'pages/api/arrows';
 import {
   LexioDivinaPostPayload,
   LexioDivinasData,
@@ -16,7 +16,7 @@ import {
 } from 'pages/api/login/kakao';
 import { UserPostResult } from 'pages/api/signup';
 import { UserData } from 'pages/api/users/[id]';
-import { UserPatchPayload, UserPostPayload } from 'schemas/user';
+import { ArrowPostPayload, UserPatchPayload, UserPostPayload } from 'schemas';
 import { getAccessToken } from 'utils/token';
 
 const axiosInstance = axios.create({

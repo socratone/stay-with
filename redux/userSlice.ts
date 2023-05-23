@@ -1,6 +1,6 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import { User } from 'schemas/user';
+import { User } from 'schemas';
 
 const initialState: Omit<Required<User>, 'description'> = {
   _id: '',

@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import { CollectionName } from 'constants/mongodb';
 import jwt from 'jsonwebtoken';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { User } from 'schemas/user';
+import { User } from 'schemas';
 import { ApiErrorData } from 'utils/auth';
 import Mongodb from 'utils/mongodb';
 

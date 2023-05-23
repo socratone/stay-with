@@ -2,7 +2,7 @@ import { CollectionName } from 'constants/mongodb';
 import jwtDecode from 'jwt-decode';
 import { DeleteResult, ObjectId, UpdateResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { User } from 'schemas/user';
+import { User } from 'schemas';
 import { LexioDivina } from 'types/document';
 import { ApiErrorData, isLoggedIn } from 'utils/auth';
 import Mongodb from 'utils/mongodb';

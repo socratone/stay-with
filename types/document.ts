@@ -19,9 +19,3 @@ export type LexioDivina = {
   likedUserIds: string[];
   comments: LexioDivinaComment[];
 };
-
-export type Arrow = {
-  _id: string;
-  userId: string;
-  message: string;
-};

@@ -2,7 +2,7 @@ import { CollectionName } from 'constants/mongodb';
 import jwtDecode from 'jwt-decode';
 import { ObjectId, UpdateResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { User, UserPatchPayload, userPatchSchema } from 'schemas/user';
+import { User, UserPatchPayload, userPatchSchema } from 'schemas';
 import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 

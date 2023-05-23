@@ -1,8 +1,7 @@
 import { CollectionName } from 'constants/mongodb';
 import { Document, InsertOneResult, ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { User } from 'schemas/user';
-import { Arrow } from 'types/document';
+import { Arrow, User } from 'schemas';
 import { ApiErrorData, isLoggedIn } from 'utils/auth';
 import Mongodb from 'utils/mongodb';
 
@@ -13,11 +12,11 @@ export type ArrowsData = {
   total: number; // TODO: count api를 따로 만드는 게 좋은가?
 };
 
-export type ApiArrowResultData = InsertOneResult<Document>;
+export type ArrowPostResult = InsertOneResult<Document>;
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<ArrowsData | ApiArrowResultData | ApiErrorData>
+  res: NextApiResponse<ArrowsData | ArrowPostResult | ApiErrorData>
 ) => {
   if (req.method === 'GET') {
     const db = new Mongodb();
