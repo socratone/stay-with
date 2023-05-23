@@ -6,15 +6,15 @@ import { User, UserPatchPayload, userPatchSchema } from 'schemas/user';
 import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
-export type ApiUserData = {
+export type UserData = {
   user: User;
 };
 
-type ApiPutResultData = UpdateResult;
+type PutResultData = UpdateResult;
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<ApiUserData | ServerError | ApiPutResultData>
+  res: NextApiResponse<UserData | ServerError | PutResultData>
 ) => {
   const id = String(req.query.id);
   const db = new Mongodb();
@@ -32,8 +32,7 @@ const handler = async (
       db.close();
       return res.status(200).json({ user });
     } catch (error) {
-      const { status, message } = Mongodb.parseError(error);
-      return res.status(status).send({ message });
+      sendServerError(res, error);
     }
   }
 

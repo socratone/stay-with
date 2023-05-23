@@ -12,7 +12,7 @@ import { ApiCommentPayload } from 'pages/api/lexio-divinas/[id]/comments';
 import { ApiLikedPayload } from 'pages/api/lexio-divinas/[id]/likeds/index';
 import { ApiLoginKakaoData, ApiLoginKakaoPayload } from 'pages/api/login/kakao';
 import { ApiSignUpData, ApiSignUpPayload } from 'pages/api/signup';
-import { ApiUserData } from 'pages/api/users/[id]';
+import { UserData } from 'pages/api/users/[id]';
 import { UserPatchPayload } from 'schemas/user';
 import { getAccessToken } from 'utils/token';
 
@@ -142,9 +142,9 @@ export const getLexioDivinas = (
     .then((value) => value.data);
 };
 
-export const getUser = (id: string): Promise<ApiUserData> => {
+export const getUser = (id: string): Promise<UserData> => {
   return axiosInstance
-    .get<any, AxiosResponse<ApiUserData>>(`/api/users/${id}`)
+    .get<any, AxiosResponse<UserData>>(`/api/users/${id}`)
     .then((value) => value.data);
 };
 
