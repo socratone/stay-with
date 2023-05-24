@@ -1,16 +1,16 @@
 import { CollectionName } from 'constants/mongodb';
 import { ObjectId, UpdateResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { LexioDivina } from 'types/document';
+import { LexioDivina } from 'schemas/lexio-divina';
 import { isLoggedIn } from 'utils/auth';
-import { ServerError } from 'utils/error';
+import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
-type ApiDeleteCommentResultData = UpdateResult;
+type CommentDeleteResult = UpdateResult;
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<ApiDeleteCommentResultData | ServerError>
+  res: NextApiResponse<CommentDeleteResult | ServerError>
 ) => {
   const id = String(req.query.id);
   const commentId = String(req.query.commentId);
@@ -53,8 +53,7 @@ const handler = async (
       db.close();
       return res.status(200).json(result);
     } catch (error) {
-      const { status, message } = Mongodb.parseError(error);
-      return res.status(status).send({ message });
+      return sendServerError(res, error);
     }
   }
 };

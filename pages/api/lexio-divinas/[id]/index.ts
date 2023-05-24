@@ -3,15 +3,10 @@ import jwtDecode from 'jwt-decode';
 import { DeleteResult, ObjectId, UpdateResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { User } from 'schemas';
-import { LexioDivina } from 'types/document';
+import { LexioDivina, lexioDivinaPutSchema } from 'schemas/lexio-divina';
 import { isLoggedIn } from 'utils/auth';
-import { ServerError } from 'utils/error';
+import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
-
-export type LexioDivinaPutPayload = Omit<
-  LexioDivina,
-  '_id' | 'userId' | 'likedUserIds' | 'comments'
->;
 
 export interface LexioDivinaData extends AggregatedLexioDivina {
   comments: {
@@ -36,14 +31,17 @@ type UsersObject = {
   };
 };
 
-type ApiPutResultData = UpdateResult;
+type LexioDivinaPutResult = UpdateResult;
 
-type ApiDeleteResultData = DeleteResult;
+type LexioDivinaDeleteResult = DeleteResult;
 
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<
-    LexioDivinaData | ApiPutResultData | ApiDeleteResultData | ServerError
+    | LexioDivinaData
+    | LexioDivinaPutResult
+    | LexioDivinaDeleteResult
+    | ServerError
   >
 ) => {
   const id = String(req.query.id);
@@ -119,12 +117,10 @@ const handler = async (
       db.close();
       return res.status(200).json(editedLexioDivina);
     } catch (error) {
-      const { status, message } = Mongodb.parseError(error);
-      return res.status(status).send({ message });
+      sendServerError(res, error);
     }
   }
 
-  const payload: LexioDivinaPutPayload = req.body;
   const accessToken = req.headers.authorization;
 
   if (!isLoggedIn(accessToken)) {
@@ -161,27 +157,28 @@ const handler = async (
       return res.status(500).json({ message: 'Invalid token error.' });
     }
 
-    const { status, message } = Mongodb.parseError(error);
-    return res.status(status).send({ message });
+    sendServerError(res, error);
   }
 
   if (req.method === 'PUT') {
     try {
+      const validatedLexioDivina = await lexioDivinaPutSchema.validate(
+        req.body
+      );
       const result = await db.updateOne(
         CollectionName.LexioDivinas,
         {
           _id: new ObjectId(id),
         },
         {
-          $set: payload,
+          $set: validatedLexioDivina,
         }
       );
 
       db.close();
       return res.status(200).json(result);
     } catch (error) {
-      const { status, message } = Mongodb.parseError(error);
-      return res.status(status).send({ message });
+      return sendServerError(res, error);
     }
   }
 
@@ -193,8 +190,7 @@ const handler = async (
       db.close();
       return res.status(200).json(result);
     } catch (error) {
-      const { status, message } = Mongodb.parseError(error);
-      return res.status(status).send({ message });
+      return sendServerError(res, error);
     }
   }
 };

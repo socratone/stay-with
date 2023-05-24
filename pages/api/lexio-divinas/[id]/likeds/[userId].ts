@@ -2,7 +2,7 @@ import { CollectionName } from 'constants/mongodb';
 import { ObjectId, UpdateResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { isLoggedIn } from 'utils/auth';
-import { ServerError } from 'utils/error';
+import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
 type ApiDeleteLikedResultData = UpdateResult;
@@ -40,8 +40,7 @@ const handler = async (
       db.close();
       return res.status(200).json(result);
     } catch (error) {
-      const { status, message } = Mongodb.parseError(error);
-      return res.status(status).send({ message });
+      return sendServerError(res, error);
     }
   }
 };

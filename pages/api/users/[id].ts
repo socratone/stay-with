@@ -32,7 +32,7 @@ const handler = async (
       db.close();
       return res.status(200).json({ user });
     } catch (error) {
-      sendServerError(res, error);
+      return sendServerError(res, error);
     }
   }
 
@@ -78,7 +78,7 @@ const handler = async (
       db.close();
       return res.status(200).json(result);
     } catch (error) {
-      sendServerError(res, error);
+      return sendServerError(res, error);
     }
   }
 };

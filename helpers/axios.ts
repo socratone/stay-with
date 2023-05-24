@@ -1,13 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { ArrowsData } from 'pages/api/arrows';
-import {
-  LexioDivinaPostPayload,
-  LexioDivinasData,
-} from 'pages/api/lexio-divinas';
-import {
-  LexioDivinaData,
-  LexioDivinaPutPayload,
-} from 'pages/api/lexio-divinas/[id]';
+import { LexioDivinasData } from 'pages/api/lexio-divinas';
+import { LexioDivinaData } from 'pages/api/lexio-divinas/[id]';
 import { LexioDivinaCommentPostPayload } from 'pages/api/lexio-divinas/[id]/comments';
 import { LexioDivinaLikedPostPayload } from 'pages/api/lexio-divinas/[id]/likeds/index';
 import {
@@ -17,6 +11,10 @@ import {
 import { UserPostResult } from 'pages/api/signup';
 import { UserData } from 'pages/api/users/[id]';
 import { ArrowPostPayload, UserPatchPayload, UserPostPayload } from 'schemas';
+import {
+  LexioDivinaPostPayload,
+  LexioDivinaPutPayload,
+} from 'schemas/lexio-divina';
 import { getAccessToken } from 'utils/token';
 
 const axiosInstance = axios.create({

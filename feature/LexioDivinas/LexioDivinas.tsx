@@ -21,7 +21,7 @@ import { enqueueSnackbar } from 'notistack';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useSearchParam } from 'react-use';
-import { LexioDivina } from 'types/document';
+import { LexioDivina } from 'schemas/lexio-divina';
 import { addQuery, removeQuery } from 'utils/url';
 
 type LexioDivinasProps = {

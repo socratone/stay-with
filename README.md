@@ -83,6 +83,12 @@ LexioDivina {
 
 - 가능하면 `interface` 보다 `type`을 사용한다.
 
+### Naming
+
+- UserData: GET 요청의 response data를 의미
+- UserPostResult: POST 요청의 result를 의미
+- UserPatchResult: PATCH 요청의 result를 의미
+
 ## Environment
 
 - .env.development

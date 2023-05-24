@@ -3,7 +3,7 @@ import { CollectionName } from 'constants/mongodb';
 import jwt from 'jsonwebtoken';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { User } from 'schemas';
-import { ServerError } from 'utils/error';
+import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
 export type KakaoLoginPostPayload = {
@@ -74,9 +74,7 @@ const handler = async (
         });
       }
 
-      return res.status(500).json({
-        message: 'Unknown error.',
-      });
+      return sendServerError(res, error);
     }
 
     const db = new Mongodb();
@@ -118,8 +116,7 @@ const handler = async (
         });
       }
 
-      const { status, message } = Mongodb.parseError(error);
-      return res.status(status).send({ message });
+      return sendServerError(res, error);
     }
   }
 };

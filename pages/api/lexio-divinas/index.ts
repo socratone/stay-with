@@ -2,12 +2,10 @@ import { CollectionName } from 'constants/mongodb';
 import { Document, InsertOneResult, ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { User } from 'schemas';
-import { LexioDivina } from 'types/document';
+import { LexioDivina, lexioDivinaPostSchema } from 'schemas/lexio-divina';
 import { isLoggedIn } from 'utils/auth';
-import { ServerError } from 'utils/error';
+import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
-
-export type LexioDivinaPostPayload = Omit<LexioDivina, '_id'>;
 
 export type LexioDivinasData = {
   lexioDivinas: (LexioDivina & { user: User; createdAt: Date })[];
@@ -91,8 +89,7 @@ const handler = async (
       db.close();
       return res.status(200).json({ lexioDivinas, total });
     } catch (error) {
-      const { status, message } = Mongodb.parseError(error);
-      return res.status(status).send({ message });
+      return sendServerError(res, error);
     }
   }
 
@@ -107,16 +104,17 @@ const handler = async (
 
     try {
       const db = new Mongodb();
-      const userId = req.body.userId;
+      const validatedUser = await lexioDivinaPostSchema.validate(req.body);
+      const userId = validatedUser.userId;
       const result = await db.insertOne(CollectionName.LexioDivinas, {
-        ...req.body,
+        ...validatedUser,
         userId: new ObjectId(userId),
       });
+
       db.close();
       return res.status(201).json(result);
     } catch (error) {
-      const { status, message } = Mongodb.parseError(error);
-      return res.status(status).send({ message });
+      return sendServerError(res, error);
     }
   }
 };

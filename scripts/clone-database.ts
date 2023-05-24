@@ -2,9 +2,9 @@
 import * as dotenv from 'dotenv';
 import inquirer from 'inquirer';
 import { User } from 'schemas';
+import { LexioDivina } from 'schemas/lexio-divina';
 
 import { CollectionName } from '../constants/mongodb';
-import { LexioDivina } from '../types/document';
 import Mongodb from '../utils/mongodb';
 
 dotenv.config({ path: './.env.development' });

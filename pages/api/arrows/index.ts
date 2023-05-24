@@ -3,10 +3,8 @@ import { Document, InsertOneResult, ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Arrow, User } from 'schemas';
 import { isLoggedIn } from 'utils/auth';
-import { ServerError } from 'utils/error';
+import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
-
-export type ArrowPostPayload = Omit<Arrow, '_id'>;
 
 export type ArrowsData = {
   arrows: (Arrow & { user: User; createdAt: Date })[];
@@ -80,8 +78,7 @@ const handler = async (
       db.close();
       return res.status(200).json({ arrows, total });
     } catch (error) {
-      const { status, message } = Mongodb.parseError(error);
-      return res.status(status).send({ message });
+      return sendServerError(res, error);
     }
   }
 
@@ -104,8 +101,7 @@ const handler = async (
       db.close();
       return res.status(201).json(result);
     } catch (error) {
-      const { status, message } = Mongodb.parseError(error);
-      return res.status(status).send({ message });
+      return sendServerError(res, error);
     }
   }
 };
