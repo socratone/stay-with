@@ -51,23 +51,6 @@ class Mongodb {
     }
   }
 
-  static parseError(error: any) {
-    const errorMessage = error?.message; // '500: Database connection failed.' | undefined
-
-    if (typeof errorMessage === 'string') {
-      const [status, message] = errorMessage.split(':');
-      return {
-        status: Number(status.trim()),
-        message: message?.trim(),
-      };
-    }
-
-    return {
-      status: 500,
-      message: 'Unknown error.',
-    };
-  }
-
   // https://www.mongodb.com/docs/drivers/node/current/usage-examples/find/#find-multiple-documents
   async find<T>(
     collectionName: CollectionName,
