@@ -2,7 +2,7 @@ import { CollectionName } from 'constants/mongodb';
 import { Document, InsertOneResult, ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Arrow, User } from 'schemas';
-import { isLoggedIn } from 'utils/auth';
+import { blockNotLoggedIn } from 'utils/auth';
 import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
@@ -83,15 +83,10 @@ const handler = async (
   }
 
   if (req.method === 'POST') {
-    const accessToken = req.headers.authorization;
-
-    if (!isLoggedIn(accessToken)) {
-      return res.status(401).json({
-        message: 'Unauthorized.',
-      });
-    }
-
     try {
+      const accessToken = req.headers.authorization;
+      blockNotLoggedIn(accessToken);
+
       const db = new Mongodb();
       const userId = req.body.userId;
       const result = await db.insertOne(CollectionName.Arrows, {

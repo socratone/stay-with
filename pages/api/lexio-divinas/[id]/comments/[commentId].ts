@@ -2,7 +2,7 @@ import { CollectionName } from 'constants/mongodb';
 import { ObjectId, UpdateResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { LexioDivina } from 'schemas/lexio-divina';
-import { isLoggedIn } from 'utils/auth';
+import { blockNotLoggedIn } from 'utils/auth';
 import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
@@ -14,18 +14,13 @@ const handler = async (
 ) => {
   const id = String(req.query.id);
   const commentId = String(req.query.commentId);
-  const accessToken = req.headers.authorization;
-
-  if (!isLoggedIn(accessToken)) {
-    return res.status(401).json({
-      message: 'Unauthorized.',
-    });
-  }
-
-  const db = new Mongodb();
 
   if (req.method === 'DELETE') {
     try {
+      const accessToken = req.headers.authorization;
+      blockNotLoggedIn(accessToken);
+
+      const db = new Mongodb();
       const lexioDivina = await db.findOne<LexioDivina>(
         CollectionName.LexioDivinas,
         {

@@ -10,5 +10,9 @@ export const sendServerError = (res: NextApiResponse, error: any) => {
     return res.status(400).send({ message: error.message });
   }
 
+  if (error?.message === 'Unauthorized.') {
+    return res.status(401).send({ message: 'Unauthorized.' });
+  }
+
   return res.status(500).send({ message: 'Internal server error.' });
 };

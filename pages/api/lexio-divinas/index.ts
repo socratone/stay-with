@@ -3,7 +3,7 @@ import { Document, InsertOneResult, ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { User } from 'schemas';
 import { LexioDivina, lexioDivinaPostSchema } from 'schemas/lexio-divina';
-import { isLoggedIn } from 'utils/auth';
+import { blockNotLoggedIn } from 'utils/auth';
 import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
@@ -94,15 +94,10 @@ const handler = async (
   }
 
   if (req.method === 'POST') {
-    const accessToken = req.headers.authorization;
-
-    if (!isLoggedIn(accessToken)) {
-      return res.status(401).json({
-        message: 'Unauthorized.',
-      });
-    }
-
     try {
+      const accessToken = req.headers.authorization;
+      blockNotLoggedIn(accessToken);
+
       const db = new Mongodb();
       const validatedUser = await lexioDivinaPostSchema.validate(req.body);
       const userId = validatedUser.userId;

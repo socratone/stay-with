@@ -1,7 +1,7 @@
 import { CollectionName } from 'constants/mongodb';
 import { ObjectId, UpdateResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { isLoggedIn } from 'utils/auth';
+import { blockNotLoggedIn } from 'utils/auth';
 import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
@@ -16,15 +16,10 @@ const handler = async (
   res: NextApiResponse<LexioDivinaLikedPostResult | ServerError>
 ) => {
   if (req.method === 'POST') {
-    const accessToken = req.headers.authorization;
-
-    if (!isLoggedIn(accessToken)) {
-      return res.status(401).json({
-        message: 'Unauthorized.',
-      });
-    }
-
     try {
+      const accessToken = req.headers.authorization;
+      blockNotLoggedIn(accessToken);
+
       const db = new Mongodb();
       const id = String(req.query.id);
       // TODO: validate
