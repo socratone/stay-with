@@ -4,7 +4,7 @@ const DailyMissa = () => {
   return (
     <Box
       component="iframe"
-      src="https://missa.cbck.or.kr/DailyMissa"
+      src="https://m.mariasarang.net/page/missa.asp"
       sx={{
         border: 0,
         width: '100%',
