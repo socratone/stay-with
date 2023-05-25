@@ -1,0 +1,78 @@
+import { NextApiRequest, NextApiResponse } from 'next';
+import { parse } from 'node-html-parser';
+
+const handler = async (req: NextApiRequest, res: NextApiResponse<string>) => {
+  const mode = req.query.mode;
+
+  const newRoot = parse(`
+    <!DOCTYPE html>
+    <html lang="ko">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.5/dist/web/static/pretendard.css"
+        />
+        <style>
+          body {
+            margin: 16px;
+            font-family: Pretendard, -apple-system, BlinkMacSystemFont;
+            background-color: ${mode === 'dark' ? '#000' : '#fff'};
+          }
+
+          h3:first-child {
+            margin-top: 0;
+          }
+          
+          h3,
+          div {
+            color: ${mode === 'dark' ? '#fff' : '#000'};
+            line-height: 2;
+          }
+          
+          h3 {
+            font-size: 18px;
+          }
+          
+          div {
+            font-size: 16px;
+          }
+        </style>
+      </head>
+      <body>
+      </body>
+    </html>
+  `);
+
+  try {
+    const response = await fetch('https://m.mariasarang.net/page/missa.asp', {
+      headers: {
+        'Content-Type': 'text/plain; charset=euc-kr',
+      },
+    });
+
+    const buffer = await response.arrayBuffer();
+    const decoder = new TextDecoder('euc-kr');
+    const htmlText = decoder.decode(buffer);
+
+    const root = parse(htmlText);
+    const titles = root.querySelectorAll('.bd_tit');
+    const contents = root.querySelectorAll('.board_layout');
+
+    const body = newRoot.querySelector('body');
+    for (let i = 0; i < titles.length - 1; i++) {
+      body?.appendChild(titles[i]);
+      body?.appendChild(contents[i]);
+    }
+
+    res.setHeader('Content-Type', 'text/html; charset=UTF-8');
+    return res.status(200).send(newRoot.toString());
+  } catch (error) {
+    const body = newRoot.querySelector('body');
+    body?.appendChild(parse('<div>에러가 발생했습니다.</div>'));
+    return res.status(500).send(newRoot.toString());
+  }
+};
+
+export default handler;
