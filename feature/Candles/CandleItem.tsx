@@ -1,3 +1,4 @@
+import { keyframes } from '@emotion/react';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
@@ -19,6 +20,17 @@ type CandleItemProps = {
 
 export const CANDLE_WIDTH = 10 * 2;
 export const CANDLE_HEIGHT = 24 * 2;
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+`;
 
 const CandleItem: React.FC<CandleItemProps> = ({
   imageSrc,
@@ -66,6 +78,7 @@ const CandleItem: React.FC<CandleItemProps> = ({
           position: 'absolute',
           top: row * CANDLE_HEIGHT + rowOffset,
           left: column * CANDLE_WIDTH,
+          animation: `${fadeIn} 1s ease `,
         }}
         onMouseEnter={openTooltip}
         onClick={openTooltip}
