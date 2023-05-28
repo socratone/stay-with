@@ -7,7 +7,7 @@ import { blockNotLoggedIn } from 'utils/auth';
 import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
-type AggregatedLexioDivina = LexioDivina & {
+interface AggregatedLexioDivina extends LexioDivina {
   commentUserIds: string[];
   commentUsers: User[];
   comments: {
@@ -18,7 +18,7 @@ type AggregatedLexioDivina = LexioDivina & {
     message: string;
     createdAt: Date;
   }[];
-};
+}
 
 export type LexioDivinaData = {
   lexioDivina: AggregatedLexioDivina;
