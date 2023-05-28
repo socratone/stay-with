@@ -6,6 +6,7 @@
 
 - `/lexio-divinas` GET 묵상글 리스트 데이터
 - `/lexio-divinas` POST 묵상글 작성
+- `/lexio-divinas/count` GET 묵상글 리스트 count
 - `/lexio-divinas/{id}` GET 묵상글 데이터
 - `/lexio-divinas/{id}` PUT 묵상글 수정
 - `/lexio-divinas/{id}` DELETE 묵상글 삭제
@@ -13,6 +14,11 @@
 - `/lexio-divinas/{id}/comments/{id}` DELETE 묵상글의 댓글 삭제
 - `/lexio-divinas/{id}/likeds` POST 묵상글의 좋아요 추가
 - `/lexio-divinas/{id}/likeds/{id}` DELETE 묵상글의 좋아요 삭제
+- `/arrows` GET 화살기도 리스트 데이터
+- `/arrows` POST 화살기도 작성
+- `/arrows/count` GET 화살기도 리스트 count
+- `/arrows/{id}` PUT 화살기도 수정
+- `/arrows/{id}` DELETE 화살기도 삭제
 - `/login` POST 사용자 로그인
 - `/signup` POST 사용자 등록
 - `/users/{id}` GET 사용자 데이터
