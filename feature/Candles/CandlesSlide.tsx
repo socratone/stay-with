@@ -62,11 +62,15 @@ const CandlesSlide: React.FC<CandlesSlideProps> = ({
     data: arrowsData,
     isLoading: arrowsLoading,
     isError: arrowsError,
-  } = useArrows({
-    skip: (maxCount ?? 0) * (page - 1),
-    limit: maxCount ?? 0,
-    enabled: enabled && !!maxCount,
-  });
+  } = useArrows(
+    {
+      skip: (maxCount ?? 0) * (page - 1),
+      limit: maxCount ?? 0,
+    },
+    {
+      enabled: enabled && !!maxCount,
+    }
+  );
 
   const candles = arrowsData ? parseBoardToArrayWithCoordinate(board) : [];
 
