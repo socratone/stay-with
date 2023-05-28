@@ -3,7 +3,7 @@ import 'swiper/css';
 import Box from '@mui/material/Box';
 import useArrowsCount from 'hooks/api/useArrowsCount';
 import range from 'lodash/range';
-import { useRef, useState } from 'react';
+import { memo, useRef, useState } from 'react';
 import { Swiper, SwiperClass, SwiperSlide } from 'swiper/react';
 
 import CandlesSlide from './CandlesSlide';
@@ -68,4 +68,4 @@ const Candles: React.FC<CandlesProps> = ({ additionalCandles }) => {
   );
 };
 
-export default Candles;
+export default memo(Candles);
