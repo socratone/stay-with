@@ -1,3 +1,4 @@
+import { MongoError } from 'mongodb';
 import { NextApiResponse } from 'next';
 import { ValidationError } from 'yup';
 
@@ -6,6 +7,10 @@ export type ServerError = {
 };
 
 export const sendServerError = (res: NextApiResponse, error: any) => {
+  if (error instanceof MongoError) {
+    return res.status(500).send({ message: error.message });
+  }
+
   if (error instanceof ValidationError) {
     return res.status(400).send({ message: error.message });
   }

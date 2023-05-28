@@ -44,11 +44,7 @@ class Mongodb {
   }
 
   async close() {
-    try {
-      await this.client.close();
-    } catch {
-      // TODO: log
-    }
+    await this.client.close();
   }
 
   // https://www.mongodb.com/docs/drivers/node/current/usage-examples/find/#find-multiple-documents
@@ -56,31 +52,21 @@ class Mongodb {
     collectionName: CollectionName,
     params?: FindParams
   ): Promise<T> {
-    try {
-      const database = this.client.db(DB_NAME);
-      const collection = database.collection(collectionName);
-      const cursor = collection.find(params?.filter ?? {}, params?.options);
-      const documents: any = [];
-      await cursor.forEach((document) => {
-        documents.push(document);
-      });
-      return documents;
-    } catch (error: any) {
-      this.close();
-      throw new Error(`500: ${error?.message}`);
-    }
+    const database = this.client.db(DB_NAME);
+    const collection = database.collection(collectionName);
+    const cursor = collection.find(params?.filter ?? {}, params?.options);
+    const documents: any = [];
+    await cursor.forEach((document) => {
+      documents.push(document);
+    });
+    return documents;
   }
 
   // https://www.mongodb.com/docs/drivers/node/current/usage-examples/findOne/
   async findOne<T>(collectionName: CollectionName, filter: Filter<Document>) {
-    try {
-      const database = this.client.db(DB_NAME);
-      const collection = database.collection(collectionName);
-      return (await collection.findOne(filter)) as T | null;
-    } catch (error: any) {
-      this.close();
-      throw new Error(`500: ${error?.message}`);
-    }
+    const database = this.client.db(DB_NAME);
+    const collection = database.collection(collectionName);
+    return (await collection.findOne(filter)) as T | null;
   }
 
   async aggregate<T>(
@@ -88,19 +74,14 @@ class Mongodb {
     pipeline: Document[],
     params?: AggregateParams
   ) {
-    try {
-      const database = this.client.db(DB_NAME);
-      const collection = database.collection(collectionName);
-      const cursor = collection.aggregate(pipeline, params?.options);
-      const documents: any = [];
-      await cursor.forEach((document) => {
-        documents.push(document);
-      });
-      return documents as T;
-    } catch (error: any) {
-      this.close();
-      throw new Error(`500: ${error?.message}`);
-    }
+    const database = this.client.db(DB_NAME);
+    const collection = database.collection(collectionName);
+    const cursor = collection.aggregate(pipeline, params?.options);
+    const documents: any = [];
+    await cursor.forEach((document) => {
+      documents.push(document);
+    });
+    return documents as T;
   }
 
   // https://www.mongodb.com/docs/drivers/node/current/usage-examples/updateOne/
@@ -110,14 +91,9 @@ class Mongodb {
     update: UpdateFilter<Document> | Partial<Document>,
     params?: UpdateOneParams
   ) {
-    try {
-      const database = this.client.db(DB_NAME);
-      const collection = database.collection(collectionName);
-      return await collection.updateOne(filter, update, params?.options);
-    } catch (error: any) {
-      this.close();
-      throw new Error(`500: ${error?.message}`);
-    }
+    const database = this.client.db(DB_NAME);
+    const collection = database.collection(collectionName);
+    return await collection.updateOne(filter, update, params?.options);
   }
 
   async deleteOne(
@@ -125,14 +101,9 @@ class Mongodb {
     filter: Filter<Document>,
     params?: DeleteOneParams
   ) {
-    try {
-      const database = this.client.db(DB_NAME);
-      const collection = database.collection(collectionName);
-      return await collection.deleteOne(filter, params?.options);
-    } catch (error: any) {
-      this.close();
-      throw new Error(`500: ${error?.message}`);
-    }
+    const database = this.client.db(DB_NAME);
+    const collection = database.collection(collectionName);
+    return await collection.deleteOne(filter, params?.options);
   }
 
   async count(
@@ -140,15 +111,9 @@ class Mongodb {
     params?: CountParams
   ): Promise<number> {
     const options = params?.options;
-
-    try {
-      const database = this.client.db(DB_NAME);
-      const collection = database.collection(collectionName);
-      return await collection.estimatedDocumentCount(options);
-    } catch (error: any) {
-      this.close();
-      throw new Error(`500: ${error?.message}`);
-    }
+    const database = this.client.db(DB_NAME);
+    const collection = database.collection(collectionName);
+    return await collection.estimatedDocumentCount(options);
   }
 
   // https://www.mongodb.com/docs/drivers/node/current/usage-examples/insertOne/
@@ -156,38 +121,23 @@ class Mongodb {
     collectionName: CollectionName,
     document: OptionalId<Document>
   ) {
-    try {
-      const database = this.client.db(DB_NAME);
-      const collection = database.collection(collectionName);
-      return await collection.insertOne(document);
-    } catch (error: any) {
-      this.close();
-      throw new Error(`500: ${error?.message}`);
-    }
+    const database = this.client.db(DB_NAME);
+    const collection = database.collection(collectionName);
+    return await collection.insertOne(document);
   }
 
   // https://www.mongodb.com/docs/drivers/node/current/usage-examples/insertMany/
   async insertMany(collectionName: CollectionName, documents: Document[]) {
-    try {
-      const database = this.client.db(DB_NAME);
-      const collection = database.collection(collectionName);
-      return await collection.insertMany(documents);
-    } catch (error: any) {
-      this.close();
-      throw new Error(`500: ${error?.message}`);
-    }
+    const database = this.client.db(DB_NAME);
+    const collection = database.collection(collectionName);
+    return await collection.insertMany(documents);
   }
 
   // 💀 특별한 경우를 제외하고는 사용 금지
   async drop(collectionName: CollectionName) {
-    try {
-      const database = this.client.db(DB_NAME);
-      const collection = database.collection(collectionName);
-      return await collection.drop();
-    } catch (error: any) {
-      this.close();
-      throw new Error(`500: ${error?.message}`);
-    }
+    const database = this.client.db(DB_NAME);
+    const collection = database.collection(collectionName);
+    return await collection.drop();
   }
 }
 
