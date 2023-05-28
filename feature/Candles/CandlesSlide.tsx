@@ -54,6 +54,7 @@ const CandlesSlide: React.FC<CandlesSlideProps> = ({
 
   const [editDialog, setEditDialog] = useState<Dialog | null>(null);
   const [deleteDialog, setDeleteDialog] = useState<Dialog | null>(null);
+  const [selectedArrowId, setSelectedArrowId] = useState<string | null>(null);
 
   const [board, setBoard] = useState<(Candle | null)[][]>([]);
 
@@ -135,15 +136,21 @@ const CandlesSlide: React.FC<CandlesSlideProps> = ({
   };
 
   const handleEdit = (id?: string) => {
-    if (id) {
-      setEditDialog({ id });
-    }
+    if (!id) return;
+    setEditDialog({ id });
+    setSelectedArrowId(null);
   };
 
   const handleDelete = (id?: string) => {
-    if (id) {
-      setDeleteDialog({ id });
-    }
+    if (!id) return;
+    setDeleteDialog({ id });
+    setSelectedArrowId(null);
+  };
+
+  const handleTooltipOpenChange = (open: boolean, id?: string) => {
+    if (!id) return;
+    if (open) setSelectedArrowId(id);
+    else setSelectedArrowId(null);
   };
 
   return (
@@ -177,6 +184,10 @@ const CandlesSlide: React.FC<CandlesSlideProps> = ({
               isMyself={candle.userId === me?._id}
               onEdit={() => handleEdit(candle._id)}
               onDelete={() => handleDelete(candle._id)}
+              tooltipOpen={selectedArrowId === candle._id}
+              onTooltipOpenChange={(open) =>
+                handleTooltipOpenChange(open, candle._id)
+              }
             />
           ))
         )}

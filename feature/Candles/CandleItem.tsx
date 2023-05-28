@@ -25,6 +25,8 @@ type CandleItemProps = {
   isMyself: boolean;
   onEdit: () => void;
   onDelete: () => void;
+  tooltipOpen: boolean;
+  onTooltipOpenChange: (open: boolean) => void;
 };
 
 export const CANDLE_WIDTH = 10 * 2;
@@ -52,17 +54,9 @@ const CandleItem: React.FC<CandleItemProps> = ({
   isMyself,
   onEdit,
   onDelete,
+  tooltipOpen,
+  onTooltipOpenChange,
 }) => {
-  const [open, setOpen] = useState(false);
-
-  const closeTooltip = () => {
-    setOpen(false);
-  };
-
-  const openTooltip = () => {
-    setOpen(true);
-  };
-
   return (
     <Tooltip
       title={
@@ -73,7 +67,7 @@ const CandleItem: React.FC<CandleItemProps> = ({
             <IconButton
               size="small"
               sx={{ ml: 'auto', mr: -0.5 }}
-              onClick={closeTooltip}
+              onClick={() => onTooltipOpenChange(false)}
             >
               <CloseIcon fontSize="small" />
             </IconButton>
@@ -99,7 +93,7 @@ const CandleItem: React.FC<CandleItemProps> = ({
       }
       arrow
       TransitionComponent={Zoom}
-      open={open}
+      open={tooltipOpen}
       componentsProps={{
         tooltip: {
           sx: {
@@ -120,7 +114,7 @@ const CandleItem: React.FC<CandleItemProps> = ({
             transform: `scale(${generateRandomNumber(85, 100) * 0.01})`,
           },
         }}
-        onClick={openTooltip}
+        onClick={() => onTooltipOpenChange(true)}
       >
         <Image
           src={imageSrc}
