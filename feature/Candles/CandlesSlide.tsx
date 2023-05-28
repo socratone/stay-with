@@ -22,6 +22,7 @@ type CandlesSlideProps = {
   additionalCandles?: Candle[];
   index: number;
   maxCount?: number;
+  enabled: boolean;
 };
 
 const ROW_OFFSET = 0.5 * CANDLE_HEIGHT;
@@ -30,6 +31,7 @@ const CandlesSlide: React.FC<CandlesSlideProps> = ({
   additionalCandles = [],
   index,
   maxCount,
+  enabled,
 }) => {
   const divRef = useRef<HTMLDivElement>(null);
   const page = index + 1;
@@ -43,7 +45,7 @@ const CandlesSlide: React.FC<CandlesSlideProps> = ({
   } = useArrows({
     skip: (maxCount ?? 0) * (page - 1),
     limit: maxCount ?? 0,
-    enabled: !!maxCount,
+    enabled: enabled && !!maxCount,
   });
 
   const candles = arrowsData ? parseBoardToArrayWithCoordinate(board) : [];
