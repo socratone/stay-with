@@ -7,6 +7,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Zoom from '@mui/material/Zoom';
 import Image, { ImageProps } from 'next/image';
 import { useRef, useState } from 'react';
+import { generateRandomNumber } from 'utils/number';
 
 type CandleItemProps = {
   imageSrc: ImageProps['src'];
@@ -79,6 +80,9 @@ const CandleItem: React.FC<CandleItemProps> = ({
           top: row * CANDLE_HEIGHT + rowOffset,
           left: column * CANDLE_WIDTH,
           animation: `${fadeIn} 1s ease `,
+          img: {
+            transform: `scale(${generateRandomNumber(85, 100) * 0.01})`,
+          },
         }}
         onMouseEnter={openTooltip}
         onClick={openTooltip}
