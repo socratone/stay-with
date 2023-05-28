@@ -8,6 +8,7 @@ import ClickAwayListener from '@mui/material/ClickAwayListener';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 import Zoom from '@mui/material/Zoom';
 import Image, { ImageProps } from 'next/image';
 import { useRef, useState } from 'react';
@@ -68,16 +69,20 @@ const CandleItem: React.FC<CandleItemProps> = ({
     <ClickAwayListener onClickAway={closeTooltip}>
       <Tooltip
         title={
-          <Stack spacing={0.5}>
-            <Stack direction="row" alignItems="center" spacing={0.5}>
+          <Stack gap={0.5}>
+            <Stack direction="row" alignItems="center" spacing={0.75}>
               <Avatar src={profileUrl} sx={{ width: 24, height: 24 }} />
-              <Box component="p">{name}</Box>
+              <Typography variant="body2">{name}</Typography>
             </Stack>
-            <Box component="p" whiteSpace="pre-line">
+            <Typography
+              variant="body2"
+              whiteSpace="pre-line"
+              color={(theme) => theme.palette.text.secondary}
+            >
               {message}
-            </Box>
+            </Typography>
             {isMyself ? (
-              <Stack direction="row">
+              <Stack direction="row" mx={-0.5} mb={-0.5}>
                 <IconButton size="small" onClick={onEdit}>
                   <EditIcon fontSize="small" />
                 </IconButton>
@@ -91,6 +96,13 @@ const CandleItem: React.FC<CandleItemProps> = ({
         arrow
         TransitionComponent={Zoom}
         open={open}
+        componentsProps={{
+          tooltip: {
+            sx: {
+              p: 1,
+            },
+          },
+        }}
       >
         <ButtonBase
           ref={buttonRef}
