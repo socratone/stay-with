@@ -9,12 +9,14 @@ import {
 } from 'pages/api/login/kakao';
 import { UserPostResult } from 'pages/api/signup';
 import { UserData } from 'pages/api/users/[id]';
-import { ArrowPostPayload, UserPatchPayload, UserPostPayload } from 'schemas';
 import {
+  ArrowPostPayload,
   LexioDivinaCommentPostPayload,
   LexioDivinaPostPayload,
   LexioDivinaPutPayload,
-} from 'schemas/lexio-divina';
+  UserPatchPayload,
+  UserPostPayload,
+} from 'schemas';
 import { getAccessToken } from 'utils/token';
 
 const axiosInstance = axios.create({

@@ -1,8 +1,7 @@
 /* eslint-disable no-console */
 import * as dotenv from 'dotenv';
 import inquirer from 'inquirer';
-import { User } from 'schemas';
-import { LexioDivina } from 'schemas/lexio-divina';
+import { LexioDivina, User } from 'schemas';
 
 import { CollectionName } from '../constants/mongodb';
 import Mongodb from '../utils/mongodb';

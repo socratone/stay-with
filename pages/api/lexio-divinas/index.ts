@@ -1,8 +1,7 @@
 import { CollectionName } from 'constants/mongodb';
 import { Document, InsertOneResult, ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { User } from 'schemas';
-import { LexioDivina, lexioDivinaPostSchema } from 'schemas/lexio-divina';
+import { LexioDivina, lexioDivinaPostSchema, User } from 'schemas';
 import { blockNotLoggedIn } from 'utils/auth';
 import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';

@@ -1,4 +1,4 @@
-import { LexioDivina, LexioDivinaComment } from 'schemas/lexio-divina';
+import { LexioDivina, LexioDivinaComment } from 'schemas';
 
 type Validation = {
   minLength?: number;
