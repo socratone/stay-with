@@ -48,7 +48,7 @@ const EditDialog: React.FC<EditDialogProps> = ({
         },
       }}
     >
-      <DialogTitle id="alert-dialog-title" sx={{ p: 2 }}>
+      <DialogTitle id="edit-dialog-title" sx={{ p: 2 }}>
         {title}
       </DialogTitle>
       <DialogContent sx={{ px: 2, py: 0 }}>

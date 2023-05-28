@@ -7,7 +7,9 @@ import { blockNotLoggedIn } from 'utils/auth';
 import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
-export interface LexioDivinaData extends AggregatedLexioDivina {
+type AggregatedLexioDivina = LexioDivina & {
+  commentUserIds: string[];
+  commentUsers: User[];
   comments: {
     _id: string;
     userId: string;
@@ -16,12 +18,11 @@ export interface LexioDivinaData extends AggregatedLexioDivina {
     message: string;
     createdAt: Date;
   }[];
-}
+};
 
-interface AggregatedLexioDivina extends LexioDivina {
-  commentUserIds: string[];
-  commentUsers: User[];
-}
+export type LexioDivinaData = {
+  lexioDivina: AggregatedLexioDivina;
+};
 
 type UsersObject = {
   [userId: string]: {
@@ -113,7 +114,7 @@ const handler = async (
       const editedLexioDivina = { ...lexioDivina, comments };
 
       db.close();
-      return res.status(200).json(editedLexioDivina);
+      return res.status(200).json({ lexioDivina: editedLexioDivina });
     } catch (error) {
       sendServerError(res, error);
     }
