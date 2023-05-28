@@ -26,8 +26,8 @@ type LexioDivinaCardProps = {
   bible: Bible;
   chapter: number;
   verse: number;
-  endChapter: number;
-  endVerse: number;
+  endChapter?: number;
+  endVerse?: number;
   content: string;
   isLiked: boolean;
   isMine: boolean;
@@ -103,7 +103,7 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
   };
 
   const getChipLabel = () => {
-    if (!endChapter && !endVerse) {
+    if (!endChapter || !endVerse) {
       return `${BIBLE_LABEL[bible]} ${chapter},${verse}`;
     }
 

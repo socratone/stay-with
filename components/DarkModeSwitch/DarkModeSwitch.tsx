@@ -5,6 +5,7 @@ import * as React from 'react';
 
 type DarkModeSwitchProps = {
   checked: boolean;
+  disabled?: boolean;
   onClick: () => void;
   sx?: SxProps;
 };
@@ -37,11 +38,12 @@ const MoonIcon = () => (
 
 const DarkModeSwitch: React.FC<DarkModeSwitchProps> = ({
   checked,
+  disabled,
   onClick,
   sx,
 }) => {
   return (
-    <IconButton size="small" onClick={onClick} sx={sx}>
+    <IconButton size="small" disabled={disabled} onClick={onClick} sx={sx}>
       {checked ? <MoonIcon /> : <SunIcon />}
     </IconButton>
   );

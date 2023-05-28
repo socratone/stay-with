@@ -60,7 +60,7 @@ const LexioDivinaEdit = () => {
   useEffect(() => {
     if (lexioDivinaData && !temp) {
       const { phrase, bible, chapter, verse, content, endChapter, endVerse } =
-        lexioDivinaData;
+        lexioDivinaData.lexioDivina;
 
       let values: LexioDivinaFormValues = {
         phrase,
@@ -93,7 +93,7 @@ const LexioDivinaEdit = () => {
     router.back();
   };
 
-  const onSubmit: SubmitHandler<LexioDivinaFormValues> = async ({
+  const handleSubmit: SubmitHandler<LexioDivinaFormValues> = async ({
     bible,
     content,
     phrase,
@@ -113,8 +113,8 @@ const LexioDivinaEdit = () => {
         phrase,
         chapter: Number(chapter),
         verse: Number(verse),
-        endChapter: endChapter ? Number(endChapter) : 0,
-        endVerse: endVerse ? Number(endVerse) : 0,
+        endChapter: endChapter ? Number(endChapter) : undefined,
+        endVerse: endVerse ? Number(endVerse) : undefined,
       };
 
       await putLexioDivina(lexioId, payload);
@@ -167,7 +167,7 @@ const LexioDivinaEdit = () => {
   }
 
   // 사용자가 작성한 글이 아닌 경우
-  if (lexioDivinaData.userId !== user._id) {
+  if (lexioDivinaData.lexioDivina.userId !== user._id) {
     return (
       <Box
         display="flex"
@@ -214,10 +214,10 @@ const LexioDivinaEdit = () => {
               <LexioDivinaForm
                 form={form}
                 isRequested={isRequested}
-                defaultIsExpanded={!!lexioDivinaData.endChapter}
+                defaultIsExpanded={!!lexioDivinaData.lexioDivina.endChapter}
                 contentRows={15}
                 onCancel={handleCancel}
-                onSubmit={onSubmit}
+                onSubmit={handleSubmit}
               />
             </Box>
           ) : null}
@@ -229,10 +229,10 @@ const LexioDivinaEdit = () => {
           <LexioDivinaForm
             form={form}
             isRequested={isRequested}
-            defaultIsExpanded={!!lexioDivinaData.endChapter}
+            defaultIsExpanded={!!lexioDivinaData.lexioDivina.endChapter}
             contentRows={2}
             onCancel={handleCancel}
-            onSubmit={onSubmit}
+            onSubmit={handleSubmit}
           />
         </LexioDivinaBottomSheet>
       ) : null}

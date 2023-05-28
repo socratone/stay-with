@@ -37,7 +37,7 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({ id, onClose }) => {
     isLoading,
     refetch,
   } = useLexioDivina(id);
-  const comments = lexioDivinaData?.comments ?? [];
+  const comments = lexioDivinaData?.lexioDivina.comments ?? [];
 
   const [commentValue, setCommentValue] = useState('');
   const [selectedCommentId, setSelectedCommentId] = useState<string | null>(

@@ -1,33 +1,28 @@
 import { CollectionName } from 'constants/mongodb';
 import { ObjectId, UpdateResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { LexioDivinaComment } from 'types/document';
-import { ApiErrorData, isLoggedIn } from 'utils/auth';
+import { lexioDivinaCommentPostSchema } from 'schemas';
+import { blockNotLoggedIn } from 'utils/auth';
+import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
-export type ApiCommentPayload = Omit<LexioDivinaComment, '_id'>;
-
-type ApiCommentResultData = UpdateResult;
+type CommentPostResult = UpdateResult;
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<ApiCommentResultData | ApiErrorData>
+  res: NextApiResponse<CommentPostResult | ServerError>
 ) => {
   const id = String(req.query.id);
-  const payload: ApiCommentPayload = req.body;
+  const validatedComment = await lexioDivinaCommentPostSchema.validate(
+    req.body
+  );
 
   if (req.method === 'POST') {
-    const accessToken = req.headers.authorization;
-
-    if (!isLoggedIn(accessToken)) {
-      return res.status(401).json({
-        message: 'Unauthorized.',
-      });
-    }
-
-    const db = new Mongodb();
-
     try {
+      const accessToken = req.headers.authorization;
+      blockNotLoggedIn(accessToken);
+
+      const db = new Mongodb();
       const result = await db.updateOne(
         CollectionName.LexioDivinas,
         { _id: new ObjectId(id) },
@@ -36,8 +31,8 @@ const handler = async (
           $addToSet: {
             comments: {
               _id: new ObjectId(),
-              userId: new ObjectId(payload.userId),
-              message: payload.message,
+              userId: new ObjectId(validatedComment.userId),
+              message: validatedComment.message,
             },
           },
         }
@@ -46,8 +41,7 @@ const handler = async (
       db.close();
       return res.status(201).json(result);
     } catch (error) {
-      const { status, message } = Mongodb.parseError(error);
-      return res.status(status).send({ message });
+      return sendServerError(res, error);
     }
   }
 };

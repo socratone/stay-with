@@ -59,7 +59,7 @@ const LexioDivinaCreate = () => {
     router.back();
   };
 
-  const onSubmit: SubmitHandler<LexioDivinaFormValues> = async ({
+  const handleSubmit: SubmitHandler<LexioDivinaFormValues> = async ({
     bible,
     content,
     phrase,
@@ -79,8 +79,8 @@ const LexioDivinaCreate = () => {
         phrase,
         chapter: Number(chapter),
         verse: Number(verse),
-        endChapter: endChapter ? Number(endChapter) : 0,
-        endVerse: endVerse ? Number(endVerse) : 0,
+        endChapter: endChapter ? Number(endChapter) : undefined,
+        endVerse: endVerse ? Number(endVerse) : undefined,
       };
 
       await postLexioDivina({
@@ -157,7 +157,7 @@ const LexioDivinaCreate = () => {
                 isRequested={isRequested}
                 contentRows={15}
                 onCancel={handleCancel}
-                onSubmit={onSubmit}
+                onSubmit={handleSubmit}
               />
             </Box>
           ) : null}
@@ -171,7 +171,7 @@ const LexioDivinaCreate = () => {
             isRequested={isRequested}
             contentRows={2}
             onCancel={handleCancel}
-            onSubmit={onSubmit}
+            onSubmit={handleSubmit}
           />
         </LexioDivinaBottomSheet>
       ) : null}

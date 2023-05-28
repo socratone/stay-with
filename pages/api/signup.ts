@@ -1,38 +1,35 @@
 import { CollectionName } from 'constants/mongodb';
 import { InsertOneResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { User } from 'types/document';
-import { ApiErrorData } from 'utils/auth';
+import { userPostSchema } from 'schemas';
+import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
-export type ApiSignUpPayload = Omit<User, '_id'>;
-
-export type ApiSignUpData = InsertOneResult<Document>;
+export type UserPostResult = InsertOneResult<Document>;
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<ApiSignUpData | ApiErrorData>
+  res: NextApiResponse<UserPostResult | ServerError>
 ) => {
-  const payload: ApiSignUpPayload = req.body;
+  const db = new Mongodb();
 
   if (req.method === 'POST') {
-    const db = new Mongodb();
-
     try {
+      const validatedUser = await userPostSchema.validate(req.body);
+
       const duplicateNameUser = await db.findOne(CollectionName.Users, {
-        name: payload.name,
+        name: validatedUser.name,
       });
 
       if (duplicateNameUser) {
         return res.status(409).send({ message: 'Duplicate name.' });
       }
 
-      const result = await db.insertOne(CollectionName.Users, req.body);
+      const result = await db.insertOne(CollectionName.Users, validatedUser);
       db.close();
       return res.status(201).json(result);
     } catch (error) {
-      const { status, message } = Mongodb.parseError(error);
-      return res.status(status).send({ message });
+      sendServerError(res, error);
     }
   }
 };

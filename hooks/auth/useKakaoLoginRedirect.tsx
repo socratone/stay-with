@@ -1,7 +1,7 @@
 import { postLoginWithKakao } from 'helpers/axios';
 import useAuth from 'hooks/auth/useAuth';
 import { useRouter } from 'next/router';
-import { ApiLoginKakaoErrorData } from 'pages/api/login/kakao';
+import { KakaoLoginError } from 'pages/api/login/kakao';
 import { useEffect, useRef, useState } from 'react';
 
 const useKakaoLoginRedirect = (code: string) => {
@@ -21,7 +21,7 @@ const useKakaoLoginRedirect = (code: string) => {
         router.replace('/');
       } catch (error: any) {
         const status = error?.response?.status;
-        const kakaoUser: ApiLoginKakaoErrorData['kakaoUser'] =
+        const kakaoUser: KakaoLoginError['kakaoUser'] =
           error?.response?.data?.kakaoUser;
 
         // 앱에 아이디를 생성하지 않은 경우 -> 카카오 기본 정보를 포함하여 아이디 생성 페이지로 이동

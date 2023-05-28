@@ -2,15 +2,15 @@ import axios, { AxiosResponse } from 'axios';
 import { CollectionName } from 'constants/mongodb';
 import jwt from 'jsonwebtoken';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { User } from 'types/document';
-import { ApiErrorData } from 'utils/auth';
+import { User } from 'schemas';
+import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
-export type ApiLoginKakaoPayload = {
+export type KakaoLoginPostPayload = {
   code: string;
 };
 
-export type ApiLoginKakaoData = {
+export type KakaoLoginPostResult = {
   accessToken: string;
 };
 
@@ -36,18 +36,18 @@ type KakaoUser = {
   };
 };
 
-export type ApiLoginKakaoErrorData = ApiErrorData & {
+export type KakaoLoginError = ServerError & {
   kakaoUser?: KakaoUser;
 };
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<ApiLoginKakaoData | ApiLoginKakaoErrorData>
+  res: NextApiResponse<KakaoLoginPostResult | KakaoLoginError>
 ) => {
   if (req.method === 'POST') {
     let kakaoAccessToken: string;
 
-    const { code }: ApiLoginKakaoPayload = req.body;
+    const { code }: KakaoLoginPostPayload = req.body;
 
     try {
       const { data: authData } = await axios.post<{ access_token: string }>(
@@ -74,9 +74,7 @@ const handler = async (
         });
       }
 
-      return res.status(500).json({
-        message: 'Unknown error.',
-      });
+      return sendServerError(res, error);
     }
 
     const db = new Mongodb();
@@ -118,8 +116,7 @@ const handler = async (
         });
       }
 
-      const { status, message } = Mongodb.parseError(error);
-      return res.status(status).send({ message });
+      return sendServerError(res, error);
     }
   }
 };

@@ -16,9 +16,13 @@ import EnvChip from './EnvChip';
 import GlobalHeaderDrawer from './GlobalHeaderDrawer';
 import HeaderLink from './HeaderLink';
 
+type GlobalHeaderProps = {
+  dark?: true;
+};
+
 export const GLOBAL_HEADER_HEIGHT = 50;
 
-const GlobalHeader = () => {
+const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark }) => {
   const router = useRouter();
 
   const { user } = useAuth();
@@ -40,55 +44,63 @@ const GlobalHeader = () => {
     <>
       <Box
         component="header"
-        display="flex"
-        justifyContent="space-between"
-        boxShadow={PRIMARY_SHADOW}
-        height={GLOBAL_HEADER_HEIGHT}
-        px={2}
         sx={{
           position: 'sticky',
           top: 0,
           zIndex: 10,
-          bgcolor: (theme) => theme.palette.background.default,
+          bgcolor: (theme) =>
+            dark ? '#000' : theme.palette.background.default,
         }}
       >
-        <Box display="flex" alignItems="center" ml={-1}>
-          <IconButton onClick={openMenu}>
-            <MenuIcon />
-          </IconButton>
-        </Box>
-        <Box display="flex" alignItems="center" height="100%" gap={1}>
-          {user ? (
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          boxShadow={PRIMARY_SHADOW}
+          height={GLOBAL_HEADER_HEIGHT}
+          px={2}
+        >
+          <Box display="flex" alignItems="center" ml={-1}>
             <IconButton
-              size="small"
-              onClick={() => router.push('/lexio-divinas/create')}
-              sx={{ mr: -1 }}
+              onClick={openMenu}
+              sx={{ color: dark ? '#fff' : undefined }}
             >
-              <AddIcon />
+              <MenuIcon />
             </IconButton>
-          ) : null}
-          <DarkModeSwitch
-            checked={colorMode === 'dark'}
-            onClick={toggleColorMode}
-          />
-          {user ? (
-            <ButtonBase
-              onClick={handleAvatarClick}
-              sx={{ borderRadius: '50%' }}
-            >
-              <Avatar
-                sx={{ width: 32, height: 32 }}
-                src={user?.imageUrl ?? undefined}
+          </Box>
+          <Box display="flex" alignItems="center" height="100%" gap={1}>
+            {user ? (
+              <IconButton
+                size="small"
+                onClick={() => router.push('/lexio-divinas/create')}
+                sx={{ mr: -1, color: dark ? '#fff' : undefined }}
               >
-                {user.name[0]}
-              </Avatar>
-            </ButtonBase>
-          ) : (
-            <HeaderLink href="/login">Login</HeaderLink>
-          )}
-        </Box>
+                <AddIcon />
+              </IconButton>
+            ) : null}
+            <DarkModeSwitch
+              checked={dark ? dark : colorMode === 'dark'}
+              disabled={dark}
+              onClick={toggleColorMode}
+            />
+            {user ? (
+              <ButtonBase
+                onClick={handleAvatarClick}
+                sx={{ borderRadius: '50%' }}
+              >
+                <Avatar
+                  sx={{ width: 32, height: 32 }}
+                  src={user?.imageUrl ?? undefined}
+                >
+                  {user.name[0]}
+                </Avatar>
+              </ButtonBase>
+            ) : (
+              <HeaderLink href="/login">Login</HeaderLink>
+            )}
+          </Box>
 
-        <EnvChip />
+          <EnvChip />
+        </Box>
       </Box>
 
       <GlobalHeaderDrawer

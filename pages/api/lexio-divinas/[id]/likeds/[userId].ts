@@ -1,30 +1,25 @@
 import { CollectionName } from 'constants/mongodb';
 import { ObjectId, UpdateResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { ApiErrorData, isLoggedIn } from 'utils/auth';
+import { blockNotLoggedIn } from 'utils/auth';
+import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
 type ApiDeleteLikedResultData = UpdateResult;
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<ApiDeleteLikedResultData | ApiErrorData>
+  res: NextApiResponse<ApiDeleteLikedResultData | ServerError>
 ) => {
   const id = String(req.query.id);
   const userId = String(req.query.userId);
 
-  const accessToken = req.headers.authorization;
-
-  if (!isLoggedIn(accessToken)) {
-    return res.status(401).json({
-      message: 'Unauthorized.',
-    });
-  }
-
   if (req.method === 'DELETE') {
-    const db = new Mongodb();
-
     try {
+      const accessToken = req.headers.authorization;
+      blockNotLoggedIn(accessToken);
+
+      const db = new Mongodb();
       const result = await db.updateOne(
         CollectionName.LexioDivinas,
         { _id: new ObjectId(id) },
@@ -39,8 +34,7 @@ const handler = async (
       db.close();
       return res.status(200).json(result);
     } catch (error) {
-      const { status, message } = Mongodb.parseError(error);
-      return res.status(status).send({ message });
+      return sendServerError(res, error);
     }
   }
 };

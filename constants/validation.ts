@@ -1,4 +1,4 @@
-import { LexioDivina, LexioDivinaComment } from 'types/document';
+import { LexioDivina, LexioDivinaComment } from 'schemas';
 
 type Validation = {
   minLength?: number;
@@ -13,6 +13,9 @@ type LexioDivinaCommentValidation = {
   [Key in keyof Omit<LexioDivinaComment, '_id'>]+?: Validation;
 };
 
+/**
+ * @deprecated
+ */
 export const LEXIO_DIVINA_VALIDATION = {
   phrase: {
     maxLength: 300,
@@ -20,6 +23,9 @@ export const LEXIO_DIVINA_VALIDATION = {
   content: { minLength: 10, maxLength: 3000 },
 } satisfies LexioDivinaValidation;
 
+/**
+ * @deprecated
+ */
 export const LEXIO_DIVINA_COMMENT_VALIDATION = {
   message: {
     maxLength: 300,

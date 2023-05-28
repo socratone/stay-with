@@ -2,16 +2,14 @@ import { CollectionName } from 'constants/mongodb';
 import jwtDecode from 'jwt-decode';
 import { DeleteResult, ObjectId, UpdateResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { LexioDivina, User } from 'types/document';
-import { ApiErrorData, isLoggedIn } from 'utils/auth';
+import { LexioDivina, lexioDivinaPutSchema, User } from 'schemas';
+import { blockNotLoggedIn } from 'utils/auth';
+import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
-export type ApiPutLexioDivinaPayload = Omit<
-  LexioDivina,
-  '_id' | 'userId' | 'likedUserIds' | 'comments'
->;
-
-export interface ApiLexioDivinaData extends AggregatedLexioDivina {
+interface AggregatedLexioDivina extends LexioDivina {
+  commentUserIds: string[];
+  commentUsers: User[];
   comments: {
     _id: string;
     userId: string;
@@ -22,10 +20,9 @@ export interface ApiLexioDivinaData extends AggregatedLexioDivina {
   }[];
 }
 
-interface AggregatedLexioDivina extends LexioDivina {
-  commentUserIds: string[];
-  commentUsers: User[];
-}
+export type LexioDivinaData = {
+  lexioDivina: AggregatedLexioDivina;
+};
 
 type UsersObject = {
   [userId: string]: {
@@ -34,21 +31,23 @@ type UsersObject = {
   };
 };
 
-type ApiPutResultData = UpdateResult;
+type LexioDivinaPutResult = UpdateResult;
 
-type ApiDeleteResultData = DeleteResult;
+type LexioDivinaDeleteResult = DeleteResult;
 
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<
-    ApiLexioDivinaData | ApiPutResultData | ApiDeleteResultData | ApiErrorData
+    | LexioDivinaData
+    | LexioDivinaPutResult
+    | LexioDivinaDeleteResult
+    | ServerError
   >
 ) => {
   const id = String(req.query.id);
+  const db = new Mongodb();
 
   if (req.method === 'GET') {
-    const db = new Mongodb();
-
     try {
       const [lexioDivina] = await db.aggregate<AggregatedLexioDivina[]>(
         CollectionName.LexioDivinas,
@@ -115,25 +114,16 @@ const handler = async (
       const editedLexioDivina = { ...lexioDivina, comments };
 
       db.close();
-      return res.status(200).json(editedLexioDivina);
+      return res.status(200).json({ lexioDivina: editedLexioDivina });
     } catch (error) {
-      const { status, message } = Mongodb.parseError(error);
-      return res.status(status).send({ message });
+      sendServerError(res, error);
     }
   }
 
-  const payload: ApiPutLexioDivinaPayload = req.body;
-  const accessToken = req.headers.authorization;
-
-  if (!isLoggedIn(accessToken)) {
-    return res.status(401).json({
-      message: 'Unauthorized.',
-    });
-  }
-
-  const db = new Mongodb();
-
   try {
+    const accessToken = req.headers.authorization;
+    blockNotLoggedIn(accessToken);
+
     const user: User = jwtDecode(accessToken as string);
 
     const lexioDivina = await db.findOne<LexioDivina>(
@@ -155,31 +145,28 @@ const handler = async (
       });
     }
   } catch (error: any) {
-    if (error?.name === 'InvalidTokenError') {
-      return res.status(500).json({ message: 'Invalid token error.' });
-    }
-
-    const { status, message } = Mongodb.parseError(error);
-    return res.status(status).send({ message });
+    sendServerError(res, error);
   }
 
   if (req.method === 'PUT') {
     try {
+      const validatedLexioDivina = await lexioDivinaPutSchema.validate(
+        req.body
+      );
       const result = await db.updateOne(
         CollectionName.LexioDivinas,
         {
           _id: new ObjectId(id),
         },
         {
-          $set: payload,
+          $set: validatedLexioDivina,
         }
       );
 
       db.close();
       return res.status(200).json(result);
     } catch (error) {
-      const { status, message } = Mongodb.parseError(error);
-      return res.status(status).send({ message });
+      return sendServerError(res, error);
     }
   }
 
@@ -191,8 +178,7 @@ const handler = async (
       db.close();
       return res.status(200).json(result);
     } catch (error) {
-      const { status, message } = Mongodb.parseError(error);
-      return res.status(status).send({ message });
+      return sendServerError(res, error);
     }
   }
 };

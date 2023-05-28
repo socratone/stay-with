@@ -1,24 +1,20 @@
 import { CollectionName } from 'constants/mongodb';
 import { Document, InsertOneResult, ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { LexioDivina, User } from 'types/document';
-import { ApiErrorData, isLoggedIn } from 'utils/auth';
+import { LexioDivina, lexioDivinaPostSchema, User } from 'schemas';
+import { blockNotLoggedIn } from 'utils/auth';
+import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
-export type ApiLexioDivinaPayload = Omit<LexioDivina, '_id'>;
-
-export type ApiLexioDivinasData = {
+export type LexioDivinasData = {
   lexioDivinas: (LexioDivina & { user: User; createdAt: Date })[];
-  total: number;
 };
 
-export type ApiLexioDivinaResultData = InsertOneResult<Document>;
+type LexioDivinaPostResult = InsertOneResult<Document>;
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<
-    ApiLexioDivinasData | ApiLexioDivinaResultData | ApiErrorData
-  >
+  res: NextApiResponse<LexioDivinasData | LexioDivinaPostResult | ServerError>
 ) => {
   if (req.method === 'GET') {
     const db = new Mongodb();
@@ -71,51 +67,35 @@ const handler = async (
 
     try {
       // https://stackoverflow.com/questions/69978663/get-data-from-another-collection-string-objectid
-      const lexioDivinas = await db.aggregate<
-        ApiLexioDivinasData['lexioDivinas']
-      >(CollectionName.LexioDivinas, filteredPipeline);
-
-      let total = 0;
-
-      // FIXME: 리소스 문제로 삭제
-      if (userId) {
-        const result = await db.find<any[]>(CollectionName.LexioDivinas, {
-          filter: { userId: new ObjectId(userId) },
-        });
-        total = result.length;
-      } else {
-        total = await db.count(CollectionName.LexioDivinas);
-      }
+      const lexioDivinas = await db.aggregate<LexioDivinasData['lexioDivinas']>(
+        CollectionName.LexioDivinas,
+        filteredPipeline
+      );
 
       db.close();
-      return res.status(200).json({ lexioDivinas, total });
+      return res.status(200).json({ lexioDivinas });
     } catch (error) {
-      const { status, message } = Mongodb.parseError(error);
-      return res.status(status).send({ message });
+      return sendServerError(res, error);
     }
   }
 
   if (req.method === 'POST') {
-    const accessToken = req.headers.authorization;
-
-    if (!isLoggedIn(accessToken)) {
-      return res.status(401).json({
-        message: 'Unauthorized.',
-      });
-    }
-
     try {
+      const accessToken = req.headers.authorization;
+      blockNotLoggedIn(accessToken);
+
       const db = new Mongodb();
-      const userId = req.body.userId;
+      const validatedUser = await lexioDivinaPostSchema.validate(req.body);
+      const userId = validatedUser.userId;
       const result = await db.insertOne(CollectionName.LexioDivinas, {
-        ...req.body,
+        ...validatedUser,
         userId: new ObjectId(userId),
       });
+
       db.close();
       return res.status(201).json(result);
     } catch (error) {
-      const { status, message } = Mongodb.parseError(error);
-      return res.status(status).send({ message });
+      return sendServerError(res, error);
     }
   }
 };

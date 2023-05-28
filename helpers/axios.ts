@@ -1,17 +1,26 @@
 import axios, { AxiosResponse } from 'axios';
+import { ArrowsData } from 'pages/api/arrows';
+import { ArrowData } from 'pages/api/arrows/[id]';
+import { ArrowsCountData } from 'pages/api/arrows/count';
+import { LexioDivinasData } from 'pages/api/lexio-divinas';
+import { LexioDivinaData } from 'pages/api/lexio-divinas/[id]';
+import { LexioDivinaLikedPostPayload } from 'pages/api/lexio-divinas/[id]/likeds/index';
+import { LexioDivinasCountData } from 'pages/api/lexio-divinas/count';
 import {
-  ApiLexioDivinaPayload,
-  ApiLexioDivinasData,
-} from 'pages/api/lexio-divinas';
+  KakaoLoginPostPayload,
+  KakaoLoginPostResult,
+} from 'pages/api/login/kakao';
+import { UserPostResult } from 'pages/api/signup';
+import { UserData } from 'pages/api/users/[id]';
 import {
-  ApiLexioDivinaData,
-  ApiPutLexioDivinaPayload,
-} from 'pages/api/lexio-divinas/[id]';
-import { ApiCommentPayload } from 'pages/api/lexio-divinas/[id]/comments';
-import { ApiLikedPayload } from 'pages/api/lexio-divinas/[id]/likeds/index';
-import { ApiLoginKakaoData, ApiLoginKakaoPayload } from 'pages/api/login/kakao';
-import { ApiSignUpData, ApiSignUpPayload } from 'pages/api/signup';
-import { ApiPatchUserPayload, ApiUserData } from 'pages/api/users/[id]';
+  ArrowPostPayload,
+  ArrowPutPayload,
+  LexioDivinaCommentPostPayload,
+  LexioDivinaPostPayload,
+  LexioDivinaPutPayload,
+  UserPatchPayload,
+  UserPostPayload,
+} from 'schemas';
 import { getAccessToken } from 'utils/token';
 
 const axiosInstance = axios.create({
@@ -46,10 +55,10 @@ axiosInstance.interceptors.response.use(
 );
 
 export const postSignUp = (
-  payload: ApiSignUpPayload
-): Promise<ApiSignUpData> => {
+  payload: UserPostPayload
+): Promise<UserPostResult> => {
   return axiosInstance
-    .post<any, AxiosResponse<ApiSignUpData>, ApiSignUpPayload>(
+    .post<any, AxiosResponse<UserPostResult>, UserPostPayload>(
       '/api/signup',
       payload
     )
@@ -58,7 +67,7 @@ export const postSignUp = (
 
 export const postLoginWithKakao = (code: string) => {
   return axiosInstance
-    .post<any, AxiosResponse<ApiLoginKakaoData>, ApiLoginKakaoPayload>(
+    .post<any, AxiosResponse<KakaoLoginPostResult>, KakaoLoginPostPayload>(
       '/api/login/kakao',
       {
         code,
@@ -67,18 +76,15 @@ export const postLoginWithKakao = (code: string) => {
     .then((response) => response.data);
 };
 
-export const postLexioDivina = (payload: ApiLexioDivinaPayload) => {
-  return axiosInstance.post<any, AxiosResponse, ApiLexioDivinaPayload>(
+export const postLexioDivina = (payload: LexioDivinaPostPayload) => {
+  return axiosInstance.post<any, AxiosResponse, LexioDivinaPostPayload>(
     '/api/lexio-divinas',
     payload
   );
 };
 
-export const putLexioDivina = (
-  id: string,
-  payload: ApiPutLexioDivinaPayload
-) => {
-  return axiosInstance.put<any, AxiosResponse, ApiPutLexioDivinaPayload>(
+export const putLexioDivina = (id: string, payload: LexioDivinaPutPayload) => {
+  return axiosInstance.put<any, AxiosResponse, LexioDivinaPutPayload>(
     `/api/lexio-divinas/${id}`,
     payload
   );
@@ -90,9 +96,9 @@ export const deleteLexioDivina = (id: string) => {
 
 export const postLikedToLexioDivina = (
   id: string,
-  payload: ApiLikedPayload
+  payload: LexioDivinaLikedPostPayload
 ) => {
-  return axiosInstance.post<any, AxiosResponse, ApiLikedPayload>(
+  return axiosInstance.post<any, AxiosResponse, LexioDivinaLikedPostPayload>(
     `/api/lexio-divinas/${id}/likeds`,
     payload
   );
@@ -104,9 +110,9 @@ export const deleteLikedInLexioDivina = (id: string, userId: string) => {
 
 export const postCommentToLexioDivina = (
   id: string,
-  payload: ApiCommentPayload
+  payload: LexioDivinaCommentPostPayload
 ) => {
-  return axiosInstance.post<any, AxiosResponse, ApiCommentPayload>(
+  return axiosInstance.post<any, AxiosResponse, LexioDivinaCommentPostPayload>(
     `/api/lexio-divinas/${id}/comments`,
     payload
   );
@@ -118,9 +124,9 @@ export const deleteCommentInLexioDivina = (id: string, commentId: string) => {
   );
 };
 
-export const getLexioDivina = (id: string): Promise<ApiLexioDivinaData> => {
+export const getLexioDivina = (id: string): Promise<LexioDivinaData> => {
   return axiosInstance
-    .get<any, AxiosResponse<ApiLexioDivinaData>>(`/api/lexio-divinas/${id}`)
+    .get<any, AxiosResponse<LexioDivinaData>>(`/api/lexio-divinas/${id}`)
     .then((value) => value.data);
 };
 
@@ -132,23 +138,92 @@ export type GetLexioDivinasParams = {
 
 export const getLexioDivinas = (
   params?: GetLexioDivinasParams
-): Promise<ApiLexioDivinasData> => {
+): Promise<LexioDivinasData> => {
   return axiosInstance
-    .get<any, AxiosResponse<ApiLexioDivinasData>>('/api/lexio-divinas', {
+    .get<any, AxiosResponse<LexioDivinasData>>('/api/lexio-divinas', {
       params,
     })
     .then((value) => value.data);
 };
 
-export const getUser = (id: string): Promise<ApiUserData> => {
+export type GetLexioDivinasCountParams = {
+  userId?: string;
+};
+
+export const getLexioDivinasCount = (
+  params?: GetLexioDivinasCountParams
+): Promise<LexioDivinasCountData> => {
   return axiosInstance
-    .get<any, AxiosResponse<ApiUserData>>(`/api/users/${id}`)
+    .get<any, AxiosResponse<LexioDivinasCountData>>(
+      '/api/lexio-divinas/count',
+      {
+        params,
+      }
+    )
     .then((value) => value.data);
 };
 
-export const patchUser = (id: string, payload: ApiPatchUserPayload) => {
-  return axiosInstance.patch<any, AxiosResponse, ApiPatchUserPayload>(
+export const getUser = (id: string): Promise<UserData> => {
+  return axiosInstance
+    .get<any, AxiosResponse<UserData>>(`/api/users/${id}`)
+    .then((value) => value.data);
+};
+
+export const patchUser = (id: string, payload: UserPatchPayload) => {
+  return axiosInstance.patch<any, AxiosResponse, UserPatchPayload>(
     `/api/users/${id}`,
+    payload
+  );
+};
+
+export type GetArrowsParams = {
+  skip: number;
+  limit: number;
+  userId?: string;
+};
+
+export const getArrows = (params?: GetArrowsParams): Promise<ArrowsData> => {
+  return axiosInstance
+    .get<any, AxiosResponse<ArrowsData>>('/api/arrows', {
+      params,
+    })
+    .then((value) => value.data);
+};
+
+export const getArrow = (id: string): Promise<ArrowData> => {
+  return axiosInstance
+    .get<any, AxiosResponse<ArrowData>>(`/api/arrows/${id}`)
+    .then((value) => value.data);
+};
+
+export type GetArrowsCountParams = {
+  userId?: string;
+};
+
+export const getArrowsCount = (
+  params?: GetArrowsCountParams
+): Promise<ArrowsCountData> => {
+  return axiosInstance
+    .get<any, AxiosResponse<ArrowsCountData>>('/api/arrows/count', {
+      params,
+    })
+    .then((value) => value.data);
+};
+
+export const postArrow = (payload: ArrowPostPayload) => {
+  return axiosInstance.post<any, AxiosResponse, ArrowPostPayload>(
+    '/api/arrows',
+    payload
+  );
+};
+
+export const deleteArrow = (id: string) => {
+  return axiosInstance.delete(`/api/arrows/${id}`);
+};
+
+export const putArrow = (id: string, payload: ArrowPutPayload) => {
+  return axiosInstance.put<any, AxiosResponse, ArrowPutPayload>(
+    `/api/arrows/${id}`,
     payload
   );
 };
