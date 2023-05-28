@@ -1,7 +1,11 @@
 import { keyframes } from '@emotion/react';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
 import Zoom from '@mui/material/Zoom';
@@ -17,6 +21,9 @@ type CandleItemProps = {
   message: string;
   name?: string;
   profileUrl?: string;
+  isMyself: boolean;
+  onEdit: () => void;
+  onDelete: () => void;
 };
 
 export const CANDLE_WIDTH = 10 * 2;
@@ -41,6 +48,9 @@ const CandleItem: React.FC<CandleItemProps> = ({
   message,
   name,
   profileUrl,
+  isMyself,
+  onEdit,
+  onDelete,
 }) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
@@ -55,50 +65,60 @@ const CandleItem: React.FC<CandleItemProps> = ({
   };
 
   return (
-    <Tooltip
-      title={
-        <Stack spacing={0.5}>
-          <Stack direction="row" alignItems="center" spacing={0.5}>
-            <Avatar src={profileUrl} sx={{ width: 24, height: 24 }} />
-            <Box component="p">{name}</Box>
+    <ClickAwayListener onClickAway={closeTooltip}>
+      <Tooltip
+        title={
+          <Stack spacing={0.5}>
+            <Stack direction="row" alignItems="center" spacing={0.5}>
+              <Avatar src={profileUrl} sx={{ width: 24, height: 24 }} />
+              <Box component="p">{name}</Box>
+            </Stack>
+            <Box component="p" whiteSpace="pre-line">
+              {message}
+            </Box>
+            {isMyself ? (
+              <Stack direction="row">
+                <IconButton size="small" onClick={onEdit}>
+                  <EditIcon fontSize="small" />
+                </IconButton>
+                <IconButton size="small" onClick={onDelete}>
+                  <DeleteIcon fontSize="small" />
+                </IconButton>
+              </Stack>
+            ) : null}
           </Stack>
-          <Box component="p" whiteSpace="pre-line">
-            {message}
-          </Box>
-        </Stack>
-      }
-      arrow
-      TransitionComponent={Zoom}
-      open={open}
-    >
-      <ButtonBase
-        ref={buttonRef}
-        sx={{
-          width: CANDLE_WIDTH,
-          height: CANDLE_HEIGHT,
-          position: 'absolute',
-          top: row * CANDLE_HEIGHT + rowOffset,
-          left: column * CANDLE_WIDTH,
-          animation: `${fadeIn} 1s ease `,
-          img: {
-            transform: `scale(${generateRandomNumber(85, 100) * 0.01})`,
-          },
-        }}
-        onMouseEnter={openTooltip}
-        onClick={openTooltip}
-        onBlur={closeTooltip}
+        }
+        arrow
+        TransitionComponent={Zoom}
+        open={open}
       >
-        <Image
-          src={imageSrc}
-          alt="small candle"
-          width={CANDLE_WIDTH}
-          height={CANDLE_HEIGHT}
-          style={{
-            objectFit: 'contain',
+        <ButtonBase
+          ref={buttonRef}
+          sx={{
+            width: CANDLE_WIDTH,
+            height: CANDLE_HEIGHT,
+            position: 'absolute',
+            top: row * CANDLE_HEIGHT + rowOffset,
+            left: column * CANDLE_WIDTH,
+            animation: `${fadeIn} 1s ease `,
+            img: {
+              transform: `scale(${generateRandomNumber(85, 100) * 0.01})`,
+            },
           }}
-        />
-      </ButtonBase>
-    </Tooltip>
+          onClick={openTooltip}
+        >
+          <Image
+            src={imageSrc}
+            alt="small candle"
+            width={CANDLE_WIDTH}
+            height={CANDLE_HEIGHT}
+            style={{
+              objectFit: 'contain',
+            }}
+          />
+        </ButtonBase>
+      </Tooltip>
+    </ClickAwayListener>
   );
 };
 
