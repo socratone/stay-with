@@ -27,15 +27,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<string>) => {
           
           h3,
           div {
-            color: ${mode === 'dark' ? '#fff' : '#000'};
-            line-height: 2;
+            line-height: 1.5;
           }
           
           h3 {
+            color: ${mode === 'dark' ? '#e0e0e0' : '#212121'};
             font-size: 18px;
           }
           
           div {
+            color: ${mode === 'dark' ? '#bdbdbd' : '#757575'};
             font-size: 16px;
           }
         </style>
