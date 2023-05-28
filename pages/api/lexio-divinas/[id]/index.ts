@@ -147,10 +147,6 @@ const handler = async (
       });
     }
   } catch (error: any) {
-    if (error?.name === 'InvalidTokenError') {
-      return res.status(500).json({ message: 'Invalid token error.' });
-    }
-
     sendServerError(res, error);
   }
 

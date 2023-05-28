@@ -7,6 +7,10 @@ export type ServerError = {
 };
 
 export const sendServerError = (res: NextApiResponse, error: any) => {
+  if (error?.name === 'InvalidTokenError') {
+    return res.status(500).json({ message: 'Invalid token error.' });
+  }
+
   if (error instanceof MongoError) {
     return res.status(500).send({ message: error.message });
   }
