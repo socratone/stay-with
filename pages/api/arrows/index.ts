@@ -1,7 +1,7 @@
 import { CollectionName } from 'constants/mongodb';
 import { Document, InsertOneResult, ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { Arrow, User } from 'schemas';
+import { Arrow, arrowPostSchema, User } from 'schemas';
 import { blockNotLoggedIn } from 'utils/auth';
 import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
@@ -85,9 +85,10 @@ const handler = async (
       blockNotLoggedIn(accessToken);
 
       const db = new Mongodb();
+      const validatedArrow = await arrowPostSchema.validate(req.body);
       const userId = req.body.userId;
       const result = await db.insertOne(CollectionName.Arrows, {
-        ...req.body, // TODO: 각 값 validation 처리
+        ...validatedArrow,
         userId: new ObjectId(userId),
       });
       db.close();
