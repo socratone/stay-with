@@ -62,9 +62,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<string>) => {
     const contents = root.querySelectorAll('.board_layout');
 
     const body = newRoot.querySelector('body');
+
+    // filter
     for (let i = 0; i < titles.length - 1; i++) {
-      body?.appendChild(titles[i]);
-      body?.appendChild(contents[i]);
+      const titleText = titles[i].childNodes?.[0].innerText;
+      if (
+        titleText === '제1독서' ||
+        titleText === '제2독서' ||
+        titleText === '복음'
+      ) {
+        body?.appendChild(titles[i]);
+        body?.appendChild(contents[i]);
+      }
     }
 
     res.setHeader('Content-Type', 'text/html; charset=UTF-8');
