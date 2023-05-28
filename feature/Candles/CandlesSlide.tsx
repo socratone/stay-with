@@ -13,23 +13,23 @@ import {
   parseBoardToArrayWithCoordinate,
 } from 'utils/board';
 
-import CandleItem, { CANDLE_HEIGHT, CANDLE_WIDTH } from './CandleItem';
+import CandleItem, { CANDLE_HEIGHT } from './CandleItem';
 import { getRandomCandleImageSrc } from './helpers';
 import { Candle } from './types';
+import useCandlesRowColumnCount from './useCandlesRowColumnCount';
 
 type CandlesSlideProps = {
   additionalCandles?: Candle[];
   index: number;
-  resizedCount: number;
+  maxCount?: number;
 };
 
-const COUNT_PER_SLIDE = 50;
 const ROW_OFFSET = 0.5 * CANDLE_HEIGHT;
 
 const CandlesSlide: React.FC<CandlesSlideProps> = ({
   additionalCandles = [],
   index,
-  resizedCount,
+  maxCount,
 }) => {
   const divRef = useRef<HTMLDivElement>(null);
   const page = index + 1;
@@ -41,28 +41,23 @@ const CandlesSlide: React.FC<CandlesSlideProps> = ({
     isLoading: arrowsLoading,
     isError: arrowsError,
   } = useArrows({
-    skip: COUNT_PER_SLIDE * (page - 1),
-    limit: COUNT_PER_SLIDE,
+    skip: (maxCount ?? 0) * (page - 1),
+    limit: maxCount ?? 0,
+    enabled: !!maxCount,
   });
 
   const candles = arrowsData ? parseBoardToArrayWithCoordinate(board) : [];
 
-  // data를 받아서 board에 넣는다.
+  const { rowCount, columnCount } = useCandlesRowColumnCount({ ref: divRef });
+
   useEffect(() => {
-    const screen = divRef.current;
-
-    if (screen && arrowsData) {
-      const screenWidth = screen.offsetWidth;
-      // ROW_OFFSET을 넣은 이유는 offset된 candle item이 bottom을 overflow하지 않도록
-      const screenHeight = screen.offsetHeight - ROW_OFFSET;
-      const columnColunt = Math.floor(screenWidth / CANDLE_WIDTH);
-      const rowColunt = Math.floor(screenHeight / CANDLE_HEIGHT);
-
-      const board = createEmptyBoard(rowColunt, columnColunt);
+    if (arrowsData && rowCount && columnCount) {
+      // data를 받아서 board에 넣는다.
+      const board = createEmptyBoard(rowCount, columnCount);
       assignValues(board, arrowsData.arrows);
       setBoard(board);
     }
-  }, [arrowsData, resizedCount]);
+  }, [rowCount, columnCount, arrowsData]);
 
   // message를 입력하여 candle이 추가되면 board에 넣는다.
   useEffect(() => {
