@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { ArrowsData } from 'pages/api/arrows';
+import { ArrowsCountData } from 'pages/api/arrows/count';
 import { LexioDivinasData } from 'pages/api/lexio-divinas';
 import { LexioDivinaData } from 'pages/api/lexio-divinas/[id]';
 import { LexioDivinaLikedPostPayload } from 'pages/api/lexio-divinas/[id]/likeds/index';
@@ -182,6 +183,20 @@ export type GetArrowsParams = {
 export const getArrows = (params?: GetArrowsParams): Promise<ArrowsData> => {
   return axiosInstance
     .get<any, AxiosResponse<ArrowsData>>('/api/arrows', {
+      params,
+    })
+    .then((value) => value.data);
+};
+
+export type GetArrowsCountParams = {
+  userId?: string;
+};
+
+export const getArrowsCount = (
+  params?: GetArrowsCountParams
+): Promise<ArrowsCountData> => {
+  return axiosInstance
+    .get<any, AxiosResponse<ArrowsCountData>>('/api/arrows/count', {
       params,
     })
     .then((value) => value.data);

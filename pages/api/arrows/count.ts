@@ -1,27 +1,21 @@
 import { CollectionName } from 'constants/mongodb';
 import { Document, InsertOneResult, ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { Arrow, User } from 'schemas';
-import { blockNotLoggedIn } from 'utils/auth';
 import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
-export type ArrowsData = {
-  arrows: (Arrow & { user: User; createdAt: Date })[];
+export type ArrowsCountData = {
+  count: number;
 };
 
 export type ArrowPostResult = InsertOneResult<Document>;
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<ArrowsData | ArrowPostResult | ServerError>
+  res: NextApiResponse<ArrowsCountData | ServerError>
 ) => {
   if (req.method === 'GET') {
     const db = new Mongodb();
-    const skip =
-      typeof req.query?.skip === 'string' ? Number(req.query.skip) : null;
-    const limit =
-      typeof req.query?.limit === 'string' ? Number(req.query.limit) : 100; // 제한값
     const userId =
       typeof req.query?.userId === 'string' ? req.query.userId : null;
 
@@ -39,20 +33,11 @@ const handler = async (
       {
         $unwind: '$user',
       },
+      // https://www.mongodb.com/docs/manual/reference/operator/aggregation/group/#count-the-number-of-documents-in-a-collection
       {
-        $sort: {
-          _id: -1,
-        },
-      },
-      {
-        $skip: skip,
-      },
-      {
-        $limit: limit,
-      },
-      {
-        $addFields: {
-          createdAt: { $toDate: '$_id' },
+        $group: {
+          _id: null,
+          count: { $count: {} },
         },
       },
     ];
@@ -67,31 +52,13 @@ const handler = async (
 
     try {
       // https://stackoverflow.com/questions/69978663/get-data-from-another-collection-string-objectid
-      const arrows = await db.aggregate<ArrowsData['arrows']>(
+      const [{ count }] = await db.aggregate<ArrowsCountData[]>(
         CollectionName.Arrows,
         filteredPipeline
       );
 
       db.close();
-      return res.status(200).json({ arrows });
-    } catch (error) {
-      return sendServerError(res, error);
-    }
-  }
-
-  if (req.method === 'POST') {
-    try {
-      const accessToken = req.headers.authorization;
-      blockNotLoggedIn(accessToken);
-
-      const db = new Mongodb();
-      const userId = req.body.userId;
-      const result = await db.insertOne(CollectionName.Arrows, {
-        ...req.body, // TODO: 각 값 validation 처리
-        userId: new ObjectId(userId),
-      });
-      db.close();
-      return res.status(201).json(result);
+      return res.status(200).json({ count });
     } catch (error) {
       return sendServerError(res, error);
     }
