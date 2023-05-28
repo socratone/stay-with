@@ -3,6 +3,7 @@ import { ArrowsData } from 'pages/api/arrows';
 import { LexioDivinasData } from 'pages/api/lexio-divinas';
 import { LexioDivinaData } from 'pages/api/lexio-divinas/[id]';
 import { LexioDivinaLikedPostPayload } from 'pages/api/lexio-divinas/[id]/likeds/index';
+import { LexioDivinasCountData } from 'pages/api/lexio-divinas/count';
 import {
   KakaoLoginPostPayload,
   KakaoLoginPostResult,
@@ -139,6 +140,23 @@ export const getLexioDivinas = (
     .get<any, AxiosResponse<LexioDivinasData>>('/api/lexio-divinas', {
       params,
     })
+    .then((value) => value.data);
+};
+
+export type GetLexioDivinasCountParams = {
+  userId?: string;
+};
+
+export const getLexioDivinasCount = (
+  params?: GetLexioDivinasCountParams
+): Promise<LexioDivinasCountData> => {
+  return axiosInstance
+    .get<any, AxiosResponse<LexioDivinasCountData>>(
+      '/api/lexio-divinas/count',
+      {
+        params,
+      }
+    )
     .then((value) => value.data);
 };
 

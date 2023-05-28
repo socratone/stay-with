@@ -8,7 +8,6 @@ import Mongodb from 'utils/mongodb';
 
 export type LexioDivinasData = {
   lexioDivinas: (LexioDivina & { user: User; createdAt: Date })[];
-  total: number;
 };
 
 type LexioDivinaPostResult = InsertOneResult<Document>;
@@ -73,20 +72,8 @@ const handler = async (
         filteredPipeline
       );
 
-      let total = 0;
-
-      // FIXME: 리소스 문제로 삭제
-      if (userId) {
-        const result = await db.find<any[]>(CollectionName.LexioDivinas, {
-          filter: { userId: new ObjectId(userId) },
-        });
-        total = result.length;
-      } else {
-        total = await db.count(CollectionName.LexioDivinas);
-      }
-
       db.close();
-      return res.status(200).json({ lexioDivinas, total });
+      return res.status(200).json({ lexioDivinas });
     } catch (error) {
       return sendServerError(res, error);
     }

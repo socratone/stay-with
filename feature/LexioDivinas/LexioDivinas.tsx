@@ -15,6 +15,9 @@ import {
 import useLexioDivinas, {
   LEXIO_DIVINAS_QUERY_KEY,
 } from 'hooks/api/useLexioDivinas';
+import useLexioDivinasCount, {
+  LEXIO_DIVINAS_COUNT_QUERY_KEY,
+} from 'hooks/api/useLexioDivinasCount';
 import useAuth from 'hooks/auth/useAuth';
 import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
@@ -54,6 +57,10 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
     userId: fetchOptions?.userId,
   });
 
+  const { data: lexioDivinasCountData } = useLexioDivinasCount({
+    userId: fetchOptions?.userId,
+  });
+
   const lexioDivinas = lexioDivinasData?.lexioDivinas ?? [];
 
   const handleEdit = (id: string) => {
@@ -69,6 +76,9 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
     try {
       await deleteLexioDivina(lexioDivinaId);
       queryClient.invalidateQueries({ queryKey: [LEXIO_DIVINAS_QUERY_KEY] });
+      queryClient.invalidateQueries({
+        queryKey: [LEXIO_DIVINAS_COUNT_QUERY_KEY],
+      });
     } catch (error) {
       enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
         variant: 'error',
@@ -197,12 +207,12 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
         </Masonry>
 
         <Box display="flex" justifyContent="center">
-          {(lexioDivinasData?.total ?? 0) <= ITEM_COUNT_PER_PAGE ? null : (
+          {(lexioDivinasCountData?.count ?? 0) <= ITEM_COUNT_PER_PAGE ? null : (
             <Pagination
               page={page}
               onChange={(_, page) => handlePageChange(page)}
               count={Math.ceil(
-                Number(lexioDivinasData?.total) / ITEM_COUNT_PER_PAGE
+                Number(lexioDivinasCountData?.count) / ITEM_COUNT_PER_PAGE
               )}
             />
           )}
