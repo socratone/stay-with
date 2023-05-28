@@ -44,10 +44,9 @@ const handler = async (
   >
 ) => {
   const id = String(req.query.id);
+  const db = new Mongodb();
 
   if (req.method === 'GET') {
-    const db = new Mongodb();
-
     try {
       const [lexioDivina] = await db.aggregate<AggregatedLexioDivina[]>(
         CollectionName.LexioDivinas,
@@ -119,8 +118,6 @@ const handler = async (
       sendServerError(res, error);
     }
   }
-
-  const db = new Mongodb();
 
   try {
     const accessToken = req.headers.authorization;
