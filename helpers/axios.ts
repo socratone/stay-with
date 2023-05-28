@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { ArrowsData } from 'pages/api/arrows';
+import { ArrowData } from 'pages/api/arrows/[id]';
 import { ArrowsCountData } from 'pages/api/arrows/count';
 import { LexioDivinasData } from 'pages/api/lexio-divinas';
 import { LexioDivinaData } from 'pages/api/lexio-divinas/[id]';
@@ -13,6 +14,7 @@ import { UserPostResult } from 'pages/api/signup';
 import { UserData } from 'pages/api/users/[id]';
 import {
   ArrowPostPayload,
+  ArrowPutPayload,
   LexioDivinaCommentPostPayload,
   LexioDivinaPostPayload,
   LexioDivinaPutPayload,
@@ -188,6 +190,12 @@ export const getArrows = (params?: GetArrowsParams): Promise<ArrowsData> => {
     .then((value) => value.data);
 };
 
+export const getArrow = (id: string): Promise<ArrowData> => {
+  return axiosInstance
+    .get<any, AxiosResponse<ArrowData>>(`/api/arrows/${id}`)
+    .then((value) => value.data);
+};
+
 export type GetArrowsCountParams = {
   userId?: string;
 };
@@ -205,6 +213,17 @@ export const getArrowsCount = (
 export const postArrow = (payload: ArrowPostPayload) => {
   return axiosInstance.post<any, AxiosResponse, ArrowPostPayload>(
     '/api/arrows',
+    payload
+  );
+};
+
+export const deleteArrow = (id: string) => {
+  return axiosInstance.delete(`/api/arrows/${id}`);
+};
+
+export const putArrow = (id: string, payload: ArrowPutPayload) => {
+  return axiosInstance.put<any, AxiosResponse, ArrowPutPayload>(
+    `/api/arrows/${id}`,
     payload
   );
 };
