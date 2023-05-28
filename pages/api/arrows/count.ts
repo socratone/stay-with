@@ -21,18 +21,6 @@ const handler = async (
 
     const pipeline: Document[] = [
       { $match: userId ? { userId: new ObjectId(userId) } : null },
-      {
-        // https://www.mongodb.com/docs/v6.0/reference/operator/aggregation/lookup/#syntax
-        $lookup: {
-          from: CollectionName.Users,
-          localField: 'userId',
-          foreignField: '_id',
-          as: 'user',
-        },
-      },
-      {
-        $unwind: '$user',
-      },
       // https://www.mongodb.com/docs/manual/reference/operator/aggregation/group/#count-the-number-of-documents-in-a-collection
       {
         $group: {
@@ -52,13 +40,12 @@ const handler = async (
 
     try {
       // https://stackoverflow.com/questions/69978663/get-data-from-another-collection-string-objectid
-      const [{ count }] = await db.aggregate<ArrowsCountData[]>(
-        CollectionName.Arrows,
-        filteredPipeline
-      );
+      const [ArrowsCountData] = await db.aggregate<
+        (ArrowsCountData | undefined)[]
+      >(CollectionName.Arrows, filteredPipeline);
 
       db.close();
-      return res.status(200).json({ count });
+      return res.status(200).json({ count: ArrowsCountData?.count ?? 0 });
     } catch (error) {
       return sendServerError(res, error);
     }
