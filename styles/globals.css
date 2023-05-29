@@ -11,8 +11,9 @@ body {
 }
 
 body {
-  height: 100vh;
   background-color: var(--background-color);
+  height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+  height: calc(var(--viewport-height, 1vh) * 100);
 }
 
 a {

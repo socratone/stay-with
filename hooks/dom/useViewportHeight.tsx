@@ -1,23 +1,18 @@
 import { useEffect } from 'react';
 
-type UseResizeListenerParams = {
-  onResize: () => void;
-  debounceTime?: number;
-};
-
-const useResizeListener = ({
-  onResize,
-  debounceTime = 250,
-}: UseResizeListenerParams) => {
+const useViewportHeight = () => {
   useEffect(() => {
     let timer: NodeJS.Timeout;
 
     const handleResize = () => {
       clearTimeout(timer);
-
       timer = setTimeout(() => {
-        onResize();
-      }, debounceTime);
+        const viewportHeight = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty(
+          '--viewport-height',
+          `${viewportHeight}px`
+        );
+      }, 200);
     };
 
     window.addEventListener('resize', handleResize);
@@ -26,8 +21,7 @@ const useResizeListener = ({
       clearTimeout(timer);
       window.removeEventListener('resize', handleResize);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debounceTime]);
+  }, []);
 };
 
-export default useResizeListener;
+export default useViewportHeight;

@@ -6,6 +6,7 @@ import ButtonBase from '@mui/material/ButtonBase';
 import IconButton from '@mui/material/IconButton';
 import DarkModeSwitch from 'components/DarkModeSwitch';
 import useAuth from 'hooks/auth/useAuth';
+import useViewportHeight from 'hooks/dom/useViewportHeight';
 import useColorMode from 'hooks/theme/useColorMode';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -27,6 +28,8 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark }) => {
 
   const { user } = useAuth();
   const { colorMode, toggleColorMode } = useColorMode();
+
+  useViewportHeight();
 
   const openMenu = () => {
     const mutatedUrl = addQuery(router.asPath, 'menu=true');
