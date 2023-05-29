@@ -39,6 +39,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<string>) => {
             color: ${mode === 'dark' ? '#bdbdbd' : '#757575'};
             font-size: 16px;
           }
+
+          div.bumper {
+            height: 50vh;
+          }
         </style>
       </head>
       <body>
@@ -75,6 +79,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<string>) => {
         body?.appendChild(contents[i]);
       }
     }
+
+    const bumper = parse('<div class="bumper"></div>');
+    body?.appendChild(bumper);
 
     res.setHeader('Content-Type', 'text/html; charset=UTF-8');
     return res.status(200).send(newRoot.toString());

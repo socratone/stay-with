@@ -3,7 +3,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
@@ -11,7 +10,6 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import Zoom from '@mui/material/Zoom';
 import Image, { ImageProps } from 'next/image';
-import { useRef, useState } from 'react';
 import { generateRandomNumber } from 'utils/number';
 
 type CandleItemProps = {
