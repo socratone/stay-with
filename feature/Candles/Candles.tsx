@@ -40,9 +40,6 @@ const Candles: React.FC<CandlesProps> = ({ additionalCandles }) => {
     <Box
       ref={divRef}
       flexGrow={1}
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
       sx={{
         bgcolor: '#000',
         position: 'relative',

@@ -59,7 +59,7 @@ const Arrows = () => {
 
   return (
     <DarkThemeProvider>
-      <Box height="100vh" display="flex" flexDirection="column">
+      <Box height="100%" display="flex" flexDirection="column">
         <Meta />
         <GlobalHeader dark />
         <Candles additionalCandles={additionalCandles} />

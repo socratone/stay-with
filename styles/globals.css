@@ -16,6 +16,10 @@ body {
   height: calc(var(--viewport-height, 1vh) * 100);
 }
 
+#__next {
+  height: 100%;
+}
+
 a {
   color: inherit;
   text-decoration: none;
