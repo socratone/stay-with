@@ -32,6 +32,7 @@ export default function Document() {
   return (
     <Html>
       <Head>
+        {/* pwa를 위해서 다크 모드일 때 theme-color를 '#000'으로 변경 */}
         <meta
           name="theme-color"
           content="#000"
