@@ -1,5 +1,9 @@
 import { useEffect } from 'react';
 
+/**
+ * 모바일 dynamic height 방지
+ * https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
+ */
 const useViewportHeight = () => {
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -15,6 +19,7 @@ const useViewportHeight = () => {
       }, 200);
     };
 
+    handleResize();
     window.addEventListener('resize', handleResize);
 
     return () => {
