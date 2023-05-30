@@ -13,6 +13,7 @@ import React from 'react';
 import { PRIMARY_SHADOW } from 'theme/shadows';
 import { addQuery, removeQuery } from 'utils/url';
 
+import { GLOBAL_HEADER_HEIGHT } from './constants';
 import EnvChip from './EnvChip';
 import GlobalHeaderDrawer from './GlobalHeaderDrawer';
 import HeaderLink from './HeaderLink';
@@ -20,8 +21,6 @@ import HeaderLink from './HeaderLink';
 type GlobalHeaderProps = {
   dark?: true;
 };
-
-export const GLOBAL_HEADER_HEIGHT = 50;
 
 const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark }) => {
   const router = useRouter();
