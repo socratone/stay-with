@@ -1,5 +1,5 @@
-import useResizeListener from 'hooks/dom/useResizeListener';
-import { RefObject, useEffect, useState } from 'react';
+import useResizeObserver from 'hooks/dom/useResizeObserver';
+import { RefObject, useState } from 'react';
 
 import { CANDLE_HEIGHT, CANDLE_WIDTH } from './CandleItem';
 
@@ -25,13 +25,8 @@ const useCandlesRowColumnCount = ({ ref }: UseCandlesRowColumnCountParams) => {
     }
   };
 
-  // init
-  useEffect(calculateCount, [ref]);
-
-  // when resized
-  useResizeListener({
-    onResize: calculateCount,
-  });
+  // Init and resized
+  useResizeObserver({ ref, onResize: calculateCount });
 
   return {
     rowCount,

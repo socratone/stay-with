@@ -5,6 +5,9 @@ type UseResizeListenerParams = {
   debounceTime?: number;
 };
 
+/**
+ * Window resize event
+ */
 const useResizeListener = ({
   onResize,
   debounceTime = 250,
