@@ -33,6 +33,7 @@ export default function Document() {
     <Html>
       <Head>
         <link rel="icon" href="/favicon.ico" />
+        <link rel="manifest" href="/manifest.json" />
         {/* pretendard font */}
         <link
           rel="stylesheet"
