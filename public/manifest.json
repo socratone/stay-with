@@ -1,11 +1,11 @@
 {
-  "name": "StayWith",
-  "short_name": "StayWith",
+  "name": "머무름",
+  "short_name": "머무름",
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#fff",
   "background_color": "#000",
-  "description": "A readable Hacker News app.",
+  "description": "머무름.",
   "icons": [
     {
       "src": "images/touch/candle-icon-48.png",
