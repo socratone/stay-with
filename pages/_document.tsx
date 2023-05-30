@@ -32,6 +32,11 @@ export default function Document() {
   return (
     <Html>
       <Head>
+        <meta
+          name="theme-color"
+          content="#000"
+          media="(prefers-color-scheme: dark)"
+        />
         <link rel="icon" href="/favicon.ico" />
         <link rel="manifest" href="/manifest.json" />
         {/* pretendard font */}
