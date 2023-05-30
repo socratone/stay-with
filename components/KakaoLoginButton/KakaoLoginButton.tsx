@@ -26,8 +26,8 @@ const KakaoLoginButton: React.FC<KakaoLoginButtonProps> = ({ onClick }) => {
     <ButtonBase
       onClick={onClick}
       sx={{
-        bgcolor: '#fee502',
-        color: '#1a1a1c',
+        bgcolor: (theme) => theme.palette.kakao.main,
+        color: (theme) => theme.palette.kakao.contrastText,
         borderRadius: 2,
         paddingX: 4,
         paddingY: 1.5,

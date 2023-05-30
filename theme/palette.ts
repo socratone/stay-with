@@ -9,6 +9,7 @@ export const lightPalette: PaletteOptions = {
     primary: grey[900],
     secondary: grey[600],
   },
+  kakao: { main: '#fee502', contrastText: '#1a1a1c' },
 };
 
 export const darkPalette: PaletteOptions = {
@@ -19,4 +20,5 @@ export const darkPalette: PaletteOptions = {
     primary: grey[300],
     secondary: grey[400],
   },
+  kakao: { main: '#f2d00f', contrastText: '#1a1a1c' },
 };

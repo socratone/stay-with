@@ -14,9 +14,11 @@ import { saveValue } from 'utils/persist';
 declare module '@mui/material/styles/createPalette' {
   interface Palette {
     paper?: Palette['primary'];
+    kakao: SimplePaletteColorOptions;
   }
   interface PaletteOptions {
     paper?: PaletteOptions['primary'];
+    kakao: SimplePaletteColorOptions;
   }
 }
 
