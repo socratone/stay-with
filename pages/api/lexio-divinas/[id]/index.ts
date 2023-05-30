@@ -82,7 +82,7 @@ const handler = async (
 
       if (!lexioDivina) {
         db.close();
-        return res.status(404).json({ message: 'Not found.' });
+        return res.status(404).json({ error: { message: 'Not found.' } });
       }
 
       const commentUsers = lexioDivina.commentUsers;
@@ -135,13 +135,13 @@ const handler = async (
 
     if (!lexioDivina) {
       db.close();
-      return res.status(404).json({ message: 'Not found.' });
+      return res.status(404).json({ error: { message: 'Not found.' } });
     }
 
     if (user._id !== String(lexioDivina.userId)) {
       db.close();
       return res.status(400).json({
-        message: 'Not the author.',
+        error: { message: 'Not the author.' },
       });
     }
   } catch (error: any) {

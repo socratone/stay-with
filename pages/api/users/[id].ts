@@ -26,7 +26,7 @@ const handler = async (
       });
 
       if (!user) {
-        return res.status(404).json({ message: 'Not found.' });
+        return res.status(404).json({ error: { message: 'Not found.' } });
       }
 
       db.close();
@@ -44,7 +44,7 @@ const handler = async (
     if (id !== user._id) {
       db.close();
       return res.status(400).json({
-        message: 'Not yourself.',
+        error: { message: 'Not yourself.' },
       });
     }
 
@@ -61,7 +61,9 @@ const handler = async (
 
         // 중복된 이름이 존재하면서 내가 아닌 다른 유저의 이름인 경우
         if (duplicateNameUser && id !== duplicateNameUser._id.toString()) {
-          return res.status(409).send({ message: 'Duplicate name.' });
+          return res
+            .status(409)
+            .send({ error: { message: 'Duplicate name.' } });
         }
       }
 

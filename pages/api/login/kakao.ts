@@ -35,14 +35,16 @@ type KakaoUser = {
     email: string;
   };
 };
-
-export type KakaoLoginError = ServerError & {
-  kakaoUser?: KakaoUser;
-};
+export interface KakaoLoginError extends ServerError {
+  error: {
+    message: string;
+    kakaoUser: KakaoUser;
+  };
+}
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<KakaoLoginPostResult | KakaoLoginError>
+  res: NextApiResponse<KakaoLoginPostResult | ServerError | KakaoLoginError>
 ) => {
   if (req.method === 'POST') {
     let kakaoAccessToken: string;
@@ -70,7 +72,7 @@ const handler = async (
     } catch (error: any) {
       if (error?.response?.status === 400) {
         return res.status(400).json({
-          message: 'Bad request.',
+          error: { message: 'Bad request.' },
         });
       }
 
@@ -98,8 +100,10 @@ const handler = async (
       if (!user) {
         db.close();
         return res.status(401).json({
-          message: 'Unregistered user.',
-          kakaoUser,
+          error: {
+            message: 'Unregistered user.',
+            kakaoUser,
+          },
         });
       }
 
@@ -112,7 +116,7 @@ const handler = async (
     } catch (error: any) {
       if (error?.response?.status === 400) {
         return res.status(400).json({
-          message: 'Bad request.',
+          error: { message: 'Bad request.' },
         });
       }
 

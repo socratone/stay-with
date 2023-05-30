@@ -112,6 +112,7 @@ const CandleItem: React.FC<CandleItemProps> = ({
             transform: `scale(${generateRandomNumber(85, 100) * 0.01})`,
           },
         }}
+        disableRipple
         onClick={() => onTooltipOpenChange(true)}
       >
         <Image

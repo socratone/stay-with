@@ -21,8 +21,8 @@ const useKakaoLoginRedirect = (code: string) => {
         router.replace('/');
       } catch (error: any) {
         const status = error?.response?.status;
-        const kakaoUser: KakaoLoginError['kakaoUser'] =
-          error?.response?.data?.kakaoUser;
+        const kakaoUser: KakaoLoginError['error']['kakaoUser'] =
+          error?.response?.data?.error.kakaoUser;
 
         // 앱에 아이디를 생성하지 않은 경우 -> 카카오 기본 정보를 포함하여 아이디 생성 페이지로 이동
         if (status === 401 && kakaoUser) {

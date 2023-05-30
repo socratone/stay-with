@@ -30,7 +30,7 @@ const handler = async (
 
       if (!lexioDivina) {
         db.close();
-        return res.status(404).json({ message: 'Not found.' });
+        return res.status(404).json({ error: { message: 'Not found.' } });
       }
 
       const comment = lexioDivina.comments.find(

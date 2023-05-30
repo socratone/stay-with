@@ -3,25 +3,25 @@ import { NextApiResponse } from 'next';
 import { ValidationError } from 'yup';
 
 export type ServerError = {
-  message: string;
+  error: { message: string };
 };
 
 export const sendServerError = (res: NextApiResponse, error: any) => {
   if (error?.name === 'InvalidTokenError') {
-    return res.status(500).json({ message: 'Invalid token error.' });
+    return res.status(500).json({ error: { message: 'Invalid token error.' } });
   }
 
   if (error instanceof MongoError) {
-    return res.status(500).send({ message: error.message });
+    return res.status(500).send({ error: { message: error.message } });
   }
 
   if (error instanceof ValidationError) {
-    return res.status(400).send({ message: error.message });
+    return res.status(400).send({ error: { message: error.message } });
   }
 
   if (error?.message === 'Unauthorized.') {
-    return res.status(401).send({ message: 'Unauthorized.' });
+    return res.status(401).send({ error: { message: 'Unauthorized.' } });
   }
 
-  return res.status(500).send({ message: 'Internal server error.' });
+  return res.status(500).send({ error: { message: 'Internal server error.' } });
 };

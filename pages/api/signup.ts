@@ -22,7 +22,7 @@ const handler = async (
       });
 
       if (duplicateNameUser) {
-        return res.status(409).send({ message: 'Duplicate name.' });
+        return res.status(409).send({ error: { message: 'Duplicate name.' } });
       }
 
       const result = await db.insertOne(CollectionName.Users, validatedUser);

@@ -30,7 +30,7 @@ const handler = async (
 
       if (!arrow) {
         db.close();
-        return res.status(404).json({ message: 'Not found.' });
+        return res.status(404).json({ error: { message: 'Not found.' } });
       }
 
       db.close();
@@ -52,13 +52,13 @@ const handler = async (
 
     if (!arrow) {
       db.close();
-      return res.status(404).json({ message: 'Not found.' });
+      return res.status(404).json({ error: { message: 'Not found.' } });
     }
 
     if (user._id !== String(arrow.userId)) {
       db.close();
       return res.status(400).json({
-        message: 'Not the author.',
+        error: { message: 'Not the author.' },
       });
     }
   } catch (error: any) {
