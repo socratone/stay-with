@@ -154,3 +154,16 @@ Utils와는 조금 다르게 특정 프로젝트에만 사용하기 적합한 �
 
 - https://kofearticle.substack.com/p/korean-fe-article--08f
 - https://www.robinwieruch.de/react-folder-structure/
+
+## PWA
+
+- manifest.theme_color 앱 메뉴 color
+- meta 태그를 이용해서 dark mode일 때 theme_color 변경
+
+```tsx
+<meta name="theme-color" content="#000" media="(prefers-color-scheme: dark)" />
+```
+
+### 참고
+
+- https://web.dev/learn/pwa/web-app-manifest/
