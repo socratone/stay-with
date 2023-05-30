@@ -3,7 +3,7 @@ import AccessDeniedMessage from 'components/AccessDeniedMessage';
 import DailyMissa from 'components/DailyMissa/DailyMissa';
 import ErrorMessage from 'components/ErrorMessage/ErrorMessage';
 import GlobalHeader from 'components/GlobalHeader';
-import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/GlobalHeader';
+import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/constants';
 import LexioDivinaBottomSheet from 'components/LexioDivinaBottomSheet/LexioDivinaBottomSheet';
 import LexioDivinaForm, {
   LexioDivinaFormValues,
