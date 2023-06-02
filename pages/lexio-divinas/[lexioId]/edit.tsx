@@ -1,10 +1,8 @@
 import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 import AccessDeniedMessage from 'components/AccessDeniedMessage';
-import DailyMissa from 'components/DailyMissa/DailyMissa';
 import ErrorMessage from 'components/ErrorMessage/ErrorMessage';
 import GlobalHeader from 'components/GlobalHeader';
-import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/constants';
-import LexioDivinaBottomSheet from 'components/LexioDivinaBottomSheet/LexioDivinaBottomSheet';
 import LexioDivinaForm, {
   LexioDivinaFormValues,
 } from 'components/LexioDivinaForm/LexioDivinaForm';
@@ -17,7 +15,6 @@ import useLexioDivina from 'hooks/api/useLexioDivina';
 import useAuth from 'hooks/auth/useAuth';
 import useTempLexioDivina from 'hooks/form/useTempLexioDivina';
 import useTempLexioDivinaRecorder from 'hooks/form/useTempLexioDivinaRecorder';
-import useIsBreakpointsDown from 'hooks/theme/useIsBreakpointsDown';
 import useQueryString from 'hooks/url/useQueryString';
 import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
@@ -29,7 +26,6 @@ import { useMount } from 'react-use';
 const LexioDivinaEdit = () => {
   const { formatMessage } = useIntl();
   const router = useRouter();
-  const isMediumOrSmaller = useIsBreakpointsDown('md');
   const tempLexioDivina = useTempLexioDivina();
 
   const { temp } = useQueryString();
@@ -185,57 +181,16 @@ const LexioDivinaEdit = () => {
       <Meta />
       <GlobalHeader />
 
-      <Box component="main" height={`calc(100vh - ${GLOBAL_HEADER_HEIGHT}px)`}>
-        <Box
-          display="grid"
-          gridTemplateColumns={{
-            xs: '1fr',
-            sm: '1fr',
-            md: '1fr 1fr',
-          }}
-          height="100%"
-        >
-          {/* left */}
-          <Box>
-            <DailyMissa />
-          </Box>
-
-          {/* right */}
-          {!isMediumOrSmaller ? (
-            <Box
-              display="flex"
-              flexDirection="column"
-              gap={2}
-              sx={{
-                height: '100%',
-                overflowY: 'auto',
-              }}
-            >
-              <LexioDivinaForm
-                form={form}
-                isRequested={isRequested}
-                defaultIsExpanded={!!lexioDivinaData.lexioDivina.endChapter}
-                contentRows={15}
-                onCancel={handleCancel}
-                onSubmit={handleSubmit}
-              />
-            </Box>
-          ) : null}
-        </Box>
-      </Box>
-
-      {isMediumOrSmaller ? (
-        <LexioDivinaBottomSheet>
-          <LexioDivinaForm
-            form={form}
-            isRequested={isRequested}
-            defaultIsExpanded={!!lexioDivinaData.lexioDivina.endChapter}
-            contentRows={2}
-            onCancel={handleCancel}
-            onSubmit={handleSubmit}
-          />
-        </LexioDivinaBottomSheet>
-      ) : null}
+      <Container maxWidth="sm">
+        <LexioDivinaForm
+          form={form}
+          isRequested={isRequested}
+          defaultIsExpanded={!!lexioDivinaData.lexioDivina.endChapter}
+          contentRows={15}
+          onCancel={handleCancel}
+          onSubmit={handleSubmit}
+        />
+      </Container>
     </>
   );
 };

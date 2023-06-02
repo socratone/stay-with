@@ -1,4 +1,3 @@
-import CloseIcon from '@mui/icons-material/Close';
 import { SxProps } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import { useState } from 'react';
