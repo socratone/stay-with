@@ -1,9 +1,15 @@
 import 'react-spring-bottom-sheet/dist/style.css';
 
+import EditIcon from '@mui/icons-material/Edit';
+import IconButton from '@mui/material/IconButton';
 import { ColorMode } from 'contexts/ThemeProvider';
 import useColorMode from 'hooks/theme/useColorMode';
-import { useEffect } from 'react';
-import { BottomSheet, BottomSheetProps } from 'react-spring-bottom-sheet';
+import { useEffect, useRef, useState } from 'react';
+import {
+  BottomSheet,
+  BottomSheetProps,
+  BottomSheetRef,
+} from 'react-spring-bottom-sheet';
 
 type LexioDivinaBottomSheetProps = {
   defaultSnap?: BottomSheetProps['defaultSnap'];
@@ -12,7 +18,7 @@ type LexioDivinaBottomSheetProps = {
 };
 
 const LexioDivinaBottomSheet: React.FC<LexioDivinaBottomSheetProps> = ({
-  defaultSnap = 300,
+  defaultSnap = 20,
   snapPoints = ({ maxHeight }) => [
     (maxHeight / 10) * 9,
     (maxHeight / 10) * 8,
@@ -23,10 +29,21 @@ const LexioDivinaBottomSheet: React.FC<LexioDivinaBottomSheetProps> = ({
     (maxHeight / 10) * 3,
     300,
     110,
+    20,
   ],
   children,
 }) => {
   const { colorMode } = useColorMode();
+  const sheetRef = useRef<BottomSheetRef>(null);
+
+  const [touched, setTouched] = useState(false);
+
+  const handleEditIconClick = () => {
+    if (sheetRef.current) {
+      sheetRef.current.snapTo(300);
+      setTouched(true);
+    }
+  };
 
   useEffect(() => {
     const root = document.querySelector(':root') as any;
@@ -45,6 +62,7 @@ const LexioDivinaBottomSheet: React.FC<LexioDivinaBottomSheetProps> = ({
 
   return (
     <BottomSheet
+      ref={sheetRef}
       open
       defaultSnap={defaultSnap}
       snapPoints={snapPoints}
@@ -52,6 +70,26 @@ const LexioDivinaBottomSheet: React.FC<LexioDivinaBottomSheetProps> = ({
       blocking={false}
     >
       {children}
+      <IconButton
+        onClick={handleEditIconClick}
+        size="large"
+        sx={{
+          position: 'absolute',
+          bgcolor: (theme) => theme.palette.primary.main,
+          bottom: '100%',
+
+          right: (theme) => theme.spacing(2),
+          color: (theme) => theme.palette.primary.contrastText,
+          transform: (theme) =>
+            `translateY(${theme.spacing(touched ? 6 : -2)}) scale(${
+              touched ? 0 : 1
+            })`,
+          opacity: touched ? 0 : 1,
+          transition: 'all .3s ease',
+        }}
+      >
+        <EditIcon />
+      </IconButton>
     </BottomSheet>
   );
 };
