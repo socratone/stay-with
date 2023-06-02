@@ -42,6 +42,7 @@ const VideoPlayer = () => {
         visibility: open ? 'visible' : 'hidden',
         borderRadius: 3,
         overflow: 'hidden',
+        zIndex: 100,
       }}
     >
       {touched ? (
