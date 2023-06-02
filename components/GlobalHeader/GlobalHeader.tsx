@@ -47,8 +47,10 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark }) => {
       <Box
         component="header"
         sx={{
-          position: 'sticky',
+          position: 'fixed',
+          width: '100%',
           top: 0,
+          left: 0,
           zIndex: 10,
           bgcolor: (theme) =>
             dark ? '#000' : theme.palette.background.default,
@@ -104,6 +106,15 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark }) => {
           <EnvChip />
         </Box>
       </Box>
+
+      {/* bumper */}
+      <Box
+        height={GLOBAL_HEADER_HEIGHT}
+        sx={{
+          bgcolor: (theme) =>
+            dark ? '#000' : theme.palette.background.default,
+        }}
+      />
 
       <GlobalHeaderDrawer
         open={typeof router.query?.menu === 'string'}

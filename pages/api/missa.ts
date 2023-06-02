@@ -41,7 +41,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<string>) => {
           }
 
           div.bumper {
-            height: 50vh;
+            height: 100px;
           }
         </style>
       </head>
