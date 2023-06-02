@@ -1,15 +1,19 @@
 import AddIcon from '@mui/icons-material/Add';
 import MenuIcon from '@mui/icons-material/Menu';
+import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
 import DarkModeSwitch from 'components/DarkModeSwitch';
 import useAuth from 'hooks/auth/useAuth';
 import useViewportHeight from 'hooks/dom/useViewportHeight';
 import useColorMode from 'hooks/theme/useColorMode';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useAppDispatch } from 'redux/hooks';
+import { toggleVideoOpen } from 'redux/videoSlice';
 import { PRIMARY_SHADOW } from 'theme/shadows';
 import { addQuery, removeQuery } from 'utils/url';
 
@@ -24,6 +28,7 @@ type GlobalHeaderProps = {
 
 const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark }) => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const { user } = useAuth();
   const { colorMode, toggleColorMode } = useColorMode();
@@ -40,7 +45,13 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark }) => {
     router.push(mutatedUrl);
   };
 
-  const handleAvatarClick = () => router.push(`/user/${user?._id}`);
+  const handleAvatarClick = () => {
+    router.push(`/user/${user?._id}`);
+  };
+
+  const handleVideoClick = () => {
+    dispatch(toggleVideoOpen());
+  };
 
   return (
     <>
@@ -71,12 +82,12 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark }) => {
               <MenuIcon />
             </IconButton>
           </Box>
-          <Box display="flex" alignItems="center" height="100%" gap={1}>
+          <Stack direction="row" alignItems="center" height="100%">
             {user ? (
               <IconButton
                 size="small"
                 onClick={() => router.push('/lexio-divinas/create')}
-                sx={{ mr: -1, color: dark ? '#fff' : undefined }}
+                sx={{ color: dark ? '#fff' : undefined }}
               >
                 <AddIcon />
               </IconButton>
@@ -86,10 +97,13 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark }) => {
               disabled={dark}
               onClick={toggleColorMode}
             />
+            <IconButton size="small" onClick={handleVideoClick}>
+              <MusicNoteIcon />
+            </IconButton>
             {user ? (
               <ButtonBase
                 onClick={handleAvatarClick}
-                sx={{ borderRadius: '50%' }}
+                sx={{ borderRadius: '50%', ml: 1 }}
               >
                 <Avatar
                   sx={{ width: 32, height: 32 }}
@@ -101,7 +115,7 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark }) => {
             ) : (
               <HeaderLink href="/login">Login</HeaderLink>
             )}
-          </Box>
+          </Stack>
 
           <EnvChip />
         </Box>
