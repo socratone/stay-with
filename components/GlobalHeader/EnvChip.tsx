@@ -27,25 +27,11 @@ const EnvChip = () => {
 
   switch (env) {
     case 'development':
-      return (
-        <Chip
-          label="Development"
-          color="success"
-          onClick={handleClick}
-          icon={<CloseIcon />}
-          sx={sx}
-        />
-      );
+      return <Chip label="Dev" color="success" onClick={handleClick} sx={sx} />;
 
     case 'staging':
       return (
-        <Chip
-          label="Staging"
-          color="warning"
-          onClick={handleClick}
-          icon={<CloseIcon />}
-          sx={sx}
-        />
+        <Chip label="Stag" color="warning" onClick={handleClick} sx={sx} />
       );
 
     case 'production':
