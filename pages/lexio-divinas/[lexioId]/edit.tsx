@@ -181,7 +181,7 @@ const LexioDivinaEdit = () => {
       <Meta />
       <GlobalHeader />
 
-      <Container maxWidth="sm">
+      <Container maxWidth="sm" sx={{ paddingX: 0 }}>
         <LexioDivinaForm
           form={form}
           isRequested={isRequested}
