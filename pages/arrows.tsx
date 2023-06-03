@@ -62,12 +62,19 @@ const Arrows = () => {
     }
   };
 
+  const handleAdditionalCandlesReset = () => {
+    setAdditionalCandles([]);
+  };
+
   return (
     <DarkThemeProvider>
       <Box height="100%" display="flex" flexDirection="column">
         <Meta />
         <GlobalHeader dark />
-        <Candles additionalCandles={additionalCandles} />
+        <Candles
+          additionalCandles={additionalCandles}
+          onAdditionalCandlesReset={handleAdditionalCandlesReset}
+        />
         {user ? (
           <Stack
             direction="row"

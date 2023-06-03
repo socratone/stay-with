@@ -22,13 +22,17 @@ import useCandlesRowColumnCount from './useCandlesRowColumnCount';
 
 type CandlesProps = {
   additionalCandles: Candle[];
+  onAdditionalCandlesReset: () => void;
 };
 
 type Dialog = {
   id: string;
 };
 
-const Candles: React.FC<CandlesProps> = ({ additionalCandles }) => {
+const Candles: React.FC<CandlesProps> = ({
+  additionalCandles,
+  onAdditionalCandlesReset,
+}) => {
   const queryClient = useQueryClient();
   const { formatMessage } = useIntl();
 
@@ -67,6 +71,7 @@ const Candles: React.FC<CandlesProps> = ({ additionalCandles }) => {
       queryClient.invalidateQueries({
         queryKey: [ARROW_QUERY_KEY, arrowId],
       });
+      onAdditionalCandlesReset();
     } catch (error) {
       enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
         variant: 'error',
@@ -86,6 +91,7 @@ const Candles: React.FC<CandlesProps> = ({ additionalCandles }) => {
       queryClient.invalidateQueries({
         queryKey: [ARROWS_COUNT_QUERY_KEY],
       });
+      onAdditionalCandlesReset();
     } catch (error) {
       enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
         variant: 'error',
