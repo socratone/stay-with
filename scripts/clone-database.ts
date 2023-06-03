@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import * as dotenv from 'dotenv';
 import inquirer from 'inquirer';
-import { LexioDivina, User } from 'schemas';
+import { Arrow, LexioDivina, User } from 'schemas';
 
 import { CollectionName } from '../constants/mongodb';
 import Mongodb from '../utils/mongodb';
@@ -39,6 +39,7 @@ const devUrl = process.env.MONGO_CLIENT_URL;
     const lexioDivinas = await db.find<LexioDivina[]>(
       CollectionName.LexioDivinas
     );
+    const arrows = await db.find<Arrow[]>(CollectionName.Arrows);
     await db.close();
 
     // 👿 반드시 devUrl이어야 한다.
@@ -58,8 +59,15 @@ const devUrl = process.env.MONGO_CLIENT_URL;
       await devDb.drop(CollectionName.LexioDivinas);
     }
 
+    // 비어 있지 않다면 삭제
+    const devArrows = await devDb.find<Arrow[]>(CollectionName.Arrows);
+    if (devArrows.length > 0) {
+      await devDb.drop(CollectionName.Arrows);
+    }
+
     await devDb.insertMany(CollectionName.Users, users);
     await devDb.insertMany(CollectionName.LexioDivinas, lexioDivinas);
+    await devDb.insertMany(CollectionName.Arrows, arrows);
 
     await devDb.close();
   } catch (error) {
