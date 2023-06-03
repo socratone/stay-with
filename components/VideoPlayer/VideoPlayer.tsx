@@ -5,8 +5,8 @@ import React, { useEffect, useState } from 'react';
 import YouTube from 'react-youtube';
 import { useAppSelector } from 'redux/hooks';
 
-const WIDTH = 224;
-const HEIGHT = 126;
+const WIDTH = 200;
+const HEIGHT = 113;
 
 const VideoPlayer = () => {
   const open = useAppSelector((state) => state.video.open);
