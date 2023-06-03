@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { ArrowsData } from 'pages/api/arrows';
+import { ArrowPostResult, ArrowsData } from 'pages/api/arrows';
 import { ArrowData } from 'pages/api/arrows/[id]';
 import { ArrowsCountData } from 'pages/api/arrows/count';
 import { LexioDivinasData } from 'pages/api/lexio-divinas';
@@ -211,10 +211,12 @@ export const getArrowsCount = (
 };
 
 export const postArrow = (payload: ArrowPostPayload) => {
-  return axiosInstance.post<any, AxiosResponse, ArrowPostPayload>(
-    '/api/arrows',
-    payload
-  );
+  return axiosInstance
+    .post<any, AxiosResponse<ArrowPostResult>, ArrowPostPayload>(
+      '/api/arrows',
+      payload
+    )
+    .then((value) => value.data);
 };
 
 export const deleteArrow = (id: string) => {
