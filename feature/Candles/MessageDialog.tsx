@@ -7,7 +7,7 @@ import TextField from '@mui/material/TextField';
 import useArrow from 'hooks/api/useArrow';
 import React, { useEffect, useState } from 'react';
 
-type EditDialogProps = {
+type MessageDialogProps = {
   id?: string;
   open: boolean;
   title: string;
@@ -15,7 +15,7 @@ type EditDialogProps = {
   onSubmit: (message: string) => void;
 };
 
-const EditDialog: React.FC<EditDialogProps> = ({
+const MessageDialog: React.FC<MessageDialogProps> = ({
   id,
   open,
   title,
@@ -36,10 +36,20 @@ const EditDialog: React.FC<EditDialogProps> = ({
     setMessage(event.target.value);
   };
 
+  const handleSubmit = () => {
+    onSubmit(message);
+    setMessage('');
+  };
+
+  const handleClose = () => {
+    onClose();
+    setMessage('');
+  };
+
   return (
     <Dialog
       open={open}
-      onClose={onClose}
+      onClose={handleClose}
       maxWidth="xs"
       fullWidth
       PaperProps={{
@@ -61,15 +71,15 @@ const EditDialog: React.FC<EditDialogProps> = ({
         />
       </DialogContent>
       <DialogActions sx={{ p: 2 }}>
-        <Button variant="outlined" onClick={onClose}>
+        <Button variant="outlined" onClick={handleClose}>
           취소
         </Button>
-        <Button variant="contained" onClick={() => onSubmit(message)} autoFocus>
-          수정
+        <Button variant="contained" onClick={handleSubmit} autoFocus>
+          {id ? '수정' : '저장'}
         </Button>
       </DialogActions>
     </Dialog>
   );
 };
 
-export default EditDialog;
+export default MessageDialog;

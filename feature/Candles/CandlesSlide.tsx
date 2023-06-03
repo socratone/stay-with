@@ -1,12 +1,18 @@
 import 'swiper/css';
 
+import EditIcon from '@mui/icons-material/Edit';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
+import IconButton from '@mui/material/IconButton';
+import AlertDialog from 'components/AlertDialog/AlertDialog';
 import ErrorMessage from 'components/ErrorMessage/ErrorMessage';
+import { deleteArrow, postArrow, putArrow } from 'helpers/axios';
 import useArrows from 'hooks/api/useArrows';
 import useAuth from 'hooks/auth/useAuth';
 import cloneDeep from 'lodash/cloneDeep';
+import { enqueueSnackbar } from 'notistack';
 import { useEffect, useRef, useState } from 'react';
+import { useIntl } from 'react-intl';
 import {
   assignValue,
   assignValues,
@@ -17,34 +23,37 @@ import {
 import CandleItem, { CANDLE_HEIGHT } from './CandleItem';
 import { getRandomCandleImageSrc } from './helpers';
 import { useCandlesRowColumnCount } from './hooks';
+import MessageDialog from './MessageDialog';
 import { Candle } from './types';
 
 type CandlesSlideProps = {
-  additionalCandles?: Candle[];
   index: number;
   maxCount?: number;
   enabled: boolean;
-  selectedArrowId: string | null;
-  onEdit: (candleId: string) => void;
-  onDelete: (candleId: string) => void;
-  onTooltipOpenChange: (open: boolean, candleId: string) => void;
+};
+
+type Dialog = {
+  id?: string;
+  open: boolean;
 };
 
 const ROW_OFFSET = 0.5 * CANDLE_HEIGHT;
 
 const CandlesSlide: React.FC<CandlesSlideProps> = ({
-  additionalCandles = [],
   index,
   maxCount,
   enabled,
-  selectedArrowId,
-  onEdit,
-  onDelete,
-  onTooltipOpenChange,
 }) => {
+  const { formatMessage } = useIntl();
+
   const { user: me } = useAuth();
+
   const divRef = useRef<HTMLDivElement>(null);
   const page = index + 1;
+
+  const [messageDialog, setMessageDialog] = useState<Dialog | null>(null);
+  const [deleteDialog, setDeleteDialog] = useState<Dialog | null>(null);
+  const [selectedArrowId, setSelectedArrowId] = useState<string | null>(null);
 
   const [board, setBoard] = useState<(Candle | null)[][]>([]);
 
@@ -66,6 +75,7 @@ const CandlesSlide: React.FC<CandlesSlideProps> = ({
 
   const { rowCount, columnCount } = useCandlesRowColumnCount({ ref: divRef });
 
+  // arrowsData 또는 화면 크기가 달라지면 board를 새로 생성한다.
   useEffect(() => {
     if (arrowsData && rowCount && columnCount) {
       // data를 받아서 board에 넣는다.
@@ -75,19 +85,120 @@ const CandlesSlide: React.FC<CandlesSlideProps> = ({
     }
   }, [rowCount, columnCount, arrowsData]);
 
-  // message를 입력하여 candle이 추가되면 board에 넣는다.
-  useEffect(() => {
-    if (additionalCandles.length > 0) {
-      const newAdditionalCandle =
-        additionalCandles[additionalCandles.length - 1];
+  const changeCandleMessage = (
+    board: (Candle | null)[][],
+    _id: string,
+    message: string
+  ) => {
+    for (let i = 0; i < board.length; i++) {
+      for (let j = 0; j < board[i].length; j++) {
+        if (board[i][j]?._id === _id) {
+          const candle = board[i][j] as Candle;
+          candle.message = message;
+          return;
+        }
+      }
+    }
+  };
 
+  const changeCandle = (
+    board: (Candle | null)[][],
+    _id: string,
+    value: Candle | null
+  ) => {
+    for (let i = 0; i < board.length; i++) {
+      for (let j = 0; j < board[i].length; j++) {
+        if (board[i][j]?._id === _id) {
+          board[i][j] = value;
+          return;
+        }
+      }
+    }
+  };
+
+  const addCandle = async (message: string) => {
+    if (!me || message.length === 0) return;
+    setMessageDialog(null);
+
+    try {
+      const result = await postArrow({
+        message,
+        userId: me._id,
+      });
       setBoard((board) => {
         const newBoard = cloneDeep(board);
-        assignValue(newBoard, newAdditionalCandle);
+        assignValue(newBoard, {
+          _id: String(result.insertedId),
+          message,
+          user: me,
+          userId: me._id,
+          createdAt: new Date(),
+        });
         return newBoard;
       });
+    } catch (error: any) {
+      enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
+        variant: 'error',
+      });
     }
-  }, [additionalCandles]);
+  };
+
+  const editCandle = async (message: string) => {
+    if (!messageDialog?.id) return;
+
+    const arrowId = messageDialog.id;
+    setMessageDialog(null);
+
+    try {
+      await putArrow(arrowId, {
+        message,
+      });
+      setBoard((board) => {
+        const newBoard = cloneDeep(board);
+        changeCandleMessage(newBoard, arrowId, message);
+        return newBoard;
+      });
+    } catch (error) {
+      enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
+        variant: 'error',
+      });
+    }
+  };
+
+  const deleteCandle = async () => {
+    if (!deleteDialog?.id) return;
+
+    const arrowId = deleteDialog.id;
+    setDeleteDialog(null);
+
+    try {
+      await deleteArrow(arrowId);
+      setBoard((board) => {
+        const newBoard = cloneDeep(board);
+        changeCandle(newBoard, arrowId, null);
+        return newBoard;
+      });
+    } catch (error) {
+      enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
+        variant: 'error',
+      });
+    }
+  };
+
+  const handleEdit = (id: string) => {
+    setMessageDialog({ open: true, id });
+    setSelectedArrowId(null);
+  };
+
+  const handleDelete = (id: string) => {
+    setDeleteDialog({ open: true, id });
+    setSelectedArrowId(null);
+  };
+
+  const handleTooltipOpenChange = (open: boolean, id: string) => {
+    if (open) setSelectedArrowId(id);
+    else setSelectedArrowId(null);
+  };
 
   return (
     <>
@@ -119,16 +230,54 @@ const CandlesSlide: React.FC<CandlesSlideProps> = ({
               profileUrl={candle.user?.imageUrl}
               createdAt={candle.createdAt}
               isMyself={candle.userId === me?._id}
-              onEdit={() => onEdit(candle._id)}
-              onDelete={() => onDelete(candle._id)}
+              onEdit={() => handleEdit(candle._id)}
+              onDelete={() => handleDelete(candle._id)}
               tooltipOpen={selectedArrowId === candle._id}
               onTooltipOpenChange={(open) =>
-                onTooltipOpenChange(open, candle._id)
+                handleTooltipOpenChange(open, candle._id)
               }
             />
           ))
         )}
       </Box>
+
+      <IconButton
+        onClick={() => setMessageDialog({ open: true })}
+        size="large"
+        sx={{
+          position: 'fixed',
+          zIndex: 10,
+          bgcolor: (theme) => theme.palette.primary.main,
+          bottom: (theme) => theme.spacing(2),
+          right: (theme) => theme.spacing(2),
+          color: (theme) => theme.palette.primary.contrastText,
+        }}
+      >
+        <EditIcon />
+      </IconButton>
+
+      <AlertDialog
+        open={!!deleteDialog}
+        title="삭제 확인"
+        description="기도를 삭제하시겠습니까?"
+        onClose={() => setDeleteDialog(null)}
+        onSubmit={deleteCandle}
+        color="error"
+      />
+
+      <MessageDialog
+        id={messageDialog?.id}
+        open={!!messageDialog}
+        title={`화살기도${messageDialog?.id ? ' 수정' : ''}`}
+        onClose={() => setMessageDialog(null)}
+        onSubmit={(message) => {
+          if (messageDialog?.id) {
+            editCandle(message);
+          } else {
+            addCandle(message);
+          }
+        }}
+      />
     </>
   );
 };
