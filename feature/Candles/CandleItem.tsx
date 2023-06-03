@@ -10,6 +10,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import Zoom from '@mui/material/Zoom';
 import Image, { ImageProps } from 'next/image';
+import { FormattedDate } from 'react-intl';
 import { generateRandomNumber } from 'utils/number';
 
 type CandleItemProps = {
@@ -20,6 +21,7 @@ type CandleItemProps = {
   message: string;
   name?: string;
   profileUrl?: string;
+  createdAt: Date;
   isMyself: boolean;
   onEdit: () => void;
   onDelete: () => void;
@@ -49,6 +51,7 @@ const CandleItem: React.FC<CandleItemProps> = ({
   message,
   name,
   profileUrl,
+  createdAt,
   isMyself,
   onEdit,
   onDelete,
@@ -60,12 +63,32 @@ const CandleItem: React.FC<CandleItemProps> = ({
       <Tooltip
         title={
           <Stack gap={0.5}>
-            <Stack direction="row" alignItems="center" gap={0.75}>
-              <Avatar src={profileUrl} sx={{ width: 24, height: 24 }} />
-              <Typography variant="body2">{name}</Typography>
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <Avatar
+                alt="profile"
+                src={profileUrl}
+                sx={{ width: 34, height: 34 }}
+              >
+                {name?.[0] ?? 'P'}
+              </Avatar>
+              <Stack>
+                <Typography
+                  color="text.primary"
+                  fontWeight={500}
+                  sx={{ lineHeight: 1.2 }}
+                >
+                  {name}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  color={(theme) => theme.palette.text.secondary}
+                  sx={{ lineHeight: 1.2 }}
+                >
+                  <FormattedDate value={createdAt} />
+                </Typography>
+              </Stack>
             </Stack>
             <Typography
-              variant="body2"
               whiteSpace="pre-line"
               color={(theme) => theme.palette.text.secondary}
             >

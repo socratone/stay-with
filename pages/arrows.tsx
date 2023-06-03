@@ -42,7 +42,12 @@ const Arrows = () => {
       });
       setAdditionalCandles((candles) => [
         ...candles,
-        { _id: createUniqueId(), message: requestedMessage, user },
+        {
+          _id: createUniqueId(),
+          message: requestedMessage,
+          user,
+          createdAt: new Date(),
+        },
       ]);
     } catch (error: any) {
       const status = error?.response?.status;

@@ -185,6 +185,7 @@ const CandlesSlide: React.FC<CandlesSlideProps> = ({
               message={candle.message}
               name={candle.user?.name}
               profileUrl={candle.user?.imageUrl}
+              createdAt={candle.createdAt}
               isMyself={candle.userId === me?._id}
               onEdit={() => handleEdit(candle._id)}
               onDelete={() => handleDelete(candle._id)}
