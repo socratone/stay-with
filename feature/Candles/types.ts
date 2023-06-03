@@ -1,7 +1,6 @@
 import { Arrow, User } from 'schemas';
 
-export type Candle = Partial<Arrow> & {
+export type Candle = Arrow & {
   user?: User;
   createdAt: Date;
-  message: string;
 };

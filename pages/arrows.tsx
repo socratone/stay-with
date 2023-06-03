@@ -14,7 +14,6 @@ import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { createUniqueId } from 'utils/id';
 
 const Arrows = () => {
   const { formatMessage } = useIntl();
@@ -36,16 +35,17 @@ const Arrows = () => {
     setMessage('');
 
     try {
-      await postArrow({
+      const result = await postArrow({
         message: requestedMessage,
         userId: user._id,
       });
       setAdditionalCandles((candles) => [
         ...candles,
         {
-          _id: createUniqueId(),
+          _id: String(result.insertedId),
           message: requestedMessage,
           user,
+          userId: user._id,
           createdAt: new Date(),
         },
       ]);
@@ -62,12 +62,19 @@ const Arrows = () => {
     }
   };
 
+  const handleAdditionalCandlesReset = () => {
+    setAdditionalCandles([]);
+  };
+
   return (
     <DarkThemeProvider>
       <Box height="100%" display="flex" flexDirection="column">
         <Meta />
         <GlobalHeader dark />
-        <Candles additionalCandles={additionalCandles} />
+        <Candles
+          additionalCandles={additionalCandles}
+          onAdditionalCandlesReset={handleAdditionalCandlesReset}
+        />
         {user ? (
           <Stack
             direction="row"
