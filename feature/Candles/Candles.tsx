@@ -17,8 +17,8 @@ import { Swiper, SwiperClass, SwiperSlide } from 'swiper/react';
 
 import CandlesSlide from './CandlesSlide';
 import EditDialog from './EditDialog';
+import { useCandlesRowColumnCount } from './hooks';
 import { Candle } from './types';
-import useCandlesRowColumnCount from './useCandlesRowColumnCount';
 
 type CandlesProps = {
   additionalCandles: Candle[];

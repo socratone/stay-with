@@ -9,7 +9,9 @@ type UseCandlesRowColumnCountParams = {
 
 const ROW_OFFSET = 0.5 * CANDLE_HEIGHT;
 
-const useCandlesRowColumnCount = ({ ref }: UseCandlesRowColumnCountParams) => {
+export const useCandlesRowColumnCount = ({
+  ref,
+}: UseCandlesRowColumnCountParams) => {
   const [rowCount, setRowCount] = useState<number>();
   const [columnCount, setColumnCount] = useState<number>();
 
@@ -33,5 +35,3 @@ const useCandlesRowColumnCount = ({ ref }: UseCandlesRowColumnCountParams) => {
     columnCount,
   };
 };
-
-export default useCandlesRowColumnCount;

@@ -16,8 +16,8 @@ import {
 
 import CandleItem, { CANDLE_HEIGHT } from './CandleItem';
 import { getRandomCandleImageSrc } from './helpers';
+import { useCandlesRowColumnCount } from './hooks';
 import { Candle } from './types';
-import useCandlesRowColumnCount from './useCandlesRowColumnCount';
 
 type CandlesSlideProps = {
   additionalCandles?: Candle[];
