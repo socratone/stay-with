@@ -241,20 +241,22 @@ const CandlesSlide: React.FC<CandlesSlideProps> = ({
         )}
       </Box>
 
-      <IconButton
-        onClick={() => setMessageDialog({ open: true })}
-        size="large"
-        sx={{
-          position: 'fixed',
-          zIndex: 10,
-          bgcolor: (theme) => theme.palette.primary.main,
-          bottom: (theme) => theme.spacing(2),
-          right: (theme) => theme.spacing(2),
-          color: (theme) => theme.palette.primary.contrastText,
-        }}
-      >
-        <EditIcon />
-      </IconButton>
+      {me ? (
+        <IconButton
+          onClick={() => setMessageDialog({ open: true })}
+          size="large"
+          sx={{
+            position: 'fixed',
+            zIndex: 10,
+            bgcolor: (theme) => theme.palette.primary.main,
+            bottom: (theme) => theme.spacing(2),
+            right: (theme) => theme.spacing(2),
+            color: (theme) => theme.palette.primary.contrastText,
+          }}
+        >
+          <EditIcon />
+        </IconButton>
+      ) : null}
 
       <AlertDialog
         open={!!deleteDialog}
