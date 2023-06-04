@@ -20,13 +20,14 @@ import useUser, { USER_QUERY_KEY } from 'hooks/api/useUser';
 import useAuth from 'hooks/auth/useAuth';
 import Link from 'next/link';
 import { enqueueSnackbar } from 'notistack';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
 type UserFormValues = {
   name: string;
   description: string;
+  imageUrl: string;
 };
 
 const StyledLink = styled(Link)`
@@ -41,36 +42,59 @@ const SettingsProfile = () => {
   const { user } = useAuth();
   const { data: userData } = useUser(user?._id);
 
+  const [imageLoadingError, setImageLoadingError] = useState(false);
+
   const {
     control,
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
+    setError,
+    clearErrors,
   } = useForm<UserFormValues>({
     defaultValues: {
       name: '',
       description: '',
+      imageUrl: '',
     },
   });
 
+  const watchedImageUrl = watch('imageUrl');
+
+  // Load saved data.
   useEffect(() => {
     if (userData) {
       const { user } = userData;
       reset({
         name: user.name,
         description: user.description ?? '',
+        imageUrl: user.imageUrl,
       });
     }
   }, [userData, reset]);
 
+  // ImageUrl validation.
+  useEffect(() => {
+    if (imageLoadingError) {
+      setError('imageUrl', {
+        message: 'Unable to load.',
+      });
+    } else {
+      clearErrors('imageUrl');
+    }
+  }, [imageLoadingError, setError, clearErrors]);
+
   const handleProfileSubmit: SubmitHandler<UserFormValues> = async ({
     name,
     description,
+    imageUrl,
   }) => {
     if (!user?._id) return;
 
     try {
-      await patchUser(user._id, { name, description });
+      await patchUser(user._id, { name, description, imageUrl });
+
       queryClient.invalidateQueries({ queryKey: [USER_QUERY_KEY] });
       queryClient.invalidateQueries({ queryKey: [LEXIO_DIVINAS_QUERY_KEY] });
     } catch (error: any) {
@@ -153,6 +177,7 @@ const SettingsProfile = () => {
                   )}
                 />
               </Box>
+
               <Box component="label">
                 <Typography
                   color="text.primary"
@@ -182,6 +207,65 @@ const SettingsProfile = () => {
                   )}
                 />
               </Box>
+
+              {imageLoadingError ? (
+                <Box
+                  width={200}
+                  height={200}
+                  borderRadius="50%"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <Typography color="text.primary">
+                    이미지를 불러올 수 없어요.
+                  </Typography>
+                </Box>
+              ) : (
+                <Box
+                  component="img"
+                  src={watchedImageUrl}
+                  alt="profile"
+                  width={200}
+                  height={200}
+                  borderRadius="50%"
+                  onError={() => setImageLoadingError(true)}
+                />
+              )}
+
+              <Box component="label">
+                <Typography
+                  color="text.primary"
+                  component="h2"
+                  fontWeight={500}
+                  variant="body1"
+                  mb={0.5}
+                >
+                  프로필 이미지 URL
+                </Typography>
+                <Controller
+                  control={control}
+                  name="imageUrl"
+                  rules={{
+                    required: true,
+                    maxLength: 300,
+                  }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      onChange={(event) => {
+                        setImageLoadingError(false);
+                        field.onChange(event);
+                      }}
+                      error={!!errors.imageUrl}
+                      size="small"
+                      fullWidth
+                      disabled={!user}
+                    />
+                  )}
+                />
+              </Box>
+
               <Box>
                 <Button variant="contained" type="submit" disabled={!user}>
                   저장하기
