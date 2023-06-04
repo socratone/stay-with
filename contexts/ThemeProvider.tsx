@@ -8,7 +8,7 @@ import { components } from 'theme/components';
 import { darkPalette, lightPalette } from 'theme/palette';
 import { shadows } from 'theme/shadows';
 import { typography } from 'theme/typography';
-import { saveValue } from 'utils/persist';
+import { getValue, saveValue } from 'utils/persist';
 
 // https://stackoverflow.com/questions/60424596/cant-customize-color-palette-types-on-material-ui-theme-in-typescript
 declare module '@mui/material/styles/createPalette' {
@@ -74,7 +74,7 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [colorMode, setColorMode] = useState<ColorMode | null>(null);
 
   useEffect(() => {
-    const savedColorMode = localStorage.getItem('colorMode');
+    const savedColorMode = getValue('colorMode');
     const prefersDarkMode = window.matchMedia(
       '(prefers-color-scheme: dark)'
     ).matches;
