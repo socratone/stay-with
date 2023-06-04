@@ -18,7 +18,7 @@ export const getJsonValue = <T>(key: string) => {
     const stringifiedValue = localStorage.getItem(key);
     if (stringifiedValue === null) return null;
     try {
-      return JSON.parse(stringifiedValue) as T;
+      return JSON.parse(stringifiedValue) as Partial<T>;
     } catch {
       return null;
     }
