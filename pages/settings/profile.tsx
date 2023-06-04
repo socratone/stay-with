@@ -5,6 +5,7 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useQueryClient } from '@tanstack/react-query';
+import LoginMessage from 'components/LoginMessage/LoginMessage';
 import SettingsLayout from 'feature/SettingsLayout/SettingsLayout';
 import { patchUser } from 'helpers/axios';
 import { LEXIO_DIVINAS_QUERY_KEY } from 'hooks/api/useLexioDivinas';
@@ -103,149 +104,157 @@ const SettingsProfile = () => {
 
   return (
     <SettingsLayout>
-      <Box
-        component="form"
-        onSubmit={handleSubmit(handleProfileSubmit)}
-        py={1.5}
-      >
-        <Stack spacing={1.5}>
-          <Box component="label">
-            <Typography
-              color="text.primary"
-              component="h2"
-              fontWeight={500}
-              variant="body1"
-              mb={0.5}
-            >
-              이름
-            </Typography>
-            <Controller
-              control={control}
-              name="name"
-              rules={{
-                required: true,
-                maxLength: 30,
-              }}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  error={!!errors.name}
-                  size="small"
-                  fullWidth
-                  disabled={!user}
-                  sx={{ maxWidth: 250 }}
-                />
-              )}
-            />
-          </Box>
-
-          <Box component="label">
-            <Typography
-              color="text.primary"
-              component="h2"
-              fontWeight={500}
-              variant="body1"
-              mb={0.5}
-            >
-              소개
-            </Typography>
-            <Controller
-              control={control}
-              name="description"
-              rules={{
-                maxLength: 50,
-              }}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  error={!!errors.description}
-                  size="small"
-                  multiline
-                  rows={4}
-                  fullWidth
-                  disabled={!user}
-                />
-              )}
-            />
-          </Box>
-
-          {isLoading ? (
-            <Skeleton
-              variant="rectangular"
-              width={200}
-              height={200}
-              sx={{ borderRadius: '50%' }}
-            />
-          ) : imageLoadingError ? (
-            <Box
-              width={200}
-              height={200}
-              borderRadius="50%"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <Typography color="text.primary">
-                이미지를 불러올 수 없어요.
+      {user ? (
+        <Box
+          component="form"
+          onSubmit={handleSubmit(handleProfileSubmit)}
+          py={1.5}
+        >
+          <Stack spacing={1.5}>
+            <Box component="label">
+              <Typography
+                color="text.primary"
+                component="h2"
+                fontWeight={500}
+                variant="body1"
+                mb={0.5}
+              >
+                이름
               </Typography>
+              <Controller
+                control={control}
+                name="name"
+                rules={{
+                  required: true,
+                  maxLength: 30,
+                }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    error={!!errors.name}
+                    size="small"
+                    fullWidth
+                    sx={{ maxWidth: 250 }}
+                  />
+                )}
+              />
             </Box>
-          ) : (
-            <Box
-              component="img"
-              src={watchedImageUrl}
-              alt="profile"
-              width={200}
-              height={200}
-              borderRadius="50%"
-              onError={() => setImageLoadingError(true)}
-              sx={{ objectFit: 'cover' }}
-            />
-          )}
 
-          <Box component="label">
-            <Typography
-              color="text.primary"
-              component="h2"
-              fontWeight={500}
-              variant="body1"
-              mb={0.5}
-            >
-              프로필 이미지 URL
-            </Typography>
-            <Controller
-              control={control}
-              name="imageUrl"
-              rules={{
-                required: true,
-                maxLength: 300,
-              }}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  onChange={(event) => {
-                    setImageLoadingError(false);
-                    field.onChange(event);
-                  }}
-                  error={!!errors.imageUrl}
-                  size="small"
-                  fullWidth
-                  disabled={!user}
-                />
-              )}
-            />
-          </Box>
+            <Box component="label">
+              <Typography
+                color="text.primary"
+                component="h2"
+                fontWeight={500}
+                variant="body1"
+                mb={0.5}
+              >
+                소개
+              </Typography>
+              <Controller
+                control={control}
+                name="description"
+                rules={{
+                  maxLength: 50,
+                }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    error={!!errors.description}
+                    size="small"
+                    multiline
+                    rows={4}
+                    fullWidth
+                  />
+                )}
+              />
+            </Box>
 
-          <Box>
-            <Button
-              variant="contained"
-              type="submit"
-              disabled={!user || Object.keys(errors).length > 0}
-            >
-              저장하기
-            </Button>
-          </Box>
-        </Stack>
-      </Box>
+            {isLoading ? (
+              <Skeleton
+                variant="rectangular"
+                width={200}
+                height={200}
+                sx={{ borderRadius: '50%' }}
+              />
+            ) : imageLoadingError ? (
+              <Box
+                width={200}
+                height={200}
+                borderRadius="50%"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <Typography color="text.primary">
+                  이미지를 불러올 수 없어요.
+                </Typography>
+              </Box>
+            ) : (
+              <Box
+                component="img"
+                src={watchedImageUrl}
+                alt="profile"
+                width={200}
+                height={200}
+                borderRadius="50%"
+                onError={() => setImageLoadingError(true)}
+                sx={{ objectFit: 'cover' }}
+              />
+            )}
+
+            <Box component="label">
+              <Typography
+                color="text.primary"
+                component="h2"
+                fontWeight={500}
+                variant="body1"
+                mb={0.5}
+              >
+                프로필 이미지 URL
+              </Typography>
+              <Controller
+                control={control}
+                name="imageUrl"
+                rules={{
+                  required: true,
+                  maxLength: 300,
+                }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    onChange={(event) => {
+                      setImageLoadingError(false);
+                      field.onChange(event);
+                    }}
+                    error={!!errors.imageUrl}
+                    size="small"
+                    fullWidth
+                  />
+                )}
+              />
+            </Box>
+
+            <Box>
+              <Button
+                variant="contained"
+                type="submit"
+                disabled={Object.keys(errors).length > 0}
+              >
+                저장하기
+              </Button>
+            </Box>
+          </Stack>
+        </Box>
+      ) : (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          minHeight="50vh"
+        >
+          <LoginMessage />
+        </Box>
+      )}
     </SettingsLayout>
   );
 };
