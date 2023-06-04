@@ -5,7 +5,6 @@ import Snackbar from 'components/Snackbar';
 import VideoPlayer from 'components/VideoPlayer';
 import English from 'content/locales/en.json';
 import Korean from 'content/locales/ko.json';
-import FontSizeProvider from 'contexts/FontSizeProvider';
 import ThemeProvider from 'contexts/ThemeProvider';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
@@ -36,26 +35,24 @@ function MyApp({ Component, pageProps }: AppProps) {
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
-          <FontSizeProvider>
-            <SnackbarProvider
-              maxSnack={3}
-              autoHideDuration={8000}
-              disableWindowBlurListener
-              Components={{
-                // default is success
-                default: Snackbar,
-                success: Snackbar,
-                error: Snackbar,
-                info: Snackbar,
-                warning: Snackbar,
-              }}
-            >
-              <IntlProvider locale={locale ?? 'ko'} messages={messages}>
-                <VideoPlayer />
-                <Component {...pageProps} />
-              </IntlProvider>
-            </SnackbarProvider>
-          </FontSizeProvider>
+          <SnackbarProvider
+            maxSnack={3}
+            autoHideDuration={8000}
+            disableWindowBlurListener
+            Components={{
+              // default is success
+              default: Snackbar,
+              success: Snackbar,
+              error: Snackbar,
+              info: Snackbar,
+              warning: Snackbar,
+            }}
+          >
+            <IntlProvider locale={locale ?? 'ko'} messages={messages}>
+              <VideoPlayer />
+              <Component {...pageProps} />
+            </IntlProvider>
+          </SnackbarProvider>
         </ThemeProvider>
       </QueryClientProvider>
     </Provider>

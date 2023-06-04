@@ -3,6 +3,7 @@ import {
   ThemeProvider as MuiThemeProvider,
   useMediaQuery,
 } from '@mui/material';
+import { useRouter } from 'next/router';
 import { createContext, useEffect, useState } from 'react';
 import { components } from 'theme/components';
 import { darkPalette, lightPalette } from 'theme/palette';
@@ -22,6 +23,8 @@ declare module '@mui/material/styles/createPalette' {
   }
 }
 
+/** Color mode */
+
 export enum ColorMode {
   Light = 'light',
   Dark = 'dark',
@@ -38,8 +41,20 @@ export const ColorModeContext = createContext<ColorModeContextValue>({
   toggleColorMode: () => {},
 });
 
+/** Font size */
+
+type FontsizeContextValue = {
+  fontSize: number;
+  changeFontSize: (fontSize: number) => void;
+};
+
+export const FontSizeContext = createContext<FontsizeContextValue>({
+  fontSize: 16,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
+  changeFontSize: (fontSize: number) => {},
+});
+
 const theme = {
-  typography,
   shadows,
   components,
 };
@@ -51,24 +66,33 @@ type ThemeProviderProps = {
 const BLACK = '#000';
 const WHITE = '#fff';
 
-/**
- * 모든 theme이 정의되어 있는 최상위 theme provider.
- */
 const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
+  const router = useRouter();
+
+  const [fontSize, setFontSize] = useState(16);
+
   const lightTheme = createTheme({
+    ...theme,
     palette: {
       mode: 'light',
       ...lightPalette,
     },
-    ...theme,
+    typography: {
+      ...typography,
+      fontSize,
+    },
   });
 
   const darkTheme = createTheme({
+    ...theme,
     palette: {
       mode: 'dark',
       ...darkPalette,
     },
-    ...theme,
+    typography: {
+      ...typography,
+      fontSize,
+    },
   });
 
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -92,6 +116,11 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   }, []);
 
   const getCurrentTheme = () => {
+    // Dark mode only path.
+    if (router.asPath === '/arrows') {
+      return darkTheme;
+    }
+
     if (colorMode) {
       switch (colorMode) {
         case ColorMode.Dark:
@@ -125,9 +154,17 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     });
   };
 
+  const changeFontSize = (fontSize: number) => {
+    setFontSize(fontSize);
+  };
+
   return (
     <ColorModeContext.Provider value={{ colorMode, toggleColorMode }}>
-      <MuiThemeProvider theme={getCurrentTheme()}>{children}</MuiThemeProvider>
+      <FontSizeContext.Provider value={{ fontSize, changeFontSize }}>
+        <MuiThemeProvider theme={getCurrentTheme()}>
+          {children}
+        </MuiThemeProvider>
+      </FontSizeContext.Provider>
     </ColorModeContext.Provider>
   );
 };
