@@ -23,6 +23,7 @@ import GlobalHeaderDrawer from './GlobalHeaderDrawer';
 import HeaderLink from './HeaderLink';
 
 type GlobalHeaderProps = {
+  // TODO: 삭제해도 괜찮은지 확인
   dark?: true;
 };
 
