@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import AccessibilityIcon from '@mui/icons-material/Accessibility';
-import { Stack } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
@@ -9,6 +8,8 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useQueryClient } from '@tanstack/react-query';
@@ -42,6 +43,7 @@ const SettingsProfile = () => {
   const { user } = useAuth();
   const { data: userData } = useUser(user?._id);
 
+  const [isLoading, setIsLoading] = useState(true);
   const [imageLoadingError, setImageLoadingError] = useState(false);
 
   const {
@@ -71,6 +73,7 @@ const SettingsProfile = () => {
         description: user.description ?? '',
         imageUrl: user.imageUrl,
       });
+      setIsLoading(false);
     }
   }, [userData, reset]);
 
@@ -208,7 +211,14 @@ const SettingsProfile = () => {
                 />
               </Box>
 
-              {imageLoadingError ? (
+              {isLoading ? (
+                <Skeleton
+                  variant="rectangular"
+                  width={200}
+                  height={200}
+                  sx={{ borderRadius: '50%' }}
+                />
+              ) : imageLoadingError ? (
                 <Box
                   width={200}
                   height={200}
