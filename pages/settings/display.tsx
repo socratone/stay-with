@@ -16,7 +16,7 @@ const SettingsDisplay = () => {
     <SettingsLayout>
       <Box py={1.5}>
         <Stack spacing={1.5}>
-          <Box component="label">
+          <Box>
             <Typography
               color="text.primary"
               component="h2"
