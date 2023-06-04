@@ -9,7 +9,7 @@ const SettingsDisplay = () => {
   const { fontSize, changeFontSize } = useFontSize();
 
   const handleFontSizeChange = (fontSize: string) => {
-    changeFontSize(Number(fontSize));
+    changeFontSize(fontSize);
   };
 
   return (
@@ -37,7 +37,7 @@ const SettingsDisplay = () => {
                     width: 100,
                     height: 100,
                   },
-                  value: '26',
+                  value: '28px',
                 },
                 {
                   image: {
@@ -46,7 +46,7 @@ const SettingsDisplay = () => {
                     width: 100,
                     height: 100,
                   },
-                  value: '22',
+                  value: '24px',
                 },
                 {
                   image: {
@@ -55,7 +55,7 @@ const SettingsDisplay = () => {
                     width: 100,
                     height: 100,
                   },
-                  value: '18',
+                  value: '20px',
                 },
                 {
                   image: {
@@ -64,7 +64,7 @@ const SettingsDisplay = () => {
                     width: 100,
                     height: 100,
                   },
-                  value: '14',
+                  value: '16px',
                 },
               ]}
             />

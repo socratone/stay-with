@@ -44,14 +44,14 @@ export const ColorModeContext = createContext<ColorModeContextValue>({
 /** Font size */
 
 type FontsizeContextValue = {
-  fontSize: number;
-  changeFontSize: (fontSize: number) => void;
+  fontSize: string;
+  changeFontSize: (fontSize: string) => void;
 };
 
 export const FontSizeContext = createContext<FontsizeContextValue>({
-  fontSize: 14,
+  fontSize: '16px',
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
-  changeFontSize: (fontSize: number) => {},
+  changeFontSize: (fontSize: string) => {},
 });
 
 const theme = {
@@ -69,7 +69,7 @@ const WHITE = '#fff';
 const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const router = useRouter();
 
-  const [fontSize, setFontSize] = useState(14);
+  const [fontSize, setFontSize] = useState('16px');
 
   const lightTheme = createTheme({
     ...theme,
@@ -79,7 +79,6 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     },
     typography: {
       ...typography,
-      fontSize,
     },
   });
 
@@ -91,7 +90,6 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     },
     typography: {
       ...typography,
-      fontSize,
     },
   });
 
@@ -118,7 +116,9 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   useEffect(() => {
     const savedFontSize = getValue('fontSize');
     if (savedFontSize) {
-      setFontSize(Number(savedFontSize));
+      setFontSize(savedFontSize);
+      const root = document.documentElement;
+      root.style.setProperty('--font-size', savedFontSize);
     }
   }, []);
 
@@ -161,9 +161,11 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     });
   };
 
-  const changeFontSize = (fontSize: number) => {
+  const changeFontSize = (fontSize: string) => {
     setFontSize(fontSize);
-    saveValue('fontSize', String(fontSize));
+    saveValue('fontSize', fontSize);
+    const root = document.documentElement;
+    root.style.setProperty('--font-size', fontSize);
   };
 
   return (

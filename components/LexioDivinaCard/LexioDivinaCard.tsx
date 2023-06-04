@@ -68,8 +68,6 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
   const open = Boolean(anchorEl);
   const theme = useTheme();
 
-  console.log('theme:', theme);
-
   const [isTempLiked, setIsTempLiked] = useState(isLiked);
 
   useDebounce(
@@ -157,6 +155,7 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
           </Avatar>
           <Stack>
             <Typography
+              fontSize={18}
               color="text.primary"
               fontWeight={500}
               sx={{ lineHeight: 1.2 }}
