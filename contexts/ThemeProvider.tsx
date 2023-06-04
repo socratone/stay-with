@@ -51,6 +51,9 @@ type ThemeProviderProps = {
 const BLACK = '#000';
 const WHITE = '#fff';
 
+/**
+ * 모든 theme이 정의되어 있는 최상위 theme provider.
+ */
 const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const lightTheme = createTheme({
     palette: {
