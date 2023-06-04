@@ -30,6 +30,7 @@ const Snackbar = forwardRef<HTMLDivElement, CustomContentProps>(
               <CloseIcon fontSize="inherit" />
             </IconButton>
           }
+          sx={{ borderRadius: 2 }}
         >
           {message}
         </Alert>
