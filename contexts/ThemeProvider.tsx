@@ -115,6 +115,13 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     }
   }, []);
 
+  useEffect(() => {
+    const savedFontSize = getValue('fontSize');
+    if (savedFontSize) {
+      setFontSize(Number(savedFontSize));
+    }
+  }, []);
+
   const getCurrentTheme = () => {
     // Dark mode only path.
     if (router.asPath === '/arrows') {
@@ -156,6 +163,7 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 
   const changeFontSize = (fontSize: number) => {
     setFontSize(fontSize);
+    saveValue('fontSize', String(fontSize));
   };
 
   return (

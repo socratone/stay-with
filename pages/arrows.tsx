@@ -7,7 +7,7 @@ const Arrows = () => {
   return (
     <Box height="100%" display="flex" flexDirection="column">
       <Meta />
-      <GlobalHeader />
+      <GlobalHeader dark />
       <Candles />
     </Box>
   );

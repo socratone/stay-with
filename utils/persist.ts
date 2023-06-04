@@ -2,9 +2,9 @@ export const saveValue = (key: string, value: string) => {
   localStorage.setItem(key, value);
 };
 
-export const getValue = <T>(key: string) => {
+export const getValue = (key: string) => {
   if (typeof window !== 'undefined') {
-    return localStorage.getItem(key) as T | null;
+    return localStorage.getItem(key);
   }
   return null;
 };
