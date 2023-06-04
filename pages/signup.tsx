@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import ErrorMessage from 'components/ErrorMessage';
@@ -97,11 +98,9 @@ const SignUp: NextPage<SignUpProps> = ({ kakaoId, email, imageUrl }) => {
     <Box height="100vh" display="flex" flexDirection="column">
       <Meta />
       <GlobalHeader />
-      <Box
+      <Stack
         flexGrow={1}
-        gap={1}
-        display="flex"
-        flexDirection="column"
+        spacing={1.5}
         justifyContent="center"
         alignItems="center"
       >
@@ -116,6 +115,22 @@ const SignUp: NextPage<SignUpProps> = ({ kakaoId, email, imageUrl }) => {
                 <Avatar sx={{ width: 100, height: 100 }}>없음</Avatar>
               )}
             </Box>
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={imageChecked}
+                  onChange={handleImageCheckedChange}
+                  sx={{ ml: -1.5, my: -1.5 }}
+                />
+              }
+              label={
+                <Typography color="text.primary">
+                  카카오 프로필 이미지로 설정
+                </Typography>
+              }
+            />
+
             <Box>
               <Typography color="text.primary">
                 <FormattedMessage id="common.name" />
@@ -130,18 +145,6 @@ const SignUp: NextPage<SignUpProps> = ({ kakaoId, email, imageUrl }) => {
               />
             </Box>
 
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={imageChecked}
-                  onChange={handleImageCheckedChange}
-                />
-              }
-              label={
-                <Typography color="text.primary">프로필 이미지 공개</Typography>
-              }
-            />
-
             <Box>
               <Button
                 variant="contained"
@@ -153,7 +156,7 @@ const SignUp: NextPage<SignUpProps> = ({ kakaoId, email, imageUrl }) => {
             </Box>
           </>
         )}
-      </Box>
+      </Stack>
     </Box>
   );
 };
