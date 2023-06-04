@@ -100,6 +100,9 @@ const SettingsProfile = () => {
 
       queryClient.invalidateQueries({ queryKey: [USER_QUERY_KEY] });
       queryClient.invalidateQueries({ queryKey: [LEXIO_DIVINAS_QUERY_KEY] });
+      enqueueSnackbar(formatMessage({ id: 'success.message.saved' }), {
+        variant: 'success',
+      });
     } catch (error: any) {
       if (error.response.status === 409) {
         enqueueSnackbar(formatMessage({ id: 'error.message.duplicateName' }), {
@@ -277,7 +280,11 @@ const SettingsProfile = () => {
               </Box>
 
               <Box>
-                <Button variant="contained" type="submit" disabled={!user}>
+                <Button
+                  variant="contained"
+                  type="submit"
+                  disabled={!user || Object.keys(errors).length > 0}
+                >
                   저장하기
                 </Button>
               </Box>
