@@ -32,12 +32,21 @@ const SettingsDisplay = () => {
               options={[
                 {
                   image: {
-                    src: 'https://picsum.photos/id/1/200/300',
+                    src: 'https://picsum.photos/id/1/200/302',
                     alt: 'alt',
                     width: 100,
                     height: 100,
                   },
-                  value: '24',
+                  value: '26',
+                },
+                {
+                  image: {
+                    src: 'https://picsum.photos/id/1/200/303',
+                    alt: 'alt',
+                    width: 100,
+                    height: 100,
+                  },
+                  value: '22',
                 },
                 {
                   image: {
@@ -46,7 +55,7 @@ const SettingsDisplay = () => {
                     width: 100,
                     height: 100,
                   },
-                  value: '20',
+                  value: '18',
                 },
                 {
                   image: {
@@ -55,7 +64,7 @@ const SettingsDisplay = () => {
                     width: 100,
                     height: 100,
                   },
-                  value: '16',
+                  value: '14',
                 },
               ]}
             />

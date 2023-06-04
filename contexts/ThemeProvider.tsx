@@ -49,7 +49,7 @@ type FontsizeContextValue = {
 };
 
 export const FontSizeContext = createContext<FontsizeContextValue>({
-  fontSize: 16,
+  fontSize: 14,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
   changeFontSize: (fontSize: number) => {},
 });
@@ -69,7 +69,7 @@ const WHITE = '#fff';
 const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const router = useRouter();
 
-  const [fontSize, setFontSize] = useState(16);
+  const [fontSize, setFontSize] = useState(14);
 
   const lightTheme = createTheme({
     ...theme,

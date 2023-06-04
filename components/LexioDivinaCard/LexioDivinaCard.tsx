@@ -68,6 +68,8 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
   const open = Boolean(anchorEl);
   const theme = useTheme();
 
+  console.log('theme:', theme);
+
   const [isTempLiked, setIsTempLiked] = useState(isLiked);
 
   useDebounce(
@@ -192,7 +194,8 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
 
       {/* phrase */}
       <Typography
-        fontSize={18}
+        component="p"
+        variant="h6"
         color="text.primary"
         px={2}
         sx={{ whiteSpace: 'pre-line' }}
