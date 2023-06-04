@@ -243,6 +243,7 @@ const SettingsProfile = () => {
                   height={200}
                   borderRadius="50%"
                   onError={() => setImageLoadingError(true)}
+                  sx={{ objectFit: 'cover' }}
                 />
               )}
 
