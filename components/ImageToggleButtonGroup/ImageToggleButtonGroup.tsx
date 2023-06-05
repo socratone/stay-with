@@ -16,6 +16,9 @@ type ImageToggleButtonGroupProps = {
   }[];
 };
 
+/**
+ * 아직 사용하는 곳 없음
+ */
 const ImageToggleButtonGroup: React.FC<ImageToggleButtonGroupProps> = ({
   value,
   onChange,

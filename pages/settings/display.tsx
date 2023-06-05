@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import ImageToggleButtonGroup from 'components/ImageToggleButtonGroup/ImageToggleButtonGroup';
+import TextToggleButtonGroup from 'components/TextToggleButtonGroup/TextToggleButtonGroup';
 import SettingsLayout from 'feature/SettingsLayout/SettingsLayout';
 import useFontSize from 'hooks/theme/useFontSize';
 
@@ -26,45 +26,25 @@ const SettingsDisplay = () => {
             >
               텍스트 크기
             </Typography>
-            <ImageToggleButtonGroup
+            <TextToggleButtonGroup
               value={String(fontSize)}
               onChange={handleFontSizeChange}
               options={[
                 {
-                  image: {
-                    src: 'https://picsum.photos/id/1/200/302',
-                    alt: 'alt',
-                    width: 100,
-                    height: 100,
-                  },
                   value: '28px',
+                  label: '아주 크게',
                 },
                 {
-                  image: {
-                    src: 'https://picsum.photos/id/1/200/303',
-                    alt: 'alt',
-                    width: 100,
-                    height: 100,
-                  },
                   value: '24px',
+                  label: '크게',
                 },
                 {
-                  image: {
-                    src: 'https://picsum.photos/id/1/200/300',
-                    alt: 'alt',
-                    width: 100,
-                    height: 100,
-                  },
                   value: '20px',
+                  label: '조금 크게',
                 },
                 {
-                  image: {
-                    src: 'https://picsum.photos/id/1/200/300',
-                    alt: 'alt',
-                    width: 100,
-                    height: 100,
-                  },
                   value: '16px',
+                  label: '보통',
                 },
               ]}
             />
