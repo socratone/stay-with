@@ -1,9 +1,9 @@
 import SettingsIcon from '@mui/icons-material/Settings';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import ProfileAvatar from 'components/ProfileAvatar/ProfileAvatar';
 import useUser from 'hooks/api/useUser';
 import useAuth from 'hooks/auth/useAuth';
 import Link from 'next/link';
@@ -26,13 +26,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ userId }) => {
         flexWrap="wrap"
       >
         <Stack direction="row" gap={1} alignItems="center">
-          <Avatar
-            alt="profile"
-            src={userData?.user.imageUrl}
-            sx={{ width: 48, height: 48 }}
-          >
-            {userData?.user.name?.[0] ?? 'P'}
-          </Avatar>
+          <ProfileAvatar src={userData?.user.imageUrl} size="3rem" />
           <Typography color="text.primary" fontWeight={500}>
             {userData?.user.name}
           </Typography>

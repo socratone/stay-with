@@ -1,12 +1,12 @@
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { SxProps, useTheme } from '@mui/material';
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import ProfileAvatar from 'components/ProfileAvatar/ProfileAvatar';
 import SmallMenu from 'components/SmallMenu';
 import { Bible, BIBLE_LABEL } from 'constants/bible';
 import { isNewTestament } from 'helpers/bible';
@@ -148,13 +148,7 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
           sx={{ cursor: 'pointer' }}
           onClick={onUserClick}
         >
-          <Avatar
-            alt="profile"
-            src={profileImageUrl}
-            sx={{ width: 34, height: 34 }}
-          >
-            {name?.[0] ?? 'P'}
-          </Avatar>
+          <ProfileAvatar src={profileImageUrl} size="2.125rem" />
           <Stack>
             <Typography
               fontSize={18}
