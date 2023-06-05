@@ -195,12 +195,12 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
       {/* phrase */}
       <Typography
         component="p"
-        variant="h6"
+        fontSize="1.125rem" // 18px
         color="text.primary"
         px={2}
         sx={{ whiteSpace: 'pre-line' }}
         fontWeight={600}
-        mb={2}
+        mb={1}
       >
         {phrase}
       </Typography>
