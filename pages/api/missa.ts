@@ -1,55 +1,15 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { parse } from 'node-html-parser';
+import { sendServerError, ServerError } from 'utils/error';
 
-const handler = async (req: NextApiRequest, res: NextApiResponse<string>) => {
-  const mode = req.query.mode;
+export type MissaData = {
+  bibles: { title: string; bibleInfo: string | null; contents: string[] }[];
+};
 
-  const newRoot = parse(`
-    <!DOCTYPE html>
-    <html lang="ko">
-      <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.5/dist/web/static/pretendard.css"
-        />
-        <style>
-          body {
-            margin: 16px;
-            font-family: Pretendard, -apple-system, BlinkMacSystemFont;
-            background-color: ${mode === 'dark' ? '#000' : '#fff'};
-          }
-
-          h3:first-child {
-            margin-top: 0;
-          }
-          
-          h3,
-          div {
-            line-height: 1.5;
-          }
-          
-          h3 {
-            color: ${mode === 'dark' ? '#e0e0e0' : '#212121'};
-            font-size: 18px;
-          }
-          
-          div {
-            color: ${mode === 'dark' ? '#bdbdbd' : '#757575'};
-            font-size: 16px;
-          }
-
-          div.bumper {
-            height: 100px;
-          }
-        </style>
-      </head>
-      <body>
-      </body>
-    </html>
-  `);
-
+const handler = async (
+  req: NextApiRequest,
+  res: NextApiResponse<MissaData | ServerError>
+) => {
   try {
     const response = await fetch('https://m.mariasarang.net/page/missa.asp', {
       headers: {
@@ -65,9 +25,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<string>) => {
     const titles = root.querySelectorAll('.bd_tit');
     const contents = root.querySelectorAll('.board_layout');
 
-    const body = newRoot.querySelector('body');
+    // Raw text
+    const bibles: { title: string; content: string }[] = [];
 
-    // filter
+    // 독서와 복음만
     for (let i = 0; i < titles.length - 1; i++) {
       const titleText = titles[i].childNodes?.[0].innerText;
       if (
@@ -75,20 +36,54 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<string>) => {
         titleText === '제2독서' ||
         titleText === '복음'
       ) {
-        body?.appendChild(titles[i]);
-        body?.appendChild(contents[i]);
+        bibles.push({
+          title: titles[i].textContent,
+          content: contents[i].textContent,
+        });
       }
     }
 
-    const bumper = parse('<div class="bumper"></div>');
-    body?.appendChild(bumper);
+    const parsedBibles = bibles.map((rawText) => {
+      // 문장으로 구분해서 배열로 return
+      const regex = /[0-9가-힣“”,.!?<>].*[0-9가-힣“”.,!?<>]/gm;
+      const contents = rawText.content.match(regex);
 
-    res.setHeader('Content-Type', 'text/html; charset=UTF-8');
-    return res.status(200).send(newRoot.toString());
+      // 머리말 삭제
+      // Ex. '<소작인들은 주인의 사랑하는 아들을 붙잡아 죽이고는 포도밭 밖으로 던져 버렸다.>'
+      const contentsWithoutHead =
+        contents?.filter((content) => {
+          if (content[0] === '<' && content[content.length - 1] === '>') {
+            return false;
+          }
+          return true;
+        }) ?? [];
+
+      // 꼬리말 삭제
+      const tailIndex = contentsWithoutHead.findLastIndex((content) => {
+        return content.includes('주님의 말씀입니다.');
+      });
+      const contentsWitoutTail = contentsWithoutHead.slice(0, tailIndex);
+
+      // 성서 정보 문장 추출
+      // Ex. '토빗기의 시작입니다.1,3; 2,1ㄴ-8'
+      const bibleInfo = contentsWitoutTail.find((content) => {
+        const regex = /[0-9]+,[0-9]+[ㄱㄴㄷ-]+[,0-9]+/;
+        return regex.test(content);
+      });
+      const contentsWitouhtBibleInfo = contentsWitoutTail.filter(
+        (content) => content !== bibleInfo
+      );
+
+      return {
+        title: rawText.title,
+        bibleInfo: bibleInfo ?? null,
+        contents: contentsWitouhtBibleInfo,
+      };
+    });
+
+    return res.status(200).send({ bibles: parsedBibles });
   } catch (error) {
-    const body = newRoot.querySelector('body');
-    body?.appendChild(parse('<div>에러가 발생했습니다.</div>'));
-    return res.status(500).send(newRoot.toString());
+    return sendServerError(res, error);
   }
 };
 

@@ -10,6 +10,7 @@ import {
   KakaoLoginPostPayload,
   KakaoLoginPostResult,
 } from 'pages/api/login/kakao';
+import { MissaData } from 'pages/api/missa';
 import { UserPostResult } from 'pages/api/signup';
 import { UserData } from 'pages/api/users/[id]';
 import {
@@ -228,4 +229,10 @@ export const putArrow = (id: string, payload: ArrowPutPayload) => {
     `/api/arrows/${id}`,
     payload
   );
+};
+
+export const getMissa = (): Promise<MissaData> => {
+  return axiosInstance
+    .get<any, AxiosResponse<MissaData>>('/api/missa')
+    .then((value) => value.data);
 };
