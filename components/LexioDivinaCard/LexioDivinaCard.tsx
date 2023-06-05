@@ -136,13 +136,14 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
       <Box
         display="flex"
         justifyContent="space-between"
-        alignContent="center"
+        alignItems="center"
+        flexWrap="wrap"
         gap={1}
         px={2}
         py={2}
       >
-        <Box
-          display="flex"
+        <Stack
+          direction="row"
           alignItems="center"
           gap={1}
           sx={{ cursor: 'pointer' }}
@@ -151,7 +152,7 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
           <ProfileAvatar src={profileImageUrl} size="2.125rem" />
           <Stack>
             <Typography
-              fontSize={18}
+              variant="body2"
               color="text.primary"
               fontWeight={500}
               sx={{ lineHeight: 1.2 }}
@@ -166,9 +167,13 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
               <FormattedDate value={createdAt} />
             </Typography>
           </Stack>
-        </Box>
-        <Box display="flex" alignItems="center" gap={1}>
-          <Chip label={getChipLabel()} color={getChipColor()} />
+        </Stack>
+        <Stack direction="row" alignItems="center" gap={1}>
+          <Chip
+            label={getChipLabel()}
+            color={getChipColor()}
+            sx={{ height: '2rem', borderRadius: '1rem' }}
+          />
           {isMine ? (
             <>
               <IconButton
@@ -184,7 +189,7 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
               </SmallMenu>
             </>
           ) : null}
-        </Box>
+        </Stack>
       </Box>
 
       {/* phrase */}
