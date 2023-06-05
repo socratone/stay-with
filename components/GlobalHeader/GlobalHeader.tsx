@@ -92,14 +92,14 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark }) => {
                 <AddIcon />
               </IconButton>
             ) : null}
+            <IconButton size="small" onClick={handleVideoClick}>
+              <MusicNoteIcon />
+            </IconButton>
             <DarkModeSwitch
               checked={dark ? dark : colorMode === 'dark'}
               disabled={dark}
               onClick={toggleColorMode}
             />
-            <IconButton size="small" onClick={handleVideoClick}>
-              <MusicNoteIcon />
-            </IconButton>
             {user ? (
               <ButtonBase
                 onClick={handleAvatarClick}
