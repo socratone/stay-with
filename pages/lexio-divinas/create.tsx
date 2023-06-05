@@ -126,7 +126,7 @@ const LexioDivinaCreate = () => {
       <Meta />
       <GlobalHeader />
 
-      <Box component="main" height={`calc(100vh - ${GLOBAL_HEADER_HEIGHT}px)`}>
+      <Box component="main" height={`calc(100vh - ${GLOBAL_HEADER_HEIGHT})`}>
         <Box
           display="grid"
           gridTemplateColumns={{

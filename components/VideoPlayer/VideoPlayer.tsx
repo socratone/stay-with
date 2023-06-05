@@ -34,7 +34,7 @@ const VideoPlayer = () => {
   return (
     <Box
       position="fixed"
-      top={(theme) => `calc(${GLOBAL_HEADER_HEIGHT}px + ${theme.spacing(1)})`}
+      top={(theme) => `calc(${GLOBAL_HEADER_HEIGHT} + ${theme.spacing(1)})`}
       right={(theme) => theme.spacing(1)}
       sx={{
         width: WIDTH,
