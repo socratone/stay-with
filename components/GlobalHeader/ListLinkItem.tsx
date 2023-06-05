@@ -21,7 +21,9 @@ const ListLinkItem: React.FC<ListLinkItemProps> = ({ href, icon, label }) => {
     <StyledLink href={href} replace>
       <ListItem disablePadding>
         <ListItemButton>
-          <ListItemIcon sx={{ minWidth: 40 }}>{icon}</ListItemIcon>
+          <ListItemIcon sx={{ minWidth: 24, mr: '0.75rem' }}>
+            {icon}
+          </ListItemIcon>
           <ListItemText primary={label} />
         </ListItemButton>
       </ListItem>

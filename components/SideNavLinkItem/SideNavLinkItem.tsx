@@ -26,7 +26,9 @@ const SideNavLinkItem: React.FC<SideNavLinkItemProps> = ({
     <ListItem disablePadding>
       <StyledLink href={href}>
         <ListItemButton sx={{ px: { xs: 0, md: 2, lg: 2 } }}>
-          <ListItemIcon sx={{ minWidth: 40 }}>{icon}</ListItemIcon>
+          <ListItemIcon sx={{ minWidth: 24, mr: '0.75rem' }}>
+            {icon}
+          </ListItemIcon>
           <ListItemText
             primary={
               <Typography color={(theme) => theme.palette.text.primary}>
