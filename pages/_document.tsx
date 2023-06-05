@@ -24,6 +24,24 @@ const InitialBackgroundColorScript = () => {
   );
 };
 
+const InitialFontSizeScript = () => {
+  return (
+    <script
+      dangerouslySetInnerHTML={{
+        __html: `
+          if (typeof window !== 'undefined') {
+            const savedFontSize = localStorage.getItem('fontSize');
+            if (savedFontSize) {
+              const root = document.documentElement;
+              root.style.setProperty('--font-size', savedFontSize);
+            }
+          }
+        `,
+      }}
+    />
+  );
+};
+
 /**
  * A custom Document can update the <html> and <body> tags used to render a Page.
  * This file is only rendered on the server, so event handlers like onClick cannot be used in _document
@@ -48,6 +66,7 @@ export default function Document() {
       </Head>
       <body>
         <InitialBackgroundColorScript />
+        <InitialFontSizeScript />
         <Main />
         <NextScript />
       </body>

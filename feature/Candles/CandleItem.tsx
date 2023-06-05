@@ -1,7 +1,6 @@
 import { keyframes } from '@emotion/react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import IconButton from '@mui/material/IconButton';
@@ -9,6 +8,7 @@ import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import Zoom from '@mui/material/Zoom';
+import ProfileAvatar from 'components/ProfileAvatar/ProfileAvatar';
 import Image, { ImageProps } from 'next/image';
 import { FormattedDate } from 'react-intl';
 import { generateRandomNumber } from 'utils/number';
@@ -64,13 +64,7 @@ const CandleItem: React.FC<CandleItemProps> = ({
         title={
           <Stack gap={0.5}>
             <Stack direction="row" alignItems="center" spacing={1}>
-              <Avatar
-                alt="profile"
-                src={profileUrl}
-                sx={{ width: 34, height: 34 }}
-              >
-                {name?.[0] ?? 'P'}
-              </Avatar>
+              <ProfileAvatar src={profileUrl} size="2.125rem" />
               <Stack>
                 <Typography
                   color="text.primary"

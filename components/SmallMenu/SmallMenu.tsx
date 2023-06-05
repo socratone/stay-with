@@ -25,12 +25,12 @@ const SmallMenu = styled((props: MenuProps) => (
       padding: 0,
     },
     '& .MuiMenuItem-root': {
-      minHeight: 40,
+      minHeight: '2.5rem', // 40px
       paddingTop: 0,
       paddingBottom: 0,
-      fontSize: 15,
+      fontSize: '0.938rem', // 15px
       '& .MuiSvgIcon-root': {
-        fontSize: 18,
+        fontSize: '1.125rem', // 18px
         color: theme.palette.text.secondary,
         marginRight: theme.spacing(1.5),
       },

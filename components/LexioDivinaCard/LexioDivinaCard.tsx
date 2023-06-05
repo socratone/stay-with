@@ -1,12 +1,12 @@
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import { useTheme } from '@mui/material';
-import Avatar from '@mui/material/Avatar';
+import { SxProps, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import ProfileAvatar from 'components/ProfileAvatar/ProfileAvatar';
 import SmallMenu from 'components/SmallMenu';
 import { Bible, BIBLE_LABEL } from 'constants/bible';
 import { isNewTestament } from 'helpers/bible';
@@ -41,6 +41,8 @@ type LexioDivinaCardProps = {
   onUserClick: () => void;
   createdAt: Date;
 };
+
+const footerIconSx: SxProps = { svg: { width: '1.5rem', height: '1.5rem' } };
 
 const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
   name,
@@ -134,27 +136,23 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
       <Box
         display="flex"
         justifyContent="space-between"
-        alignContent="center"
+        alignItems="center"
+        flexWrap="wrap"
         gap={1}
         px={2}
         py={2}
       >
-        <Box
-          display="flex"
+        <Stack
+          direction="row"
           alignItems="center"
           gap={1}
           sx={{ cursor: 'pointer' }}
           onClick={onUserClick}
         >
-          <Avatar
-            alt="profile"
-            src={profileImageUrl}
-            sx={{ width: 34, height: 34 }}
-          >
-            {name?.[0] ?? 'P'}
-          </Avatar>
+          <ProfileAvatar src={profileImageUrl} size="2.125rem" />
           <Stack>
             <Typography
+              variant="body2"
               color="text.primary"
               fontWeight={500}
               sx={{ lineHeight: 1.2 }}
@@ -169,9 +167,13 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
               <FormattedDate value={createdAt} />
             </Typography>
           </Stack>
-        </Box>
-        <Box display="flex" alignItems="center" gap={1}>
-          <Chip label={getChipLabel()} color={getChipColor()} />
+        </Stack>
+        <Stack direction="row" alignItems="center" gap={1}>
+          <Chip
+            label={getChipLabel()}
+            color={getChipColor()}
+            sx={{ height: '2rem', borderRadius: '1rem' }}
+          />
           {isMine ? (
             <>
               <IconButton
@@ -187,12 +189,13 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
               </SmallMenu>
             </>
           ) : null}
-        </Box>
+        </Stack>
       </Box>
 
       {/* phrase */}
       <Typography
-        fontSize={18}
+        component="p"
+        variant="h6"
         color="text.primary"
         px={2}
         sx={{ whiteSpace: 'pre-line' }}
@@ -213,6 +216,7 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
           disabled={likeButtonDisabled}
           onClick={handleLikeButtonClick}
           size="small"
+          sx={footerIconSx}
         >
           {isTempLiked ? (
             <LikedIcon color={theme.palette.error.main} />
@@ -221,15 +225,19 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
           )}
         </IconButton>
         {likedCount ? (
-          <Typography color="text.secondary" fontSize={14}>
+          <Typography color="text.secondary" variant="body2">
             {likedCount}
           </Typography>
         ) : null}
-        <IconButton onClick={onCommentButtonClick} size="small">
+        <IconButton
+          onClick={onCommentButtonClick}
+          size="small"
+          sx={footerIconSx}
+        >
           <BubbleIcon color={theme.palette.text.secondary} />
         </IconButton>
         {commentCount ? (
-          <Typography color="text.secondary" fontSize={14}>
+          <Typography color="text.secondary" variant="body2">
             {commentCount}
           </Typography>
         ) : null}

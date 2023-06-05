@@ -104,6 +104,11 @@ const LexioDivinaForm: React.FC<LexioDivinaFormProps> = ({
                 renderInput={(params) => (
                   <TextField {...params} size="small" error={!!errors.bible} />
                 )}
+                sx={{
+                  '.MuiAutocomplete-endAdornment': {
+                    top: 'calc(50% - 0.875rem)',
+                  },
+                }}
               />
             )}
           />

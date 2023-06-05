@@ -1,12 +1,12 @@
 import AddIcon from '@mui/icons-material/Add';
 import MenuIcon from '@mui/icons-material/Menu';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import DarkModeSwitch from 'components/DarkModeSwitch';
+import ProfileAvatar from 'components/ProfileAvatar/ProfileAvatar';
 import useAuth from 'hooks/auth/useAuth';
 import useViewportHeight from 'hooks/dom/useViewportHeight';
 import useColorMode from 'hooks/theme/useColorMode';
@@ -105,12 +105,10 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark }) => {
                 onClick={handleAvatarClick}
                 sx={{ borderRadius: '50%', ml: 1 }}
               >
-                <Avatar
-                  sx={{ width: 32, height: 32 }}
+                <ProfileAvatar
                   src={user?.imageUrl ?? undefined}
-                >
-                  {user.name[0]}
-                </Avatar>
+                  size="2.125rem"
+                />
               </ButtonBase>
             ) : (
               <HeaderLink href="/login">Login</HeaderLink>

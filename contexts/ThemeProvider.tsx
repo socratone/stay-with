@@ -3,12 +3,13 @@ import {
   ThemeProvider as MuiThemeProvider,
   useMediaQuery,
 } from '@mui/material';
+import { useRouter } from 'next/router';
 import { createContext, useEffect, useState } from 'react';
 import { components } from 'theme/components';
 import { darkPalette, lightPalette } from 'theme/palette';
 import { shadows } from 'theme/shadows';
 import { typography } from 'theme/typography';
-import { saveValue } from 'utils/persist';
+import { getValue, saveValue } from 'utils/persist';
 
 // https://stackoverflow.com/questions/60424596/cant-customize-color-palette-types-on-material-ui-theme-in-typescript
 declare module '@mui/material/styles/createPalette' {
@@ -21,6 +22,8 @@ declare module '@mui/material/styles/createPalette' {
     kakao: SimplePaletteColorOptions;
   }
 }
+
+/** Color mode */
 
 export enum ColorMode {
   Light = 'light',
@@ -38,8 +41,20 @@ export const ColorModeContext = createContext<ColorModeContextValue>({
   toggleColorMode: () => {},
 });
 
+/** Font size */
+
+type FontsizeContextValue = {
+  fontSize: string;
+  changeFontSize: (fontSize: string) => void;
+};
+
+export const FontSizeContext = createContext<FontsizeContextValue>({
+  fontSize: '16px',
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
+  changeFontSize: (fontSize: string) => {},
+});
+
 const theme = {
-  typography,
   shadows,
   components,
 };
@@ -52,20 +67,30 @@ const BLACK = '#000';
 const WHITE = '#fff';
 
 const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
+  const router = useRouter();
+
+  const [fontSize, setFontSize] = useState('16px');
+
   const lightTheme = createTheme({
+    ...theme,
     palette: {
       mode: 'light',
       ...lightPalette,
     },
-    ...theme,
+    typography: {
+      ...typography,
+    },
   });
 
   const darkTheme = createTheme({
+    ...theme,
     palette: {
       mode: 'dark',
       ...darkPalette,
     },
-    ...theme,
+    typography: {
+      ...typography,
+    },
   });
 
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -74,7 +99,7 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [colorMode, setColorMode] = useState<ColorMode | null>(null);
 
   useEffect(() => {
-    const savedColorMode = localStorage.getItem('colorMode');
+    const savedColorMode = getValue('colorMode');
     const prefersDarkMode = window.matchMedia(
       '(prefers-color-scheme: dark)'
     ).matches;
@@ -88,7 +113,21 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     }
   }, []);
 
+  useEffect(() => {
+    const savedFontSize = getValue('fontSize');
+    if (savedFontSize) {
+      setFontSize(savedFontSize);
+      const root = document.documentElement;
+      root.style.setProperty('--font-size', savedFontSize);
+    }
+  }, []);
+
   const getCurrentTheme = () => {
+    // Dark mode only path.
+    if (router.asPath === '/arrows') {
+      return darkTheme;
+    }
+
     if (colorMode) {
       switch (colorMode) {
         case ColorMode.Dark:
@@ -122,9 +161,20 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     });
   };
 
+  const changeFontSize = (fontSize: string) => {
+    setFontSize(fontSize);
+    saveValue('fontSize', fontSize);
+    const root = document.documentElement;
+    root.style.setProperty('--font-size', fontSize);
+  };
+
   return (
     <ColorModeContext.Provider value={{ colorMode, toggleColorMode }}>
-      <MuiThemeProvider theme={getCurrentTheme()}>{children}</MuiThemeProvider>
+      <FontSizeContext.Provider value={{ fontSize, changeFontSize }}>
+        <MuiThemeProvider theme={getCurrentTheme()}>
+          {children}
+        </MuiThemeProvider>
+      </FontSizeContext.Provider>
     </ColorModeContext.Provider>
   );
 };

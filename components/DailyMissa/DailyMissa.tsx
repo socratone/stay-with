@@ -1,22 +1,35 @@
-import Box from '@mui/material/Box';
-import useColorMode from 'hooks/theme/useColorMode';
+import Stack from '@mui/material/Stack';
+import { BIBLE_INTRO } from 'constants/bible';
+import useMissa from 'hooks/api/useMissa';
+
+import Word from './Word';
 
 const DailyMissa = () => {
-  const { colorMode } = useColorMode();
+  const { data: missaData } = useMissa();
 
-  if (!colorMode) return null;
+  const parseToBible = (bibleInfo: string | null) => {
+    if (!bibleInfo) return null;
+    for (const key in BIBLE_INTRO) {
+      const label = BIBLE_INTRO[key];
+      if (bibleInfo.includes(label)) {
+        return key;
+      }
+    }
+    return null;
+  };
 
   return (
-    <Box
-      component="iframe"
-      src={`/api/missa?mode=${colorMode}`}
-      sx={{
-        border: 0,
-        width: '100%',
-        height: '100%',
-        display: 'block',
-      }}
-    />
+    <Stack spacing={2} p={2} pb={12}>
+      {missaData?.words.map((word) => (
+        <Word
+          key={word.bibleInfo}
+          bible={parseToBible(word.bibleInfo)}
+          title={word.title}
+          bibleInfo={word.bibleInfo ?? ''}
+          contents={word.contents}
+        />
+      ))}
+    </Stack>
   );
 };
 

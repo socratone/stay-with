@@ -1,5 +1,10 @@
 :root {
   --background-color: #fff;
+  --font-size: 16px;
+}
+
+html {
+  font-size: var(--font-size);
 }
 
 html,
