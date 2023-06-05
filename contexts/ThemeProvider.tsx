@@ -124,7 +124,7 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 
   const getCurrentTheme = () => {
     // Dark mode only path.
-    if (router.asPath === '/arrows') {
+    if (router.pathname === '/arrows') {
       return darkTheme;
     }
 
