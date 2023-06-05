@@ -1,5 +1,5 @@
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import { useTheme } from '@mui/material';
+import { SxProps, useTheme } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
@@ -41,6 +41,8 @@ type LexioDivinaCardProps = {
   onUserClick: () => void;
   createdAt: Date;
 };
+
+const footerIconSx: SxProps = { svg: { width: '1.5rem', height: '1.5rem' } };
 
 const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
   name,
@@ -215,6 +217,7 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
           disabled={likeButtonDisabled}
           onClick={handleLikeButtonClick}
           size="small"
+          sx={footerIconSx}
         >
           {isTempLiked ? (
             <LikedIcon color={theme.palette.error.main} />
@@ -223,15 +226,19 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
           )}
         </IconButton>
         {likedCount ? (
-          <Typography color="text.secondary" fontSize={14}>
+          <Typography color="text.secondary" variant="body2">
             {likedCount}
           </Typography>
         ) : null}
-        <IconButton onClick={onCommentButtonClick} size="small">
+        <IconButton
+          onClick={onCommentButtonClick}
+          size="small"
+          sx={footerIconSx}
+        >
           <BubbleIcon color={theme.palette.text.secondary} />
         </IconButton>
         {commentCount ? (
-          <Typography color="text.secondary" fontSize={14}>
+          <Typography color="text.secondary" variant="body2">
             {commentCount}
           </Typography>
         ) : null}
