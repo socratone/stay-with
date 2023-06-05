@@ -3,7 +3,7 @@ import { parse } from 'node-html-parser';
 import { sendServerError, ServerError } from 'utils/error';
 
 export type MissaData = {
-  bibles: { title: string; bibleInfo: string | null; contents: string[] }[];
+  words: { title: string; bibleInfo: string | null; contents: string[] }[];
 };
 
 const handler = async (
@@ -26,7 +26,7 @@ const handler = async (
     const contents = root.querySelectorAll('.board_layout');
 
     // Raw text
-    const bibles: { title: string; content: string }[] = [];
+    const words: { title: string; content: string }[] = [];
 
     // 독서와 복음만
     for (let i = 0; i < titles.length - 1; i++) {
@@ -36,17 +36,17 @@ const handler = async (
         titleText === '제2독서' ||
         titleText === '복음'
       ) {
-        bibles.push({
+        words.push({
           title: titles[i].textContent,
           content: contents[i].textContent,
         });
       }
     }
 
-    const parsedBibles = bibles.map((rawText) => {
+    const parsedWords = words.map((word) => {
       // 문장으로 구분해서 배열로 return
       const regex = /[0-9가-힣“”,.!?<>].*[0-9가-힣“”.,!?<>]/gm;
-      const contents = rawText.content.match(regex);
+      const contents = word.content.match(regex);
 
       // 머리말 삭제
       // Ex. '<소작인들은 주인의 사랑하는 아들을 붙잡아 죽이고는 포도밭 밖으로 던져 버렸다.>'
@@ -74,14 +74,21 @@ const handler = async (
         (content) => content !== bibleInfo
       );
 
+      // 복음 앞의 ? 제거
+      // Ex. ? 마르코가 전한 거룩한 복음입니다.12,13-17
+      let trimedBibleInfo = bibleInfo;
+      if (bibleInfo && bibleInfo[0] === '?') {
+        trimedBibleInfo = bibleInfo.substring(1).trim();
+      }
+
       return {
-        title: rawText.title,
-        bibleInfo: bibleInfo ?? null,
+        title: word.title,
+        bibleInfo: trimedBibleInfo ?? null,
         contents: contentsWitouhtBibleInfo,
       };
     });
 
-    return res.status(200).send({ bibles: parsedBibles });
+    return res.status(200).send({ words: parsedWords });
   } catch (error) {
     return sendServerError(res, error);
   }
