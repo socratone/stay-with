@@ -16,6 +16,7 @@ const HeaderLink: React.FC<HeaderLinkProps> = ({ children, href }) => {
           height: '100%',
           display: 'flex',
           alignItems: 'center',
+          px: 0.5,
         }}
       >
         {children}
