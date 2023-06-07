@@ -67,7 +67,8 @@ const CandleItem: React.FC<CandleItemProps> = ({
               <ProfileAvatar src={profileUrl} size="2.125rem" />
               <Stack>
                 <Typography
-                  color="text.primary"
+                  variant="body2"
+                  color={(theme) => theme.palette.text.primary}
                   fontWeight={500}
                   sx={{ lineHeight: 1.2 }}
                 >
