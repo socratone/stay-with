@@ -7,7 +7,10 @@ import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
 export type LexioDivinasData = {
-  lexioDivinas: (LexioDivina & { user: User; createdAt: Date })[];
+  lexioDivinas: (LexioDivina & {
+    user: Omit<User, 'kakaoId' | 'email'>;
+    createdAt: Date;
+  })[];
 };
 
 type LexioDivinaPostResult = InsertOneResult<Document>;
@@ -53,6 +56,15 @@ const handler = async (
       {
         $addFields: {
           createdAt: { $toDate: '$_id' },
+        },
+      },
+      {
+        // 민감한 정보 제거
+        $project: {
+          user: {
+            kakaoId: 0,
+            email: 0,
+          },
         },
       },
     ];

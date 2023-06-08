@@ -9,7 +9,7 @@ import Mongodb from 'utils/mongodb';
 
 interface AggregatedLexioDivina extends LexioDivina {
   commentUserIds: string[];
-  commentUsers: User[];
+  commentUsers: Omit<User, 'kakaoId' | 'email'>[];
   comments: {
     _id: string;
     userId: string;
@@ -75,6 +75,15 @@ const handler = async (
               localField: 'commentUserIds',
               foreignField: '_id',
               as: 'commentUsers',
+              pipeline: [
+                // 민감한 정보 제거
+                {
+                  $project: {
+                    kakaoId: 0,
+                    email: 0,
+                  },
+                },
+              ],
             },
           },
         ]
