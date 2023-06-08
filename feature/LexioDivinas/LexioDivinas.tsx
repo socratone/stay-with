@@ -23,7 +23,6 @@ import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { useSearchParam } from 'react-use';
 import { LexioDivina } from 'schemas';
 import { addQuery, removeQuery } from 'utils/url';
 
@@ -42,7 +41,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
 
   const { user, logout } = useAuth();
 
-  const page = Number(useSearchParam('page')) || 1;
+  const [page, setPage] = useState(1);
 
   const [selectedLexioDivinaIdForDelete, setSelectedLexioDivinaIdForDelete] =
     useState<string | null>(null);
@@ -141,8 +140,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
   };
 
   const handlePageChange = (page: number) => {
-    const mutatedUrl = addQuery(router.asPath, `page=${page}`);
-    router.push(mutatedUrl);
+    setPage(page);
   };
 
   if (lexioDivinasLoading) {
