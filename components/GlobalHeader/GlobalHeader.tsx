@@ -111,7 +111,7 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark }) => {
                 />
               </ButtonBase>
             ) : (
-              <HeaderLink href="/login">Login</HeaderLink>
+              <HeaderLink href="/login">로그인</HeaderLink>
             )}
           </Stack>
 
