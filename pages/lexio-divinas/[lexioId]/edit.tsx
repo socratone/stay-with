@@ -105,8 +105,8 @@ const LexioDivinaEdit = () => {
     try {
       const payload = {
         bible: bible.value,
-        content,
-        phrase,
+        content: content.trim(),
+        phrase: phrase.trim(),
         chapter: Number(chapter),
         verse: Number(verse),
         endChapter: endChapter ? Number(endChapter) : undefined,
