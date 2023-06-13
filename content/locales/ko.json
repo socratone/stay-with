@@ -8,6 +8,6 @@
 
   "success.message.saved": "저장되었어요 😊",
 
-  "error.message.common": "에러가 발생했어요 🫤",
+  "error.message.common": "에러가 발생했어요 😫",
   "error.message.duplicateName": "이미 사용중인 이름이 있네요 😥"
 }

@@ -10,9 +10,7 @@ import { deleteArrow, postArrow, putArrow } from 'helpers/axios';
 import useArrows from 'hooks/api/useArrows';
 import useAuth from 'hooks/auth/useAuth';
 import cloneDeep from 'lodash/cloneDeep';
-import { enqueueSnackbar } from 'notistack';
 import { useEffect, useRef, useState } from 'react';
-import { useIntl } from 'react-intl';
 import {
   assignValue,
   assignValues,
@@ -44,8 +42,6 @@ const CandlesSlide: React.FC<CandlesSlideProps> = ({
   maxCount,
   enabled,
 }) => {
-  const { formatMessage } = useIntl();
-
   const { user: me } = useAuth();
 
   const divRef = useRef<HTMLDivElement>(null);
@@ -136,10 +132,8 @@ const CandlesSlide: React.FC<CandlesSlideProps> = ({
         });
         return newBoard;
       });
-    } catch (error: any) {
-      enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
-        variant: 'error',
-      });
+    } catch {
+      //
     }
   };
 
@@ -158,10 +152,8 @@ const CandlesSlide: React.FC<CandlesSlideProps> = ({
         changeCandleMessage(newBoard, arrowId, message);
         return newBoard;
       });
-    } catch (error) {
-      enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
-        variant: 'error',
-      });
+    } catch {
+      //
     }
   };
 
@@ -178,10 +170,8 @@ const CandlesSlide: React.FC<CandlesSlideProps> = ({
         changeCandle(newBoard, arrowId, null);
         return newBoard;
       });
-    } catch (error) {
-      enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
-        variant: 'error',
-      });
+    } catch {
+      //
     }
   };
 
