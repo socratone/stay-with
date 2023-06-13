@@ -6,6 +6,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import useArrow from 'hooks/api/useArrow';
 import React, { useEffect, useState } from 'react';
+import { ARROW_MESSAGE_MAX_LENGTH } from 'schemas/constants';
 
 type MessageDialogProps = {
   id?: string;
@@ -68,13 +69,19 @@ const MessageDialog: React.FC<MessageDialogProps> = ({
           fullWidth
           value={message}
           onChange={handleChange}
+          error={message.length > ARROW_MESSAGE_MAX_LENGTH}
         />
       </DialogContent>
       <DialogActions sx={{ p: 2 }}>
         <Button variant="outlined" onClick={handleClose}>
           취소
         </Button>
-        <Button variant="contained" onClick={handleSubmit} autoFocus>
+        <Button
+          variant="contained"
+          onClick={handleSubmit}
+          autoFocus
+          disabled={message.length > ARROW_MESSAGE_MAX_LENGTH}
+        >
           {id ? '수정' : '저장'}
         </Button>
       </DialogActions>

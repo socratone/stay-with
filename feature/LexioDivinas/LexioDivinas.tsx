@@ -20,9 +20,7 @@ import useLexioDivinasCount, {
 } from 'hooks/api/useLexioDivinasCount';
 import useAuth from 'hooks/auth/useAuth';
 import { useRouter } from 'next/router';
-import { enqueueSnackbar } from 'notistack';
 import { useState } from 'react';
-import { useIntl } from 'react-intl';
 import { LexioDivina } from 'schemas';
 import { addQuery, removeQuery } from 'utils/url';
 
@@ -35,7 +33,6 @@ type LexioDivinasProps = {
 const ITEM_COUNT_PER_PAGE = 20;
 
 const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
-  const { formatMessage } = useIntl();
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -78,10 +75,8 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
       queryClient.invalidateQueries({
         queryKey: [LEXIO_DIVINAS_COUNT_QUERY_KEY],
       });
-    } catch (error) {
-      enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
-        variant: 'error',
-      });
+    } catch {
+      //
     }
   };
 
@@ -93,16 +88,8 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
         userId: user._id,
       });
       queryClient.invalidateQueries({ queryKey: [LEXIO_DIVINAS_QUERY_KEY] });
-    } catch (error: any) {
-      const status = error?.response?.status;
-      if (status === 401) {
-        logout();
-        router.push('/expired');
-      } else {
-        enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
-          variant: 'error',
-        });
-      }
+    } catch {
+      //
     }
   };
 
@@ -117,10 +104,6 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
       if (status === 401) {
         logout();
         router.push('/expired');
-      } else {
-        enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
-          variant: 'error',
-        });
       }
     }
   };

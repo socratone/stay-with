@@ -18,7 +18,6 @@ import useAuth from 'hooks/auth/useAuth';
 import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
 import { useState } from 'react';
-import { useIntl } from 'react-intl';
 
 import CommentItem from './CommentItem';
 
@@ -28,7 +27,6 @@ type CommentDrawerProps = {
 };
 
 const CommentDrawer: React.FC<CommentDrawerProps> = ({ id, onClose }) => {
-  const { formatMessage } = useIntl();
   const router = useRouter();
   const { user, logout } = useAuth();
   const {
@@ -63,10 +61,6 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({ id, onClose }) => {
       if (status === 401) {
         logout();
         router.push('/expired');
-      } else {
-        enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
-          variant: 'error',
-        });
       }
     }
   };
@@ -102,10 +96,6 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({ id, onClose }) => {
       if (status === 401) {
         logout();
         router.push('/expired');
-      } else {
-        enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
-          variant: 'error',
-        });
       }
     }
   };

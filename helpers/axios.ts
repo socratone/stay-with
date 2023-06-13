@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+import { enqueueSnackbar } from 'notistack';
 import { ArrowPostResult, ArrowsData } from 'pages/api/arrows';
 import { ArrowData } from 'pages/api/arrows/[id]';
 import { ArrowsCountData } from 'pages/api/arrows/count';
@@ -51,6 +52,23 @@ axiosInstance.interceptors.response.use(
   (error) => {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
+    const status = error?.response?.status;
+    const errorMessage = error?.response?.data?.error?.message ?? '';
+
+    if (status >= 500) {
+      enqueueSnackbar('서버 에러가 발생했어요 😱', {
+        variant: 'error',
+      });
+    } else if (status === 400 && errorMessage.includes('must be at most')) {
+      enqueueSnackbar('허용치를 초과한 값이 있어요 😅', {
+        variant: 'error',
+      });
+    } else {
+      enqueueSnackbar('에러가 발생했어요 😫', {
+        variant: 'error',
+      });
+    }
+
     return Promise.reject(error);
   }
 );

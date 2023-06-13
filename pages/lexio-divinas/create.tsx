@@ -16,14 +16,11 @@ import useTempLexioDivinaRecorder from 'hooks/form/useTempLexioDivinaRecorder';
 import useIsBreakpointsDown from 'hooks/theme/useIsBreakpointsDown';
 import useQueryString from 'hooks/url/useQueryString';
 import { useRouter } from 'next/router';
-import { enqueueSnackbar } from 'notistack';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useIntl } from 'react-intl';
 import { useMount } from 'react-use';
 
 const LexioDivinaCreate = () => {
-  const { formatMessage } = useIntl();
   const router = useRouter();
   const isMediumOrSmaller = useIsBreakpointsDown('md');
 
@@ -97,10 +94,6 @@ const LexioDivinaCreate = () => {
       if (status === 401) {
         logout();
         router.push('/expired');
-      } else {
-        enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
-          variant: 'error',
-        });
       }
     } finally {
       setIsRequested(false);

@@ -79,9 +79,6 @@ const SignUp: NextPage<SignUpProps> = ({ kakaoId, email, imageUrl }) => {
           variant: 'error',
         });
       } else {
-        enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
-          variant: 'error',
-        });
         setIsError(true);
       }
     }

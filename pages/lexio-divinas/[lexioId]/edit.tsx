@@ -17,14 +17,11 @@ import useTempLexioDivina from 'hooks/form/useTempLexioDivina';
 import useTempLexioDivinaRecorder from 'hooks/form/useTempLexioDivinaRecorder';
 import useQueryString from 'hooks/url/useQueryString';
 import { useRouter } from 'next/router';
-import { enqueueSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useIntl } from 'react-intl';
 import { useMount } from 'react-use';
 
 const LexioDivinaEdit = () => {
-  const { formatMessage } = useIntl();
   const router = useRouter();
   const tempLexioDivina = useTempLexioDivina();
 
@@ -122,10 +119,6 @@ const LexioDivinaEdit = () => {
       if (status === 401) {
         logout();
         router.push('/expired');
-      } else {
-        enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
-          variant: 'error',
-        });
       }
     } finally {
       setIsRequested(false);

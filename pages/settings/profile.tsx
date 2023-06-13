@@ -94,10 +94,6 @@ const SettingsProfile = () => {
         enqueueSnackbar(formatMessage({ id: 'error.message.duplicateName' }), {
           variant: 'error',
         });
-      } else {
-        enqueueSnackbar(formatMessage({ id: 'error.message.common' }), {
-          variant: 'error',
-        });
       }
     }
   };

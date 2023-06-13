@@ -8,6 +8,6 @@
 
   "success.message.saved": "Saved 😊",
 
-  "error.message.common": "An error occurred 🫤",
+  "error.message.common": "An error occurred 😫",
   "error.message.duplicateName": "The name is already in use 😥"
 }
