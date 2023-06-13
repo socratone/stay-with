@@ -1,8 +1,10 @@
 import { InferType, number, object, string } from 'yup';
 
+import { ID_MAX_LENGTH } from './constants';
+
 export const userSchema = object({
-  _id: string().required().max(50),
-  kakaoId: number().required().max(50),
+  _id: string().required().max(ID_MAX_LENGTH),
+  kakaoId: number().required().max(ID_MAX_LENGTH),
   name: string().required().max(20),
   email: string().email().required().max(50),
   imageUrl: string().max(100),
