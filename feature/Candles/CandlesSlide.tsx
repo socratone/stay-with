@@ -115,17 +115,18 @@ const CandlesSlide: React.FC<CandlesSlideProps> = ({
   const addCandle = async (message: string) => {
     if (!me || message.length === 0) return;
     setMessageDialog(null);
+    const trimedMessage = message.trim();
 
     try {
       const result = await postArrow({
-        message,
+        message: trimedMessage,
         userId: me._id,
       });
       setBoard((board) => {
         const newBoard = cloneDeep(board);
         assignValue(newBoard, {
           _id: String(result.insertedId),
-          message,
+          message: trimedMessage,
           user: me,
           userId: me._id,
           createdAt: new Date(),
@@ -142,14 +143,15 @@ const CandlesSlide: React.FC<CandlesSlideProps> = ({
 
     const arrowId = messageDialog.id;
     setMessageDialog(null);
+    const trimedMessage = message.trim();
 
     try {
       await putArrow(arrowId, {
-        message,
+        message: trimedMessage,
       });
       setBoard((board) => {
         const newBoard = cloneDeep(board);
-        changeCandleMessage(newBoard, arrowId, message);
+        changeCandleMessage(newBoard, arrowId, trimedMessage);
         return newBoard;
       });
     } catch {

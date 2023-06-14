@@ -65,7 +65,7 @@ const SettingsMusic = () => {
   const onSubmit = (data: FormValues) => {
     setJsonValue(
       'videoUrls',
-      data.videos.map((video) => video.url)
+      data.videos.map((video) => video.url.trim())
     );
     enqueueSnackbar(formatMessage({ id: 'success.message.saved' }), {
       variant: 'success',
