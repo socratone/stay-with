@@ -172,7 +172,7 @@ const LexioDivinaEdit = () => {
   return (
     <>
       <Meta />
-      <GlobalHeader />
+      <GlobalHeader backButton />
 
       <Container maxWidth="sm" sx={{ paddingX: 0 }}>
         <LexioDivinaForm

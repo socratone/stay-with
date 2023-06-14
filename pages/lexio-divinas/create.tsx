@@ -117,7 +117,7 @@ const LexioDivinaCreate = () => {
   return (
     <>
       <Meta />
-      <GlobalHeader />
+      <GlobalHeader backButton />
 
       <Box
         component="main"

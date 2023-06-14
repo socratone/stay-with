@@ -1,4 +1,5 @@
 import AddIcon from '@mui/icons-material/Add';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MenuIcon from '@mui/icons-material/Menu';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import Box from '@mui/material/Box';
@@ -24,9 +25,10 @@ import HeaderLink from './HeaderLink';
 
 type GlobalHeaderProps = {
   dark?: true;
+  backButton?: true;
 };
 
-const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark }) => {
+const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark, backButton }) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
@@ -35,12 +37,12 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark }) => {
 
   useViewportHeight();
 
-  const openMenu = () => {
+  const handleMenuOpen = () => {
     const mutatedUrl = addQuery(router.asPath, 'menu=true');
     router.push(mutatedUrl);
   };
 
-  const closeMenu = () => {
+  const handleMenuClose = () => {
     const mutatedUrl = removeQuery(router.asPath, 'menu');
     router.push(mutatedUrl);
   };
@@ -51,6 +53,10 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark }) => {
 
   const handleVideoClick = () => {
     dispatch(toggleVideoOpen());
+  };
+
+  const handleBack = () => {
+    router.back();
   };
 
   return (
@@ -75,12 +81,21 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark }) => {
           px={2}
         >
           <Box display="flex" alignItems="center" ml={-1}>
-            <IconButton
-              onClick={openMenu}
-              sx={{ color: dark ? '#fff' : undefined }}
-            >
-              <MenuIcon />
-            </IconButton>
+            {backButton ? (
+              <IconButton
+                onClick={handleBack}
+                sx={{ color: dark ? '#fff' : undefined }}
+              >
+                <ArrowBackIcon />
+              </IconButton>
+            ) : (
+              <IconButton
+                onClick={handleMenuOpen}
+                sx={{ color: dark ? '#fff' : undefined }}
+              >
+                <MenuIcon />
+              </IconButton>
+            )}
           </Box>
           <Stack direction="row" alignItems="center" height="100%">
             {user ? (
@@ -130,7 +145,7 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark }) => {
 
       <GlobalHeaderDrawer
         open={typeof router.query?.menu === 'string'}
-        onClose={closeMenu}
+        onClose={handleMenuClose}
       />
     </>
   );
