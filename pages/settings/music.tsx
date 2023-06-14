@@ -3,6 +3,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
+import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
@@ -100,18 +101,30 @@ const SettingsMusic = () => {
               {controlledFields.map((field, index) => {
                 return (
                   <Stack key={field.id} gap={1}>
-                    <Box
-                      component="iframe"
-                      width={200}
-                      height={113}
-                      src={`https://www.youtube.com/embed/${getYouTubeID(
-                        field.url
-                      )}`}
-                      sx={{
-                        border: 0,
-                        borderRadius: 3,
-                      }}
-                    />
+                    {getYouTubeID(field.url) ? (
+                      <Box
+                        component="iframe"
+                        width={200}
+                        height={113}
+                        src={`https://www.youtube.com/embed/${getYouTubeID(
+                          field.url
+                        )}`}
+                        sx={{
+                          border: 0,
+                          borderRadius: 3,
+                        }}
+                      />
+                    ) : (
+                      <Skeleton
+                        variant="rectangular"
+                        width={200}
+                        height={113}
+                        animation={false}
+                        sx={{
+                          borderRadius: 3,
+                        }}
+                      />
+                    )}
                     <Stack direction="row">
                       <TextField
                         placeholder="https://www.youtube.com/watch?v=f742p7mQ0Ic"
