@@ -1,8 +1,8 @@
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import TextToggleButtonGroup from 'components/TextToggleButtonGroup/TextToggleButtonGroup';
-import SettingsLayout from 'feature/SettingsLayout/SettingsLayout';
+import TextToggleButtonGroup from 'components/TextToggleButtonGroup';
+import SettingsLayout from 'feature/SettingsLayout';
 import useFontSize from 'hooks/theme/useFontSize';
 
 const SettingsDisplay = () => {

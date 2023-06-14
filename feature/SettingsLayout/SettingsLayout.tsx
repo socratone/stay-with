@@ -1,4 +1,5 @@
 import AccessibilityIcon from '@mui/icons-material/Accessibility';
+import PianoIcon from '@mui/icons-material/Piano';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -33,6 +34,9 @@ const SettingsLayout: React.FC<SettingsLayoutProps> = ({ children }) => {
               </SideNavLinkItem>
               <SideNavLinkItem href="/settings/display" icon={<WbSunnyIcon />}>
                 디스플레이
+              </SideNavLinkItem>
+              <SideNavLinkItem href="/settings/music" icon={<PianoIcon />}>
+                음악
               </SideNavLinkItem>
             </List>
           </Box>
