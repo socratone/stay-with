@@ -84,6 +84,12 @@ const LexioDivinaForm: React.FC<LexioDivinaFormProps> = ({
           minRows={2}
           placeholder="마음에 와닿은 구절"
           error={!!errors.phrase}
+          sx={{
+            fieldset: {
+              borderTopLeftRadius: '1rem',
+              borderTopRightRadius: '1rem',
+            },
+          }}
         />
       </Box>
 
@@ -229,6 +235,12 @@ const LexioDivinaForm: React.FC<LexioDivinaFormProps> = ({
               minRows={contentRows}
               placeholder="구절을 통해 느낀점"
               error={!!errors.content}
+              sx={{
+                fieldset: {
+                  borderBottomLeftRadius: '1rem',
+                  borderBottomRightRadius: '1rem',
+                },
+              }}
             />
           )}
         />
