@@ -100,11 +100,12 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark, backButton }) => {
             <IconButton size="small" onClick={handleVideoClick}>
               <MusicNoteIcon />
             </IconButton>
-            <DarkModeSwitch
-              checked={dark ? dark : colorMode === 'dark'}
-              disabled={dark}
-              onClick={toggleColorMode}
-            />
+            {!dark ? (
+              <DarkModeSwitch
+                checked={colorMode === 'dark'}
+                onClick={toggleColorMode}
+              />
+            ) : null}
             {user ? (
               <ButtonBase
                 onClick={handleAvatarClick}
