@@ -118,7 +118,7 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
 
   const getChipColor = () => {
     if (isNewTestament(bible)) {
-      return 'primary';
+      return 'info';
     }
     return 'secondary';
   };

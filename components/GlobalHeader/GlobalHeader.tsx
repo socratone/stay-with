@@ -1,4 +1,3 @@
-import AddIcon from '@mui/icons-material/Add';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MenuIcon from '@mui/icons-material/Menu';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
@@ -98,15 +97,6 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark, backButton }) => {
             )}
           </Box>
           <Stack direction="row" alignItems="center" height="100%">
-            {user ? (
-              <IconButton
-                size="small"
-                onClick={() => router.push('/lexio-divinas/create')}
-                sx={{ color: dark ? '#fff' : undefined }}
-              >
-                <AddIcon />
-              </IconButton>
-            ) : null}
             <IconButton size="small" onClick={handleVideoClick}>
               <MusicNoteIcon />
             </IconButton>
