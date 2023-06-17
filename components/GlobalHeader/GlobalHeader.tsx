@@ -75,9 +75,12 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark, backButton }) => {
         <Box
           display="flex"
           justifyContent="space-between"
-          boxShadow={PRIMARY_SHADOW}
           height={GLOBAL_HEADER_HEIGHT}
           px={2}
+          sx={{
+            borderBottom: 1,
+            borderBottomColor: (theme) => theme.palette.divider,
+          }}
         >
           <Box display="flex" alignItems="center" ml={-1}>
             {backButton ? (
