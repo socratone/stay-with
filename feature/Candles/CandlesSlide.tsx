@@ -1,6 +1,6 @@
 import 'swiper/css';
 
-import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from '@mui/material/IconButton';
@@ -246,7 +246,7 @@ const CandlesSlide: React.FC<CandlesSlideProps> = ({
             color: (theme) => theme.palette.primary.contrastText,
           }}
         >
-          <EditIcon />
+          <AddIcon />
         </IconButton>
       ) : null}
 
