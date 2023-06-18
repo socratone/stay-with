@@ -65,7 +65,18 @@ const SignUp: NextPage<SignUpProps> = ({ kakaoId, email, imageUrl }) => {
   > = async ({ name }) => {
     setIsRequesting(true);
 
-    const payload: Omit<User, '_id'> = { kakaoId, email, name };
+    const trimedName = name.trim();
+    if (trimedName.length === 0) {
+      enqueueSnackbar(
+        formatMessage({ id: '빈 문자를 이름으로 저장할 수 없습니다.' }),
+        {
+          variant: 'error',
+        }
+      );
+      return;
+    }
+
+    const payload: Omit<User, '_id'> = { kakaoId, email, name: trimedName };
     if (imageChecked) {
       payload.imageUrl = imageUrl;
     }
