@@ -17,7 +17,7 @@ const Home: NextPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const { user } = useAuth();
+  const { user: isLoggedIn } = useAuth();
   const { status, id } = useTempLexioDivinaStatus();
   const { scrollDirection } = useScrollDirection();
 
@@ -53,7 +53,7 @@ const Home: NextPage = () => {
       <Meta />
       <GlobalHeader />
       <LexioDivinas />
-      {user ? (
+      {isLoggedIn ? (
         <FloatingButton
           icon={<AddIcon />}
           hidden={scrollDirection === 'down'}
