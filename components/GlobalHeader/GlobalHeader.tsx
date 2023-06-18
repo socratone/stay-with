@@ -14,7 +14,6 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { useAppDispatch } from 'redux/hooks';
 import { toggleVideoOpen } from 'redux/videoSlice';
-import { PRIMARY_SHADOW } from 'theme/shadows';
 import { addQuery, removeQuery } from 'utils/url';
 
 import { GLOBAL_HEADER_HEIGHT } from './constants';
