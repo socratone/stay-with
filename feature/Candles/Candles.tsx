@@ -34,8 +34,8 @@ const Candles: React.FC = () => {
   return (
     <Box
       ref={divRef}
-      flexGrow={1}
       sx={{
+        height: '100%',
         bgcolor: '#000',
         position: 'relative',
         '> .swiper': {
