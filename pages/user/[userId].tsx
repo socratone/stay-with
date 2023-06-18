@@ -15,7 +15,8 @@ import { useRouter } from 'next/router';
 const UserId = () => {
   const router = useRouter();
 
-  const { user: isLoggedIn } = useAuth();
+  const { user } = useAuth();
+  const isLoggedIn = !!user;
   const { scrollDirection } = useScrollDirection();
   const userId =
     typeof router.query.userId === 'string' ? router.query.userId : undefined;

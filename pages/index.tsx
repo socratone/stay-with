@@ -17,7 +17,8 @@ const Home: NextPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const { user: isLoggedIn } = useAuth();
+  const { user } = useAuth();
+  const isLoggedIn = !!user;
   const { status, id } = useTempLexioDivinaStatus();
   const { scrollDirection } = useScrollDirection();
 
