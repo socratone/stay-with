@@ -65,7 +65,6 @@ const LexioDivinaForm: React.FC<LexioDivinaFormProps> = ({
     <Box
       component="form"
       sx={{
-        p: 2,
         display: 'flex',
         flexDirection: 'column',
         gap: 1.5,

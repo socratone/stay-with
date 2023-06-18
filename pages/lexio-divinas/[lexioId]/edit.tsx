@@ -174,15 +174,17 @@ const LexioDivinaEdit = () => {
       <Meta />
       <GlobalHeader backButton />
 
-      <Container maxWidth="sm" sx={{ paddingX: 0 }}>
-        <LexioDivinaForm
-          form={form}
-          isRequested={isRequested}
-          defaultIsExpanded={!!lexioDivinaData.lexioDivina.endChapter}
-          contentRows={15}
-          onCancel={handleCancel}
-          onSubmit={handleSubmit}
-        />
+      <Container maxWidth="sm">
+        <Box py={2}>
+          <LexioDivinaForm
+            form={form}
+            isRequested={isRequested}
+            defaultIsExpanded={!!lexioDivinaData.lexioDivina.endChapter}
+            contentRows={15}
+            onCancel={handleCancel}
+            onSubmit={handleSubmit}
+          />
+        </Box>
       </Container>
     </>
   );
