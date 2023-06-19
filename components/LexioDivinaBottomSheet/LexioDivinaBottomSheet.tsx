@@ -93,6 +93,7 @@ const LexioDivinaBottomSheet: React.FC<LexioDivinaBottomSheetProps> = ({
             })`,
           opacity: touched ? 0 : 1,
           transition: 'all .3s ease',
+          boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
         }}
       >
         <EditIcon />
