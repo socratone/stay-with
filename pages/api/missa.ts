@@ -3,6 +3,7 @@ import { parse } from 'node-html-parser';
 import { sendServerError, ServerError } from 'utils/error';
 
 export type MissaData = {
+  today: string;
   words: { title: string; bibleInfo: string | null; contents: string[] }[];
 };
 
@@ -11,11 +12,19 @@ const handler = async (
   res: NextApiResponse<MissaData | ServerError>
 ) => {
   try {
-    const response = await fetch('https://m.mariasarang.net/page/missa.asp', {
-      headers: {
-        'Content-Type': 'text/plain; charset=euc-kr',
-      },
-    });
+    const offset =
+      typeof req.query?.offset === 'string' ? Number(req.query.offset) : null;
+
+    const response = await fetch(
+      offset
+        ? `https://m.mariasarang.net/page/missa.asp?go=${offset}`
+        : 'https://m.mariasarang.net/page/missa.asp',
+      {
+        headers: {
+          'Content-Type': 'text/plain; charset=euc-kr',
+        },
+      }
+    );
 
     const buffer = await response.arrayBuffer();
     const decoder = new TextDecoder('euc-kr');
@@ -24,6 +33,10 @@ const handler = async (
     const root = parse(htmlText);
     const titles = root.querySelectorAll('.bd_tit');
     const contents = root.querySelectorAll('.board_layout');
+
+    const matchedToday = htmlText.match(
+      /[0-9]+[년\s]+[0-9]+[월\s]+[0-9]+[일\s]+[월화수목금토일주요]+/
+    );
 
     // Raw text
     const words: { title: string; content: string }[] = [];
@@ -88,7 +101,10 @@ const handler = async (
       };
     });
 
-    return res.status(200).send({ words: parsedWords });
+    return res.status(200).send({
+      today: matchedToday ? matchedToday[0] : '',
+      words: parsedWords,
+    });
   } catch (error) {
     return sendServerError(res, error);
   }

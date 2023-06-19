@@ -249,8 +249,14 @@ export const putArrow = (id: string, payload: ArrowPutPayload) => {
   );
 };
 
-export const getMissa = (): Promise<MissaData> => {
+export type GetMissaParams = {
+  offset?: number;
+};
+
+export const getMissa = (params?: GetMissaParams): Promise<MissaData> => {
   return axiosInstance
-    .get<any, AxiosResponse<MissaData>>('/api/missa')
+    .get<any, AxiosResponse<MissaData>>('/api/missa', {
+      params,
+    })
     .then((value) => value.data);
 };
