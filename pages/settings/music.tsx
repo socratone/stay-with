@@ -97,6 +97,9 @@ const SettingsMusic = () => {
             >
               배경 음악 리스트
             </Typography>
+            <Typography color="text.secondary" mb={1}>
+              원하는 유튜브 음악 영상의 주소를 붙여 넣으세요.
+            </Typography>
             <Stack gap={1}>
               {controlledFields.map((field, index) => {
                 return (
