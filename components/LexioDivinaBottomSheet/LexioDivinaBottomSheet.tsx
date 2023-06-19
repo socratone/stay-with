@@ -38,13 +38,6 @@ const LexioDivinaBottomSheet: React.FC<LexioDivinaBottomSheetProps> = ({
 
   const [touched, setTouched] = useState(false);
 
-  const handleEditIconClick = () => {
-    if (sheetRef.current) {
-      sheetRef.current.snapTo(300);
-      setTouched(true);
-    }
-  };
-
   useEffect(() => {
     const root = document.querySelector(':root') as any;
     root.style.setProperty('--rsbs-max-w', '600px');
@@ -60,6 +53,17 @@ const LexioDivinaBottomSheet: React.FC<LexioDivinaBottomSheetProps> = ({
     }
   }, [colorMode]);
 
+  const handleEditIconClick = () => {
+    if (sheetRef.current) {
+      sheetRef.current.snapTo(300);
+      setTouched(true);
+    }
+  };
+
+  const handleTouch = () => {
+    setTouched(true);
+  };
+
   return (
     <BottomSheet
       ref={sheetRef}
@@ -68,10 +72,13 @@ const LexioDivinaBottomSheet: React.FC<LexioDivinaBottomSheetProps> = ({
       snapPoints={snapPoints}
       expandOnContentDrag
       blocking={false}
+      onTouchStart={handleTouch}
+      onMouseDown={handleTouch}
     >
       {children}
       <IconButton
-        onClick={handleEditIconClick}
+        onTouchStart={handleEditIconClick}
+        onMouseDown={handleEditIconClick}
         size="large"
         sx={{
           position: 'absolute',
