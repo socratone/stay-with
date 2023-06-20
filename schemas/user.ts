@@ -4,7 +4,7 @@ import { ID_MAX_LENGTH } from './constants';
 
 export const userSchema = object({
   _id: string().required().max(ID_MAX_LENGTH),
-  kakaoId: number().required().max(ID_MAX_LENGTH),
+  kakaoId: number().required(),
   name: string().required().max(20),
   email: string().email().required().max(50),
   imageUrl: string().max(100),
