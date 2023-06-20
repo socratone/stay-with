@@ -4,6 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { userPostSchema } from 'schemas';
 import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
+import webpush from 'web-push';
 
 export type UserPostResult = InsertOneResult<Document>;
 
@@ -25,7 +26,14 @@ const handler = async (
         return res.status(409).send({ error: { message: 'Duplicate name.' } });
       }
 
-      const result = await db.insertOne(CollectionName.Users, validatedUser);
+      const { publicKey, privateKey } = webpush.generateVAPIDKeys();
+
+      const result = await db.insertOne(CollectionName.Users, {
+        ...validatedUser,
+        publicKey,
+        privateKey,
+      });
+
       db.close();
       return res.status(201).json(result);
     } catch (error) {

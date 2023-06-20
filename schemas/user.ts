@@ -14,6 +14,10 @@ export const userSchema = object({
 export const userPostSchema = userSchema.omit(['_id']);
 export const userPatchSchema = userSchema.omit(['_id', 'kakaoId', 'email']);
 
-export type User = InferType<typeof userSchema>;
+export type User = InferType<typeof userSchema> & {
+  publicKey: string;
+  privateKey: string;
+  pushSubscription?: PushSubscription;
+};
 export type UserPostPayload = InferType<typeof userPatchSchema>;
 export type UserPatchPayload = InferType<typeof userPatchSchema>;

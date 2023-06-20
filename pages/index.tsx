@@ -4,6 +4,7 @@ import GlobalHeader from 'components/GlobalHeader';
 import Meta from 'components/Meta';
 import SelectorDialog from 'components/SelectorDialog/SelectorDialog';
 import LexioDivinas from 'feature/LexioDivinas';
+import usePushNotification from 'hooks/app/usePushNotification';
 import useAuth from 'hooks/auth/useAuth';
 import useScrollDirection from 'hooks/dom/useScrollDirection';
 import useTempLexioDivinaStatus from 'hooks/form/useTempLexioDivinaStatus';
@@ -23,6 +24,8 @@ const Home: NextPage = () => {
   const { scrollDirection } = useScrollDirection();
 
   const [navDialogOpen, setNavDialogOpen] = useState(false);
+
+  usePushNotification();
 
   useEffect(() => {
     if (status !== 'none') {

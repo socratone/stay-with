@@ -12,6 +12,7 @@ import {
   KakaoLoginPostResult,
 } from 'pages/api/login/kakao';
 import { MissaData } from 'pages/api/missa';
+import { PushSubscriptionPostPayload } from 'pages/api/push/subscription';
 import { UserPostResult } from 'pages/api/signup';
 import { UserData } from 'pages/api/users/[id]';
 import {
@@ -260,5 +261,14 @@ export const getMissa = (params?: GetMissaParams): Promise<MissaData> => {
     .get<any, AxiosResponse<MissaData>>('/api/missa', {
       params,
     })
+    .then((value) => value.data);
+};
+
+export const postPushSubscription = (payload: PushSubscriptionPostPayload) => {
+  return axiosInstance
+    .post<any, AxiosResponse<ArrowPostResult>, PushSubscriptionPostPayload>(
+      `/api/push/subscription`,
+      payload
+    )
     .then((value) => value.data);
 };

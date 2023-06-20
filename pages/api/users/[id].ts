@@ -7,7 +7,7 @@ import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
 export type UserData = {
-  user: User;
+  user: Omit<User, 'privateKey' | 'pushSubscription'>;
 };
 
 type UserPatchResult = UpdateResult;
@@ -29,8 +29,11 @@ const handler = async (
         return res.status(404).json({ error: { message: 'Not found.' } });
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { privateKey, pushSubscription, ...others } = user;
+
       db.close();
-      return res.status(200).json({ user });
+      return res.status(200).json({ user: others });
     } catch (error) {
       return sendServerError(res, error);
     }
