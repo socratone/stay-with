@@ -63,6 +63,8 @@ axiosInstance.interceptors.response.use(
       enqueueSnackbar('허용치를 초과한 값이 있어요 😅', {
         variant: 'error',
       });
+    } else if (status === 401 && errorMessage === 'Unregistered user.') {
+      // pass
     } else {
       enqueueSnackbar('에러가 발생했어요 😫', {
         variant: 'error',
