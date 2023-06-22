@@ -13,7 +13,10 @@ const Arrows = () => {
 
   useEffect(() => {
     if (candlesContainerRef.current) {
-      candlesContainerRef.current.scrollIntoView();
+      window.scrollTo({
+        top: candlesContainerRef.current.offsetHeight,
+        behavior: 'smooth',
+      });
     }
   }, []);
 
