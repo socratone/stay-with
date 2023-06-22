@@ -32,7 +32,12 @@ const MessageItem: React.FC<MessageItemProps> = ({
       <Stack direction="row" gap={1} flexWrap="wrap">
         <ProfileAvatar src={profileImageUrl} size="2.125rem" />
         <Box>
-          <Typography display="flex" gap={1} alignItems="center">
+          <Typography
+            display="flex"
+            gap={1}
+            alignItems="center"
+            flexWrap="wrap"
+          >
             <Typography color="text.primary" component="span" fontWeight={600}>
               {name}
             </Typography>
@@ -40,7 +45,12 @@ const MessageItem: React.FC<MessageItemProps> = ({
               <FormattedDate value={createdAt} />
             </Typography>
           </Typography>
-          <Typography color="text.secondary" align="left" whiteSpace="pre-line">
+          <Typography
+            color="text.secondary"
+            align="left"
+            whiteSpace="pre-line"
+            sx={{ wordBreak: 'break-all' }}
+          >
             {message}
           </Typography>
         </Box>
