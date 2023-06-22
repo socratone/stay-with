@@ -67,6 +67,7 @@ const MessageDialog: React.FC<MessageDialogProps> = ({
           size="small"
           multiline
           fullWidth
+          rows={5}
           value={message}
           onChange={handleChange}
           error={message.length > ARROW_MESSAGE_MAX_LENGTH}
