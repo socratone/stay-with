@@ -123,6 +123,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
   };
 
   const handlePageChange = (page: number) => {
+    window.scrollTo({ top: 0 });
     setPage(page);
   };
 
