@@ -20,7 +20,7 @@ type CandleItemProps = {
   rowOffset?: number;
   message: string;
   name?: string;
-  profileUrl?: string;
+  profileImageUrl?: string;
   createdAt: Date;
   isMyself: boolean;
   onEdit: () => void;
@@ -50,7 +50,7 @@ const CandleItem: React.FC<CandleItemProps> = ({
   rowOffset = 0,
   message,
   name,
-  profileUrl,
+  profileImageUrl,
   createdAt,
   isMyself,
   onEdit,
@@ -64,7 +64,7 @@ const CandleItem: React.FC<CandleItemProps> = ({
         title={
           <Stack gap={0.5}>
             <Stack direction="row" alignItems="center" spacing={1}>
-              <ProfileAvatar src={profileUrl} size="2.125rem" />
+              <ProfileAvatar src={profileImageUrl} size="2.125rem" />
               <Stack>
                 <Typography
                   variant="body2"

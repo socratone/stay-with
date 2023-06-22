@@ -1,8 +1,9 @@
 import Box from '@mui/material/Box';
+import GlobalHeader from 'components/GlobalHeader';
 import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/constants';
-import GlobalHeader from 'components/GlobalHeader/GlobalHeader';
 import Meta from 'components/Meta/Meta';
-import Candles from 'feature/Candles';
+import ArrowHistories from 'feature/candle/CandleHistories';
+import Candles from 'feature/candle/Candles';
 import Image from 'next/image';
 import crossImage from 'public/images/cross.webp';
 import { useEffect, useRef } from 'react';
@@ -12,7 +13,10 @@ const Arrows = () => {
 
   useEffect(() => {
     if (candlesContainerRef.current) {
-      candlesContainerRef.current.scrollIntoView();
+      window.scrollTo({
+        top: candlesContainerRef.current.offsetHeight,
+        behavior: 'smooth',
+      });
     }
   }, []);
 
@@ -40,6 +44,7 @@ const Arrows = () => {
       >
         <Candles />
       </Box>
+      <ArrowHistories />
     </>
   );
 };
