@@ -4,10 +4,12 @@ import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from '@mui/material/IconButton';
+import { useQueryClient } from '@tanstack/react-query';
 import AlertDialog from 'components/AlertDialog/AlertDialog';
 import ErrorMessage from 'components/ErrorMessage/ErrorMessage';
 import { deleteArrow, postArrow, putArrow } from 'helpers/axios';
 import useArrows from 'hooks/api/useArrows';
+import { ARROWS_FOR_CANDLES_QUERY_KEY } from 'hooks/api/useArrowsForCandles';
 import useAuth from 'hooks/auth/useAuth';
 import cloneDeep from 'lodash/cloneDeep';
 import { useEffect, useRef, useState } from 'react';
@@ -42,6 +44,8 @@ const CandlesSlide: React.FC<CandlesSlideProps> = ({
   maxCount,
   enabled,
 }) => {
+  const queryClient = useQueryClient();
+
   const { user: me } = useAuth();
 
   const divRef = useRef<HTMLDivElement>(null);
@@ -149,6 +153,10 @@ const CandlesSlide: React.FC<CandlesSlideProps> = ({
       await putArrow(arrowId, {
         message: trimedMessage,
       });
+      // 다른 곳의 데이터 refetch
+      queryClient.invalidateQueries({
+        queryKey: [ARROWS_FOR_CANDLES_QUERY_KEY],
+      });
       setBoard((board) => {
         const newBoard = cloneDeep(board);
         changeCandleMessage(newBoard, arrowId, trimedMessage);
@@ -167,6 +175,10 @@ const CandlesSlide: React.FC<CandlesSlideProps> = ({
 
     try {
       await deleteArrow(arrowId);
+      // 다른 곳의 데이터 refetch
+      queryClient.invalidateQueries({
+        queryKey: [ARROWS_FOR_CANDLES_QUERY_KEY],
+      });
       setBoard((board) => {
         const newBoard = cloneDeep(board);
         changeCandle(newBoard, arrowId, null);
