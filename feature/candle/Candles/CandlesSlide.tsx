@@ -18,10 +18,10 @@ import {
   parseBoardToArrayWithCoordinate,
 } from 'utils/board';
 
+import MessageDialog from '../MessageDialog';
 import CandleItem, { CANDLE_HEIGHT } from './CandleItem';
 import { getRandomCandleImageSrc } from './helpers';
 import { useCandlesRowColumnCount } from './hooks';
-import MessageDialog from './MessageDialog';
 import { Candle } from './types';
 
 type CandlesSlideProps = {
@@ -219,7 +219,7 @@ const CandlesSlide: React.FC<CandlesSlideProps> = ({
               imageSrc={getRandomCandleImageSrc(index)}
               message={candle.message}
               name={candle.user?.name}
-              profileUrl={candle.user?.imageUrl}
+              profileImageUrl={candle.user?.imageUrl}
               createdAt={candle.createdAt}
               isMyself={candle.userId === me?._id}
               onEdit={() => handleEdit(candle._id)}
