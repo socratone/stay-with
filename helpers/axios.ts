@@ -12,6 +12,7 @@ import {
   KakaoLoginPostResult,
 } from 'pages/api/login/kakao';
 import { MissaData } from 'pages/api/missa';
+import { NotificationsData } from 'pages/api/notifications';
 import { UserPostResult } from 'pages/api/signup';
 import { UserData } from 'pages/api/users/[id]';
 import {
@@ -258,6 +259,22 @@ export type GetMissaParams = {
 export const getMissa = (params?: GetMissaParams): Promise<MissaData> => {
   return axiosInstance
     .get<any, AxiosResponse<MissaData>>('/api/missa', {
+      params,
+    })
+    .then((value) => value.data);
+};
+
+export type GetNotificationsParams = {
+  skip: number;
+  limit: number;
+  userId?: string;
+};
+
+export const getNotifications = (
+  params?: GetNotificationsParams
+): Promise<NotificationsData> => {
+  return axiosInstance
+    .get<any, AxiosResponse<NotificationsData>>('/api/notifications', {
       params,
     })
     .then((value) => value.data);

@@ -65,6 +65,17 @@ Arrow {
 }
 ```
 
+```
+Notification {
+  _id: string;
+  userId: string;
+  type: string;
+  message: string;
+  notifierNames: string[];
+  newed: boolean;
+}
+```
+
 ## Deployment
 
 - [Vercel](https://vercel.com/socratone/stay-with)
