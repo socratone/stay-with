@@ -1,6 +1,7 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MenuIcon from '@mui/icons-material/Menu';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import IconButton from '@mui/material/IconButton';
@@ -46,11 +47,15 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark, backButton }) => {
   };
 
   const handleAvatarClick = () => {
-    router.push(`/user/${user?._id}`);
+    router.push(`/users/${user?._id}`);
   };
 
   const handleVideoClick = () => {
     dispatch(toggleVideoOpen());
+  };
+
+  const handleNotificationClick = () => {
+    router.push(`/users/${user?._id}/notifications`);
   };
 
   const handleBack = () => {
@@ -108,6 +113,9 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark, backButton }) => {
                 onClick={toggleColorMode}
               />
             ) : null}
+            <IconButton onClick={handleNotificationClick}>
+              <NotificationsIcon />
+            </IconButton>
             {user ? (
               <ButtonBase
                 onClick={handleAvatarClick}

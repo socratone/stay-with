@@ -119,7 +119,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
   };
 
   const handleUserClick = (id: string) => {
-    router.push(`/user/${id}`);
+    router.push(`/users/${id}`);
   };
 
   const handlePageChange = (page: number) => {
