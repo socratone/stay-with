@@ -113,9 +113,11 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark, backButton }) => {
                 onClick={toggleColorMode}
               />
             ) : null}
-            <IconButton onClick={handleNotificationClick}>
-              <NotificationsIcon />
-            </IconButton>
+            {user ? (
+              <IconButton onClick={handleNotificationClick}>
+                <NotificationsIcon />
+              </IconButton>
+            ) : null}
             {user ? (
               <ButtonBase
                 onClick={handleAvatarClick}

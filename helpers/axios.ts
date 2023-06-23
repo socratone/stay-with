@@ -265,8 +265,8 @@ export const getMissa = (params?: GetMissaParams): Promise<MissaData> => {
 };
 
 export type GetNotificationsParams = {
-  skip: number;
-  limit: number;
+  skip?: number;
+  limit?: number;
   userId?: string;
 };
 

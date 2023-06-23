@@ -14,7 +14,7 @@ export const notificationSchema = object({
     .required()
     .oneOf(Object.values(NotificationType)),
   message: string().max(50),
-  comments: array()
+  notifiers: array()
     .required()
     .of(
       object({
@@ -22,7 +22,6 @@ export const notificationSchema = object({
         imageUrl: string().max(URL_MAX_LENGTH),
       })
     ),
-  notifiers: array().of(string().required().max(NAME_MAX_LENGTH)),
   newed: boolean(),
 });
 
