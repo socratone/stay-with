@@ -5,11 +5,11 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import ErrorMessage from 'components/ErrorMessage/ErrorMessage';
-import WaitingMessage from 'components/WaitingMessage/WaitingMessage';
 import { BIBLE_INTRO } from 'constants/bible';
 import useMissa from 'hooks/api/useMissa';
 import { useState } from 'react';
 
+import Loading from './Loading';
 import Word from './Word';
 
 const DailyMissa = () => {
@@ -51,14 +51,7 @@ const DailyMissa = () => {
           <ErrorMessage />
         </Box>
       ) : isLoading ? (
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="50vh"
-        >
-          <WaitingMessage />
-        </Box>
+        <Loading />
       ) : (
         <>
           <Stack direction="row" justifyContent="flex-end">
