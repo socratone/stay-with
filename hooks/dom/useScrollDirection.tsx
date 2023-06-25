@@ -16,8 +16,7 @@ const useScrollDirection = () => {
   useEffect(() => {
     const requestUpdate = () => {
       const previousScrollY = previousScrollYRef.current;
-      // 아이폰 flexible 스크롤 방지
-      if (window.scrollY <= 0) return;
+
       setDirection(previousScrollY > window.scrollY ? 'up' : 'down');
       previousScrollYRef.current = window.scrollY;
       timerRef.current = setTimeout(() => {
@@ -26,6 +25,9 @@ const useScrollDirection = () => {
     };
 
     const onScroll = () => {
+      // 아이폰 flexible 스크롤 방지
+      if (window.scrollY <= 0) return;
+
       if (!isRequestedRef.current) {
         requestUpdate();
         isRequestedRef.current = true;

@@ -3,7 +3,7 @@
   "version": "0.1.1",
   "private": true,
   "scripts": {
-    "dev": "next dev -H 192.168.200.119",
+    "dev": "next dev",
     "build:dev": "env-cmd -f .env.development next build && env-cmd -f .env.development next start",
     "build:stag": "env-cmd -f .env.staging next build && env-cmd -f .env.staging next start",
     "build:prod": "next build",
