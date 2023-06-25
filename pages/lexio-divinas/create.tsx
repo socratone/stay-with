@@ -120,38 +120,33 @@ const LexioDivinaCreate = () => {
       <Meta />
       <GlobalHeader backButton />
 
-      <Box
-        component="main"
-        height={`calc(100vh - ${GLOBAL_HEADER_HEIGHT})`}
-        overflow="auto"
-      >
-        <Container>
-          <Box
-            display="grid"
-            gridTemplateColumns={{
-              xs: '1fr',
-              sm: '1fr',
-              md: '1fr 1fr',
-            }}
-            gap={2}
-            height="100%"
-          >
-            {/* left */}
-            <Box pt={2}>
-              <DailyMissa />
-            </Box>
+      {!isMediumOrSmaller ? (
+        <Box component="main">
+          <Container>
+            <Box
+              display="grid"
+              gridTemplateColumns="repeat(2, 1fr)"
+              height="100%"
+            >
+              {/* left */}
+              <Box
+                pt={2}
+                pr={1} // scroll bar padding
+                height={`calc(100vh - ${GLOBAL_HEADER_HEIGHT})`}
+                overflow="auto"
+              >
+                <DailyMissa />
+              </Box>
 
-            {/* right */}
-            {!isMediumOrSmaller ? (
+              {/* right */}
               <Box
                 display="flex"
                 flexDirection="column"
                 gap={2}
                 py={2}
-                sx={{
-                  height: '100%',
-                  overflowY: 'auto',
-                }}
+                pl={1} // scroll bar padding
+                height={`calc(100vh - ${GLOBAL_HEADER_HEIGHT})`}
+                overflow="auto"
               >
                 <LexioDivinaForm
                   form={form}
@@ -161,23 +156,28 @@ const LexioDivinaCreate = () => {
                   onSubmit={handleSubmit}
                 />
               </Box>
-            ) : null}
-          </Box>
-        </Container>
-      </Box>
+            </Box>
+          </Container>
+        </Box>
+      ) : null}
 
       {isMediumOrSmaller ? (
-        <LexioDivinaBottomSheet>
-          <Box px={2} pb={2}>
-            <LexioDivinaForm
-              form={form}
-              isRequested={isRequested}
-              contentRows={2}
-              onCancel={handleCancel}
-              onSubmit={handleSubmit}
-            />
-          </Box>
-        </LexioDivinaBottomSheet>
+        <>
+          <Container sx={{ pt: 2 }}>
+            <DailyMissa />
+          </Container>
+          <LexioDivinaBottomSheet>
+            <Box px={2} pb={2}>
+              <LexioDivinaForm
+                form={form}
+                isRequested={isRequested}
+                contentRows={2}
+                onCancel={handleCancel}
+                onSubmit={handleSubmit}
+              />
+            </Box>
+          </LexioDivinaBottomSheet>
+        </>
       ) : null}
     </>
   );
