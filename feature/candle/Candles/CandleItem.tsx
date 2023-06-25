@@ -1,15 +1,14 @@
 import { keyframes } from '@emotion/react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import Box from '@mui/material/Box';
+import { Menu } from '@mui/material';
 import ButtonBase from '@mui/material/ButtonBase';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
-import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import Zoom from '@mui/material/Zoom';
 import ProfileAvatar from 'components/ProfileAvatar/ProfileAvatar';
 import Image, { ImageProps } from 'next/image';
+import { useState } from 'react';
 import { FormattedDate } from 'react-intl';
 import { generateRandomNumber } from 'utils/number';
 
@@ -25,8 +24,6 @@ type CandleItemProps = {
   isMyself: boolean;
   onEdit: () => void;
   onDelete: () => void;
-  tooltipOpen: boolean;
-  onTooltipOpenChange: (open: boolean) => void;
 };
 
 export const CANDLE_WIDTH = 10 * 2;
@@ -55,104 +52,108 @@ const CandleItem: React.FC<CandleItemProps> = ({
   isMyself,
   onEdit,
   onDelete,
-  tooltipOpen,
-  onTooltipOpenChange,
 }) => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <>
-      <Tooltip
-        title={
-          <Stack gap={0.5}>
-            <Stack direction="row" alignItems="center" spacing={1}>
-              <ProfileAvatar src={profileImageUrl} size="2.125rem" />
-              <Stack>
-                <Typography
-                  variant="body2"
-                  color={(theme) => theme.palette.text.primary}
-                  fontWeight={500}
-                  sx={{ lineHeight: 1.2 }}
-                >
-                  {name}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color={(theme) => theme.palette.text.secondary}
-                  sx={{ lineHeight: 1.2 }}
-                >
-                  <FormattedDate value={createdAt} />
-                </Typography>
-              </Stack>
-            </Stack>
-            <Typography
-              whiteSpace="pre-line"
-              color={(theme) => theme.palette.text.secondary}
-            >
-              {message}
-            </Typography>
-            {isMyself ? (
-              <Stack direction="row" mx={-0.5} mb={-0.5}>
-                <IconButton size="small" onClick={onEdit}>
-                  <EditIcon fontSize="small" />
-                </IconButton>
-                <IconButton size="small" onClick={onDelete}>
-                  <DeleteIcon fontSize="small" />
-                </IconButton>
-              </Stack>
-            ) : null}
-          </Stack>
-        }
-        arrow
-        TransitionComponent={Zoom}
-        open={tooltipOpen}
-        componentsProps={{
-          tooltip: {
-            sx: {
-              p: 1,
+      <ButtonBase
+        sx={{
+          width: CANDLE_WIDTH,
+          height: CANDLE_HEIGHT,
+          position: 'absolute',
+          top: row * CANDLE_HEIGHT + rowOffset,
+          left: column * CANDLE_WIDTH,
+          animation: `${fadeIn} 1s ease `,
+          img: {
+            transform: `scale(${generateRandomNumber(85, 100) * 0.01})`,
+          },
+        }}
+        disableRipple
+        onClick={handleClick}
+      >
+        <Image
+          src={imageSrc}
+          alt="small candle"
+          width={CANDLE_WIDTH}
+          height={CANDLE_HEIGHT}
+          style={{
+            objectFit: 'contain',
+          }}
+        />
+      </ButtonBase>
+
+      <Menu
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        MenuListProps={{
+          sx: {
+            '&.MuiMenu-list': {
+              padding: 1,
             },
           },
         }}
       >
-        <ButtonBase
-          sx={{
-            width: CANDLE_WIDTH,
-            height: CANDLE_HEIGHT,
-            position: 'absolute',
-            top: row * CANDLE_HEIGHT + rowOffset,
-            left: column * CANDLE_WIDTH,
-            animation: `${fadeIn} 1s ease `,
-            img: {
-              transform: `scale(${generateRandomNumber(85, 100) * 0.01})`,
-            },
-          }}
-          disableRipple
-          onClick={() => onTooltipOpenChange(true)}
-        >
-          <Image
-            src={imageSrc}
-            alt="small candle"
-            width={CANDLE_WIDTH}
-            height={CANDLE_HEIGHT}
-            style={{
-              objectFit: 'contain',
+        <Stack gap={0.5}>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <ProfileAvatar src={profileImageUrl} size="2.125rem" />
+            <Stack>
+              <Typography
+                variant="body2"
+                color={(theme) => theme.palette.text.primary}
+                fontWeight={500}
+                sx={{ lineHeight: 1.2 }}
+              >
+                {name}
+              </Typography>
+              <Typography
+                variant="body2"
+                color={(theme) => theme.palette.text.secondary}
+                sx={{ lineHeight: 1.2 }}
+              >
+                <FormattedDate value={createdAt} />
+              </Typography>
+            </Stack>
+          </Stack>
+          <Typography
+            color={(theme) => theme.palette.text.secondary}
+            whiteSpace="pre-line"
+            sx={{
+              wordBreak: 'break-all',
             }}
-          />
-        </ButtonBase>
-      </Tooltip>
-
-      {/* backdrop */}
-      {tooltipOpen ? (
-        <Box
-          zIndex={1000}
-          onClick={() => onTooltipOpenChange(false)}
-          sx={{
-            width: '100%',
-            height: '100%',
-            position: 'fixed',
-            top: 0,
-            left: 0,
-          }}
-        />
-      ) : null}
+          >
+            {message}
+          </Typography>
+          {isMyself ? (
+            <Stack direction="row" mx={-0.5} mb={-0.5}>
+              <IconButton size="small" onClick={onEdit}>
+                <EditIcon fontSize="small" />
+              </IconButton>
+              <IconButton size="small" onClick={onDelete}>
+                <DeleteIcon fontSize="small" />
+              </IconButton>
+            </Stack>
+          ) : null}
+        </Stack>
+      </Menu>
     </>
   );
 };

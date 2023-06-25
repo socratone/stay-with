@@ -1,18 +1,27 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { getArrows, GetLexioDivinasParams } from 'helpers/axios';
+import { getArrows } from 'helpers/axios';
 
 export const ARROWS_INFINITE_QUERY_KEY = 'arrows-infinite';
 
-const useArrowsInfinite = (params: Pick<GetLexioDivinasParams, 'limit'>) => {
+type UseArrowsInfiniteParams = {
+  limit?: number;
+};
+
+const useArrowsInfinite = ({ limit }: UseArrowsInfiniteParams) => {
   return useInfiniteQuery({
-    queryKey: [ARROWS_INFINITE_QUERY_KEY, params],
+    queryKey: [ARROWS_INFINITE_QUERY_KEY, limit],
     queryFn: ({ pageParam = 1 }) => {
       return getArrows({
-        limit: params.limit,
-        skip: params.limit * (pageParam - 1),
+        limit: limit as number,
+        skip: (limit as number) * (pageParam - 1),
       });
     },
-    getNextPageParam: (_, allPages) => allPages.length + 1,
+    getNextPageParam: (lastPage, allPages) => {
+      // Return undefined to indicate there is no next page available.
+      if (lastPage.arrows.length === 0) return undefined;
+      return allPages.length + 1;
+    },
+    enabled: !!limit,
   });
 };
 
