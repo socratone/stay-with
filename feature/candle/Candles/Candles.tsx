@@ -12,9 +12,9 @@ import { useEffect, useRef, useState } from 'react';
 import { Swiper, SwiperClass, SwiperSlide } from 'swiper/react';
 import { assignValue, assignValues, createEmptyBoard } from 'utils/board';
 
+import MessageDialog from '../MessageDialog';
 import CandlesSlide from './CandlesSlide';
 import { useCandlesRowColumnCount } from './hooks';
-import MessageDialog from './MessageDialog';
 import { Candle } from './types';
 
 type Dialog = {
