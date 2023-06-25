@@ -1,10 +1,10 @@
 import 'swiper/css';
 
 import AddIcon from '@mui/icons-material/Add';
-import { IconButton } from '@mui/material';
 import Box from '@mui/material/Box';
 import { useQueryClient } from '@tanstack/react-query';
 import AlertDialog from 'components/AlertDialog/AlertDialog';
+import FloatingButton from 'components/FloatingButton/FloatingButton';
 import { deleteArrow, postArrow, putArrow } from 'helpers/axios';
 import { ARROWS_QUERY_KEY } from 'hooks/api/useArrows';
 import useArrowsInfinite from 'hooks/api/useArrowsInfinite';
@@ -213,20 +213,10 @@ const Candles: React.FC = () => {
       </Box>
 
       {me ? (
-        <IconButton
+        <FloatingButton
+          icon={<AddIcon />}
           onClick={() => setMessageDialog({ open: true })}
-          size="large"
-          sx={{
-            position: 'fixed',
-            zIndex: 10,
-            bgcolor: (theme) => theme.palette.primary.main,
-            bottom: (theme) => theme.spacing(2),
-            right: (theme) => theme.spacing(2),
-            color: (theme) => theme.palette.primary.contrastText,
-          }}
-        >
-          <AddIcon />
-        </IconButton>
+        />
       ) : null}
 
       <AlertDialog
