@@ -19,8 +19,6 @@ body {
   background-color: var(--background-color);
   height: 100vh; /* Fallback for browsers that do not support Custom Properties */
   height: calc(var(--viewport-height, 1vh) * 100);
-  /* react-spring-bottom-sheet library 사용시 hidden이 적용되는 문제 */
-  overflow: auto !important;
 }
 
 #__next {

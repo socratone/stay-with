@@ -40,7 +40,7 @@ const DailyMissa = () => {
   };
 
   return (
-    <Stack spacing={2} pb={12}>
+    <Stack spacing={2}>
       {isError ? (
         <Box
           display="flex"
