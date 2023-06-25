@@ -1,4 +1,5 @@
 import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { useQueryClient } from '@tanstack/react-query';
@@ -85,31 +86,33 @@ const CandleHistories = () => {
 
   return (
     <>
-      <Stack p={1} gap={1} bgcolor="#000">
-        {arrowsData?.arrows.map((arrow) => (
-          <MessageItem
-            key={arrow._id}
-            message={arrow.message}
-            profileImageUrl={arrow.user.imageUrl}
-            name={arrow.user.name}
-            createdAt={arrow.createdAt}
-            isMyself={arrow.userId === me?._id}
-            onEdit={() => handleEdit(arrow._id)}
-            onDelete={() => handleDelete(arrow._id)}
-          />
-        ))}
-        <Box display="flex" justifyContent="center">
-          {(arrowsCountData?.count ?? 0) <= ITEM_COUNT_PER_PAGE ? null : (
-            <Pagination
-              page={page}
-              onChange={(_, page) => handlePageChange(page)}
-              count={Math.ceil(
-                Number(arrowsCountData?.count) / ITEM_COUNT_PER_PAGE
-              )}
+      <Container>
+        <Stack gap={1} bgcolor="#000">
+          {arrowsData?.arrows.map((arrow) => (
+            <MessageItem
+              key={arrow._id}
+              message={arrow.message}
+              profileImageUrl={arrow.user.imageUrl}
+              name={arrow.user.name}
+              createdAt={arrow.createdAt}
+              isMyself={arrow.userId === me?._id}
+              onEdit={() => handleEdit(arrow._id)}
+              onDelete={() => handleDelete(arrow._id)}
             />
-          )}
-        </Box>
-      </Stack>
+          ))}
+          <Box display="flex" justifyContent="center">
+            {(arrowsCountData?.count ?? 0) <= ITEM_COUNT_PER_PAGE ? null : (
+              <Pagination
+                page={page}
+                onChange={(_, page) => handlePageChange(page)}
+                count={Math.ceil(
+                  Number(arrowsCountData?.count) / ITEM_COUNT_PER_PAGE
+                )}
+              />
+            )}
+          </Box>
+        </Stack>
+      </Container>
 
       <AlertDialog
         open={!!deleteDialog}
