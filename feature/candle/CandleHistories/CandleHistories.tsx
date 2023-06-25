@@ -6,10 +6,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import AlertDialog from 'components/AlertDialog/AlertDialog';
 import MessageDialog from 'feature/candle/MessageDialog/MessageDialog';
 import { deleteArrow, putArrow } from 'helpers/axios';
+import useArrows, { ARROWS_QUERY_KEY } from 'hooks/api/useArrows';
 import useArrowsCount from 'hooks/api/useArrowsCount';
-import useArrowsForCandles, {
-  ARROWS_FOR_CANDLES_QUERY_KEY,
-} from 'hooks/api/useArrowsForCandles';
+import { ARROWS_INFINITE_QUERY_KEY } from 'hooks/api/useArrowsInfinite';
 import useAuth from 'hooks/auth/useAuth';
 import { useState } from 'react';
 
@@ -32,13 +31,18 @@ const CandleHistories = () => {
   const [deleteDialog, setDeleteDialog] = useState<Dialog | null>(null);
 
   const { data: arrowsCountData } = useArrowsCount();
-  const { data: arrowsData } = useArrowsForCandles({
+  const { data: arrowsData } = useArrows({
     skip: ITEM_COUNT_PER_PAGE * (page - 1),
     limit: ITEM_COUNT_PER_PAGE,
   });
 
-  const handlePageChange = (page: number) => {
-    setPage(page);
+  const refetch = () => {
+    queryClient.invalidateQueries({
+      queryKey: [ARROWS_QUERY_KEY],
+    });
+    queryClient.invalidateQueries({
+      queryKey: [ARROWS_INFINITE_QUERY_KEY],
+    });
   };
 
   const editCandle = async (message: string) => {
@@ -52,9 +56,7 @@ const CandleHistories = () => {
       await putArrow(arrowId, {
         message: trimedMessage,
       });
-      queryClient.invalidateQueries({
-        queryKey: [ARROWS_FOR_CANDLES_QUERY_KEY],
-      });
+      refetch();
     } catch {
       //
     }
@@ -68,9 +70,7 @@ const CandleHistories = () => {
 
     try {
       await deleteArrow(arrowId);
-      queryClient.invalidateQueries({
-        queryKey: [ARROWS_FOR_CANDLES_QUERY_KEY],
-      });
+      refetch();
     } catch {
       //
     }
@@ -82,6 +82,10 @@ const CandleHistories = () => {
 
   const handleDelete = (id: string) => {
     setDeleteDialog({ open: true, id });
+  };
+
+  const handlePageChange = (page: number) => {
+    setPage(page);
   };
 
   return (

@@ -3,8 +3,10 @@ import 'swiper/css';
 import AddIcon from '@mui/icons-material/Add';
 import { IconButton } from '@mui/material';
 import Box from '@mui/material/Box';
+import { useQueryClient } from '@tanstack/react-query';
 import AlertDialog from 'components/AlertDialog/AlertDialog';
 import { deleteArrow, postArrow, putArrow } from 'helpers/axios';
+import { ARROWS_QUERY_KEY } from 'hooks/api/useArrows';
 import useArrowsInfinite from 'hooks/api/useArrowsInfinite';
 import useAuth from 'hooks/auth/useAuth';
 import cloneDeep from 'lodash/cloneDeep';
@@ -23,6 +25,7 @@ type Dialog = {
 };
 
 const Candles: React.FC = () => {
+  const queryClient = useQueryClient();
   const { user: me } = useAuth();
 
   const divRef = useRef<HTMLDivElement>(null);
@@ -93,6 +96,12 @@ const Candles: React.FC = () => {
     }
   };
 
+  const refetch = () => {
+    queryClient.invalidateQueries({
+      queryKey: [ARROWS_QUERY_KEY],
+    });
+  };
+
   const addCandle = async (message: string) => {
     if (!me || message.length === 0) return;
     setMessageDialog(null);
@@ -103,6 +112,7 @@ const Candles: React.FC = () => {
         message: trimedMessage,
         userId: me._id,
       });
+      refetch();
       setBoards((boards) => {
         const newBoards = cloneDeep(boards);
         const newBoard = newBoards[0];
@@ -131,6 +141,7 @@ const Candles: React.FC = () => {
       await putArrow(arrowId, {
         message: trimedMessage,
       });
+      refetch();
       setBoards((boards) => {
         const newBoards = cloneDeep(boards);
         const newBoard = newBoards[page - 1];
@@ -150,6 +161,7 @@ const Candles: React.FC = () => {
 
     try {
       await deleteArrow(arrowId);
+      refetch();
       setBoards((boards) => {
         const newBoards = cloneDeep(boards);
         const newBoard = newBoards[page - 1];
