@@ -2,9 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 
 type Direction = 'up' | 'none' | 'down';
 
-/**
- * 현재 사용하지 않음
- */
 const useScrollDirection = () => {
   const previousScrollYRef = useRef(0);
   const isRequestedRef = useRef(false);
@@ -19,11 +16,10 @@ const useScrollDirection = () => {
   useEffect(() => {
     const requestUpdate = () => {
       const previousScrollY = previousScrollYRef.current;
-
+      // 아이폰 flexible 스크롤 방지
+      if (window.scrollY <= 0) return;
       setDirection(previousScrollY > window.scrollY ? 'up' : 'down');
-
       previousScrollYRef.current = window.scrollY;
-
       timerRef.current = setTimeout(() => {
         isRequestedRef.current = false;
       }, 50);
