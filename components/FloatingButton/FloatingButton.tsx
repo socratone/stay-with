@@ -18,6 +18,7 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
       size="large"
       sx={{
         position: 'fixed',
+        zIndex: 10,
         bgcolor: (theme) => theme.palette.primary.main,
         bottom: (theme) => theme.spacing(2),
         right: (theme) => theme.spacing(2),
