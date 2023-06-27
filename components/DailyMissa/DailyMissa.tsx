@@ -75,9 +75,9 @@ const DailyMissa = () => {
               <KeyboardArrowRightIcon />
             </IconButton>
           </Stack>
-          {missaData.words.map((word) => (
+          {missaData.words.map((word, index) => (
             <Word
-              key={word.bibleInfo}
+              key={index}
               bible={parseToBible(word.bibleInfo)}
               title={word.title}
               bibleInfo={word.bibleInfo ?? ''}

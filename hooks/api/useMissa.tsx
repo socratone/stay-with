@@ -7,6 +7,8 @@ const useMissa = (params?: GetMissaParams) => {
   return useQuery({
     queryKey: [MISSA_QUERY_KEY, params],
     queryFn: () => getMissa(params),
+    staleTime: 1000 * 60,
+    cacheTime: 1000 * 60,
   });
 };
 
