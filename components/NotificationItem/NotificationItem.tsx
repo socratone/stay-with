@@ -22,19 +22,22 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
   switch (type) {
     case NotificationType.LexioDivinaComment:
       return (
-        <Stack direction="row" gap="1rem">
+        <Stack direction="row" gap={1}>
           <ProfileAvatar src={user.imageUrl} size="3rem" />
           <Stack>
             <Typography color="text.primary">{user.name}이</Typography>
-            <Typography>{message}</Typography>
+            <Typography color="text.primary">
+              {message}라는 댓글을 달았습니다.
+            </Typography>
             {newed ? <Typography color="error">New</Typography> : null}
           </Stack>
         </Stack>
       );
 
+    // TODO: 미개발
     case NotificationType.LexioDivinaLiked:
       return (
-        <Stack direction="row" gap="1rem">
+        <Stack direction="row" gap={1}>
           <ProfileAvatar src={user.imageUrl} size="3rem" />
           <Stack>
             <Typography color="text.primary">{user.name}이</Typography>

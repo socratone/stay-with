@@ -18,7 +18,9 @@ export const notificationSchema = object({
     name: string().required().max(NAME_MAX_LENGTH),
     imageUrl: string().max(URL_MAX_LENGTH),
   }),
-  newed: boolean(),
+  isNew: boolean(),
+  lexioDivinaId: string().max(ID_MAX_LENGTH),
+  commentId: string().max(ID_MAX_LENGTH),
 });
 
 export type Notification = InferType<typeof notificationSchema>;

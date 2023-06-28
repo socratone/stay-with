@@ -1,4 +1,5 @@
 import Container from '@mui/material/Container';
+import Stack from '@mui/material/Stack';
 import GlobalHeader from 'components/GlobalHeader';
 import Meta from 'components/Meta';
 import NotificationItem from 'components/NotificationItem/NotificationItem';
@@ -17,15 +18,17 @@ const Notifications = () => {
       <Meta />
       <GlobalHeader backButton />
       <Container>
-        {notificationsData?.notifications.map((notification) => (
-          <NotificationItem
-            key={notification._id}
-            type={notification.type}
-            user={notification.notifier}
-            message={notification.message}
-            newed={notification.newed}
-          />
-        ))}
+        <Stack gap={1}>
+          {notificationsData?.notifications.map((notification) => (
+            <NotificationItem
+              key={notification._id}
+              type={notification.type}
+              user={notification.notifier}
+              message={notification.message}
+              newed={notification.isNew}
+            />
+          ))}
+        </Stack>
       </Container>
     </>
   );

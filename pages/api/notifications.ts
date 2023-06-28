@@ -1,4 +1,5 @@
 import { CollectionName } from 'constants/mongodb';
+import { ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Notification } from 'schemas';
 import { blockNotLoggedIn } from 'utils/auth';
@@ -27,9 +28,11 @@ const handler = async (
       const notifications = await db.find<Notification[]>(
         CollectionName.Notifications,
         {
-          filter: {
-            userId,
-          },
+          filter: userId
+            ? {
+                userId: new ObjectId(userId),
+              }
+            : undefined,
           options: {
             skip: skip ?? 0,
             limit: limit ?? 100,

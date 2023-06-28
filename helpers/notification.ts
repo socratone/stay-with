@@ -1,12 +1,23 @@
 import { CollectionName } from 'constants/mongodb';
+import { ObjectId } from 'mongodb';
 import { Notification } from 'schemas';
 import Mongodb from 'utils/mongodb';
 
-type AddNotificationPayload = Omit<Notification, '_id' | 'newed'>;
+type AddNotificationPayload = Omit<
+  Notification,
+  '_id' | 'newed' | 'userId' | 'lexioDivinaId' | 'commentId'
+> & {
+  userId: ObjectId;
+  lexioDivinaId?: ObjectId;
+  commentId?: ObjectId;
+};
 
-export const addNotification = async (
+export const addNotification = (
   db: Mongodb,
   payload: AddNotificationPayload
 ) => {
-  return await db.insertOne(CollectionName.LexioDivinas, payload);
+  return db.insertOne(CollectionName.Notifications, {
+    ...payload,
+    isNew: true,
+  });
 };
