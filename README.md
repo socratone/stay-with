@@ -71,10 +71,10 @@ Notification {
   userId: string;
   type: string;
   message: string;
-  notifiers: {
+  notifier: {
     name: string;
     imageUrl: string;
-  }[];
+  }
   newed: boolean;
 }
 ```

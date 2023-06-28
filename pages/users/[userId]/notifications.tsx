@@ -21,7 +21,7 @@ const Notifications = () => {
           <NotificationItem
             key={notification._id}
             type={notification.type}
-            users={notification.notifiers}
+            user={notification.notifier}
             message={notification.message}
             newed={notification.newed}
           />

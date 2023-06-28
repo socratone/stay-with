@@ -1,4 +1,4 @@
-import { array, boolean, InferType, mixed, object, string } from 'yup';
+import { boolean, InferType, mixed, object, string } from 'yup';
 
 import { ID_MAX_LENGTH, NAME_MAX_LENGTH, URL_MAX_LENGTH } from './constants';
 
@@ -14,14 +14,10 @@ export const notificationSchema = object({
     .required()
     .oneOf(Object.values(NotificationType)),
   message: string().max(50),
-  notifiers: array()
-    .required()
-    .of(
-      object({
-        name: string().required().max(NAME_MAX_LENGTH),
-        imageUrl: string().max(URL_MAX_LENGTH),
-      })
-    ),
+  notifier: object({
+    name: string().required().max(NAME_MAX_LENGTH),
+    imageUrl: string().max(URL_MAX_LENGTH),
+  }),
   newed: boolean(),
 });
 
