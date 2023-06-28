@@ -45,8 +45,8 @@ LexioDivina {
   phrase: string;
   chapter: number;
   verse: number;
-  endChapter: number;
-  endVerse: number;
+  endChapter?: number;
+  endVerse?: number;
   userId: string;
   likedUserIds: string[];
   comments: {
@@ -70,12 +70,14 @@ Notification {
   _id: string;
   userId: string;
   type: string;
-  message: string;
+  message?: string;
   notifier: {
     name: string;
     imageUrl: string;
   }
-  newed: boolean;
+  isNew: boolean;
+  lexioDivinaId?: string;
+  commentId?: string;
 }
 ```
 

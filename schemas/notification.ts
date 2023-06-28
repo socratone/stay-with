@@ -18,7 +18,7 @@ export const notificationSchema = object({
     name: string().required().max(NAME_MAX_LENGTH),
     imageUrl: string().max(URL_MAX_LENGTH),
   }),
-  isNew: boolean(),
+  isNew: boolean().required(),
   lexioDivinaId: string().max(ID_MAX_LENGTH),
   commentId: string().max(ID_MAX_LENGTH),
 });
