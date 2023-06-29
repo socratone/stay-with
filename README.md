@@ -23,6 +23,7 @@
 - `/signup` POST 사용자 등록
 - `/users/{id}` GET 사용자 데이터
 - `/users/{id}` PATCH 사용자 데이터 수정
+- `/notifications` GET 알림 리스트 데이터
 
 ## Data Schema
 
