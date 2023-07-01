@@ -18,7 +18,7 @@ const Notifications = () => {
       <Meta />
       <GlobalHeader backButton />
       <Container>
-        <Stack gap={1}>
+        <Stack gap={1} py={2}>
           {notificationsData?.notifications.map((notification) => (
             <NotificationItem
               key={notification._id}
