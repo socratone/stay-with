@@ -3,6 +3,7 @@ import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import DailyMissa from 'components/DailyMissa/DailyMissa';
 import GlobalHeader from 'components/GlobalHeader';
+import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/constants';
 import LexioDivinaForm, {
   LexioDivinaFormValues,
 } from 'components/LexioDivinaForm/LexioDivinaForm';
@@ -134,14 +135,16 @@ const LexioDivinaCreate = () => {
               </Box>
 
               {/* right */}
-              <Box display="flex" flexDirection="column" gap={2} py={2}>
-                <LexioDivinaForm
-                  form={form}
-                  isRequested={isRequested}
-                  contentRows={15}
-                  onCancel={handleCancel}
-                  onSubmit={handleSubmit}
-                />
+              <Box>
+                <Box position="sticky" top={GLOBAL_HEADER_HEIGHT} py={2}>
+                  <LexioDivinaForm
+                    form={form}
+                    isRequested={isRequested}
+                    contentRows={15}
+                    onCancel={handleCancel}
+                    onSubmit={handleSubmit}
+                  />
+                </Box>
               </Box>
             </Box>
           </Container>
