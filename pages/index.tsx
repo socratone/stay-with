@@ -1,4 +1,6 @@
 import AddIcon from '@mui/icons-material/Add';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import FloatingButton from 'components/FloatingButton/FloatingButton';
 import GlobalHeader from 'components/GlobalHeader';
 import Meta from 'components/Meta';
@@ -53,6 +55,23 @@ const Home: NextPage = () => {
     <>
       <Meta />
       <GlobalHeader />
+      <Box
+        maxWidth="xl"
+        sx={{
+          px: 2,
+          mx: 'auto',
+          mt: 1,
+          mb: -2,
+        }}
+      >
+        <Button
+          href="https://m.catholictimes.org/mobile/article_view.php?aid=139506"
+          target="_blank"
+          disableRipple
+        >
+          렉시오 디비나란?
+        </Button>
+      </Box>
       <LexioDivinas />
       {isLoggedIn ? (
         <FloatingButton
