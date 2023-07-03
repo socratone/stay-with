@@ -1,3 +1,5 @@
+import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import ProfileAvatar from 'components/ProfileAvatar';
@@ -29,8 +31,12 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
             <Typography color="text.primary">
               {message}라는 댓글을 달았습니다.
             </Typography>
-            {isNew ? <Typography color="error">New</Typography> : null}
           </Stack>
+          {isNew ? (
+            <Box display="flex" alignItems="center">
+              <Chip color="error" label="NEW" size="small" />
+            </Box>
+          ) : null}
         </Stack>
       );
 
