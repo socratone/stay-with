@@ -24,6 +24,7 @@
 - `/users/{id}` GET 사용자 데이터
 - `/users/{id}` PATCH 사용자 데이터 수정
 - `/notifications` GET 알림 리스트 데이터
+- `/notifications/count` GET 알림 리스트 count
 
 ## Data Schema
 
