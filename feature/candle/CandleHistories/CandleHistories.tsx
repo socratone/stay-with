@@ -91,7 +91,7 @@ const CandleHistories = () => {
   return (
     <>
       <Box bgcolor="#000">
-        <Container sx={{ paddingY: 1 }}>
+        <Container sx={{ paddingY: 2 }}>
           <Stack gap={1}>
             {arrowsData?.arrows.map((arrow) => (
               <MessageItem
