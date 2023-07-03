@@ -42,18 +42,16 @@ const Arrows = () => {
       <Box
         display="flex"
         justifyContent="center"
+        position="relative"
         height={`calc(100vh - ${GLOBAL_HEADER_HEIGHT})`}
         bgcolor="#000"
-        py={2}
       >
-        <Box position="relative" sx={{ aspectRatio: '720 / 960' }}>
-          <Image
-            src={crossImage}
-            alt="cross"
-            fill
-            style={{ objectFit: 'contain' }}
-          />
-        </Box>
+        <Image
+          src={crossImage}
+          alt="cross"
+          fill
+          style={{ objectFit: 'contain' }}
+        />
       </Box>
       <Box ref={candlesContainerRef} height={getCandlesHeight()}>
         <Candles />
