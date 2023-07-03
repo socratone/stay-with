@@ -2,10 +2,16 @@ import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { useQueryClient } from '@tanstack/react-query';
 import ProfileAvatar from 'components/ProfileAvatar';
+import { patchNotification } from 'helpers/axios';
+import { NOTIFICATIONS_QUERY_KEY } from 'hooks/api/useNotifications';
+import { NOTIFICATIONS_COUNT_QUERY_KEY } from 'hooks/api/useNotificationsCount';
+import React from 'react';
 import { NotificationType } from 'schemas';
 
 type NotificationItemProps = {
+  id: string;
   type: NotificationType;
   user: {
     name: string;
@@ -16,11 +22,33 @@ type NotificationItemProps = {
 };
 
 const NotificationItem: React.FC<NotificationItemProps> = ({
+  id,
   type,
   user,
   message,
   isNew,
 }) => {
+  const queryClient = useQueryClient();
+
+  const reset = () => {
+    queryClient.invalidateQueries({ queryKey: [NOTIFICATIONS_QUERY_KEY] });
+    queryClient.invalidateQueries({
+      queryKey: [NOTIFICATIONS_COUNT_QUERY_KEY],
+    });
+  };
+
+  const handleNewChipClick = async (
+    event: React.MouseEvent<HTMLDivElement>
+  ) => {
+    event.stopPropagation();
+    try {
+      await patchNotification(id, { isNew: false });
+      reset();
+    } catch {
+      //
+    }
+  };
+
   switch (type) {
     case NotificationType.LexioDivinaComment:
       return (
@@ -34,7 +62,13 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
           </Stack>
           {isNew ? (
             <Box display="flex" alignItems="center">
-              <Chip color="error" label="NEW" size="small" />
+              <Chip
+                color="error"
+                label="NEW"
+                size="small"
+                onClick={handleNewChipClick}
+                onDelete={handleNewChipClick}
+              />
             </Box>
           ) : null}
         </Stack>

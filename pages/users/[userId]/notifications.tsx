@@ -22,6 +22,7 @@ const Notifications = () => {
           {notificationsData?.notifications.map((notification) => (
             <NotificationItem
               key={notification._id}
+              id={notification._id}
               type={notification.type}
               user={notification.notifier}
               message={notification.message}
