@@ -27,10 +27,10 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
         <Stack direction="row" gap={1}>
           <ProfileAvatar src={user.imageUrl} size="3rem" />
           <Stack>
-            <Typography color="text.primary">{user.name}이</Typography>
             <Typography color="text.primary">
-              {message}라는 댓글을 달았습니다.
+              {user.name}님이 댓글을 남겼습니다.
             </Typography>
+            <Typography color="text.primary">{message}</Typography>
           </Stack>
           {isNew ? (
             <Box display="flex" alignItems="center">
