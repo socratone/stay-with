@@ -25,7 +25,7 @@ const Notifications = () => {
               type={notification.type}
               user={notification.notifier}
               message={notification.message}
-              newed={notification.isNew}
+              isNew={notification.isNew}
             />
           ))}
         </Stack>

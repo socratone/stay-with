@@ -5,7 +5,7 @@ import Mongodb from 'utils/mongodb';
 
 type AddNotificationPayload = Omit<
   Notification,
-  '_id' | 'newed' | 'userId' | 'lexioDivinaId' | 'commentId' | 'isNew'
+  '_id' | 'isNew' | 'userId' | 'lexioDivinaId' | 'commentId' | 'isNew'
 > & {
   userId: ObjectId;
   lexioDivinaId?: ObjectId;

@@ -10,14 +10,14 @@ type NotificationItemProps = {
     imageUrl?: string;
   };
   message?: string;
-  newed?: boolean;
+  isNew?: boolean;
 };
 
 const NotificationItem: React.FC<NotificationItemProps> = ({
   type,
   user,
   message,
-  newed,
+  isNew,
 }) => {
   switch (type) {
     case NotificationType.LexioDivinaComment:
@@ -29,7 +29,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
             <Typography color="text.primary">
               {message}라는 댓글을 달았습니다.
             </Typography>
-            {newed ? <Typography color="error">New</Typography> : null}
+            {isNew ? <Typography color="error">New</Typography> : null}
           </Stack>
         </Stack>
       );

@@ -2,12 +2,14 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MenuIcon from '@mui/icons-material/Menu';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import { Badge } from '@mui/material';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import DarkModeSwitch from 'components/DarkModeSwitch';
 import ProfileAvatar from 'components/ProfileAvatar/ProfileAvatar';
+import useNotificationsCount from 'hooks/api/useNotificationsCount';
 import useAuth from 'hooks/auth/useAuth';
 import useViewportHeight from 'hooks/dom/useViewportHeight';
 import useColorMode from 'hooks/theme/useColorMode';
@@ -33,6 +35,10 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark, backButton }) => {
 
   const { user } = useAuth();
   const { colorMode, toggleColorMode } = useColorMode();
+  const { data: notificationsCountData } = useNotificationsCount({
+    userId: user?._id,
+    isNew: true,
+  });
 
   useViewportHeight();
 
@@ -114,8 +120,19 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark, backButton }) => {
               />
             ) : null}
             {user ? (
-              <IconButton onClick={handleNotificationClick}>
-                <NotificationsIcon />
+              <IconButton size="small" onClick={handleNotificationClick}>
+                <Badge
+                  overlap="circular"
+                  anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                  variant="dot"
+                  color={
+                    notificationsCountData && notificationsCountData.count > 0
+                      ? 'error'
+                      : 'default'
+                  }
+                >
+                  <NotificationsIcon />
+                </Badge>
               </IconButton>
             ) : null}
             {user ? (
