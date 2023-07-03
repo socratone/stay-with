@@ -22,6 +22,7 @@ import {
   LexioDivinaCommentPostPayload,
   LexioDivinaPostPayload,
   LexioDivinaPutPayload,
+  NotificationPatchPayload,
   UserPatchPayload,
   UserPostPayload,
 } from 'schemas';
@@ -297,4 +298,14 @@ export const getNotificationsCount = (
       }
     )
     .then((value) => value.data);
+};
+
+export const patchNotification = (
+  id: string,
+  payload: NotificationPatchPayload
+) => {
+  return axiosInstance.patch<any, AxiosResponse, NotificationPatchPayload>(
+    `/api/notifications/${id}`,
+    payload
+  );
 };

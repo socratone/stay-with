@@ -24,3 +24,6 @@ export const notificationSchema = object({
 });
 
 export type Notification = InferType<typeof notificationSchema>;
+export type NotificationPatchPayload = {
+  isNew: boolean;
+};
