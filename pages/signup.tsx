@@ -153,6 +153,10 @@ const SignUp: NextPage<SignUpProps> = ({ kakaoId, email, imageUrl }) => {
               />
             </Box>
 
+            <Typography color="text.secondary">
+              이름과 프로필 이미지는 나중에 변경할 수 있어요 😎
+            </Typography>
+
             <Box>
               <Button
                 variant="contained"
