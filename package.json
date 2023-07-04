@@ -40,7 +40,6 @@
     "react-use": "^17.4.0",
     "react-youtube": "^10.1.0",
     "swiper": "^9.3.2",
-    "uuid": "^9.0.0",
     "yup": "^1.1.1"
   },
   "devDependencies": {
