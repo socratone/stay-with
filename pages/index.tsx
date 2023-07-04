@@ -61,13 +61,14 @@ const Home: NextPage = () => {
           px: 2,
           mx: 'auto',
           mt: 1,
-          mb: -2,
+          mb: -1,
         }}
       >
         <Button
           href="https://m.catholictimes.org/mobile/article_view.php?aid=139506"
           target="_blank"
           disableRipple
+          variant="outlined"
         >
           렉시오 디비나란?
         </Button>
