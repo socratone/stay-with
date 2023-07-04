@@ -9,7 +9,7 @@ type ErrorMessageProps = {
 const ErrorMessage: React.FC<ErrorMessageProps> = ({ content }) => {
   return (
     <Box display="flex" justifyContent="center">
-      <Typography color="text.primary">
+      <Typography color="text.primary" textAlign="center">
         {content ? content : <FormattedMessage id="error.message.common" />}
       </Typography>
     </Box>
