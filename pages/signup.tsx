@@ -15,7 +15,7 @@ import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { User } from 'schemas';
 
 type SignUpProps = {
@@ -111,11 +111,26 @@ const SignUp: NextPage<SignUpProps> = ({ kakaoId, email, imageUrl }) => {
         spacing={1.5}
         justifyContent="center"
         alignItems="center"
+        px={2}
       >
         {isError ? (
           <ErrorMessage />
         ) : (
           <>
+            <Typography color="text.primary" variant="h5" textAlign="center">
+              안녕하세요, 👋 머무름에 오신 것을 환영합니다.
+            </Typography>
+
+            <Typography
+              color="text.secondary"
+              textAlign="center"
+              sx={{ whiteSpace: 'pre-line' }}
+            >
+              {
+                '가입하시기 전에 친구들에게 보여주게 될 이름과 프로필 이미지 😊 사용 여부를 정해주세요!\n이름과 프로필 이미지는 나중에 언제든지 변경할 수 있답니다. 😎'
+              }
+            </Typography>
+
             <Box>
               {imageUrl && imageChecked ? (
                 <Avatar src={imageUrl} sx={{ width: 100, height: 100 }} />
@@ -134,15 +149,12 @@ const SignUp: NextPage<SignUpProps> = ({ kakaoId, email, imageUrl }) => {
               }
               label={
                 <Typography color="text.primary">
-                  카카오 프로필 이미지로 설정
+                  카카오 프로필 이미지 사용
                 </Typography>
               }
             />
 
             <Box>
-              <Typography color="text.primary">
-                <FormattedMessage id="common.name" />
-              </Typography>
               <TextField
                 {...register('name', {
                   required: true,
@@ -150,12 +162,9 @@ const SignUp: NextPage<SignUpProps> = ({ kakaoId, email, imageUrl }) => {
                 })}
                 size="small"
                 error={!!errors.name}
+                placeholder="이름"
               />
             </Box>
-
-            <Typography color="text.secondary">
-              이름과 프로필 이미지는 나중에 변경할 수 있어요 😎
-            </Typography>
 
             <Box>
               <Button
