@@ -27,6 +27,7 @@ const Login = () => {
 
     return () => {
       clearTimeout(timer);
+      setIsRequested(false);
     };
   }, [isRequested]);
 
