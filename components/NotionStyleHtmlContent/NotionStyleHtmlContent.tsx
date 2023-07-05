@@ -26,6 +26,7 @@ const StyledBox = styled(Box)`
     font-weight: ${({ theme }) => theme.typography.mh2.fontWeight};
     padding: ${({ theme }) => theme.typography.mh2.padding};
     margin: ${({ theme }) => theme.typography.mh2.margin};
+    margin-top: 1.4rem; /* 22.4px */
   }
 
   h3 {
@@ -44,16 +45,31 @@ const StyledBox = styled(Box)`
     margin: ${({ theme }) => theme.typography.mp.margin};
   }
 
-  > ul {
+  > ul,
+  > ol {
     padding: ${({ theme }) => theme.typography.mp.padding};
     margin: ${({ theme }) => theme.typography.mp.margin};
   }
 
-  ul {
+  ul,
+  ol {
     font-size: ${({ theme }) => theme.typography.mp.fontSize};
     line-height: ${({ theme }) => theme.typography.mp.lineHeight};
     font-weight: ${({ theme }) => theme.typography.mp.fontWeight};
     padding-left: 1.375rem; /* 22px */
+  }
+
+  a {
+    color: dodgerblue;
+  }
+
+  code {
+    font-family: inherit;
+    color: #eb5757;
+    background: rgba(135, 131, 120, 0.15);
+    border-radius: 3px;
+    font-size: 85%;
+    padding: 2.72px 5.44px;
   }
 `;
 
