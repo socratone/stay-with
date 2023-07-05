@@ -11,7 +11,6 @@ declare module '@mui/material/styles' {
     kakao: SimplePaletteColorOptions;
   }
 
-  // markdown typography
   interface TypographyVariants {
     mh1: React.CSSProperties;
     mh2: React.CSSProperties;
