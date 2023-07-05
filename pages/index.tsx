@@ -1,4 +1,5 @@
 import AddIcon from '@mui/icons-material/Add';
+import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import FloatingButton from 'components/FloatingButton/FloatingButton';
@@ -10,6 +11,7 @@ import useAuth from 'hooks/auth/useAuth';
 import useScrollDirection from 'hooks/dom/useScrollDirection';
 import useTempLexioDivinaStatus from 'hooks/form/useTempLexioDivinaStatus';
 import type { NextPage } from 'next';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -64,14 +66,13 @@ const Home: NextPage = () => {
           mb: -1,
         }}
       >
-        <Button
-          href="https://m.catholictimes.org/mobile/article_view.php?aid=139506"
-          target="_blank"
-          disableRipple
-          variant="outlined"
-        >
-          렉시오 디비나란?
-        </Button>
+        <Link href="/blogs/lexio-divina">
+          <Badge variant="dot" color="error">
+            <Button disableRipple variant="outlined">
+              렉시오 디비나 기도 방법
+            </Button>
+          </Badge>
+        </Link>
       </Box>
       <LexioDivinas />
       {isLoggedIn ? (

@@ -11,18 +11,6 @@ import { shadows } from 'theme/shadows';
 import { typography } from 'theme/typography';
 import { getValue, saveValue } from 'utils/persist';
 
-// https://stackoverflow.com/questions/60424596/cant-customize-color-palette-types-on-material-ui-theme-in-typescript
-declare module '@mui/material/styles/createPalette' {
-  interface Palette {
-    paper?: Palette['primary'];
-    kakao: SimplePaletteColorOptions;
-  }
-  interface PaletteOptions {
-    paper?: PaletteOptions['primary'];
-    kakao: SimplePaletteColorOptions;
-  }
-}
-
 /** Color mode */
 
 export enum ColorMode {
