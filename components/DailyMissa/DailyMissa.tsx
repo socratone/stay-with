@@ -67,13 +67,8 @@ const DailyMissa = () => {
           <Loading />
         ) : (
           <>
-            <Stack direction="row" justifyContent="space-between" spacing={1}>
-              <Stack
-                direction="row"
-                alignItems="center"
-                gap={1}
-                flexWrap="wrap"
-              >
+            <Stack direction="row" gap={1} flexWrap="wrap-reverse">
+              <Box>
                 <Button
                   variant="outlined"
                   color="secondary"
@@ -82,25 +77,32 @@ const DailyMissa = () => {
                 >
                   시작 기도
                 </Button>
+              </Box>
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                flexGrow={1}
+              >
                 <Typography color="text.primary">{missaData.today}</Typography>
-              </Stack>
-              <Stack direction="row" alignItems="center">
-                <IconButton
-                  size="small"
-                  onClick={handlePrevious}
-                  disabled={offset === -1}
-                  sx={{ marginY: -1 }}
-                >
-                  <KeyboardArrowLeftIcon />
-                </IconButton>
-                <IconButton
-                  size="small"
-                  onClick={handleNext}
-                  disabled={offset === 1}
-                  sx={{ marginY: -1 }}
-                >
-                  <KeyboardArrowRightIcon />
-                </IconButton>
+                <Stack direction="row">
+                  <IconButton
+                    size="small"
+                    onClick={handlePrevious}
+                    disabled={offset === -1}
+                    sx={{ marginY: -1 }}
+                  >
+                    <KeyboardArrowLeftIcon />
+                  </IconButton>
+                  <IconButton
+                    size="small"
+                    onClick={handleNext}
+                    disabled={offset === 1}
+                    sx={{ marginY: -1 }}
+                  >
+                    <KeyboardArrowRightIcon />
+                  </IconButton>
+                </Stack>
               </Stack>
             </Stack>
 
