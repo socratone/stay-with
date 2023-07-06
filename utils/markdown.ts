@@ -4,9 +4,16 @@ import path from 'path';
 import { remark } from 'remark';
 import html from 'remark-html';
 
+const addTargetBlankToAnchor = (html: string) => {
+  return html.replaceAll(
+    '<a href=',
+    '<a target="_blank" rel="noopener noreferrer" href='
+  );
+};
+
 export const parseMarkdownToHtml = async (markdown: string) => {
   const result = await remark().use(html).process(markdown);
-  return result.toString();
+  return addTargetBlankToAnchor(result.toString());
 };
 
 export const parseMarkdownFile = (fileName: string) => {
