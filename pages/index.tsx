@@ -1,5 +1,4 @@
 import AddIcon from '@mui/icons-material/Add';
-import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import FloatingButton from 'components/FloatingButton/FloatingButton';
@@ -62,16 +61,13 @@ const Home: NextPage = () => {
         sx={{
           px: 2,
           mx: 'auto',
-          mt: 1,
-          mb: -1,
+          mt: 2,
         }}
       >
         <Link href="/blogs/lexio-divina">
-          <Badge variant="dot" color="error">
-            <Button disableRipple variant="outlined">
-              렉시오 디비나 기도 방법
-            </Button>
-          </Badge>
+          <Button disableRipple variant="outlined">
+            렉시오 디비나 기도 방법
+          </Button>
         </Link>
       </Box>
       <LexioDivinas />
