@@ -26,7 +26,7 @@ const PentecostSundaySequenceBlog: NextPage<BlogProps> = ({ htmlContent }) => {
   return (
     <>
       <Meta />
-      <GlobalHeader backButton />
+      <GlobalHeader />
       <Container sx={{ py: 1 }}>
         <NotionStyleHtmlContent html={htmlContent} />
       </Container>
