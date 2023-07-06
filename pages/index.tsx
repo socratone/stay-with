@@ -65,7 +65,7 @@ const Home: NextPage = () => {
         }}
       >
         <Link href="/blogs/lexio-divina">
-          <Button disableRipple variant="outlined">
+          <Button disableRipple variant="outlined" size="small">
             렉시오 디비나 기도 방법
           </Button>
         </Link>
