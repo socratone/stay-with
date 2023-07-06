@@ -16,7 +16,7 @@ export const sendServerError = (res: NextApiResponse, error: any) => {
   }
 
   if (error instanceof ValidationError) {
-    return res.status(400).send({ error: { message: error.message } });
+    return res.status(422).send({ error: { message: error.message } });
   }
 
   if (error?.message === 'Unauthorized.') {

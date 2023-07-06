@@ -59,7 +59,7 @@ axiosInstance.interceptors.response.use(
       enqueueSnackbar('서버 에러가 발생했어요 😱', {
         variant: 'error',
       });
-    } else if (status === 400 && errorMessage.includes('must be at most')) {
+    } else if (status === 422 && errorMessage.includes('must be at most')) {
       enqueueSnackbar('허용치를 초과한 값이 있어요 😅', {
         variant: 'error',
       });
