@@ -2,13 +2,14 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import TextToggleButtonGroup from 'components/TextToggleButtonGroup';
+import { FontSize } from 'contexts/ThemeProvider';
 import SettingsLayout from 'feature/SettingsLayout';
 import useFontSize from 'hooks/theme/useFontSize';
 
 const SettingsDisplay = () => {
   const { fontSize, changeFontSize } = useFontSize();
 
-  const handleFontSizeChange = (fontSize: string) => {
+  const handleFontSizeChange = (fontSize: FontSize) => {
     changeFontSize(fontSize);
   };
 
@@ -27,7 +28,7 @@ const SettingsDisplay = () => {
               텍스트 크기
             </Typography>
             <TextToggleButtonGroup
-              value={String(fontSize)}
+              value={fontSize}
               onChange={handleFontSizeChange}
               options={[
                 {

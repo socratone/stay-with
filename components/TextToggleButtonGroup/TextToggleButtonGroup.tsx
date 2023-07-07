@@ -2,20 +2,20 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Typography from '@mui/material/Typography';
 
-type TextToggleButtonGroupProps = {
-  value: string;
-  onChange: (value: string) => void;
+type TextToggleButtonGroupProps<T> = {
+  value: T;
+  onChange: (value: T) => void;
   options: {
-    value: string;
+    value: T;
     label: string;
   }[];
 };
 
-const TextToggleButtonGroup: React.FC<TextToggleButtonGroupProps> = ({
+const TextToggleButtonGroup = <T extends string | number>({
   value,
   onChange,
   options,
-}) => {
+}: TextToggleButtonGroupProps<T>) => {
   return (
     <ToggleButtonGroup
       value={value}
