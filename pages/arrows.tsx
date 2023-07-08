@@ -7,7 +7,7 @@ import Candles from 'feature/candle/Candles';
 import useRemToPxNumber from 'hooks/theme/useRemToPxNumer';
 import Image from 'next/image';
 import crossImage from 'public/images/cross.webp';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const CROSS_IMAGE_WIDTH = 720;
 const CROSS_IMAGE_HEIGHT = 960;
@@ -17,14 +17,10 @@ const Arrows = () => {
   const candlesContainerRef = useRef<HTMLDivElement>(null);
   const [viewportHeight, setViewportHeight] = useState<number | null>(null);
 
-  const calculateViewportHeight = useCallback(() => {
+  useEffect(() => {
     const viewportHeight = window.innerHeight;
     setViewportHeight(viewportHeight);
   }, []);
-
-  useEffect(() => {
-    calculateViewportHeight();
-  }, [calculateViewportHeight]);
 
   // viewport height를 계산한 이후에 scroll 이동
   useEffect(() => {
