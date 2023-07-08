@@ -1,5 +1,7 @@
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
+import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import DailyMissa from 'components/DailyMissa/DailyMissa';
 import GlobalHeader from 'components/GlobalHeader';
@@ -19,11 +21,13 @@ import useQueryString from 'hooks/url/useQueryString';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useInView } from 'react-intersection-observer';
 import { useMount } from 'react-use';
 
 const LexioDivinaCreate = () => {
   const router = useRouter();
   const isMediumOrSmaller = useIsBreakpointsDown('md');
+  const { ref, inView } = useInView();
 
   const tempLexioDivina = useTempLexioDivina();
 
@@ -52,6 +56,13 @@ const LexioDivinaCreate = () => {
       reset(tempLexioDivina);
     }
   });
+
+  const handleScrollTo = () => {
+    window.scrollTo({
+      top: inView ? 0 : 1000000,
+      behavior: 'smooth',
+    });
+  };
 
   const handleCancel = () => {
     router.back();
@@ -153,15 +164,39 @@ const LexioDivinaCreate = () => {
 
       {isMediumOrSmaller ? (
         <Container>
-          <Stack py={2} gap={2}>
+          <Stack py={2} gap={1}>
             <DailyMissa />
-            <LexioDivinaForm
-              form={form}
-              isRequested={isRequested}
-              contentRows={2}
-              onCancel={handleCancel}
-              onSubmit={handleSubmit}
-            />
+            <Box
+              display="flex"
+              justifyContent="flex-end"
+              position="sticky"
+              bottom={(theme) => theme.spacing(2)}
+            >
+              <IconButton
+                onClick={handleScrollTo}
+                sx={{
+                  bgcolor: (theme) => theme.palette.background.paper,
+                  border: 1,
+                  borderColor: (theme) => theme.palette.divider,
+                }}
+              >
+                <KeyboardArrowDownIcon
+                  sx={{
+                    transform: inView ? 'rotate(180deg)' : 'rotate(0)',
+                    transition: 'all .3s ease-in-out',
+                  }}
+                />
+              </IconButton>
+            </Box>
+            <Box ref={ref}>
+              <LexioDivinaForm
+                form={form}
+                isRequested={isRequested}
+                contentRows={2}
+                onCancel={handleCancel}
+                onSubmit={handleSubmit}
+              />
+            </Box>
           </Stack>
         </Container>
       ) : null}
