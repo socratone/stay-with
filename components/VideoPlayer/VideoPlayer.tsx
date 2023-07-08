@@ -1,29 +1,40 @@
+import CloseIcon from '@mui/icons-material/Close';
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
 import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
 import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/constants';
 import getYouTubeID from 'get-youtube-id';
+import useRemToPxNumber from 'hooks/theme/useRemToPxNumer';
 import React, { useEffect, useState } from 'react';
+import Draggable, { DraggableData, DraggableEvent } from 'react-draggable';
 import { useMount } from 'react-use';
-import YouTube from 'react-youtube';
-import { useAppSelector } from 'redux/hooks';
+import YouTube, { YouTubeEvent } from 'react-youtube';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { toggleVideoOpen } from 'redux/videoSlice';
 import { getJsonValue } from 'utils/persist';
 
 const WIDTH = 200;
 const HEIGHT = 113;
+const MARGIN = 8;
 
 const opts = {
   height: HEIGHT,
   width: WIDTH,
-  playerVars: {
-    autoplay: 1,
-  },
 };
 
 const VideoPlayer = () => {
+  const dispatch = useAppDispatch();
   const open = useAppSelector((state) => state.video.open);
+  const globalHeaderHeight = useRemToPxNumber(GLOBAL_HEADER_HEIGHT);
+  const [position, setPosition] = useState({
+    x: 0,
+    y: 0,
+  });
 
-  const [touched, setTouched] = useState(false);
-  const [loaded, setLoaded] = useState(false);
+  const [played, setPlayed] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [videoId, setVideoId] = useState('f742p7mQ0Ic'); // default videoId
   const [videoIds, setVideoIds] = useState<string[]>([]);
 
@@ -40,17 +51,26 @@ const VideoPlayer = () => {
     setVideoId(videoId);
   });
 
+  // 초기값
+  useEffect(() => {
+    setPosition({
+      x: window.innerWidth - WIDTH - MARGIN,
+      y: globalHeaderHeight + MARGIN,
+    });
+  }, [globalHeaderHeight]);
+
   useEffect(() => {
     if (open) {
-      setTouched(true);
+      setPlayed(true);
     }
   }, [open]);
 
-  const handleReady = () => {
-    setLoaded(true);
+  const handlePlayReady = (event: YouTubeEvent) => {
+    setIsLoading(false);
+    event.target?.playVideo();
   };
 
-  const handleEnd = () => {
+  const handlePlayEnd = () => {
     const currentIndex = videoIds.findIndex((id) => id === videoId);
     if (currentIndex < 0) return;
     // 마지막 곡인 경우
@@ -61,37 +81,105 @@ const VideoPlayer = () => {
     }
   };
 
+  const moveToTopLeft = () => {
+    setPosition({ x: MARGIN, y: globalHeaderHeight + MARGIN });
+  };
+
+  const moveToTopRight = () => {
+    setPosition({
+      x: window.innerWidth - WIDTH - MARGIN,
+      y: globalHeaderHeight + MARGIN,
+    });
+  };
+
+  const moveToBottomLeft = () => {
+    setPosition({ x: MARGIN, y: window.innerHeight - HEIGHT - MARGIN });
+  };
+
+  const moveToBottomRight = () => {
+    setPosition({
+      x: window.innerWidth - WIDTH - MARGIN,
+      y: window.innerHeight - HEIGHT - MARGIN,
+    });
+  };
+
+  const handleDragStop = (_: DraggableEvent, data: DraggableData) => {
+    const { x, y } = data;
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    const widthOffset = WIDTH / 2;
+    const heightOffset = HEIGHT / 2;
+
+    if (x + widthOffset < viewportWidth / 2) {
+      if (y + heightOffset < viewportHeight / 2) {
+        moveToTopLeft();
+      } else {
+        moveToBottomLeft();
+      }
+    } else {
+      if (y + heightOffset < viewportHeight / 2) {
+        moveToTopRight();
+      } else {
+        moveToBottomRight();
+      }
+    }
+  };
+
+  const handleClose = () => {
+    dispatch(toggleVideoOpen());
+  };
+
   return (
-    <Box
-      position="fixed"
-      top={(theme) => `calc(${GLOBAL_HEADER_HEIGHT} + ${theme.spacing(1)})`}
-      right={(theme) => theme.spacing(1)}
-      sx={{
-        width: WIDTH,
-        height: HEIGHT,
-        visibility: open ? 'visible' : 'hidden',
-        borderRadius: 3,
-        overflow: 'hidden',
-        zIndex: 100,
-      }}
+    <Draggable
+      handle=".handle"
+      position={position}
+      scale={1}
+      onStop={handleDragStop}
     >
-      {touched ? (
-        <YouTube
-          videoId={videoId}
-          opts={opts}
-          onReady={handleReady}
-          onEnd={handleEnd}
-        />
-      ) : null}
-      {!loaded ? (
-        <Skeleton
-          variant="rectangular"
+      <Box
+        position="fixed"
+        zIndex={(theme) => theme.zIndex.modal}
+        sx={{
+          visibility: open ? 'visible' : 'hidden',
+        }}
+      >
+        <Box
           width={WIDTH}
           height={HEIGHT}
-          sx={{ position: 'absolute', top: 0, left: 0 }}
-        />
-      ) : null}
-    </Box>
+          borderRadius={3}
+          overflow="hidden"
+          position="relative"
+          bgcolor={(theme) => theme.palette.background.paper}
+        >
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            width="100%"
+            position="absolute"
+            top={0}
+            left={0}
+          >
+            <IconButton size="large" className="handle">
+              <DragIndicatorIcon />
+            </IconButton>
+            <IconButton size="large" onClick={handleClose}>
+              <CloseIcon />
+            </IconButton>
+          </Stack>
+          {played ? (
+            <YouTube
+              videoId={videoId}
+              opts={opts}
+              onReady={handlePlayReady}
+              onEnd={handlePlayEnd}
+            />
+          ) : null}
+          {isLoading ? (
+            <Skeleton variant="rectangular" width={WIDTH} height={HEIGHT} />
+          ) : null}
+        </Box>
+      </Box>
+    </Draggable>
   );
 };
 

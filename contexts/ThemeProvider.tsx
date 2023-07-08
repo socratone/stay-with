@@ -31,15 +31,17 @@ export const ColorModeContext = createContext<ColorModeContextValue>({
 
 /** Font size */
 
+export type FontSize = '16px' | '20px' | '24px' | '28px';
+
 type FontsizeContextValue = {
-  fontSize: string;
-  changeFontSize: (fontSize: string) => void;
+  fontSize: FontSize;
+  changeFontSize: (fontSize: FontSize) => void;
 };
 
 export const FontSizeContext = createContext<FontsizeContextValue>({
   fontSize: '16px',
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
-  changeFontSize: (fontSize: string) => {},
+  changeFontSize: (fontSize: FontSize) => {},
 });
 
 const theme = {
@@ -57,7 +59,7 @@ const WHITE = '#fff';
 const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const router = useRouter();
 
-  const [fontSize, setFontSize] = useState('16px');
+  const [fontSize, setFontSize] = useState<FontSize>('16px');
 
   const lightTheme = createTheme({
     ...theme,
@@ -102,7 +104,7 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    const savedFontSize = getValue('fontSize');
+    const savedFontSize = getValue('fontSize') as FontSize | null;
     if (savedFontSize) {
       setFontSize(savedFontSize);
       const root = document.documentElement;
@@ -149,7 +151,7 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     });
   };
 
-  const changeFontSize = (fontSize: string) => {
+  const changeFontSize = (fontSize: FontSize) => {
     setFontSize(fontSize);
     saveValue('fontSize', fontSize);
     const root = document.documentElement;
