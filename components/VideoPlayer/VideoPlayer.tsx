@@ -159,10 +159,14 @@ const VideoPlayer = () => {
             top={0}
             left={0}
           >
-            <IconButton size="large" className="handle">
+            <IconButton size="large" className="handle" sx={{ color: '#fff' }}>
               <DragIndicatorIcon />
             </IconButton>
-            <IconButton size="large" onClick={handleClose}>
+            <IconButton
+              size="large"
+              onClick={handleClose}
+              sx={{ color: '#fff' }}
+            >
               <CloseIcon />
             </IconButton>
           </Stack>
