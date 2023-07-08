@@ -164,13 +164,16 @@ const LexioDivinaCreate = () => {
 
       {isMediumOrSmaller ? (
         <Container>
-          <Stack py={2} gap={1}>
+          <Stack py={2} gap={1.5}>
             <DailyMissa />
             <Box
               display="flex"
               justifyContent="flex-end"
               position="sticky"
               bottom={(theme) => theme.spacing(2)}
+              sx={{
+                pointerEvents: 'none',
+              }}
             >
               <IconButton
                 onClick={handleScrollTo}
@@ -178,6 +181,7 @@ const LexioDivinaCreate = () => {
                   bgcolor: (theme) => theme.palette.background.paper,
                   border: 1,
                   borderColor: (theme) => theme.palette.divider,
+                  pointerEvents: 'auto',
                 }}
               >
                 <KeyboardArrowDownIcon
