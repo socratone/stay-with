@@ -4,7 +4,6 @@ import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/constants';
 import Meta from 'components/Meta/Meta';
 import ArrowHistories from 'feature/candle/CandleHistories';
 import Candles from 'feature/candle/Candles';
-import useResizeListener from 'hooks/dom/useResizeListener';
 import useRemToPxNumber from 'hooks/theme/useRemToPxNumer';
 import Image from 'next/image';
 import crossImage from 'public/images/cross.webp';
@@ -22,10 +21,6 @@ const Arrows = () => {
     const viewportHeight = window.innerHeight;
     setViewportHeight(viewportHeight);
   }, []);
-
-  useResizeListener({
-    onResize: calculateViewportHeight,
-  });
 
   useEffect(() => {
     calculateViewportHeight();
