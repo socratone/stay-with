@@ -6,8 +6,9 @@ import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/constants';
 import getYouTubeID from 'get-youtube-id';
+import useResizeListener from 'hooks/dom/useResizeListener';
 import useRemToPxNumber from 'hooks/theme/useRemToPxNumer';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Draggable, { DraggableData, DraggableEvent } from 'react-draggable';
 import { useMount } from 'react-use';
 import YouTube, { YouTubeEvent } from 'react-youtube';
@@ -28,15 +29,41 @@ const VideoPlayer = () => {
   const dispatch = useAppDispatch();
   const open = useAppSelector((state) => state.video.open);
   const globalHeaderHeight = useRemToPxNumber(GLOBAL_HEADER_HEIGHT);
+
   const [position, setPosition] = useState({
     x: 0,
     y: 0,
   });
-
   const [played, setPlayed] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [videoId, setVideoId] = useState('f742p7mQ0Ic'); // default videoId
   const [videoIds, setVideoIds] = useState<string[]>([]);
+
+  const moveToTopLeft = () => {
+    setPosition({ x: MARGIN, y: globalHeaderHeight + MARGIN });
+  };
+
+  const moveToTopRight = useCallback(() => {
+    setPosition({
+      x: window.innerWidth - WIDTH - MARGIN,
+      y: globalHeaderHeight + MARGIN,
+    });
+  }, [globalHeaderHeight]);
+
+  const moveToBottomLeft = () => {
+    setPosition({ x: MARGIN, y: window.innerHeight - HEIGHT - MARGIN });
+  };
+
+  const moveToBottomRight = () => {
+    setPosition({
+      x: window.innerWidth - WIDTH - MARGIN,
+      y: window.innerHeight - HEIGHT - MARGIN,
+    });
+  };
+
+  useResizeListener({
+    onResize: moveToTopRight,
+  });
 
   // 저장된 videoId를 불러온다.
   useMount(() => {
@@ -53,11 +80,8 @@ const VideoPlayer = () => {
 
   // 초기값
   useEffect(() => {
-    setPosition({
-      x: window.innerWidth - WIDTH - MARGIN,
-      y: globalHeaderHeight + MARGIN,
-    });
-  }, [globalHeaderHeight]);
+    moveToTopRight();
+  }, [globalHeaderHeight, moveToTopRight]);
 
   useEffect(() => {
     if (open) {
@@ -79,28 +103,6 @@ const VideoPlayer = () => {
     } else {
       setVideoId(videoIds[currentIndex + 1]);
     }
-  };
-
-  const moveToTopLeft = () => {
-    setPosition({ x: MARGIN, y: globalHeaderHeight + MARGIN });
-  };
-
-  const moveToTopRight = () => {
-    setPosition({
-      x: window.innerWidth - WIDTH - MARGIN,
-      y: globalHeaderHeight + MARGIN,
-    });
-  };
-
-  const moveToBottomLeft = () => {
-    setPosition({ x: MARGIN, y: window.innerHeight - HEIGHT - MARGIN });
-  };
-
-  const moveToBottomRight = () => {
-    setPosition({
-      x: window.innerWidth - WIDTH - MARGIN,
-      y: window.innerHeight - HEIGHT - MARGIN,
-    });
   };
 
   const handleDragStop = (_: DraggableEvent, data: DraggableData) => {

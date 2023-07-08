@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
 type UseResizeListenerParams = {
+  /** useCallback으로 감싼 함수여야 한다. */
   onResize: () => void;
   debounceTime?: number;
 };
@@ -29,8 +30,7 @@ const useResizeListener = ({
       clearTimeout(timer);
       window.removeEventListener('resize', handleResize);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debounceTime]);
+  }, [debounceTime, onResize]);
 };
 
 export default useResizeListener;
