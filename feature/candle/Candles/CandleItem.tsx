@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import ProfileAvatar from 'components/ProfileAvatar/ProfileAvatar';
+import ProfileAvatar from 'components/ProfileAvatar';
 import Image, { ImageProps } from 'next/image';
 import { useState } from 'react';
 import { FormattedDate } from 'react-intl';

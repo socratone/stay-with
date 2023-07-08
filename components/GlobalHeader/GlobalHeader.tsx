@@ -6,7 +6,7 @@ import ButtonBase from '@mui/material/ButtonBase';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import DarkModeSwitch from 'components/DarkModeSwitch';
-import ProfileAvatar from 'components/ProfileAvatar/ProfileAvatar';
+import ProfileAvatar from 'components/ProfileAvatar';
 import useAuth from 'hooks/auth/useAuth';
 import useViewportHeight from 'hooks/dom/useViewportHeight';
 import useColorMode from 'hooks/theme/useColorMode';

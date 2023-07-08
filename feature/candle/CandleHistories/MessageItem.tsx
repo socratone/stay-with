@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import ProfileAvatar from 'components/ProfileAvatar/ProfileAvatar';
+import ProfileAvatar from 'components/ProfileAvatar';
 import { FormattedDate } from 'react-intl';
 
 type MessageItemProps = {

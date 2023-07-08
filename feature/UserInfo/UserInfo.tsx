@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import ProfileAvatar from 'components/ProfileAvatar/ProfileAvatar';
+import ProfileAvatar from 'components/ProfileAvatar';
 import useUser from 'hooks/api/useUser';
 import useAuth from 'hooks/auth/useAuth';
 import Link from 'next/link';

@@ -4,9 +4,9 @@ import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import List from '@mui/material/List';
-import GlobalHeader from 'components/GlobalHeader/GlobalHeader';
+import GlobalHeader from 'components/GlobalHeader';
 import Meta from 'components/Meta/Meta';
-import SideNavLinkItem from 'components/SideNavLinkItem/SideNavLinkItem';
+import SideNavLinkItem from 'components/SideNavLinkItem';
 
 type SettingsLayoutProps = {
   children: React.ReactNode;
