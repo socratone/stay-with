@@ -34,6 +34,11 @@ const Loading = () => {
       <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
       <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
       <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+      <Skeleton variant="text" sx={{ fontSize: '1rem', mb: 2 }} />
+      <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+      <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+      <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+      <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
       <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
     </Stack>
   );
