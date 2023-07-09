@@ -27,6 +27,7 @@ const Notifications = () => {
               user={notification.notifier}
               message={notification.message}
               isNew={notification.isNew}
+              lexioDivinaId={notification.lexioDivinaId}
             />
           ))}
         </Stack>
