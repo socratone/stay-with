@@ -5,7 +5,13 @@ import Mongodb from 'utils/mongodb';
 
 type AddNotificationPayload = Omit<
   Notification,
-  '_id' | 'isNew' | 'userId' | 'lexioDivinaId' | 'commentId' | 'isNew'
+  | '_id'
+  | 'isNew'
+  | 'userId'
+  | 'lexioDivinaId'
+  | 'commentId'
+  | 'isNew'
+  | 'createdAt'
 > & {
   userId: ObjectId;
   lexioDivinaId?: ObjectId;
@@ -19,5 +25,6 @@ export const addNotification = (
   return db.insertOne(CollectionName.Notifications, {
     ...payload,
     isNew: true,
+    createdAt: new Date(),
   });
 };

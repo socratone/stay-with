@@ -1,4 +1,4 @@
-import { boolean, InferType, mixed, object, string } from 'yup';
+import { boolean, date, InferType, mixed, object, string } from 'yup';
 
 import { ID_MAX_LENGTH, NAME_MAX_LENGTH, URL_MAX_LENGTH } from './constants';
 
@@ -21,6 +21,7 @@ export const notificationSchema = object({
   isNew: boolean().required(),
   lexioDivinaId: string().max(ID_MAX_LENGTH),
   commentId: string().max(ID_MAX_LENGTH),
+  createdAt: date().required(),
 });
 
 export type Notification = InferType<typeof notificationSchema>;
