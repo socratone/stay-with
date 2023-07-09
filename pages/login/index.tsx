@@ -1,8 +1,8 @@
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import ErrorMessage from 'components/ErrorMessage/ErrorMessage';
 import GlobalHeader from 'components/GlobalHeader';
 import KakaoLoginButton from 'components/KakaoLoginButton/KakaoLoginButton';
-import WaitingMessage from 'components/WaitingMessage/WaitingMessage';
 import Script from 'next/script';
 import { enqueueSnackbar } from 'notistack';
 import { useEffect, useRef, useState } from 'react';
@@ -27,7 +27,6 @@ const Login = () => {
 
     return () => {
       clearTimeout(timer);
-      setIsRequested(false);
     };
   }, [isRequested]);
 
@@ -76,22 +75,6 @@ const Login = () => {
     );
   }
 
-  if (isRequested) {
-    return (
-      <>
-        <GlobalHeader />
-        <Box
-          height="100vh"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <WaitingMessage content="카카오 로그인을 시도중입니다 🥰" />
-        </Box>
-      </>
-    );
-  }
-
   return (
     <>
       <Box height="100vh" display="flex" flexDirection="column">
@@ -105,7 +88,15 @@ const Login = () => {
           gap={1}
           p={2}
         >
-          <KakaoLoginButton onClick={handleKakaoLoginClick} />
+          <Typography color="text.primary" textAlign="center">
+            {isRequested
+              ? '카카오 로그인을 시도중입니다 🥰'
+              : '서비스를 이용하려면 카카오 계정이 필요해요 🙂'}
+          </Typography>
+          <KakaoLoginButton
+            disabled={isRequested}
+            onClick={handleKakaoLoginClick}
+          />
         </Box>
       </Box>
 

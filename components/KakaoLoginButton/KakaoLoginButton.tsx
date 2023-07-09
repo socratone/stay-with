@@ -3,6 +3,7 @@ import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
 
 type KakaoLoginButtonProps = {
+  disabled?: boolean;
   onClick: () => void;
 };
 
@@ -21,10 +22,14 @@ const KakaoIcon = () => (
   </svg>
 );
 
-const KakaoLoginButton: React.FC<KakaoLoginButtonProps> = ({ onClick }) => {
+const KakaoLoginButton: React.FC<KakaoLoginButtonProps> = ({
+  disabled,
+  onClick,
+}) => {
   return (
     <ButtonBase
       onClick={onClick}
+      disabled={disabled}
       sx={{
         bgcolor: (theme) => theme.palette.kakao.main,
         color: (theme) => theme.palette.kakao.contrastText,
