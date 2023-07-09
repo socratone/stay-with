@@ -55,8 +55,18 @@ const handler = async (
         }
       );
 
+      if (!lexioDivina) {
+        return res.status(500).json({
+          error: {
+            message: `Can't access lexio divina data.`,
+          },
+        });
+      }
+
+      const lexioDivinaAuthorId = String(lexioDivina?.userId);
+
       // 댓글을 작성한 사람과 lexio divina를 작성한 사람이 동일하다면 notification을 생략한다.
-      if (validatedComment.userId === String(lexioDivina?.userId)) {
+      if (validatedComment.userId === lexioDivinaAuthorId) {
         return res.status(201).json(result);
       }
 
@@ -64,7 +74,7 @@ const handler = async (
         const user: User = jwtDecode(accessToken as string);
 
         await addNotification(db, {
-          userId,
+          userId: new ObjectId(lexioDivinaAuthorId),
           notifier: {
             name: user.name,
             imageUrl: user.imageUrl,
