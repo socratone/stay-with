@@ -36,7 +36,7 @@ type LexioDivinaCardProps = {
   likeButtonDisabled: boolean;
   onIsLikedSubmit: (isLiked: boolean) => void;
   likedCount: number;
-  commentCount: number;
+  commentCount?: number;
   onCommentButtonClick: () => void;
   onUserClick: () => void;
   createdAt: Date;
