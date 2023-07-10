@@ -22,7 +22,7 @@ import useAuth from 'hooks/auth/useAuth';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { LexioDivina } from 'schemas';
-import { addQuery, removeQuery } from 'utils/url';
+import { removeQuery } from 'utils/url';
 
 type LexioDivinasProps = {
   fetchOptions?: {
@@ -109,8 +109,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
   };
 
   const handleCommentButtonClick = (lexioDivina: LexioDivina) => {
-    const mutatedUrl = addQuery(router.asPath, `comments=${lexioDivina._id}`);
-    router.push(mutatedUrl);
+    router.push(`/lexio-divinas/${lexioDivina._id}`);
   };
 
   const handleCommentDrawerClose = () => {
