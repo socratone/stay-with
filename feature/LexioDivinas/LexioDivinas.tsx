@@ -6,7 +6,6 @@ import AlertDialog from 'components/AlertDialog';
 import ErrorMessage from 'components/ErrorMessage';
 import LexioDivinaCard from 'components/LexioDivinaCard';
 import LoadingCircular from 'components/LoadingCircular';
-import CommentDrawer from 'feature/CommentDrawer';
 import {
   deleteLexioDivina,
   deleteLikedInLexioDivina,
@@ -22,7 +21,6 @@ import useAuth from 'hooks/auth/useAuth';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { LexioDivina } from 'schemas';
-import { removeQuery } from 'utils/url';
 
 type LexioDivinasProps = {
   fetchOptions?: {
@@ -112,11 +110,6 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
     router.push(`/lexio-divinas/${lexioDivina._id}`);
   };
 
-  const handleCommentDrawerClose = () => {
-    const mutatedUrl = removeQuery(router.asPath, 'comments');
-    router.push(mutatedUrl);
-  };
-
   const handleUserClick = (id: string) => {
     router.push(`/users/${id}`);
   };
@@ -199,15 +192,6 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
           )}
         </Box>
       </Box>
-
-      <CommentDrawer
-        id={
-          typeof router.query?.comments === 'string'
-            ? router.query?.comments
-            : null
-        }
-        onClose={handleCommentDrawerClose}
-      />
 
       <AlertDialog
         open={!!selectedLexioDivinaIdForDelete}
