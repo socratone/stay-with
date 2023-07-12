@@ -13,7 +13,7 @@ type MessageItemProps = {
   name: string;
   createdAt: Date;
   isMyself: boolean;
-  onEdit: () => void;
+  onEdit?: () => void;
   onDelete: () => void;
 };
 
@@ -49,9 +49,11 @@ const MessageItem: React.FC<MessageItemProps> = ({
       </Box>
       {isMyself ? (
         <Stack direction="row" ml="auto">
-          <IconButton size="small" onClick={onEdit}>
-            <EditIcon fontSize="small" />
-          </IconButton>
+          {onEdit ? (
+            <IconButton size="small" onClick={onEdit}>
+              <EditIcon fontSize="small" />
+            </IconButton>
+          ) : null}
           <IconButton size="small" onClick={onDelete}>
             <DeleteIcon fontSize="small" />
           </IconButton>
