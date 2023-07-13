@@ -43,7 +43,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
 
   const handleItemClick = async (isNew?: boolean) => {
     if (!lexioDivinaId) return; // prevent exception
-    router.push(`/?comments=${lexioDivinaId}`);
+    router.push(`/lexio-divinas/${lexioDivinaId}`);
     if (!isNew) return;
     try {
       await patchNotification(id, { isNew: false });
