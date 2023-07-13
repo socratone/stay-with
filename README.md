@@ -23,6 +23,8 @@
 - `/signup` POST 사용자 등록
 - `/users/{id}` GET 사용자 데이터
 - `/users/{id}` PATCH 사용자 데이터 수정
+- `/notifications` GET 알림 리스트 데이터
+- `/notifications/count` GET 알림 리스트 count
 
 ## Data Schema
 
@@ -45,8 +47,8 @@ LexioDivina {
   phrase: string;
   chapter: number;
   verse: number;
-  endChapter: number;
-  endVerse: number;
+  endChapter?: number;
+  endVerse?: number;
   userId: string;
   likedUserIds: string[];
   comments: {
@@ -62,6 +64,22 @@ Arrow {
   _id: string;
   userId: string;
   message: string;
+}
+```
+
+```
+Notification {
+  _id: string;
+  userId: string;
+  type: string;
+  message?: string;
+  notifier: {
+    name: string;
+    imageUrl: string;
+  }
+  isNew: boolean;
+  lexioDivinaId?: string;
+  commentId?: string;
 }
 ```
 

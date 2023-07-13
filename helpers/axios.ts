@@ -12,6 +12,8 @@ import {
   KakaoLoginPostResult,
 } from 'pages/api/login/kakao';
 import { MissaData } from 'pages/api/missa';
+import { NotificationsData } from 'pages/api/notifications';
+import { NotificationsCountData } from 'pages/api/notifications/count';
 import { UserPostResult } from 'pages/api/signup';
 import { UserData } from 'pages/api/users/[id]';
 import {
@@ -20,6 +22,7 @@ import {
   LexioDivinaCommentPostPayload,
   LexioDivinaPostPayload,
   LexioDivinaPutPayload,
+  NotificationPatchPayload,
   UserPatchPayload,
   UserPostPayload,
 } from 'schemas';
@@ -261,4 +264,48 @@ export const getMissa = (params?: GetMissaParams): Promise<MissaData> => {
       params,
     })
     .then((value) => value.data);
+};
+
+export type GetNotificationsParams = {
+  skip?: number;
+  limit?: number;
+  userId?: string;
+};
+
+export const getNotifications = (
+  params?: GetNotificationsParams
+): Promise<NotificationsData> => {
+  return axiosInstance
+    .get<any, AxiosResponse<NotificationsData>>('/api/notifications', {
+      params,
+    })
+    .then((value) => value.data);
+};
+
+export type GetNotificationsCountParams = {
+  userId?: string;
+  isNew?: boolean;
+};
+
+export const getNotificationsCount = (
+  params?: GetNotificationsCountParams
+): Promise<NotificationsCountData> => {
+  return axiosInstance
+    .get<any, AxiosResponse<NotificationsCountData>>(
+      '/api/notifications/count',
+      {
+        params,
+      }
+    )
+    .then((value) => value.data);
+};
+
+export const patchNotification = (
+  id: string,
+  payload: NotificationPatchPayload
+) => {
+  return axiosInstance.patch<any, AxiosResponse, NotificationPatchPayload>(
+    `/api/notifications/${id}`,
+    payload
+  );
 };

@@ -5,11 +5,11 @@ import { blockNotLoggedIn } from 'utils/auth';
 import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
-type ApiDeleteLikedResultData = UpdateResult;
+type LexioDivinaLikedDeleteResult = UpdateResult;
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<ApiDeleteLikedResultData | ServerError>
+  res: NextApiResponse<LexioDivinaLikedDeleteResult | ServerError>
 ) => {
   const id = String(req.query.id);
   const userId = String(req.query.userId);
