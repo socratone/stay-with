@@ -5,6 +5,7 @@ import { ArrowData } from 'pages/api/arrows/[id]';
 import { ArrowsCountData } from 'pages/api/arrows/count';
 import { LexioDivinasData } from 'pages/api/lexio-divinas';
 import { LexioDivinaData } from 'pages/api/lexio-divinas/[id]';
+import { LexioDivinaCommentsData } from 'pages/api/lexio-divinas/[id]/comments';
 import { LexioDivinaLikedPostPayload } from 'pages/api/lexio-divinas/[id]/likeds/index';
 import { LexioDivinasCountData } from 'pages/api/lexio-divinas/count';
 import {
@@ -130,6 +131,16 @@ export const postLikedToLexioDivina = (
 
 export const deleteLikedInLexioDivina = (id: string, userId: string) => {
   return axiosInstance.delete(`/api/lexio-divinas/${id}/likeds/${userId}`);
+};
+
+export const getCommentsInLexioDivina = (
+  id: string
+): Promise<LexioDivinaCommentsData> => {
+  return axiosInstance
+    .get<any, AxiosResponse<LexioDivinaCommentsData>>(
+      `/api/lexio-divinas/${id}/comments`
+    )
+    .then((value) => value.data);
 };
 
 export const postCommentToLexioDivina = (
