@@ -8,27 +8,12 @@ import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
 interface AggregatedLexioDivina extends LexioDivina {
-  commentUserIds: string[];
-  commentUsers: Omit<User, 'kakaoId' | 'email'>[];
-  comments: {
-    _id: string;
-    userId: string;
-    name: string;
-    imageUrl: string;
-    message: string;
-    createdAt: Date;
-  }[];
+  createdAt: Date;
+  user: Omit<User, 'kakaoId' | 'email'>;
 }
 
 export type LexioDivinaData = {
   lexioDivina: AggregatedLexioDivina;
-};
-
-type UsersObject = {
-  [userId: string]: {
-    name: string;
-    imageUrl: string;
-  };
 };
 
 type LexioDivinaPutResult = UpdateResult;
@@ -59,22 +44,16 @@ const handler = async (
           },
           {
             $addFields: {
-              commentUserIds: {
-                $map: {
-                  input: '$comments',
-                  as: 'comment',
-                  in: '$$comment.userId',
-                },
-              },
+              createdAt: { $toDate: '$_id' },
             },
           },
-          // https://www.mongodb.com/docs/manual/reference/operator/aggregation/lookup/#use--lookup-with-an-array
+          // user 정보 가져오기
           {
             $lookup: {
               from: CollectionName.Users,
-              localField: 'commentUserIds',
+              localField: 'userId',
               foreignField: '_id',
-              as: 'commentUsers',
+              as: 'user',
               pipeline: [
                 // 민감한 정보 제거
                 {
@@ -86,6 +65,9 @@ const handler = async (
               ],
             },
           },
+          {
+            $unwind: '$user',
+          },
         ]
       );
 
@@ -94,36 +76,8 @@ const handler = async (
         return res.status(404).json({ error: { message: 'Not found.' } });
       }
 
-      const commentUsers = lexioDivina.commentUsers;
-      const commentUsersObject: UsersObject = commentUsers.reduce(
-        (object, user) => {
-          return {
-            ...object,
-            [user._id]: {
-              name: user.name,
-              imageUrl: user.imageUrl,
-            },
-          };
-        },
-        {}
-      );
-
-      const comments = lexioDivina.comments.map((comment) => {
-        const user = commentUsersObject[comment.userId];
-        return {
-          _id: comment._id,
-          userId: comment.userId,
-          name: user.name,
-          imageUrl: user.imageUrl,
-          message: comment.message,
-          createdAt: new ObjectId(comment._id).getTimestamp(),
-        };
-      });
-
-      const editedLexioDivina = { ...lexioDivina, comments };
-
       db.close();
-      return res.status(200).json({ lexioDivina: editedLexioDivina });
+      return res.status(200).json({ lexioDivina });
     } catch (error) {
       sendServerError(res, error);
     }

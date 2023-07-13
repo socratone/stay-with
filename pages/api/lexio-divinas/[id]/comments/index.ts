@@ -13,18 +13,129 @@ import { blockNotLoggedIn } from 'utils/auth';
 import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
-type CommentPostResult = UpdateResult;
+type LexioDivinaCommentPostResult = UpdateResult;
+
+type Comment = {
+  _id: string;
+  userId: string;
+  name: string;
+  imageUrl: string;
+  message: string;
+  createdAt: Date;
+};
+
+type AggregatedLexioDivina = {
+  commentUserIds: string[];
+  commentUsers: Omit<User, 'kakaoId' | 'email'>[];
+  comments: Comment[];
+};
+
+type UsersObject = {
+  [userId: string]: {
+    name: string;
+    imageUrl: string;
+  };
+};
+
+export type LexioDivinaCommentsData = {
+  comments: Comment[];
+};
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<CommentPostResult | ServerError>
+  res: NextApiResponse<
+    LexioDivinaCommentsData | LexioDivinaCommentPostResult | ServerError
+  >
 ) => {
-  const id = String(req.query.id);
-  const validatedComment = await lexioDivinaCommentPostSchema.validate(
-    req.body
-  );
+  if (req.method === 'GET') {
+    try {
+      const id = String(req.query.id);
+      const db = new Mongodb();
+
+      const [lexioDivina] = await db.aggregate<AggregatedLexioDivina[]>(
+        CollectionName.LexioDivinas,
+        [
+          {
+            $match: {
+              _id: new ObjectId(id),
+            },
+          },
+          {
+            $addFields: {
+              commentUserIds: {
+                $map: {
+                  input: '$comments',
+                  as: 'comment',
+                  in: '$$comment.userId',
+                },
+              },
+            },
+          },
+          // https://www.mongodb.com/docs/manual/reference/operator/aggregation/lookup/#use--lookup-with-an-array
+          {
+            $lookup: {
+              from: CollectionName.Users,
+              localField: 'commentUserIds',
+              foreignField: '_id',
+              as: 'commentUsers',
+              pipeline: [
+                // 민감한 정보 제거
+                {
+                  $project: {
+                    kakaoId: 0,
+                    email: 0,
+                  },
+                },
+              ],
+            },
+          },
+        ]
+      );
+
+      if (!lexioDivina) {
+        db.close();
+        return res.status(404).json({ error: { message: 'Not found.' } });
+      }
+
+      const commentUsers = lexioDivina.commentUsers;
+      const commentUsersObject: UsersObject = commentUsers.reduce(
+        (object, user) => {
+          return {
+            ...object,
+            [user._id]: {
+              name: user.name,
+              imageUrl: user.imageUrl,
+            },
+          };
+        },
+        {}
+      );
+
+      const comments = lexioDivina.comments.map((comment) => {
+        const user = commentUsersObject[comment.userId];
+        return {
+          _id: comment._id,
+          userId: comment.userId,
+          name: user.name,
+          imageUrl: user.imageUrl,
+          message: comment.message,
+          createdAt: new ObjectId(comment._id).getTimestamp(),
+        };
+      });
+
+      db.close();
+      return res.status(200).json({ comments });
+    } catch (error) {
+      sendServerError(res, error);
+    }
+  }
 
   if (req.method === 'POST') {
+    const id = String(req.query.id);
+    const validatedComment = await lexioDivinaCommentPostSchema.validate(
+      req.body
+    );
+
     try {
       const accessToken = req.headers.authorization;
       blockNotLoggedIn(accessToken);

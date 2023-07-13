@@ -11,7 +11,6 @@ import MessageInput from 'components/MessageInput';
 import MessageInputStickyContainer from 'components/MessageInput/MessageInputStickyContainer';
 import MessageItem from 'components/MessageItem';
 import Meta from 'components/Meta';
-import { CollectionName } from 'constants/mongodb';
 import { LEXIO_DIVINA_COMMENT_VALIDATION } from 'constants/validation';
 import {
   deleteCommentInLexioDivina,
@@ -23,115 +22,63 @@ import {
 import useLexioDivina, {
   LEXIO_DIVINA_QUERY_KEY,
 } from 'hooks/api/useLexioDivina';
+import useLexioDivinaComments, {
+  LEXIO_DIVINA_COMMENTS_QUERY_KEY,
+} from 'hooks/api/useLexioDivinaComments';
 import { LEXIO_DIVINAS_QUERY_KEY } from 'hooks/api/useLexioDivinas';
 import { LEXIO_DIVINAS_COUNT_QUERY_KEY } from 'hooks/api/useLexioDivinasCount';
 import useAuth from 'hooks/auth/useAuth';
-import { ObjectId } from 'mongodb';
-import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
 import { useRef, useState } from 'react';
-import { LexioDivina, User } from 'schemas';
-import Mongodb from 'utils/mongodb';
-
-type LexioDivinaDetailProps = {
-  lexioDivina: AggregatedLexioDivina;
-};
-
-interface AggregatedLexioDivina extends LexioDivina {
-  user: Omit<User, 'kakaoId' | 'email'>;
-  createdAt: Date;
-}
 
 type Dialog = {
   id: string;
   open: boolean;
 };
 
-export const getServerSideProps: GetServerSideProps<
-  LexioDivinaDetailProps
-> = async ({ query }) => {
-  const lexioDivinaId = query.lexioId as string;
-  const db = new Mongodb();
-  const [lexioDivina] = await db.aggregate<AggregatedLexioDivina[]>(
-    CollectionName.LexioDivinas,
-    [
-      {
-        $match: {
-          _id: new ObjectId(lexioDivinaId),
-        },
-      },
-      {
-        $addFields: {
-          createdAt: { $toDate: '$_id' },
-        },
-      },
-      {
-        $lookup: {
-          from: CollectionName.Users,
-          localField: 'userId',
-          foreignField: '_id',
-          as: 'user',
-          pipeline: [
-            // 민감한 정보 제거
-            {
-              $project: {
-                kakaoId: 0,
-                email: 0,
-              },
-            },
-          ],
-        },
-      },
-      {
-        $unwind: '$user',
-      },
-    ]
-  );
-
-  db.close();
-
-  if (!lexioDivina) {
-    return {
-      notFound: true,
-    };
-  }
-
-  return {
-    props: {
-      lexioDivina: JSON.parse(JSON.stringify(lexioDivina)),
-    },
-  };
-};
-
-const LexioDivinaDetail: NextPage<LexioDivinaDetailProps> = ({
-  lexioDivina,
-}) => {
+const LexioDivinaDetail = () => {
   const router = useRouter();
+  const lexioDivinaId =
+    typeof router.query.lexioId === 'string' ? router.query.lexioId : undefined;
   const queryClient = useQueryClient();
-  const { user: me, logout } = useAuth();
   const messageInputRef = useRef<HTMLTextAreaElement>(null);
 
-  // liked와 comment는 업데이트를 위해 client side에서 fetching
+  const { user: me, logout } = useAuth();
+
   const {
     data: lexioDivinaData,
-    isError,
-    isLoading,
-  } = useLexioDivina(lexioDivina._id);
+    isLoading: lexioDivinaLoading,
+    isError: lexioDivinaError,
+  } = useLexioDivina(lexioDivinaId);
 
+  const {
+    data: lexioDivinaCommentsData,
+    isLoading: lexioDivinaCommentsLoading,
+    isError: lexioDivinaCommentsError,
+  } = useLexioDivinaComments(lexioDivinaId);
+
+  const lexioDivina = lexioDivinaData?.lexioDivina;
   const likedUserIds = lexioDivinaData?.lexioDivina.likedUserIds ?? [];
-  const comments = lexioDivinaData?.lexioDivina.comments ?? [];
+  const comments = lexioDivinaCommentsData?.comments;
+
+  const isLoading = lexioDivinaLoading || lexioDivinaCommentsLoading;
+  const isError = lexioDivinaError || lexioDivinaCommentsError;
 
   const [commentValue, setCommentValue] = useState('');
-  const [deleteDialog, setDeleteDialog] = useState<Dialog | null>(null);
-  const [selectedLexioDivinaIdForDelete, setSelectedLexioDivinaIdForDelete] =
-    useState<string | null>(null);
+  const [commentDeleteDialog, setCommentDeleteDialog] = useState<Dialog | null>(
+    null
+  );
+  const [lexioDivinaDeleteDialogOpen, setLexioDivinaDeleteDialogOpen] =
+    useState(false);
 
-  const handleLexioDivinaDelete = async () => {
-    if (!selectedLexioDivinaIdForDelete) return;
+  const handleLexioDivinaDelete = () => {
+    setLexioDivinaDeleteDialogOpen(true);
+  };
 
-    const lexioDivinaId = selectedLexioDivinaIdForDelete;
-    setSelectedLexioDivinaIdForDelete(null);
+  const removeLexioDivina = async () => {
+    if (!lexioDivinaId) return;
+    setLexioDivinaDeleteDialogOpen(false);
 
     try {
       await deleteLexioDivina(lexioDivinaId);
@@ -145,11 +92,11 @@ const LexioDivinaDetail: NextPage<LexioDivinaDetailProps> = ({
     }
   };
 
-  const addLike = async (id: string) => {
-    if (!me) return;
+  const addLike = async () => {
+    if (!lexioDivinaId || !me) return;
 
     try {
-      await postLikedToLexioDivina(id, {
+      await postLikedToLexioDivina(lexioDivinaId, {
         userId: me._id,
       });
       queryClient.invalidateQueries({ queryKey: [LEXIO_DIVINA_QUERY_KEY] });
@@ -158,11 +105,11 @@ const LexioDivinaDetail: NextPage<LexioDivinaDetailProps> = ({
     }
   };
 
-  const deleteLike = async (id: string) => {
-    if (!me) return;
+  const deleteLike = async () => {
+    if (!lexioDivinaId || !me) return;
 
     try {
-      await deleteLikedInLexioDivina(id, me._id);
+      await deleteLikedInLexioDivina(lexioDivinaId, me._id);
       queryClient.invalidateQueries({ queryKey: [LEXIO_DIVINA_QUERY_KEY] });
     } catch (error: any) {
       const status = error?.response?.status;
@@ -174,11 +121,13 @@ const LexioDivinaDetail: NextPage<LexioDivinaDetailProps> = ({
   };
 
   const deleteComment = async () => {
-    if (!deleteDialog) return;
+    if (!lexioDivinaId || !commentDeleteDialog) return;
     try {
-      await deleteCommentInLexioDivina(lexioDivina._id, deleteDialog.id);
-      queryClient.invalidateQueries({ queryKey: [LEXIO_DIVINA_QUERY_KEY] });
-      setDeleteDialog(null);
+      await deleteCommentInLexioDivina(lexioDivinaId, commentDeleteDialog.id);
+      queryClient.invalidateQueries({
+        queryKey: [LEXIO_DIVINA_COMMENTS_QUERY_KEY],
+      });
+      setCommentDeleteDialog(null);
     } catch (error: any) {
       const status = error?.response?.status;
       if (status === 401) {
@@ -195,7 +144,7 @@ const LexioDivinaDetail: NextPage<LexioDivinaDetailProps> = ({
   };
 
   const handleCommentSubmit = async () => {
-    if (!me) return;
+    if (!lexioDivinaId || !me) return;
 
     const { maxLength } = LEXIO_DIVINA_COMMENT_VALIDATION.message;
     const trimedComment = commentValue.trim();
@@ -215,7 +164,7 @@ const LexioDivinaDetail: NextPage<LexioDivinaDetailProps> = ({
     setCommentValue('');
 
     try {
-      await postCommentToLexioDivina(lexioDivina._id, {
+      await postCommentToLexioDivina(lexioDivinaId, {
         userId: me._id,
         message: trimedComment,
       });
@@ -225,7 +174,9 @@ const LexioDivinaDetail: NextPage<LexioDivinaDetailProps> = ({
         behavior: 'smooth',
       });
 
-      queryClient.invalidateQueries({ queryKey: [LEXIO_DIVINA_QUERY_KEY] });
+      queryClient.invalidateQueries({
+        queryKey: [LEXIO_DIVINA_COMMENTS_QUERY_KEY],
+      });
     } catch (error: any) {
       const status = error?.response?.status;
       if (status === 401) {
@@ -243,12 +194,13 @@ const LexioDivinaDetail: NextPage<LexioDivinaDetailProps> = ({
     router.push(`/users/${id}`);
   };
 
-  const handleLexioDivinaEdit = (id: string) => {
-    router.push(`/lexio-divinas/${id}/edit`);
+  const handleLexioDivinaEdit = () => {
+    if (!lexioDivinaId) return;
+    router.push(`/lexio-divinas/${lexioDivinaId}/edit`);
   };
 
   const handleCommentDelete = (id: string) => {
-    setDeleteDialog({ open: true, id });
+    setCommentDeleteDialog({ open: true, id });
   };
 
   return (
@@ -261,41 +213,37 @@ const LexioDivinaDetail: NextPage<LexioDivinaDetailProps> = ({
         sx={{ pt: 2, height: `calc(100% - ${GLOBAL_HEADER_HEIGHT})` }}
       >
         <Stack height="100%">
-          <LexioDivinaCard
-            key={lexioDivina._id}
-            name={lexioDivina.user.name}
-            profileImageUrl={lexioDivina.user.imageUrl}
-            phrase={lexioDivina.phrase}
-            bible={lexioDivina.bible}
-            chapter={lexioDivina.chapter}
-            verse={lexioDivina.verse}
-            endChapter={lexioDivina.endChapter}
-            endVerse={lexioDivina.endVerse}
-            content={lexioDivina.content}
-            isMine={lexioDivina.user._id === me?._id}
-            isLiked={!!likedUserIds.find((id) => id === me?._id)}
-            onEditMenuItemClick={() => handleLexioDivinaEdit(lexioDivina._id)}
-            onDeleteMenuItemClick={() =>
-              setSelectedLexioDivinaIdForDelete(lexioDivina._id)
-            }
-            likeButtonDisabled={!me}
-            onIsLikedSubmit={(isLiked) =>
-              isLiked ? addLike(lexioDivina._id) : deleteLike(lexioDivina._id)
-            }
-            likedCount={likedUserIds.length}
-            commentCount={comments.length}
-            onCommentButtonClick={handleCommentButtonClick}
-            onUserClick={() => handleAuthorClick(lexioDivina.user._id)}
-            createdAt={lexioDivina.createdAt}
-          />
-
-          <Stack gap={1} mt={2} flexGrow={1}>
-            {isError ? (
-              <ErrorMessage />
-            ) : isLoading ? (
-              <LoadingCircular />
-            ) : (
-              <>
+          {isError ? (
+            <ErrorMessage />
+          ) : isLoading ? (
+            <LoadingCircular />
+          ) : lexioDivina && comments ? (
+            <>
+              <LexioDivinaCard
+                name={lexioDivina.user.name}
+                profileImageUrl={lexioDivina.user.imageUrl}
+                phrase={lexioDivina.phrase}
+                bible={lexioDivina.bible}
+                chapter={lexioDivina.chapter}
+                verse={lexioDivina.verse}
+                endChapter={lexioDivina.endChapter}
+                endVerse={lexioDivina.endVerse}
+                content={lexioDivina.content}
+                isMine={lexioDivina.userId === me?._id}
+                isLiked={!!likedUserIds.find((id) => id === me?._id)}
+                onEditMenuItemClick={handleLexioDivinaEdit}
+                onDeleteMenuItemClick={handleLexioDivinaDelete}
+                likeButtonDisabled={!me}
+                onIsLikedSubmit={(isLiked) =>
+                  isLiked ? addLike() : deleteLike()
+                }
+                likedCount={likedUserIds.length}
+                commentCount={comments.length}
+                onCommentButtonClick={handleCommentButtonClick}
+                onUserClick={() => handleAuthorClick(lexioDivina.userId)}
+                createdAt={lexioDivina.createdAt}
+              />
+              <Stack gap={1} mt={2} flexGrow={1}>
                 {comments
                   .map((comment) => (
                     <MessageItem
@@ -317,26 +265,26 @@ const LexioDivinaDetail: NextPage<LexioDivinaDetailProps> = ({
                     onSubmit={handleCommentSubmit}
                   />
                 </MessageInputStickyContainer>
-              </>
-            )}
-          </Stack>
+              </Stack>
+            </>
+          ) : null}
         </Stack>
       </Container>
 
       <AlertDialog
-        open={!!selectedLexioDivinaIdForDelete}
-        onClose={() => setSelectedLexioDivinaIdForDelete(null)}
-        onSubmit={handleLexioDivinaDelete}
+        open={lexioDivinaDeleteDialogOpen}
+        onClose={() => setLexioDivinaDeleteDialogOpen(false)}
+        onSubmit={removeLexioDivina}
         title="삭제 확인"
         description="묵상글을 삭제하시겠습니까?"
         color="error"
       />
 
       <AlertDialog
-        open={!!deleteDialog}
+        open={!!commentDeleteDialog}
         title="삭제 확인"
         description="댓글을 삭제하시겠습니까?"
-        onClose={() => setDeleteDialog(null)}
+        onClose={() => setCommentDeleteDialog(null)}
         onSubmit={deleteComment}
         color="error"
       />
