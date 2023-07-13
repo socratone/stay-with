@@ -3,16 +3,15 @@ import Container from '@mui/material/Container';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { useQueryClient } from '@tanstack/react-query';
-import AlertDialog from 'components/AlertDialog/AlertDialog';
-import MessageDialog from 'feature/candle/MessageDialog/MessageDialog';
+import AlertDialog from 'components/AlertDialog';
+import MessageItem from 'components/MessageItem';
+import MessageDialog from 'feature/candle/MessageDialog';
 import { deleteArrow, putArrow } from 'helpers/axios';
 import useArrows, { ARROWS_QUERY_KEY } from 'hooks/api/useArrows';
 import useArrowsCount from 'hooks/api/useArrowsCount';
 import { ARROWS_INFINITE_QUERY_KEY } from 'hooks/api/useArrowsInfinite';
 import useAuth from 'hooks/auth/useAuth';
 import { useState } from 'react';
-
-import MessageItem from './MessageItem';
 
 type Dialog = {
   id: string;

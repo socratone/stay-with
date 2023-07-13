@@ -2,7 +2,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MenuIcon from '@mui/icons-material/Menu';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { Badge } from '@mui/material';
+import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import IconButton from '@mui/material/IconButton';

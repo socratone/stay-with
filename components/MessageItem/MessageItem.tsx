@@ -1,4 +1,4 @@
-import DeleteIcon from '@mui/icons-material/Delete';
+import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -13,7 +13,7 @@ type MessageItemProps = {
   name: string;
   createdAt: Date;
   isMyself: boolean;
-  onEdit: () => void;
+  onEdit?: () => void;
   onDelete: () => void;
 };
 
@@ -49,11 +49,13 @@ const MessageItem: React.FC<MessageItemProps> = ({
       </Box>
       {isMyself ? (
         <Stack direction="row" ml="auto">
-          <IconButton size="small" onClick={onEdit}>
-            <EditIcon fontSize="small" />
-          </IconButton>
+          {onEdit ? (
+            <IconButton size="small" onClick={onEdit}>
+              <EditIcon fontSize="small" />
+            </IconButton>
+          ) : null}
           <IconButton size="small" onClick={onDelete}>
-            <DeleteIcon fontSize="small" />
+            <CloseIcon fontSize="small" />
           </IconButton>
         </Stack>
       ) : null}
