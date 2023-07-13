@@ -1,4 +1,4 @@
-import { alpha } from '@mui/material';
+import { alpha, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import React from 'react';
 
@@ -9,11 +9,15 @@ type MessageInputStickyContainerProps = {
 const MessageInputStickyContainer: React.FC<
   MessageInputStickyContainerProps
 > = ({ children }) => {
+  const theme = useTheme();
+  const { mode } = theme.palette;
+  const bgcolor = mode === 'light' ? '#fff' : '#000';
+
   return (
     <Box
       sx={{
         zIndex: (theme) => theme.zIndex.appBar,
-        bgcolor: (theme) => theme.palette.background.paper,
+        bgcolor,
         position: 'sticky',
         bottom: 0,
         mt: 'auto',
@@ -24,10 +28,10 @@ const MessageInputStickyContainer: React.FC<
           bottom: '100%',
           width: '100%',
           height: (theme) => theme.spacing(2),
-          background: (theme) =>
-            `linear-gradient(0deg, ${
-              theme.palette.background.paper
-            } 0%, ${alpha(theme.palette.background.paper, 0)} 100%)`,
+          background: `linear-gradient(0deg, ${bgcolor} 0%, ${alpha(
+            bgcolor,
+            0
+          )} 100%)`,
         },
       }}
     >
