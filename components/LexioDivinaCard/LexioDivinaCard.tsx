@@ -10,6 +10,7 @@ import ProfileAvatar from 'components/ProfileAvatar/ProfileAvatar';
 import SmallMenu from 'components/SmallMenu';
 import { Bible, BIBLE_LABEL } from 'constants/bible';
 import { isNewTestament } from 'helpers/bible';
+import Link from 'next/link';
 import { useState } from 'react';
 import { FormattedDate } from 'react-intl';
 import { useDebounce } from 'react-use';
@@ -20,25 +21,48 @@ import LikedIcon from './LikedIcon';
 import OutlinedLikedIcon from './OutlinedLikedIcon';
 
 type LexioDivinaCardProps = {
+  /** 이름 */
   name: string;
+  /** 프로필 이미지 url */
   profileImageUrl?: string;
+  /** 성서 구절 */
   phrase: string;
   bible: Bible;
+  /** 장 */
   chapter: number;
+  /** 절 */
   verse: number;
+  /** 끝나는 장 */
   endChapter?: number;
+  /** 끝나는 절 */
   endVerse?: number;
+  /** 묵상 내용 */
   content: string;
+  /** 더 보기 링크 */
+  moreHref?: string;
+  /** 최대 묵상 내용 글자 수 */
+  maxContentLength?: number;
+  /** 사용자가 좋아요를 누른 경우 */
   isLiked: boolean;
+  /** 사용자의 글인 경우 */
   isMine: boolean;
+  /** 수정 메뉴 클릭 이벤트 */
   onEditMenuItemClick: () => void;
+  /** 삭제 메뉴 클릭 이벤트 */
   onDeleteMenuItemClick: () => void;
+  /** 좋아요 버튼 비활성 */
   likeButtonDisabled: boolean;
+  /** 디바운스된 like 변경 요청 */
   onIsLikedSubmit: (isLiked: boolean) => void;
+  /** 좋아요 수 */
   likedCount: number;
+  /** 댓글 수 */
   commentCount?: number;
+  /** 댓글 버튼 클릭 이벤트 */
   onCommentButtonClick: () => void;
+  /** 작성자 클릭 이벤트 */
   onUserClick: () => void;
+  /** 작성 날짜 */
   createdAt: Date;
 };
 
@@ -54,6 +78,8 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
   endChapter,
   endVerse,
   content,
+  moreHref,
+  maxContentLength,
   isLiked,
   isMine,
   onEditMenuItemClick,
@@ -206,9 +232,40 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
       </Typography>
 
       {/* content */}
-      <Typography color="text.secondary" px={2} sx={{ whiteSpace: 'pre-line' }}>
-        {content}
-      </Typography>
+      {maxContentLength ? (
+        <Typography
+          color="text.secondary"
+          px={2}
+          sx={{ whiteSpace: 'pre-line' }}
+        >
+          {content.length > maxContentLength ? (
+            <>
+              {content.substring(0, maxContentLength + 1) + '... '}
+              {moreHref ? (
+                <Link href={moreHref}>
+                  <Typography
+                    component="span"
+                    color="text.primary"
+                    fontWeight={500}
+                  >
+                    더 보기
+                  </Typography>
+                </Link>
+              ) : null}
+            </>
+          ) : (
+            content
+          )}
+        </Typography>
+      ) : (
+        <Typography
+          color="text.secondary"
+          px={2}
+          sx={{ whiteSpace: 'pre-line' }}
+        >
+          {content}
+        </Typography>
+      )}
 
       {/* footer */}
       <Stack direction="row" alignItems="center" p={1}>

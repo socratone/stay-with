@@ -176,6 +176,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
               onCommentButtonClick={() => handleCommentButtonClick(lexioDivina)}
               onUserClick={() => handleUserClick(lexioDivina.user._id)}
               createdAt={lexioDivina.createdAt}
+              moreHref={`/lexio-divinas/${lexioDivina._id}`}
             />
           ))}
         </Masonry>
