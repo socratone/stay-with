@@ -28,9 +28,11 @@ import useLexioDivinaComments, {
 import { LEXIO_DIVINAS_QUERY_KEY } from 'hooks/api/useLexioDivinas';
 import { LEXIO_DIVINAS_COUNT_QUERY_KEY } from 'hooks/api/useLexioDivinasCount';
 import useAuth from 'hooks/auth/useAuth';
+import useUrlOrigin from 'hooks/dom/useUrlOrigin';
 import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
 import { useRef, useState } from 'react';
+import { copyToClipboard } from 'utils/clipboard';
 
 type Dialog = {
   id: string;
@@ -42,6 +44,7 @@ const LexioDivinaDetail = () => {
   const lexioDivinaId =
     typeof router.query.lexioId === 'string' ? router.query.lexioId : undefined;
   const queryClient = useQueryClient();
+  const urlOrigin = useUrlOrigin();
   const messageInputRef = useRef<HTMLTextAreaElement>(null);
 
   const { user: me, logout } = useAuth();
@@ -242,6 +245,14 @@ const LexioDivinaDetail = () => {
                 onCommentButtonClick={handleCommentButtonClick}
                 onUserClick={() => handleAuthorClick(lexioDivina.userId)}
                 createdAt={lexioDivina.createdAt}
+                onShareButtonClick={() =>
+                  copyToClipboard(
+                    `${urlOrigin}/lexio-divinas/${lexioDivina._id}`,
+                    {
+                      targetName: '링크',
+                    }
+                  )
+                }
               />
               <Stack gap={1} mt={2} flexGrow={1}>
                 {comments

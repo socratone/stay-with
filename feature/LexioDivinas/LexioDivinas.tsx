@@ -18,9 +18,11 @@ import useLexioDivinasCount, {
   LEXIO_DIVINAS_COUNT_QUERY_KEY,
 } from 'hooks/api/useLexioDivinasCount';
 import useAuth from 'hooks/auth/useAuth';
+import useUrlOrigin from 'hooks/dom/useUrlOrigin';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { LexioDivina } from 'schemas';
+import { copyToClipboard } from 'utils/clipboard';
 
 type LexioDivinasProps = {
   fetchOptions?: {
@@ -33,6 +35,7 @@ const ITEM_COUNT_PER_PAGE = 20;
 const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const urlOrigin = useUrlOrigin();
 
   const { user, logout } = useAuth();
 
@@ -178,6 +181,14 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
               createdAt={lexioDivina.createdAt}
               moreHref={`/lexio-divinas/${lexioDivina._id}`}
               maxContentLength={500}
+              onShareButtonClick={() =>
+                copyToClipboard(
+                  `${urlOrigin}/lexio-divinas/${lexioDivina._id}`,
+                  {
+                    targetName: '링크',
+                  }
+                )
+              }
             />
           ))}
         </Masonry>

@@ -1,4 +1,5 @@
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import ShareIcon from '@mui/icons-material/Share';
 import { SxProps, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
@@ -27,6 +28,7 @@ type LexioDivinaCardProps = {
   profileImageUrl?: string;
   /** 성서 구절 */
   phrase: string;
+  /** 성서 책 */
   bible: Bible;
   /** 장 */
   chapter: number;
@@ -62,6 +64,8 @@ type LexioDivinaCardProps = {
   onCommentButtonClick: () => void;
   /** 작성자 클릭 이벤트 */
   onUserClick: () => void;
+  /** 공유 버튼 클릭 이벤트 */
+  onShareButtonClick?: () => void;
   /** 작성 날짜 */
   createdAt: Date;
 };
@@ -90,6 +94,7 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
   commentCount,
   onCommentButtonClick,
   onUserClick,
+  onShareButtonClick,
   createdAt,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -271,8 +276,8 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
       <Stack direction="row" alignItems="center" p={1}>
         <IconButton
           disabled={likeButtonDisabled}
-          onClick={handleLikeButtonClick}
           size="small"
+          onClick={handleLikeButtonClick}
           sx={footerIconSx}
         >
           {isTempLiked ? (
@@ -287,8 +292,8 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
           </Typography>
         ) : null}
         <IconButton
-          onClick={onCommentButtonClick}
           size="small"
+          onClick={onCommentButtonClick}
           sx={footerIconSx}
         >
           <BubbleIcon color={theme.palette.text.secondary} />
@@ -297,6 +302,20 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
           <Typography color="text.secondary" variant="body2">
             {commentCount}
           </Typography>
+        ) : null}
+        {onShareButtonClick ? (
+          <IconButton
+            size="small"
+            onClick={onShareButtonClick}
+            sx={{ ml: 'auto' }}
+          >
+            <ShareIcon
+              sx={{
+                color: theme.palette.text.secondary,
+                fontSize: '1.65rem',
+              }}
+            />
+          </IconButton>
         ) : null}
       </Stack>
     </Box>
