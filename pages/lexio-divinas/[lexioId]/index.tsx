@@ -32,6 +32,7 @@ import useUrlOrigin from 'hooks/dom/useUrlOrigin';
 import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
 import { useRef, useState } from 'react';
+import { useIntl } from 'react-intl';
 import { copyToClipboard } from 'utils/clipboard';
 
 type Dialog = {
@@ -40,6 +41,7 @@ type Dialog = {
 };
 
 const LexioDivinaDetail = () => {
+  const { formatMessage } = useIntl();
   const router = useRouter();
   const lexioDivinaId =
     typeof router.query.lexioId === 'string' ? router.query.lexioId : undefined;
@@ -95,8 +97,15 @@ const LexioDivinaDetail = () => {
     }
   };
 
+  const enqueueNotLoggedInSnackbar = () => {
+    enqueueSnackbar(formatMessage({ id: 'warning.message.notLoggedIn' }), {
+      variant: 'warning',
+    });
+  };
+
   const addLike = async () => {
-    if (!lexioDivinaId || !me) return;
+    if (!me) return enqueueNotLoggedInSnackbar();
+    if (!lexioDivinaId) return;
 
     try {
       await postLikedToLexioDivina(lexioDivinaId, {
@@ -109,7 +118,8 @@ const LexioDivinaDetail = () => {
   };
 
   const deleteLike = async () => {
-    if (!lexioDivinaId || !me) return;
+    if (!me) return enqueueNotLoggedInSnackbar();
+    if (!lexioDivinaId) return;
 
     try {
       await deleteLikedInLexioDivina(lexioDivinaId, me._id);
@@ -147,7 +157,8 @@ const LexioDivinaDetail = () => {
   };
 
   const handleCommentSubmit = async () => {
-    if (!lexioDivinaId || !me) return;
+    if (!me) return enqueueNotLoggedInSnackbar();
+    if (!lexioDivinaId) return;
 
     const { maxLength } = LEXIO_DIVINA_COMMENT_VALIDATION.message;
     const trimedComment = commentValue.trim();
@@ -190,6 +201,7 @@ const LexioDivinaDetail = () => {
   };
 
   const handleCommentButtonClick = () => {
+    if (!me) return enqueueNotLoggedInSnackbar();
     messageInputRef.current?.focus();
   };
 

@@ -53,7 +53,7 @@ type LexioDivinaCardProps = {
   /** 삭제 메뉴 클릭 이벤트 */
   onDeleteMenuItemClick: () => void;
   /** 좋아요 버튼 비활성 */
-  likeButtonDisabled: boolean;
+  likeButtonDisabled?: boolean;
   /** 디바운스된 like 변경 요청 */
   onIsLikedSubmit: (isLiked: boolean) => void;
   /** 좋아요 수 */
