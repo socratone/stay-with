@@ -281,9 +281,21 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
           sx={footerIconSx}
         >
           {isTempLiked ? (
-            <LikedIcon color={theme.palette.error.main} />
+            <LikedIcon
+              color={
+                likeButtonDisabled
+                  ? theme.palette.action.disabled
+                  : theme.palette.error.main
+              }
+            />
           ) : (
-            <OutlinedLikedIcon color={theme.palette.text.secondary} />
+            <OutlinedLikedIcon
+              color={
+                likeButtonDisabled
+                  ? theme.palette.action.disabled
+                  : theme.palette.text.secondary
+              }
+            />
           )}
         </IconButton>
         {likedCount ? (
