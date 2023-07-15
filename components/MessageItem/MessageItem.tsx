@@ -1,4 +1,4 @@
-import CloseIcon from '@mui/icons-material/Close';
+import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -55,7 +55,7 @@ const MessageItem: React.FC<MessageItemProps> = ({
             </IconButton>
           ) : null}
           <IconButton size="small" onClick={onDelete}>
-            <CloseIcon fontSize="small" />
+            <DeleteIcon fontSize="small" />
           </IconButton>
         </Stack>
       ) : null}

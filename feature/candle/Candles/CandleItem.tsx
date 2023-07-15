@@ -1,6 +1,8 @@
 import { keyframes } from '@emotion/react';
+import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
@@ -115,7 +117,7 @@ const CandleItem: React.FC<CandleItemProps> = ({
         <Stack gap={0.5}>
           <Stack direction="row" alignItems="center" spacing={1}>
             <ProfileAvatar src={profileImageUrl} size="2.125rem" />
-            <Stack>
+            <Stack flexGrow={1}>
               <Typography
                 variant="body2"
                 color={(theme) => theme.palette.text.primary}
@@ -132,6 +134,11 @@ const CandleItem: React.FC<CandleItemProps> = ({
                 <FormattedDate value={createdAt} />
               </Typography>
             </Stack>
+            <Box alignSelf="flex-start">
+              <IconButton size="small" onClick={handleClose}>
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            </Box>
           </Stack>
           <Typography
             color={(theme) => theme.palette.text.secondary}
