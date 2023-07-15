@@ -280,14 +280,16 @@ const LexioDivinaDetail = () => {
                     />
                   ))
                   .reverse()}
-                <MessageInputStickyContainer>
-                  <MessageInput
-                    ref={messageInputRef}
-                    value={commentValue}
-                    onChange={handleCommentValueChange}
-                    onSubmit={handleCommentSubmit}
-                  />
-                </MessageInputStickyContainer>
+                {me ? (
+                  <MessageInputStickyContainer>
+                    <MessageInput
+                      ref={messageInputRef}
+                      value={commentValue}
+                      onChange={handleCommentValueChange}
+                      onSubmit={handleCommentSubmit}
+                    />
+                  </MessageInputStickyContainer>
+                ) : null}
               </Stack>
             </>
           ) : null}
