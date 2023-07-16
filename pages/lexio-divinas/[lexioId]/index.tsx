@@ -221,7 +221,7 @@ const LexioDivinaDetail = () => {
   return (
     <>
       <Meta />
-      <GlobalHeader backButton />
+      <GlobalHeader />
 
       <Container
         maxWidth="sm"
