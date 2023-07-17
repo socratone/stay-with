@@ -12,6 +12,7 @@ import useArrowsCount from 'hooks/api/useArrowsCount';
 import { ARROWS_INFINITE_QUERY_KEY } from 'hooks/api/useArrowsInfinite';
 import useAuth from 'hooks/auth/useAuth';
 import { useState } from 'react';
+import { useIntl } from 'react-intl';
 
 type Dialog = {
   id: string;
@@ -22,6 +23,7 @@ const ITEM_COUNT_PER_PAGE = 20;
 
 const CandleHistories = () => {
   const queryClient = useQueryClient();
+  const { formatMessage } = useIntl();
 
   const { user: me } = useAuth();
 
@@ -121,7 +123,7 @@ const CandleHistories = () => {
 
       <AlertDialog
         open={!!deleteDialog}
-        title="삭제 확인"
+        title={formatMessage({ id: 'alert.delete.title' })}
         description="기도를 삭제하시겠습니까?"
         onClose={() => setDeleteDialog(null)}
         onSubmit={deleteCandle}

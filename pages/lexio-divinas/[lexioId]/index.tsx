@@ -300,14 +300,14 @@ const LexioDivinaDetail = () => {
         open={lexioDivinaDeleteDialogOpen}
         onClose={() => setLexioDivinaDeleteDialogOpen(false)}
         onSubmit={removeLexioDivina}
-        title="삭제 확인"
+        title={formatMessage({ id: 'alert.delete.title' })}
         description="묵상글을 삭제하시겠습니까?"
         color="error"
       />
 
       <AlertDialog
         open={!!commentDeleteDialog}
-        title="삭제 확인"
+        title={formatMessage({ id: 'alert.delete.title' })}
         description="댓글을 삭제하시겠습니까?"
         onClose={() => setCommentDeleteDialog(null)}
         onSubmit={deleteComment}

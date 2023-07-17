@@ -49,6 +49,7 @@ const handler = async (
   if (req.method === 'POST') {
     let kakaoAccessToken: string;
 
+    // 카카오 로그인 페이지에서 이동 후 받은 code
     const { code }: KakaoLoginPostPayload = req.body;
 
     try {

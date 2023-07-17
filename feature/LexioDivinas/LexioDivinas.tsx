@@ -21,6 +21,7 @@ import useAuth from 'hooks/auth/useAuth';
 import useUrlOrigin from 'hooks/dom/useUrlOrigin';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { useIntl } from 'react-intl';
 import { LexioDivina } from 'schemas';
 import { copyToClipboard } from 'utils/clipboard';
 
@@ -35,6 +36,7 @@ const ITEM_COUNT_PER_PAGE = 20;
 const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { formatMessage } = useIntl();
   const urlOrigin = useUrlOrigin();
 
   const { user, logout } = useAuth();
@@ -210,7 +212,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
         open={!!selectedLexioDivinaIdForDelete}
         onClose={() => setSelectedLexioDivinaIdForDelete(null)}
         onSubmit={handleLexioDivinaDelete}
-        title="삭제 확인"
+        title={formatMessage({ id: 'alert.delete.title' })}
         description="묵상글을 삭제하시겠습니까?"
         color="error"
       />

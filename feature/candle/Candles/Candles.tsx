@@ -11,6 +11,7 @@ import useArrowsInfinite from 'hooks/api/useArrowsInfinite';
 import useAuth from 'hooks/auth/useAuth';
 import cloneDeep from 'lodash/cloneDeep';
 import { useEffect, useRef, useState } from 'react';
+import { useIntl } from 'react-intl';
 import { Swiper, SwiperClass, SwiperSlide } from 'swiper/react';
 import { assignValue, assignValues, createEmptyBoard } from 'utils/board';
 
@@ -25,6 +26,7 @@ type Dialog = {
 };
 
 const Candles: React.FC = () => {
+  const { formatMessage } = useIntl();
   const queryClient = useQueryClient();
   const { user: me } = useAuth();
 
@@ -221,7 +223,7 @@ const Candles: React.FC = () => {
 
       <AlertDialog
         open={!!deleteDialog}
-        title="삭제 확인"
+        title={formatMessage({ id: 'alert.delete.title' })}
         description="기도를 삭제하시겠습니까?"
         onClose={() => setDeleteDialog(null)}
         onSubmit={deleteCandle}

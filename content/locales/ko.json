@@ -11,5 +11,7 @@
   "warning.message.notLoggedIn": "로그인이 필요해요 😇",
 
   "error.message.common": "에러가 발생했어요 😫",
-  "error.message.duplicateName": "이미 사용중인 이름이 있네요 😥"
+  "error.message.duplicateName": "이미 사용중인 이름이 있네요 😥",
+
+  "alert.delete.title": "🔥 삭제 확인"
 }

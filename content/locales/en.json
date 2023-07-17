@@ -11,5 +11,7 @@
   "warning.message.notLoggedIn": "Sign in required 😇",
 
   "error.message.common": "An error occurred 😫",
-  "error.message.duplicateName": "The name is already in use 😥"
+  "error.message.duplicateName": "The name is already in use 😥",
+
+  "alert.delete.title": "🔥 Confirm Deletion"
 }
