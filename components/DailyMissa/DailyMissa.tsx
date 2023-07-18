@@ -15,7 +15,7 @@ import StartingPrayerDialog from './StartingPrayerDialog';
 import Word from './Word';
 
 const DailyMissa = () => {
-  const [startingPrayerOpened, setStartingPrayerOpened] = useState(false);
+  const [startingPrayerOpen, setStartingPrayerOpen] = useState(false);
   const [offset, setOffset] = useState(0);
 
   const {
@@ -36,11 +36,11 @@ const DailyMissa = () => {
   };
 
   const openStartingPrayer = () => {
-    setStartingPrayerOpened(true);
+    setStartingPrayerOpen(true);
   };
 
   const closeStartingPrayer = () => {
-    setStartingPrayerOpened(false);
+    setStartingPrayerOpen(false);
   };
 
   const handlePrevious = () => {
@@ -119,9 +119,9 @@ const DailyMissa = () => {
         )}
       </Stack>
 
-      {startingPrayerOpened ? (
+      {startingPrayerOpen ? (
         <StartingPrayerDialog
-          open={startingPrayerOpened}
+          open={startingPrayerOpen}
           onClose={closeStartingPrayer}
         />
       ) : null}

@@ -120,6 +120,7 @@ Notification {
 - UserData: GET 요청의 response data를 의미
 - UserPostResult: POST 요청의 result를 의미
 - UserPatchResult: PATCH 요청의 result를 의미
+- userDialogOpen: isOpen이나 opened가 아닌 open 키워드를 사용
 
 ## Environment
 
