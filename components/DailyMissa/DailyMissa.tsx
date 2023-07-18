@@ -24,11 +24,11 @@ const DailyMissa = () => {
     isError,
   } = useMissa(offset ? { offset } : undefined);
 
-  const parseToBible = (bibleInfo: string | null) => {
-    if (!bibleInfo) return null;
+  const parseToBible = (bibleInfoText?: string) => {
+    if (!bibleInfoText) return null;
     for (const key in BIBLE_INTRO) {
       const label = BIBLE_INTRO[key];
-      if (bibleInfo.includes(label)) {
+      if (bibleInfoText.includes(label)) {
         return key;
       }
     }
@@ -109,9 +109,9 @@ const DailyMissa = () => {
             {missaData.words.map((word, index) => (
               <Word
                 key={index}
-                bible={parseToBible(word.bibleInfo)}
+                bible={parseToBible(word.bibleInfo?.text)}
                 title={word.title}
-                bibleInfo={word.bibleInfo ?? ''}
+                bibleInfo={word.bibleInfo}
                 contents={word.contents}
               />
             ))}

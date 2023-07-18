@@ -4,7 +4,14 @@ import { sendServerError, ServerError } from 'utils/error';
 
 export type MissaData = {
   today: string;
-  words: { title: string; bibleInfo: string | null; contents: string[] }[];
+  words: {
+    title: string;
+    bibleInfo: {
+      text: string;
+      number: string;
+    } | null;
+    contents: string[];
+  }[];
 };
 
 const handler = async (
@@ -94,9 +101,22 @@ const handler = async (
         trimedBibleInfo = bibleInfo.substring(1).trim();
       }
 
+      // 성서 문구와 장절 표기 숫자 사이 띄우기
+      // Ex. 탈출기의 말씀입니다.3,13-20 => 탈출기의 말씀입니다. 3,13-20
+      const lastKoreanCharIndex = trimedBibleInfo?.indexOf('다.') ?? -1;
+      const text = trimedBibleInfo?.substring(0, lastKoreanCharIndex + 2);
+      const number = trimedBibleInfo?.substring(lastKoreanCharIndex + 2);
+
+      const isBibleInfo = lastKoreanCharIndex >= 0 && text && number;
+
       return {
         title: word.title,
-        bibleInfo: trimedBibleInfo ?? null,
+        bibleInfo: isBibleInfo
+          ? {
+              text,
+              number,
+            }
+          : null,
         contents: contentsWitouhtBibleInfo,
       };
     });

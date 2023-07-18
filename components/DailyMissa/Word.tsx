@@ -4,7 +4,10 @@ import Typography from '@mui/material/Typography';
 type WordProps = {
   title: string;
   bible: string | null;
-  bibleInfo: string;
+  bibleInfo: {
+    text: string;
+    number: string;
+  } | null;
   contents: string[];
 };
 
@@ -16,7 +19,9 @@ const Word: React.FC<WordProps> = ({ title, bible, bibleInfo, contents }) => {
       <Typography variant="h6" color="text.primary">
         {title}
       </Typography>
-      <Typography color="text.primary">{bibleInfo}</Typography>
+      {bibleInfo ? (
+        <Typography color="text.primary">{`${bibleInfo.text} ${bibleInfo.number}`}</Typography>
+      ) : null}
       {contents.map((content, index) => (
         <Typography key={index} color="text.primary">
           {content}
