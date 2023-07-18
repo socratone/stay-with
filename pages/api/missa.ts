@@ -75,15 +75,15 @@ const handler = async (
       const tailIndex = contentsWithoutHead.findLastIndex((content) => {
         return content.includes('주님의 말씀입니다.');
       });
-      const contentsWitoutTail = contentsWithoutHead.slice(0, tailIndex);
+      const contentsWithoutTail = contentsWithoutHead.slice(0, tailIndex);
 
       // 성서 정보 문장 추출
       // Ex. '토빗기의 시작입니다.1,3; 2,1ㄴ-8'
-      const bibleInfo = contentsWitoutTail.find((content) => {
+      const bibleInfo = contentsWithoutTail.find((content) => {
         const regex = /[0-9]+,[0-9]+[ㄱㄴㄷ-]+[,0-9]+/;
         return regex.test(content);
       });
-      const contentsWitouhtBibleInfo = contentsWitoutTail.filter(
+      const contentsWitouhtBibleInfo = contentsWithoutTail.filter(
         (content) => content !== bibleInfo
       );
 
