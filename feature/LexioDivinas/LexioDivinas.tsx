@@ -5,7 +5,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import AlertDialog from 'components/AlertDialog';
 import ErrorMessage from 'components/ErrorMessage';
 import LexioDivinaCard from 'components/LexioDivinaCard';
-import LoadingCircular from 'components/LoadingCircular';
+import LexioDivinaLoadingCard from 'components/LexioDivinaLoadingCard';
 import { motion } from 'framer-motion';
 import {
   deleteLexioDivina,
@@ -126,14 +126,6 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
     setPage(page);
   };
 
-  if (lexioDivinasLoading) {
-    return (
-      <Box p={2}>
-        <LoadingCircular />
-      </Box>
-    );
-  }
-
   if (lexioDivinasError) {
     return (
       <Box p={2}>
@@ -159,47 +151,65 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
           spacing={2}
           columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
         >
-          {lexioDivinas.map((lexioDivina) => (
-            <LexioDivinaCard
-              key={lexioDivina._id}
-              name={lexioDivina.user.name}
-              profileImageUrl={lexioDivina.user.imageUrl}
-              phrase={lexioDivina.phrase}
-              bible={lexioDivina.bible}
-              chapter={lexioDivina.chapter}
-              verse={lexioDivina.verse}
-              endChapter={lexioDivina.endChapter}
-              endVerse={lexioDivina.endVerse}
-              content={lexioDivina.content}
-              isMine={lexioDivina.user._id === user?._id}
-              isLiked={
-                !!lexioDivina.likedUserIds.find((id) => id === user?._id)
-              }
-              onEditMenuItemClick={() => handleEdit(lexioDivina._id)}
-              onDeleteMenuItemClick={() =>
-                setSelectedLexioDivinaIdForDelete(lexioDivina._id)
-              }
-              likeButtonDisabled={!user}
-              onIsLikedSubmit={(isLiked) =>
-                isLiked ? addLike(lexioDivina._id) : deleteLike(lexioDivina._id)
-              }
-              likedCount={lexioDivina.likedUserIds.length}
-              commentCount={lexioDivina.comments.length}
-              onCommentButtonClick={() => handleCommentButtonClick(lexioDivina)}
-              onUserClick={() => handleUserClick(lexioDivina.user._id)}
-              createdAt={lexioDivina.createdAt}
-              moreHref={`/lexio-divinas/${lexioDivina._id}`}
-              maxContentLength={500}
-              onShareButtonClick={() =>
-                copyToClipboard(
-                  `${urlOrigin}/lexio-divinas/${lexioDivina._id}`,
-                  {
-                    targetName: '링크',
-                  }
-                )
-              }
-            />
-          ))}
+          {lexioDivinasLoading ? (
+            <>
+              <LexioDivinaLoadingCard lineCount={8} />
+              <LexioDivinaLoadingCard lineCount={16} />
+              <LexioDivinaLoadingCard lineCount={24} />
+              <LexioDivinaLoadingCard lineCount={16} />
+              <LexioDivinaLoadingCard lineCount={8} />
+              <LexioDivinaLoadingCard lineCount={16} />
+              <LexioDivinaLoadingCard lineCount={24} />
+              <LexioDivinaLoadingCard lineCount={16} />
+              <LexioDivinaLoadingCard lineCount={8} />
+            </>
+          ) : (
+            lexioDivinas.map((lexioDivina) => (
+              <LexioDivinaCard
+                key={lexioDivina._id}
+                name={lexioDivina.user.name}
+                profileImageUrl={lexioDivina.user.imageUrl}
+                phrase={lexioDivina.phrase}
+                bible={lexioDivina.bible}
+                chapter={lexioDivina.chapter}
+                verse={lexioDivina.verse}
+                endChapter={lexioDivina.endChapter}
+                endVerse={lexioDivina.endVerse}
+                content={lexioDivina.content}
+                isMine={lexioDivina.user._id === user?._id}
+                isLiked={
+                  !!lexioDivina.likedUserIds.find((id) => id === user?._id)
+                }
+                onEditMenuItemClick={() => handleEdit(lexioDivina._id)}
+                onDeleteMenuItemClick={() =>
+                  setSelectedLexioDivinaIdForDelete(lexioDivina._id)
+                }
+                likeButtonDisabled={!user}
+                onIsLikedSubmit={(isLiked) =>
+                  isLiked
+                    ? addLike(lexioDivina._id)
+                    : deleteLike(lexioDivina._id)
+                }
+                likedCount={lexioDivina.likedUserIds.length}
+                commentCount={lexioDivina.comments.length}
+                onCommentButtonClick={() =>
+                  handleCommentButtonClick(lexioDivina)
+                }
+                onUserClick={() => handleUserClick(lexioDivina.user._id)}
+                createdAt={lexioDivina.createdAt}
+                moreHref={`/lexio-divinas/${lexioDivina._id}`}
+                maxContentLength={500}
+                onShareButtonClick={() =>
+                  copyToClipboard(
+                    `${urlOrigin}/lexio-divinas/${lexioDivina._id}`,
+                    {
+                      targetName: '링크',
+                    }
+                  )
+                }
+              />
+            ))
+          )}
         </Masonry>
 
         <Box display="flex" justifyContent="center">
