@@ -10,6 +10,8 @@ import androidSecondImage from 'public/images/android-pwa-download-2.jpeg';
 import iosFirstImage from 'public/images/ios-pwa-download-1.jpg';
 import iosSecondImage from 'public/images/ios-pwa-download-2.jpg';
 
+const IMAGE_SIZES = '(max-width: 600px) 100vw, 50vw';
+
 const Downloads = () => {
   return (
     <>
@@ -22,7 +24,7 @@ const Downloads = () => {
           </Typography>
           <Typography color="text.primary" sx={{ whiteSpace: 'pre-line' }}>
             {'PWA 앱으로 설치해서 일반 앱처럼 사용하실 수 있습니다.\n'}
-            <Typography color="text.secondary">
+            <Typography component="span" color="text.secondary">
               (💡 아이폰의 경우 staywith.kr 서비스 업데이트 시에 제대로 작동하지
               않는 사례가 있으니 문제 발생시 재설치를 해보세요.)
             </Typography>
@@ -62,6 +64,7 @@ const Downloads = () => {
                   alt="안드로이드 PWA 다운로드 1"
                   src={androidFirstImage}
                   fill
+                  sizes={IMAGE_SIZES}
                 />
               </Box>
             </Stack>
@@ -79,6 +82,7 @@ const Downloads = () => {
                   alt="안드로이드 PWA 다운로드 2"
                   src={androidSecondImage}
                   fill
+                  sizes={IMAGE_SIZES}
                 />
               </Box>
             </Stack>
@@ -115,7 +119,12 @@ const Downloads = () => {
                 borderColor={(theme) => theme.palette.divider}
                 sx={{ aspectRatio: '1080 / 2400' }}
               >
-                <Image alt="아이폰 PWA 다운로드 1" src={iosFirstImage} fill />
+                <Image
+                  alt="아이폰 PWA 다운로드 1"
+                  src={iosFirstImage}
+                  fill
+                  sizes={IMAGE_SIZES}
+                />
               </Box>
             </Stack>
             <Stack>
@@ -128,7 +137,12 @@ const Downloads = () => {
                 borderColor={(theme) => theme.palette.divider}
                 sx={{ aspectRatio: '1080 / 2400' }}
               >
-                <Image alt="아이폰 PWA 다운로드 2" src={iosSecondImage} fill />
+                <Image
+                  alt="아이폰 PWA 다운로드 2"
+                  src={iosSecondImage}
+                  fill
+                  sizes={IMAGE_SIZES}
+                />
               </Box>
             </Stack>
           </Box>
