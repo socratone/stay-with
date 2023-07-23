@@ -6,6 +6,7 @@ import GlobalHeader from 'components/GlobalHeader';
 import Meta from 'components/Meta';
 import SelectorDialog from 'components/SelectorDialog/SelectorDialog';
 import LexioDivinas from 'feature/LexioDivinas';
+import { motion } from 'framer-motion';
 import useAuth from 'hooks/auth/useAuth';
 import useScrollDirection from 'hooks/dom/useScrollDirection';
 import useTempLexioDivinaStatus from 'hooks/form/useTempLexioDivinaStatus';
@@ -15,6 +16,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { resetTempLexioDivina } from 'redux/tempLexioDivinaSlice';
+import { popUp } from 'utils/animation';
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -57,6 +59,8 @@ const Home: NextPage = () => {
       <Meta />
       <GlobalHeader />
       <Box
+        component={motion.div}
+        {...popUp()}
         maxWidth="xl"
         sx={{
           px: 2,

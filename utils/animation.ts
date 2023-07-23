@@ -30,3 +30,25 @@ export const popUpItem = {
   },
   viewport: { once: true },
 };
+
+export const popUp = (order = 0) => {
+  return {
+    initial: {
+      opacity: 0,
+      y: 30,
+    },
+    whileInView: {
+      y: 0,
+      opacity: 1,
+    },
+    transition: {
+      duration: 0.4,
+      type: 'spring',
+      stiffness: 70,
+      delay: 0.2 * order,
+    },
+    viewport: {
+      once: true,
+    },
+  };
+};
