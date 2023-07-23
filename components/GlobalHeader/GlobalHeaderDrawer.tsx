@@ -1,4 +1,5 @@
 import CloseIcon from '@mui/icons-material/Close';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 import NearMeIcon from '@mui/icons-material/NearMe';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -47,6 +48,11 @@ const GlobalHeaderDrawer: React.FC<GlobalHeaderDrawerProps> = ({
             href="/arrows"
             icon={<NearMeIcon />}
             label="화살 기도"
+          />
+          <ListLinkItem
+            href="/downloads"
+            icon={<FileDownloadIcon />}
+            label="다운로드"
           />
           <ListLinkItem
             href="/settings/profile"
