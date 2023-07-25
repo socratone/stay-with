@@ -3,9 +3,7 @@ import Container from '@mui/material/Container';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import GlobalHeader from 'components/GlobalHeader';
 import LoadingCircular from 'components/LoadingCircular/LoadingCircular';
-import Meta from 'components/Meta';
 import NotificationItem from 'components/NotificationItem/NotificationItem';
 import useNotifications from 'hooks/api/useNotifications';
 import useNotificationsCount from 'hooks/api/useNotificationsCount';
@@ -42,51 +40,46 @@ const Notifications = () => {
   };
 
   return (
-    <>
-      <Meta />
-      <GlobalHeader backButton />
-      <Container>
-        <Stack gap={1} py={2}>
-          {isLoading ? (
-            <LoadingCircular />
-          ) : isError ? (
-            <Box display="flex" justifyContent="center">
-              <Typography color="text.primary">
-                <FormattedMessage id="error.message.common" />
-              </Typography>
-            </Box>
-          ) : isEmpty ? (
-            <Box display="flex" justifyContent="center">
-              <Typography color="text.primary">알림이 없어요 🔔</Typography>
-            </Box>
-          ) : (
-            notificationsData?.notifications.map((notification) => (
-              <NotificationItem
-                key={notification._id}
-                id={notification._id}
-                type={notification.type}
-                user={notification.notifier}
-                message={notification.message}
-                isNew={notification.isNew}
-                lexioDivinaId={notification.lexioDivinaId}
-              />
-            ))
-          )}
-        </Stack>
-        <Box display="flex" justifyContent="center">
-          {(notificationsCountData?.count ?? 0) <=
-          ITEM_COUNT_PER_PAGE ? null : (
-            <Pagination
-              page={page}
-              onChange={(_, page) => handlePageChange(page)}
-              count={Math.ceil(
-                Number(notificationsCountData?.count) / ITEM_COUNT_PER_PAGE
-              )}
+    <Container>
+      <Stack gap={1} py={2}>
+        {isLoading ? (
+          <LoadingCircular />
+        ) : isError ? (
+          <Box display="flex" justifyContent="center">
+            <Typography color="text.primary">
+              <FormattedMessage id="error.message.common" />
+            </Typography>
+          </Box>
+        ) : isEmpty ? (
+          <Box display="flex" justifyContent="center">
+            <Typography color="text.primary">알림이 없어요 🔔</Typography>
+          </Box>
+        ) : (
+          notificationsData?.notifications.map((notification) => (
+            <NotificationItem
+              key={notification._id}
+              id={notification._id}
+              type={notification.type}
+              user={notification.notifier}
+              message={notification.message}
+              isNew={notification.isNew}
+              lexioDivinaId={notification.lexioDivinaId}
             />
-          )}
-        </Box>
-      </Container>
-    </>
+          ))
+        )}
+      </Stack>
+      <Box display="flex" justifyContent="center">
+        {(notificationsCountData?.count ?? 0) <= ITEM_COUNT_PER_PAGE ? null : (
+          <Pagination
+            page={page}
+            onChange={(_, page) => handlePageChange(page)}
+            count={Math.ceil(
+              Number(notificationsCountData?.count) / ITEM_COUNT_PER_PAGE
+            )}
+          />
+        )}
+      </Box>
+    </Container>
   );
 };
 

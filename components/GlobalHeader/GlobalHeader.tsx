@@ -25,8 +25,8 @@ import GlobalHeaderDrawer from './GlobalHeaderDrawer';
 import HeaderLink from './HeaderLink';
 
 type GlobalHeaderProps = {
-  dark?: true;
-  backButton?: true;
+  dark?: boolean;
+  backButton?: boolean;
 };
 
 const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark, backButton }) => {

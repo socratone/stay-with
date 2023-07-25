@@ -7,8 +7,7 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import ErrorMessage from 'components/ErrorMessage';
-import GlobalHeader from 'components/GlobalHeader';
-import Meta from 'components/Meta';
+import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/constants';
 import { postSignUp } from 'helpers/axios';
 import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -103,9 +102,11 @@ const SignUp: NextPage<SignUpProps> = ({ kakaoId, email, imageUrl }) => {
   };
 
   return (
-    <Box height="100vh" display="flex" flexDirection="column">
-      <Meta />
-      <GlobalHeader />
+    <Box
+      height={`calc(100vh - ${GLOBAL_HEADER_HEIGHT})`}
+      display="flex"
+      flexDirection="column"
+    >
       <Stack
         flexGrow={1}
         spacing={1.5}

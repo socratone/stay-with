@@ -3,14 +3,12 @@ import Stack from '@mui/material/Stack';
 import { useQueryClient } from '@tanstack/react-query';
 import AlertDialog from 'components/AlertDialog';
 import ErrorMessage from 'components/ErrorMessage';
-import GlobalHeader from 'components/GlobalHeader';
 import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/constants';
 import LexioDivinaCard from 'components/LexioDivinaCard';
 import LoadingCircular from 'components/LoadingCircular';
 import MessageInput from 'components/MessageInput';
 import MessageInputStickyContainer from 'components/MessageInput/MessageInputStickyContainer';
 import MessageItem from 'components/MessageItem';
-import Meta from 'components/Meta';
 import { LEXIO_DIVINA_COMMENT_VALIDATION } from 'constants/validation';
 import {
   deleteCommentInLexioDivina,
@@ -220,9 +218,6 @@ const LexioDivinaDetail = () => {
 
   return (
     <>
-      <Meta />
-      <GlobalHeader />
-
       <Container
         maxWidth="sm"
         sx={{ pt: 2, height: `calc(100% - ${GLOBAL_HEADER_HEIGHT})` }}

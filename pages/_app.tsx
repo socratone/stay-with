@@ -1,8 +1,8 @@
 import 'styles/globals.css';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import Layout from 'components/Layout';
 import Snackbar from 'components/Snackbar';
-import VideoPlayer from 'components/VideoPlayer';
 import English from 'content/locales/en.json';
 import Korean from 'content/locales/ko.json';
 import ThemeProvider from 'contexts/ThemeProvider';
@@ -49,8 +49,9 @@ function MyApp({ Component, pageProps }: AppProps) {
             }}
           >
             <IntlProvider locale={locale ?? 'ko'} messages={messages}>
-              <VideoPlayer />
-              <Component {...pageProps} />
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
             </IntlProvider>
           </SnackbarProvider>
         </ThemeProvider>

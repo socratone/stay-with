@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import ErrorMessage from 'components/ErrorMessage/ErrorMessage';
-import GlobalHeader from 'components/GlobalHeader';
+import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/constants';
 import KakaoLoginButton from 'components/KakaoLoginButton/KakaoLoginButton';
 import Script from 'next/script';
 import { enqueueSnackbar } from 'notistack';
@@ -61,24 +61,24 @@ const Login = () => {
 
   if (error) {
     return (
-      <>
-        <GlobalHeader />
-        <Box
-          height="100vh"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <ErrorMessage content={error.message} />
-        </Box>
-      </>
+      <Box
+        height={`calc(100vh - ${GLOBAL_HEADER_HEIGHT})`}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <ErrorMessage content={error.message} />
+      </Box>
     );
   }
 
   return (
     <>
-      <Box height="100vh" display="flex" flexDirection="column">
-        <GlobalHeader />
+      <Box
+        height={`calc(100vh - ${GLOBAL_HEADER_HEIGHT})`}
+        display="flex"
+        flexDirection="column"
+      >
         <Box
           flexGrow={1}
           display="flex"

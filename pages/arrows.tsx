@@ -1,7 +1,5 @@
 import Box from '@mui/material/Box';
-import GlobalHeader from 'components/GlobalHeader';
 import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/constants';
-import Meta from 'components/Meta/Meta';
 import ArrowHistories from 'feature/candle/CandleHistories';
 import Candles from 'feature/candle/Candles';
 import Image from 'next/image';
@@ -37,8 +35,6 @@ const Arrows = () => {
 
   return (
     <>
-      <Meta />
-      <GlobalHeader dark />
       <Box
         display="flex"
         justifyContent="center"

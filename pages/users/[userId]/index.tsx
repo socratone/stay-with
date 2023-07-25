@@ -2,9 +2,7 @@ import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
 import ErrorMessage from 'components/ErrorMessage/ErrorMessage';
 import FloatingButton from 'components/FloatingButton/FloatingButton';
-import GlobalHeader from 'components/GlobalHeader';
 import LoadingCircular from 'components/LoadingCircular/LoadingCircular';
-import Meta from 'components/Meta';
 import LexioDivinas from 'feature/LexioDivinas';
 import UserInfo from 'feature/UserInfo/UserInfo';
 import useUser from 'hooks/api/useUser';
@@ -24,23 +22,17 @@ const UserId = () => {
 
   if (isLoading) {
     return (
-      <>
-        <GlobalHeader />
-        <Box p={2}>
-          <LoadingCircular />
-        </Box>
-      </>
+      <Box p={2}>
+        <LoadingCircular />
+      </Box>
     );
   }
 
   if (isError) {
     return (
-      <>
-        <GlobalHeader />
-        <Box p={2}>
-          <ErrorMessage />
-        </Box>
-      </>
+      <Box p={2}>
+        <ErrorMessage />
+      </Box>
     );
   }
 
@@ -50,8 +42,6 @@ const UserId = () => {
 
   return (
     <>
-      <Meta />
-      <GlobalHeader />
       <UserInfo userId={userData?.user._id} />
       <LexioDivinas
         fetchOptions={{
