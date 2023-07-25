@@ -1,6 +1,5 @@
 import GlobalHeader from 'components/GlobalHeader';
 import Meta from 'components/Meta';
-import VideoPlayer from 'components/VideoPlayer';
 import { useRouter } from 'next/router';
 
 import {
@@ -27,7 +26,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <>
       <Meta />
       <GlobalHeader dark={isDarkHeader} backButton={isBackButton} />
-      <VideoPlayer />
       {children}
     </>
   );
