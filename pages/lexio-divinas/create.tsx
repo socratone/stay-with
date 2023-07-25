@@ -4,13 +4,11 @@ import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import DailyMissa from 'components/DailyMissa/DailyMissa';
-import GlobalHeader from 'components/GlobalHeader';
 import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/constants';
 import LexioDivinaForm, {
   LexioDivinaFormValues,
 } from 'components/LexioDivinaForm/LexioDivinaForm';
 import LoginMessage from 'components/LoginMessage';
-import Meta from 'components/Meta';
 import { Bible, BIBLE_LABEL } from 'constants/bible';
 import { postLexioDivina } from 'helpers/axios';
 import useAuth from 'hooks/auth/useAuth';
@@ -128,9 +126,6 @@ const LexioDivinaCreate = () => {
 
   return (
     <>
-      <Meta />
-      <GlobalHeader backButton />
-
       {!isMediumOrSmaller ? (
         <Box component="main">
           <Container>

@@ -2,8 +2,6 @@ import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import FloatingButton from 'components/FloatingButton/FloatingButton';
-import GlobalHeader from 'components/GlobalHeader';
-import Meta from 'components/Meta';
 import SelectorDialog from 'components/SelectorDialog/SelectorDialog';
 import LexioDivinas from 'feature/LexioDivinas';
 import { motion } from 'framer-motion';
@@ -56,8 +54,6 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <Meta />
-      <GlobalHeader />
       <Box
         component={motion.div}
         {...popUp()}

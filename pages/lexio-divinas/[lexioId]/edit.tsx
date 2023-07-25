@@ -2,13 +2,11 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import AccessDeniedMessage from 'components/AccessDeniedMessage';
 import ErrorMessage from 'components/ErrorMessage/ErrorMessage';
-import GlobalHeader from 'components/GlobalHeader';
 import LexioDivinaForm, {
   LexioDivinaFormValues,
 } from 'components/LexioDivinaForm/LexioDivinaForm';
 import LoadingCircular from 'components/LoadingCircular';
 import LoginMessage from 'components/LoginMessage';
-import Meta from 'components/Meta';
 import { Bible, BIBLE_LABEL } from 'constants/bible';
 import { putLexioDivina } from 'helpers/axios';
 import useLexioDivina from 'hooks/api/useLexioDivina';
@@ -170,23 +168,18 @@ const LexioDivinaEdit = () => {
   }
 
   return (
-    <>
-      <Meta />
-      <GlobalHeader backButton />
-
-      <Container maxWidth="sm">
-        <Box py={2}>
-          <LexioDivinaForm
-            form={form}
-            isRequested={isRequested}
-            defaultIsExpanded={!!lexioDivinaData.lexioDivina.endChapter}
-            contentRows={15}
-            onCancel={handleCancel}
-            onSubmit={handleSubmit}
-          />
-        </Box>
-      </Container>
-    </>
+    <Container maxWidth="sm">
+      <Box py={2}>
+        <LexioDivinaForm
+          form={form}
+          isRequested={isRequested}
+          defaultIsExpanded={!!lexioDivinaData.lexioDivina.endChapter}
+          contentRows={15}
+          onCancel={handleCancel}
+          onSubmit={handleSubmit}
+        />
+      </Box>
+    </Container>
   );
 };
 
