@@ -21,15 +21,15 @@ const LexioDivinasPagination: React.FC<LexioDivinasPaginationProps> = ({
     userId: filter?.userId,
   });
 
+  if ((lexioDivinasCountData?.count ?? 0) <= countPerPage) return null;
+
   return (
-    <Box display="flex" justifyContent="center">
-      {(lexioDivinasCountData?.count ?? 0) <= countPerPage ? null : (
-        <Pagination
-          page={page}
-          onChange={(_, page) => onChange(page)}
-          count={Math.ceil(Number(lexioDivinasCountData?.count) / countPerPage)}
-        />
-      )}
+    <Box display="flex" justifyContent="center" pb={2}>
+      <Pagination
+        page={page}
+        onChange={(_, page) => onChange(page)}
+        count={Math.ceil(Number(lexioDivinasCountData?.count) / countPerPage)}
+      />
     </Box>
   );
 };

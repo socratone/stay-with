@@ -130,7 +130,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({
         component="main"
         maxWidth="xl"
         sx={{
-          py: 2,
+          pt: 2,
           pl: 2,
           mx: 'auto',
         }}
