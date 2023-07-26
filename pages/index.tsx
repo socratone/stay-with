@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import FloatingButton from 'components/FloatingButton/FloatingButton';
 import SelectorDialog from 'components/SelectorDialog/SelectorDialog';
-import LexioDivinas from 'feature/LexioDivinas';
+import LexioDivinas from 'feature/lexio-divina/LexioDivinas';
 import { motion } from 'framer-motion';
 import useAuth from 'hooks/auth/useAuth';
 import useScrollDirection from 'hooks/dom/useScrollDirection';

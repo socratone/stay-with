@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import ErrorMessage from 'components/ErrorMessage/ErrorMessage';
 import FloatingButton from 'components/FloatingButton/FloatingButton';
 import LoadingCircular from 'components/LoadingCircular/LoadingCircular';
-import LexioDivinas from 'feature/LexioDivinas';
+import LexioDivinas from 'feature/lexio-divina/LexioDivinas';
 import UserInfo from 'feature/UserInfo/UserInfo';
 import useUser from 'hooks/api/useUser';
 import useAuth from 'hooks/auth/useAuth';
