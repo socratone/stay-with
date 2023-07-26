@@ -111,7 +111,7 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
         onIsLikedSubmit(isTempLiked);
       }
     },
-    1000,
+    250,
     [isTempLiked]
   );
 
