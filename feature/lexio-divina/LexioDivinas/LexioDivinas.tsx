@@ -1,6 +1,5 @@
 import { Masonry } from '@mui/lab';
 import Box from '@mui/material/Box';
-import Pagination from '@mui/material/Pagination';
 import { useQueryClient } from '@tanstack/react-query';
 import AlertDialog from 'components/AlertDialog';
 import ErrorMessage from 'components/ErrorMessage';
@@ -15,9 +14,7 @@ import {
 import useLexioDivinas, {
   LEXIO_DIVINAS_QUERY_KEY,
 } from 'hooks/api/useLexioDivinas';
-import useLexioDivinasCount, {
-  LEXIO_DIVINAS_COUNT_QUERY_KEY,
-} from 'hooks/api/useLexioDivinasCount';
+import { LEXIO_DIVINAS_COUNT_QUERY_KEY } from 'hooks/api/useLexioDivinasCount';
 import useAuth from 'hooks/auth/useAuth';
 import useUrlOrigin from 'hooks/dom/useUrlOrigin';
 import { useRouter } from 'next/router';
@@ -28,22 +25,24 @@ import { popUpContainer } from 'utils/animation';
 import { copyToClipboard } from 'utils/clipboard';
 
 type LexioDivinasProps = {
-  fetchOptions?: {
+  page: number;
+  countPerPage: number;
+  filter?: {
     userId?: string;
   };
 };
 
-const ITEM_COUNT_PER_PAGE = 20;
-
-const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
+const LexioDivinas: React.FC<LexioDivinasProps> = ({
+  page,
+  countPerPage,
+  filter,
+}) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { formatMessage } = useIntl();
   const urlOrigin = useUrlOrigin();
 
   const { user, logout } = useAuth();
-
-  const [page, setPage] = useState(1);
 
   const [selectedLexioDivinaIdForDelete, setSelectedLexioDivinaIdForDelete] =
     useState<string | null>(null);
@@ -53,13 +52,9 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
     isLoading: lexioDivinasLoading,
     isError: lexioDivinasError,
   } = useLexioDivinas({
-    skip: (page - 1) * ITEM_COUNT_PER_PAGE,
-    limit: ITEM_COUNT_PER_PAGE,
-    userId: fetchOptions?.userId,
-  });
-
-  const { data: lexioDivinasCountData } = useLexioDivinasCount({
-    userId: fetchOptions?.userId,
+    skip: (page - 1) * countPerPage,
+    limit: countPerPage,
+    userId: filter?.userId,
   });
 
   const lexioDivinas = lexioDivinasData?.lexioDivinas ?? [];
@@ -119,11 +114,6 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
 
   const handleUserClick = (id: string) => {
     router.push(`/users/${id}`);
-  };
-
-  const handlePageChange = (page: number) => {
-    window.scrollTo({ top: 0 });
-    setPage(page);
   };
 
   if (lexioDivinasError) {
@@ -211,18 +201,6 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({ fetchOptions }) => {
             ))
           )}
         </Masonry>
-
-        <Box display="flex" justifyContent="center">
-          {(lexioDivinasCountData?.count ?? 0) <= ITEM_COUNT_PER_PAGE ? null : (
-            <Pagination
-              page={page}
-              onChange={(_, page) => handlePageChange(page)}
-              count={Math.ceil(
-                Number(lexioDivinasCountData?.count) / ITEM_COUNT_PER_PAGE
-              )}
-            />
-          )}
-        </Box>
       </Box>
 
       <AlertDialog

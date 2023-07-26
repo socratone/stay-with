@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import FloatingButton from 'components/FloatingButton/FloatingButton';
 import SelectorDialog from 'components/SelectorDialog/SelectorDialog';
 import LexioDivinas from 'feature/lexio-divina/LexioDivinas';
+import LexioDivinasPagination from 'feature/lexio-divina/LexioDivinasPagination';
 import { motion } from 'framer-motion';
 import useAuth from 'hooks/auth/useAuth';
 import useScrollDirection from 'hooks/dom/useScrollDirection';
@@ -16,6 +17,8 @@ import { useDispatch } from 'react-redux';
 import { resetTempLexioDivina } from 'redux/tempLexioDivinaSlice';
 import { popUp } from 'utils/animation';
 
+const ITEM_COUNT_PER_PAGE = 20;
+
 const Home: NextPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -25,6 +28,7 @@ const Home: NextPage = () => {
   const { status, id } = useTempLexioDivinaStatus();
   const { scrollDirection } = useScrollDirection();
 
+  const [page, setPage] = useState(1);
   const [navDialogOpen, setNavDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -52,6 +56,11 @@ const Home: NextPage = () => {
     router.push('/lexio-divinas/create');
   };
 
+  const handlePageChange = (page: number) => {
+    window.scrollTo({ top: 0 });
+    setPage(page);
+  };
+
   return (
     <>
       <Box
@@ -70,7 +79,12 @@ const Home: NextPage = () => {
           </Button>
         </Link>
       </Box>
-      <LexioDivinas />
+      <LexioDivinas page={page} countPerPage={ITEM_COUNT_PER_PAGE} />
+      <LexioDivinasPagination
+        page={page}
+        onChange={handlePageChange}
+        countPerPage={ITEM_COUNT_PER_PAGE}
+      />
       {isLoggedIn ? (
         <FloatingButton
           icon={<AddIcon />}

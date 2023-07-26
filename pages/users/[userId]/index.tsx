@@ -4,11 +4,15 @@ import ErrorMessage from 'components/ErrorMessage/ErrorMessage';
 import FloatingButton from 'components/FloatingButton/FloatingButton';
 import LoadingCircular from 'components/LoadingCircular/LoadingCircular';
 import LexioDivinas from 'feature/lexio-divina/LexioDivinas';
+import LexioDivinasPagination from 'feature/lexio-divina/LexioDivinasPagination';
 import UserInfo from 'feature/UserInfo/UserInfo';
 import useUser from 'hooks/api/useUser';
 import useAuth from 'hooks/auth/useAuth';
 import useScrollDirection from 'hooks/dom/useScrollDirection';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
+
+const ITEM_COUNT_PER_PAGE = 20;
 
 const UserId = () => {
   const router = useRouter();
@@ -19,6 +23,13 @@ const UserId = () => {
   const userId =
     typeof router.query.userId === 'string' ? router.query.userId : undefined;
   const { data: userData, isLoading, isError } = useUser(userId);
+
+  const [page, setPage] = useState(1);
+
+  const handlePageChange = (page: number) => {
+    window.scrollTo({ top: 0 });
+    setPage(page);
+  };
 
   if (isLoading) {
     return (
@@ -44,7 +55,17 @@ const UserId = () => {
     <>
       <UserInfo userId={userData?.user._id} />
       <LexioDivinas
-        fetchOptions={{
+        page={page}
+        countPerPage={ITEM_COUNT_PER_PAGE}
+        filter={{
+          userId: userData?.user._id,
+        }}
+      />
+      <LexioDivinasPagination
+        page={page}
+        onChange={handlePageChange}
+        countPerPage={ITEM_COUNT_PER_PAGE}
+        filter={{
           userId: userData?.user._id,
         }}
       />
