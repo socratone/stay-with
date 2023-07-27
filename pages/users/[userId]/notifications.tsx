@@ -3,7 +3,7 @@ import Container from '@mui/material/Container';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import LoadingCircular from 'components/LoadingCircular/LoadingCircular';
+import LoadingCircular from 'components/LoadingCircular';
 import NotificationItem from 'components/NotificationItem/NotificationItem';
 import useNotifications from 'hooks/api/useNotifications';
 import useNotificationsCount from 'hooks/api/useNotificationsCount';
