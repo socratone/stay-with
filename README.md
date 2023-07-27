@@ -24,7 +24,9 @@
 - `/users/{id}` GET 사용자 데이터
 - `/users/{id}` PATCH 사용자 데이터 수정
 - `/notifications` GET 알림 리스트 데이터
+- `/notifications/{id}` PATCH 알림 수정
 - `/notifications/count` GET 알림 리스트 count
+- `/kakao-user` POST 카카오 유저 데이터
 
 ## Data Schema
 

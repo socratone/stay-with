@@ -3,6 +3,10 @@ import { enqueueSnackbar } from 'notistack';
 import { ArrowPostResult, ArrowsData } from 'pages/api/arrows';
 import { ArrowData } from 'pages/api/arrows/[id]';
 import { ArrowsCountData } from 'pages/api/arrows/count';
+import {
+  KakaoProfilePostPayload,
+  KakaoProfilePostResult,
+} from 'pages/api/kakao-profile';
 import { LexioDivinasData } from 'pages/api/lexio-divinas';
 import { LexioDivinaData } from 'pages/api/lexio-divinas/[id]';
 import { LexioDivinaCommentsData } from 'pages/api/lexio-divinas/[id]/comments';
@@ -319,4 +323,13 @@ export const patchNotification = (
     `/api/notifications/${id}`,
     payload
   );
+};
+
+export const postKakaoProfile = (payload: KakaoProfilePostPayload) => {
+  return axiosInstance
+    .post<any, AxiosResponse<KakaoProfilePostResult>, KakaoProfilePostPayload>(
+      '/api/kakao-profile',
+      payload
+    )
+    .then((value) => value.data);
 };
