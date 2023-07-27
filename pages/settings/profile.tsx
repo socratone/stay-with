@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useQueryClient } from '@tanstack/react-query';
 import LoginMessage from 'components/LoginMessage';
-import SettingsLayout from 'feature/SettingsLayout';
+import SettingsLayout from 'feature/setting/SettingsLayout';
 import { patchUser } from 'helpers/axios';
 import { LEXIO_DIVINAS_QUERY_KEY } from 'hooks/api/useLexioDivinas';
 import useUser, { USER_QUERY_KEY } from 'hooks/api/useUser';

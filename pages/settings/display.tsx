@@ -3,7 +3,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import TextToggleButtonGroup from 'components/TextToggleButtonGroup';
 import { FontSize } from 'contexts/ThemeProvider';
-import SettingsLayout from 'feature/SettingsLayout';
+import SettingsLayout from 'feature/setting/SettingsLayout';
 import useFontSize from 'hooks/theme/useFontSize';
 
 const SettingsDisplay = () => {

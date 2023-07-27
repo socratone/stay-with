@@ -8,7 +8,7 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import AlertDialog from 'components/AlertDialog';
-import SettingsLayout from 'feature/SettingsLayout/SettingsLayout';
+import SettingsLayout from 'feature/setting/SettingsLayout';
 import getYouTubeID from 'get-youtube-id';
 import { enqueueSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
