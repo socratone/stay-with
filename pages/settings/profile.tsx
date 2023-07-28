@@ -277,7 +277,7 @@ const SettingsProfile = () => {
                 />
               </Box>
 
-              <Stack direction="row" gap={1}>
+              <Stack direction="row" gap={1} flexWrap="wrap">
                 <Button
                   variant="outlined"
                   onClick={handleKakaoProfileImageLoad}
