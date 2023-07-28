@@ -79,10 +79,12 @@ const handler = async (
         }) ?? [];
 
       // 꼬리말 삭제
-      const tailIndex = contentsWithoutHead.findLastIndex((content) => {
-        return content.includes('주님의 말씀입니다.');
-      });
-      const contentsWithoutTail = contentsWithoutHead.slice(0, tailIndex);
+      // const tailIndex = contentsWithoutHead.findLastIndex((content) => {
+      //   return content.includes('주님의 말씀입니다.');
+      // });
+
+      // const contentsWithoutTail = contentsWithoutHead.slice(0, tailIndex);
+      const contentsWithoutTail = contentsWithoutHead;
 
       // 성서 정보 문장 추출
       // Ex. '토빗기의 시작입니다.1,3; 2,1ㄴ-8'
