@@ -6,7 +6,6 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import ErrorMessage from 'components/ErrorMessage/ErrorMessage';
-import { BIBLE_INTRO } from 'constants/bible';
 import useMissa from 'hooks/api/useMissa';
 import { useState } from 'react';
 
@@ -23,17 +22,6 @@ const DailyMissa = () => {
     isLoading,
     isError,
   } = useMissa(offset ? { offset } : undefined);
-
-  const parseToBible = (bibleInfoText?: string) => {
-    if (!bibleInfoText) return null;
-    for (const key in BIBLE_INTRO) {
-      const label = BIBLE_INTRO[key];
-      if (bibleInfoText.includes(label)) {
-        return key;
-      }
-    }
-    return null;
-  };
 
   const openStartingPrayer = () => {
     setStartingPrayerOpen(true);
@@ -107,13 +95,7 @@ const DailyMissa = () => {
             </Stack>
 
             {missaData.words.map((word, index) => (
-              <Word
-                key={index}
-                bible={parseToBible(word.bibleInfo?.text)}
-                title={word.title}
-                bibleInfo={word.bibleInfo}
-                contents={word.contents}
-              />
+              <Word key={index} title={word.title} content={word.content} />
             ))}
           </>
         )}
