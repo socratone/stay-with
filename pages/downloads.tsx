@@ -43,7 +43,7 @@ const Downloads = () => {
             sm: 'repeat(2, 1fr)',
           }}
           gap={2}
-          maxWidth={600}
+          maxWidth={700}
         >
           <Stack>
             <Typography color="text.primary" variant="mp" fontWeight={600}>
@@ -65,7 +65,7 @@ const Downloads = () => {
           </Stack>
           <Stack>
             <Typography color="text.primary" variant="mp" fontWeight={600}>
-              2. 홈 화면에 추가 버튼을 누릅니다.
+              2. 홈 화면에 추가 버튼을 누릅니다. (또는 앱 설치)
             </Typography>
             <Box
               position="relative"
@@ -100,7 +100,7 @@ const Downloads = () => {
             sm: 'repeat(2, 1fr)',
           }}
           gap={2}
-          maxWidth={600}
+          maxWidth={700}
         >
           <Stack>
             <Typography color="text.primary" variant="mp" fontWeight={600}>
