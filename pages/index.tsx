@@ -18,7 +18,7 @@ import { useDispatch } from 'react-redux';
 import { resetTempLexioDivina } from 'redux/tempLexioDivinaSlice';
 import { popUp } from 'utils/animation';
 
-const ITEM_COUNT_PER_PAGE = 20;
+const ITEM_COUNT_PER_PAGE = 40;
 
 const Home: NextPage = () => {
   const router = useRouter();

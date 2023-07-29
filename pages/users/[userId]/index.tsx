@@ -12,7 +12,7 @@ import useScrollDirection from 'hooks/dom/useScrollDirection';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-const ITEM_COUNT_PER_PAGE = 20;
+const ITEM_COUNT_PER_PAGE = 40;
 
 const UserId = () => {
   const router = useRouter();
