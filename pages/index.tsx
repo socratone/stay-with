@@ -8,6 +8,7 @@ import LexioDivinasPagination from 'feature/lexio-divina/LexioDivinasPagination'
 import { motion } from 'framer-motion';
 import useAuth from 'hooks/auth/useAuth';
 import useScrollDirection from 'hooks/dom/useScrollDirection';
+import useScrollRestoration from 'hooks/dom/useScrollRestoration';
 import useTempLexioDivinaStatus from 'hooks/form/useTempLexioDivinaStatus';
 import type { NextPage } from 'next';
 import Link from 'next/link';
@@ -27,6 +28,7 @@ const Home: NextPage = () => {
   const isLoggedIn = !!user;
   const { status, id } = useTempLexioDivinaStatus();
   const { scrollDirection } = useScrollDirection();
+  useScrollRestoration();
 
   const [page, setPage] = useState(1);
   const [navDialogOpen, setNavDialogOpen] = useState(false);
