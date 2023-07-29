@@ -78,7 +78,12 @@ const handler = async (
 
       db.close();
       return res.status(200).json({ lexioDivina });
-    } catch (error) {
+    } catch (error: any) {
+      // _id의 length가 규격에 안 맞는 경우
+      if (error?.name === 'BSONError') {
+        return res.status(404).json({ error: { message: 'Not found.' } });
+      }
+
       sendServerError(res, error);
     }
   }
