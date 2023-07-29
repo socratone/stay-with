@@ -15,7 +15,7 @@ const Downloads = () => {
     <Container>
       <Stack py={1}>
         <Typography color="text.primary" variant="mh1">
-          PWA 설치 방법
+          PWA 앱 설치 방법
         </Typography>
         <Typography color="text.primary" sx={{ whiteSpace: 'pre-line' }}>
           {'PWA 앱으로 설치해서 일반 앱처럼 사용하실 수 있습니다.\n'}
