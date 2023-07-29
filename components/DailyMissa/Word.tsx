@@ -14,6 +14,11 @@ type WordProps = {
 };
 
 const Word: React.FC<WordProps> = ({ title, content }) => {
+  const fixInvalidChar = (text: string) => {
+    if (text[0] === '?') return '▥' + text.substring(1);
+    return text;
+  };
+
   const parseToBibleParagraphs = (content: string) => {
     const paragraphs: string[] = [];
     let queue = '';
@@ -34,6 +39,9 @@ const Word: React.FC<WordProps> = ({ title, content }) => {
         // Ex. '<너는 분별력을 청하였다.>'
         //                         ^
         char === '>' ||
+        // Ex. '<너는 분별력을 청하였다.>'
+        //      ^
+        nextChar === '<' ||
         // Ex. '20,1-17 가'
         //              ^
         isBibleChapterVerseNumberNext(queue + nextChar) ||
@@ -44,16 +52,20 @@ const Word: React.FC<WordProps> = ({ title, content }) => {
         //      ^
         isStartWithDoubleCircle(remainContent)
       ) {
-        paragraphs.push(queue);
+        paragraphs.push(queue.trim());
         queue = '';
       }
     }
 
     if (queue.length > 0) {
-      paragraphs.push(queue);
+      paragraphs.push(queue.trim());
     }
 
-    return paragraphs;
+    const fixedParagraphs = paragraphs
+      .map((paragraph) => fixInvalidChar(paragraph))
+      .filter(Boolean);
+
+    return fixedParagraphs;
   };
 
   return (
