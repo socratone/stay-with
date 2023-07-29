@@ -20,9 +20,9 @@ export const isStartWithDoubleCircle = (text: string) => {
 
 export const isBibleChapterVerseNumberNext = (text: string) => {
   const lastChar = text.substring(text.length - 1);
-  const lastCharRegex = /[가-힣]/;
+  const lastCharRegex = /[가-힣 ]/;
   if (!lastCharRegex.test(lastChar)) return false;
   const textWithoutLastChar = text.substring(0, text.length - 1);
-  const regex = /[0-9]+,[0-9]+[ㄱㄴㄷ-]+[,0-9]+[ ]*/;
+  const regex = /[0-9]+,[0-9]+[ㄱㄴㄷ-]+[,0-9]+/;
   return regex.test(textWithoutLastChar);
 };
