@@ -53,7 +53,13 @@ const LexioDivinaDetail = () => {
     data: lexioDivinaData,
     isLoading: lexioDivinaLoading,
     isError: lexioDivinaError,
-  } = useLexioDivina(lexioDivinaId);
+  } = useLexioDivina(lexioDivinaId, {
+    onError: (error) => {
+      if (error?.response?.status === 404) {
+        router.push('/404');
+      }
+    },
+  });
 
   const {
     data: lexioDivinaCommentsData,
