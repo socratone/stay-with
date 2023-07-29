@@ -5,7 +5,6 @@ import AlertDialog from 'components/AlertDialog';
 import ErrorMessage from 'components/ErrorMessage';
 import LexioDivinaCard from 'components/LexioDivinaCard';
 import LexioDivinaLoadingCard from 'components/LexioDivinaLoadingCard';
-import { motion } from 'framer-motion';
 import {
   deleteLexioDivina,
   deleteLikedInLexioDivina,
@@ -21,7 +20,6 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { LexioDivina } from 'schemas';
-import { popUpContainer } from 'utils/animation';
 import { copyToClipboard } from 'utils/clipboard';
 
 type LexioDivinasProps = {
@@ -135,12 +133,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({
           mx: 'auto',
         }}
       >
-        <Masonry
-          component={motion.div}
-          {...popUpContainer}
-          spacing={2}
-          columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
-        >
+        <Masonry spacing={2} columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}>
           {lexioDivinasLoading ? (
             <>
               <LexioDivinaLoadingCard lineCount={8} />

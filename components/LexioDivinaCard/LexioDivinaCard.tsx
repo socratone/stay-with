@@ -17,7 +17,7 @@ import { useState } from 'react';
 import { FormattedDate } from 'react-intl';
 import { useDebounce } from 'react-use';
 import { PRIMARY_SHADOW } from 'theme/shadows';
-import { popUpItem } from 'utils/animation';
+import { popUp } from 'utils/animation';
 
 import BubbleIcon from './BubbleIcon';
 import LikedIcon from './LikedIcon';
@@ -159,7 +159,7 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
   return (
     <Box
       component={motion.article}
-      {...popUpItem}
+      {...popUp()}
       sx={{
         borderRadius: 6,
         border: 1,
