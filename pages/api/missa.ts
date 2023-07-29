@@ -33,7 +33,10 @@ const handler = async (
     const decoder = new TextDecoder('euc-kr');
     const htmlText = decoder.decode(buffer);
 
-    const root = parse(htmlText);
+    // <br>의 경우 parse시에 사라져서 띄어쓰기가 반영이 안 됨
+    const replacedHtmlText = htmlText.replaceAll('<br>', ' ');
+
+    const root = parse(replacedHtmlText);
     const titles = root.querySelectorAll('.bd_tit');
     const contents = root.querySelectorAll('.board_layout');
 
