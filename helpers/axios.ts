@@ -73,6 +73,8 @@ axiosInstance.interceptors.response.use(
       });
     } else if (status === 401 && errorMessage === 'Unregistered user.') {
       // pass
+    } else if (status === 404) {
+      // pass
     } else {
       enqueueSnackbar('에러가 발생했어요 😫', {
         variant: 'error',
