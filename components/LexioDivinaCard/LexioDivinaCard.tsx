@@ -232,7 +232,7 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
         fontSize="1.125rem" // 18px
         color="text.primary"
         px={2}
-        sx={{ whiteSpace: 'pre-line' }}
+        sx={{ whiteSpace: 'pre-line', wordBreak: 'break-all' }}
         fontWeight={600}
         mb={1}
       >
@@ -244,7 +244,7 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
         <Typography
           color="text.secondary"
           px={2}
-          sx={{ whiteSpace: 'pre-line' }}
+          sx={{ whiteSpace: 'pre-line', wordBreak: 'break-all' }}
         >
           {content.length > maxContentLength ? (
             <>
