@@ -215,7 +215,15 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({
             ))
           )}
         </Masonry>
-        <Box ref={ref} />
+        <Box
+          ref={ref}
+          position="relative"
+          bottom="100vh"
+          sx={{
+            pointerEvents: 'none',
+            zIndex: -1,
+          }}
+        />
       </Box>
 
       <AlertDialog
