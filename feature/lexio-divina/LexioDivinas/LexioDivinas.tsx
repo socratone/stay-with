@@ -10,20 +10,20 @@ import {
   deleteLikedInLexioDivina,
   postLikedToLexioDivina,
 } from 'helpers/axios';
-import useLexioDivinas, {
-  LEXIO_DIVINAS_QUERY_KEY,
-} from 'hooks/api/useLexioDivinas';
 import { LEXIO_DIVINAS_COUNT_QUERY_KEY } from 'hooks/api/useLexioDivinasCount';
+import useLexioDivinasInfinite, {
+  LEXIO_DIVINAS_INFINITE_QUERY_KEY,
+} from 'hooks/api/useLexioDivinasInfinite';
 import useAuth from 'hooks/auth/useAuth';
 import useUrlOrigin from 'hooks/dom/useUrlOrigin';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 import { useIntl } from 'react-intl';
 import { LexioDivina } from 'schemas';
 import { copyToClipboard } from 'utils/clipboard';
 
 type LexioDivinasProps = {
-  page: number;
   countPerPage: number;
   filter?: {
     userId?: string;
@@ -31,7 +31,6 @@ type LexioDivinasProps = {
 };
 
 const LexioDivinas: React.FC<LexioDivinasProps> = ({
-  page,
   countPerPage,
   filter,
 }) => {
@@ -49,10 +48,18 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({
     data: lexioDivinasData,
     isLoading: lexioDivinasLoading,
     isError: lexioDivinasError,
-  } = useLexioDivinas({
-    skip: (page - 1) * countPerPage,
+    hasNextPage,
+    fetchNextPage,
+    refetch,
+  } = useLexioDivinasInfinite({
     limit: countPerPage,
     userId: filter?.userId,
+  });
+
+  const { ref } = useInView({
+    onChange: (inView) => {
+      if (hasNextPage && inView) fetchNextPage();
+    },
   });
 
   const lexioDivinas = lexioDivinasData?.lexioDivinas ?? [];
@@ -69,7 +76,9 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({
 
     try {
       await deleteLexioDivina(lexioDivinaId);
-      queryClient.invalidateQueries({ queryKey: [LEXIO_DIVINAS_QUERY_KEY] });
+      queryClient.invalidateQueries({
+        queryKey: [LEXIO_DIVINAS_INFINITE_QUERY_KEY],
+      });
       queryClient.invalidateQueries({
         queryKey: [LEXIO_DIVINAS_COUNT_QUERY_KEY],
       });
@@ -85,7 +94,13 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({
       await postLikedToLexioDivina(id, {
         userId: user._id,
       });
-      queryClient.invalidateQueries({ queryKey: [LEXIO_DIVINAS_QUERY_KEY] });
+      const lexioDivinaIndex = lexioDivinas.findIndex(
+        (lexioDivina) => String(lexioDivina._id) === id
+      );
+      const pageIndex = Math.ceil((lexioDivinaIndex + 1) / countPerPage) - 1;
+      refetch({
+        refetchPage: (page, index) => index === pageIndex,
+      });
     } catch {
       //
     }
@@ -96,7 +111,13 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({
 
     try {
       await deleteLikedInLexioDivina(id, user._id);
-      queryClient.invalidateQueries({ queryKey: [LEXIO_DIVINAS_QUERY_KEY] });
+      const lexioDivinaIndex = lexioDivinas.findIndex(
+        (lexioDivina) => String(lexioDivina._id) === id
+      );
+      const pageIndex = Math.ceil((lexioDivinaIndex + 1) / countPerPage) - 1;
+      refetch({
+        refetchPage: (page, index) => index === pageIndex,
+      });
     } catch (error: any) {
       const status = error?.response?.status;
       if (status === 401) {
@@ -194,6 +215,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({
             ))
           )}
         </Masonry>
+        <Box ref={ref} />
       </Box>
 
       <AlertDialog

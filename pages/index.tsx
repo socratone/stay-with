@@ -4,7 +4,6 @@ import Button from '@mui/material/Button';
 import FloatingButton from 'components/FloatingButton/FloatingButton';
 import SelectorDialog from 'components/SelectorDialog/SelectorDialog';
 import LexioDivinas from 'feature/lexio-divina/LexioDivinas';
-import LexioDivinasPagination from 'feature/lexio-divina/LexioDivinasPagination';
 import { motion } from 'framer-motion';
 import useAuth from 'hooks/auth/useAuth';
 import useScrollDirection from 'hooks/dom/useScrollDirection';
@@ -30,7 +29,6 @@ const Home: NextPage = () => {
   const { scrollDirection } = useScrollDirection();
   useScrollRestoration();
 
-  const [page, setPage] = useState(1);
   const [navDialogOpen, setNavDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -58,37 +56,25 @@ const Home: NextPage = () => {
     router.push('/lexio-divinas/create');
   };
 
-  const handlePageChange = (page: number) => {
-    window.scrollTo({ top: 0 });
-    setPage(page);
-  };
-
   return (
     <>
-      {page === 1 ? (
-        <Box
-          component={motion.div}
-          {...popUp()}
-          maxWidth="xl"
-          sx={{
-            px: 2,
-            mx: 'auto',
-            mt: 2,
-          }}
-        >
-          <Link href="/blogs/lexio-divina">
-            <Button disableRipple variant="outlined" size="small">
-              렉시오 디비나 기도 방법
-            </Button>
-          </Link>
-        </Box>
-      ) : null}
-      <LexioDivinas page={page} countPerPage={ITEM_COUNT_PER_PAGE} />
-      <LexioDivinasPagination
-        page={page}
-        onChange={handlePageChange}
-        countPerPage={ITEM_COUNT_PER_PAGE}
-      />
+      <Box
+        component={motion.div}
+        {...popUp()}
+        maxWidth="xl"
+        sx={{
+          px: 2,
+          mx: 'auto',
+          mt: 2,
+        }}
+      >
+        <Link href="/blogs/lexio-divina">
+          <Button disableRipple variant="outlined" size="small">
+            렉시오 디비나 기도 방법
+          </Button>
+        </Link>
+      </Box>
+      <LexioDivinas countPerPage={ITEM_COUNT_PER_PAGE} />
       {isLoggedIn ? (
         <FloatingButton
           icon={<AddIcon />}
