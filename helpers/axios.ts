@@ -172,8 +172,9 @@ export const getLexioDivina = (id: string): Promise<LexioDivinaData> => {
 };
 
 export type GetLexioDivinasParams = {
-  skip: number;
+  skip?: number;
   limit: number;
+  cursor?: string;
   userId?: string;
 };
 

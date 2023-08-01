@@ -27,6 +27,8 @@ const handler = async (
       typeof req.query?.limit === 'string' ? Number(req.query.limit) : 100; // 제한값
     const userId =
       typeof req.query?.userId === 'string' ? req.query.userId : null;
+    const cursor =
+      typeof req.query?.cursor === 'string' ? req.query.cursor : null;
 
     const pipeline: Document[] = [
       { $match: userId ? { userId: new ObjectId(userId) } : null },
@@ -48,7 +50,16 @@ const handler = async (
         },
       },
       {
-        $skip: skip,
+        $match: cursor
+          ? {
+              _id: {
+                $lt: new ObjectId(cursor),
+              },
+            }
+          : null,
+      },
+      {
+        $skip: skip ? skip : null,
       },
       {
         $limit: limit,
