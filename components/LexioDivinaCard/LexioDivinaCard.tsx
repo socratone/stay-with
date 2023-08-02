@@ -10,12 +10,14 @@ import Typography from '@mui/material/Typography';
 import ProfileAvatar from 'components/ProfileAvatar/ProfileAvatar';
 import SmallMenu from 'components/SmallMenu';
 import { Bible, BIBLE_LABEL } from 'constants/bible';
+import { motion } from 'framer-motion';
 import { isNewTestament } from 'helpers/bible';
 import Link from 'next/link';
 import { useState } from 'react';
 import { FormattedDate } from 'react-intl';
 import { useDebounce } from 'react-use';
 import { PRIMARY_SHADOW } from 'theme/shadows';
+import { popUp } from 'utils/animation';
 
 import BubbleIcon from './BubbleIcon';
 import LikedIcon from './LikedIcon';
@@ -156,7 +158,8 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
 
   return (
     <Box
-      component="article"
+      component={motion.article}
+      {...popUp()}
       sx={{
         borderRadius: 6,
         border: 1,

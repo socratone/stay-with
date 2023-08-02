@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import FloatingButton from 'components/FloatingButton/FloatingButton';
 import SelectorDialog from 'components/SelectorDialog/SelectorDialog';
 import LexioDivinas from 'feature/lexio-divina/LexioDivinas';
+import { motion } from 'framer-motion';
 import useAuth from 'hooks/auth/useAuth';
 import useScrollDirection from 'hooks/dom/useScrollDirection';
 import useScrollRestoration from 'hooks/dom/useScrollRestoration';
@@ -14,6 +15,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { resetTempLexioDivina } from 'redux/tempLexioDivinaSlice';
+import { popUp } from 'utils/animation';
 
 const ITEM_COUNT_PER_PAGE = 40;
 
@@ -57,6 +59,8 @@ const Home: NextPage = () => {
   return (
     <>
       <Box
+        component={motion.div}
+        {...popUp()}
         maxWidth="xl"
         sx={{
           px: 2,

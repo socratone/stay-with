@@ -4,9 +4,11 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import ProfileAvatar from 'components/ProfileAvatar/ProfileAvatar';
+import { motion } from 'framer-motion';
 import useUser from 'hooks/api/useUser';
 import useAuth from 'hooks/auth/useAuth';
 import Link from 'next/link';
+import { popUp } from 'utils/animation';
 
 type UserInfoProps = {
   userId?: string;
@@ -18,7 +20,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ userId }) => {
   const isMyself = me?._id === userId;
 
   return (
-    <Stack spacing={1} pt={2} px={2}>
+    <Stack component={motion.div} {...popUp()} spacing={1} pt={2} px={2}>
       <Stack
         direction="row"
         alignItems="center"
