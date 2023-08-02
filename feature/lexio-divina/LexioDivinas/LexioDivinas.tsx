@@ -65,6 +65,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({
     onChange: (inView) => {
       if (hasNextPage && inView) fetchNextPage();
     },
+    skip: !isSmall,
   });
 
   const lexioDivinas = lexioDivinasData?.lexioDivinas ?? [];
