@@ -23,11 +23,11 @@ const useLexioDivinasInfinite = (
     },
   });
 
-  const mappedPages = query.data?.pages.map((page) => page.lexioDivinas);
+  const mappedPages = query.data?.pages.flatMap((page) => page.lexioDivinas);
 
   return {
     ...query,
-    data: mappedPages ? { lexioDivinas: mappedPages.flat() } : undefined,
+    data: mappedPages ? { lexioDivinas: mappedPages } : undefined,
   };
 };
 
