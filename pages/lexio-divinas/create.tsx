@@ -101,11 +101,12 @@ const LexioDivinaCreate = () => {
       resetTempLexioDivina();
       router.push('/');
     } catch (error: any) {
-      Sentry.captureException(error);
       const status = error?.response?.status;
       if (status === 401) {
         logout();
         router.push('/expired');
+      } else {
+        Sentry.captureException(error);
       }
     } finally {
       setIsRequested(false);
