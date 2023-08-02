@@ -196,3 +196,11 @@ Utils와는 조금 다르게 특정 프로젝트에만 사용하기 적합한 �
 ### 참고
 
 - https://web.dev/learn/pwa/web-app-manifest/
+
+## Sentry
+
+- [Issues](https://socratone.sentry.io/issues/?project=4505635607019520)
+
+### Usage
+
+- [Capturing Errors](https://docs.sentry.io/platforms/javascript/guides/nextjs/usage/#capturing-errors)

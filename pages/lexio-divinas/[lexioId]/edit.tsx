@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
+import * as Sentry from '@sentry/nextjs';
 import AccessDeniedMessage from 'components/AccessDeniedMessage';
 import ErrorMessage from 'components/ErrorMessage/ErrorMessage';
 import LexioDivinaForm, {
@@ -117,6 +118,8 @@ const LexioDivinaEdit = () => {
       if (status === 401) {
         logout();
         router.push('/expired');
+      } else {
+        Sentry.captureException(error);
       }
     } finally {
       setIsRequested(false);

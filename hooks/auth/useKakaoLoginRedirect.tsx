@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs';
 import { postLoginWithKakao } from 'helpers/axios';
 import useAuth from 'hooks/auth/useAuth';
 import { useRouter } from 'next/router';
@@ -30,6 +31,7 @@ const useKakaoLoginRedirect = (code: string) => {
             `/signup?kakao_id=${kakaoUser.id}&email=${kakaoUser.kakao_account.email}&image_url=${kakaoUser.kakao_account.profile.profile_image_url}`
           );
         } else {
+          Sentry.captureException(error);
           setIsError(true);
         }
       }
