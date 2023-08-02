@@ -6,6 +6,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import * as Sentry from '@sentry/nextjs';
 import ErrorMessage from 'components/ErrorMessage';
 import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/constants';
 import { postSignUp } from 'helpers/axios';
@@ -89,6 +90,7 @@ const SignUp: NextPage<SignUpProps> = ({ kakaoId, email, imageUrl }) => {
           variant: 'error',
         });
       } else {
+        Sentry.captureException(error);
         setIsError(true);
       }
     }
