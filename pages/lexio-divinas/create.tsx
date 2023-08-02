@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
+import * as Sentry from '@sentry/nextjs';
 import DailyMissa from 'components/DailyMissa/DailyMissa';
 import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/constants';
 import LexioDivinaForm, {
@@ -100,6 +101,7 @@ const LexioDivinaCreate = () => {
       resetTempLexioDivina();
       router.push('/');
     } catch (error: any) {
+      Sentry.captureException(error);
       const status = error?.response?.status;
       if (status === 401) {
         logout();
