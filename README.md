@@ -126,7 +126,7 @@ Notification {
 
 ## Environment
 
-- .env.development
+### .env.development
 
 ```
 NEXT_PUBLIC_ENV="development"
@@ -136,10 +136,21 @@ KAKAO_REST_API_KEY="????"
 KAKAO_CLIENT_SECRET="????"
 AUTH_SECRET="????"
 MONGO_CLIENT_URL="????"
+
+NEXT_PUBLIC_DEV_USER_ID="????"
 ```
 
-- .env.staging
-- .env.production
+### .env.production
+
+```
+NEXT_PUBLIC_ENV="production"
+NEXT_PUBLIC_BASE_URL="https://staywith.kr"
+NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY="????"
+KAKAO_REST_API_KEY="????"
+KAKAO_CLIENT_SECRET="????"
+AUTH_SECRET="????"
+MONGO_CLIENT_URL="????"
+```
 
 ## Folder Structure
 
@@ -149,7 +160,7 @@ MONGO_CLIENT_URL="????"
 각 폴더 안에 컴포넌트에 필요한 모든 요소들을 둔다.
 
 ```
-AlertDialog
+AlertDialog/
   index.ts
   AlertDialog.tsx
   Button.tsx
