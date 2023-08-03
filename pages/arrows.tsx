@@ -5,11 +5,10 @@ import Candles from 'feature/candle/Candles';
 import useRemToPxNumber from 'hooks/theme/useRemToPxNumer';
 import Image from 'next/image';
 import crossImage from 'public/images/cross.webp';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const Arrows = () => {
   const globalHeaderHeight = useRemToPxNumber(GLOBAL_HEADER_HEIGHT);
-  const candlesContainerRef = useRef<HTMLDivElement>(null);
   const [viewportHeight, setViewportHeight] = useState<number | null>(null);
 
   useEffect(() => {
@@ -46,7 +45,7 @@ const Arrows = () => {
           style={{ objectFit: 'contain' }}
         />
       </Box>
-      <Box ref={candlesContainerRef} height={getCandlesHeight()}>
+      <Box height={getCandlesHeight()}>
         <Candles />
       </Box>
       <ArrowHistories />
