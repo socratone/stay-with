@@ -3,6 +3,7 @@ import { enqueueSnackbar } from 'notistack';
 import { ArrowPostResult, ArrowsData } from 'pages/api/arrows';
 import { ArrowData } from 'pages/api/arrows/[id]';
 import { ArrowsCountData } from 'pages/api/arrows/count';
+import { DevLoginPostPayload, DevLoginPostResult } from 'pages/api/dev/login';
 import {
   KakaoProfilePostPayload,
   KakaoProfilePostResult,
@@ -102,6 +103,18 @@ export const postLoginWithKakao = (code: string) => {
       '/api/login/kakao',
       {
         code,
+      }
+    )
+    .then((response) => response.data);
+};
+
+/** Only dev */
+export const postDevLogin = (id: string) => {
+  return axiosInstance
+    .post<any, AxiosResponse<DevLoginPostResult>, DevLoginPostPayload>(
+      '/api/dev/login',
+      {
+        id,
       }
     )
     .then((response) => response.data);

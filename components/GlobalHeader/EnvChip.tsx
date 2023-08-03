@@ -1,5 +1,6 @@
 import { SxProps } from '@mui/material';
 import Chip from '@mui/material/Chip';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 const env = process.env.NEXT_PUBLIC_ENV;
@@ -14,9 +15,15 @@ const sx = {
 } satisfies SxProps;
 
 const EnvChip = () => {
+  const router = useRouter();
+
   const [show, setShow] = useState(true);
 
-  const handleClick = () => {
+  const handleMove = () => {
+    router.push('/dev');
+  };
+
+  const handleDelete = () => {
     setShow(false);
   };
 
@@ -26,11 +33,25 @@ const EnvChip = () => {
 
   switch (env) {
     case 'development':
-      return <Chip label="Dev" color="success" onClick={handleClick} sx={sx} />;
+      return (
+        <Chip
+          label="Dev"
+          color="success"
+          onClick={handleMove}
+          onDelete={handleDelete}
+          sx={sx}
+        />
+      );
 
     case 'staging':
       return (
-        <Chip label="Stag" color="warning" onClick={handleClick} sx={sx} />
+        <Chip
+          label="Stag"
+          color="warning"
+          onClick={handleDelete}
+          onDelete={handleDelete}
+          sx={sx}
+        />
       );
 
     case 'production':
