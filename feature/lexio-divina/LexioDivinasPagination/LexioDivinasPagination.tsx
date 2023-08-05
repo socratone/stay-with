@@ -24,7 +24,7 @@ const LexioDivinasPagination: React.FC<LexioDivinasPaginationProps> = ({
   if ((lexioDivinasCountData?.count ?? 0) <= countPerPage) return null;
 
   return (
-    <Box display="flex" justifyContent="center" pb={2}>
+    <Box display="flex" justifyContent="center" py={2}>
       <Pagination
         page={page}
         onChange={(_, page) => onChange(page)}

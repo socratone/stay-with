@@ -1,10 +1,15 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getLexioDivinas, GetLexioDivinasParams } from 'helpers/axios';
 
+type Options = {
+  enabled?: boolean;
+};
+
 export const LEXIO_DIVINAS_INFINITE_QUERY_KEY = 'lexio-divinas-infinite';
 
 const useLexioDivinasInfinite = (
-  params: Pick<GetLexioDivinasParams, 'userId' | 'limit'>
+  params: Pick<GetLexioDivinasParams, 'userId' | 'limit'>,
+  options?: Options
 ) => {
   const query = useInfiniteQuery({
     queryKey: [LEXIO_DIVINAS_INFINITE_QUERY_KEY, params],
@@ -21,6 +26,7 @@ const useLexioDivinasInfinite = (
       const lastItem = lastPage.lexioDivinas[lastPage.lexioDivinas.length - 1];
       return lastItem._id;
     },
+    enabled: options?.enabled,
   });
 
   const mappedPages = query.data?.pages.flatMap((page) => page.lexioDivinas);

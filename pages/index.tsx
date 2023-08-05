@@ -4,11 +4,13 @@ import Button from '@mui/material/Button';
 import FloatingButton from 'components/FloatingButton/FloatingButton';
 import SelectorDialog from 'components/SelectorDialog/SelectorDialog';
 import LexioDivinas from 'feature/lexio-divina/LexioDivinas';
+import LexioDivinasPagination from 'feature/lexio-divina/LexioDivinasPagination';
 import { motion } from 'framer-motion';
 import useAuth from 'hooks/auth/useAuth';
 import useScrollDirection from 'hooks/dom/useScrollDirection';
 import useScrollRestoration from 'hooks/dom/useScrollRestoration';
 import useTempLexioDivinaStatus from 'hooks/form/useTempLexioDivinaStatus';
+import useIsBreakpointsDown from 'hooks/theme/useIsBreakpointsDown';
 import type { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -27,8 +29,10 @@ const Home: NextPage = () => {
   const isLoggedIn = !!user;
   const { status, id } = useTempLexioDivinaStatus();
   const { scrollDirection } = useScrollDirection();
+  const isSmall = useIsBreakpointsDown('sm');
   useScrollRestoration();
 
+  const [page, setPage] = useState(1);
   const [navDialogOpen, setNavDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -56,25 +60,42 @@ const Home: NextPage = () => {
     router.push('/lexio-divinas/create');
   };
 
+  const handlePageChange = (page: number) => {
+    window.scrollTo({ top: 0 });
+    setPage(page);
+  };
+
   return (
     <>
-      <Box
-        component={motion.div}
-        {...popUp()}
-        maxWidth="xl"
-        sx={{
-          px: 2,
-          mx: 'auto',
-          mt: 2,
-        }}
-      >
-        <Link href="/blogs/lexio-divina">
-          <Button disableRipple variant="outlined" size="small">
-            렉시오 디비나 기도 방법
-          </Button>
-        </Link>
-      </Box>
-      <LexioDivinas countPerPage={ITEM_COUNT_PER_PAGE} />
+      {!isSmall ? (
+        <Box
+          component={motion.div}
+          {...popUp()}
+          maxWidth="xl"
+          sx={{
+            px: 2,
+            mx: 'auto',
+            mt: 2,
+          }}
+        >
+          <Link href="/blogs/lexio-divina">
+            <Button disableRipple variant="outlined" size="small">
+              렉시오 디비나 기도 방법
+            </Button>
+          </Link>
+        </Box>
+      ) : null}
+
+      <LexioDivinas page={page} countPerPage={ITEM_COUNT_PER_PAGE} />
+
+      {!isSmall ? (
+        <LexioDivinasPagination
+          page={page}
+          onChange={handlePageChange}
+          countPerPage={ITEM_COUNT_PER_PAGE}
+        />
+      ) : null}
+
       {isLoggedIn ? (
         <FloatingButton
           icon={<AddIcon />}
@@ -82,6 +103,7 @@ const Home: NextPage = () => {
           onClick={handleAdd}
         />
       ) : null}
+
       <SelectorDialog
         title="임시 저장글 확인"
         description="😱 아직 저장하지 않은 글이 있습니다. 저장하러 이동하시겠습니까? 지우기를 눌러 지울 수도 있습니다."
