@@ -11,7 +11,6 @@ const useLexioDivinas = (params?: GetLexioDivinasParams, options?: Options) => {
   return useQuery({
     queryKey: [LEXIO_DIVINAS_QUERY_KEY, params],
     queryFn: () => getLexioDivinas(params),
-    keepPreviousData: true,
     enabled: options?.enabled,
   });
 };
