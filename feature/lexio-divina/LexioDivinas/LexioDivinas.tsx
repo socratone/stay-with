@@ -1,6 +1,4 @@
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { Masonry } from '@mui/lab';
-import { IconButton } from '@mui/material';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { useQueryClient } from '@tanstack/react-query';
@@ -13,6 +11,7 @@ import {
   deleteLikedInLexioDivina,
   postLikedToLexioDivina,
 } from 'helpers/axios';
+import useLexioDivinas from 'hooks/api/useLexioDivinas';
 import { LEXIO_DIVINAS_COUNT_QUERY_KEY } from 'hooks/api/useLexioDivinasCount';
 import useLexioDivinasInfinite, {
   LEXIO_DIVINAS_INFINITE_QUERY_KEY,
@@ -21,13 +20,14 @@ import useAuth from 'hooks/auth/useAuth';
 import useUrlOrigin from 'hooks/dom/useUrlOrigin';
 import useIsBreakpointsDown from 'hooks/theme/useIsBreakpointsDown';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useIntl } from 'react-intl';
 import { LexioDivina } from 'schemas';
 import { copyToClipboard } from 'utils/clipboard';
 
 type LexioDivinasProps = {
+  page: number;
   countPerPage: number;
   filter?: {
     userId?: string;
@@ -35,6 +35,7 @@ type LexioDivinasProps = {
 };
 
 const LexioDivinas: React.FC<LexioDivinasProps> = ({
+  page,
   countPerPage,
   filter,
 }) => {
@@ -43,6 +44,13 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({
   const { formatMessage } = useIntl();
   const urlOrigin = useUrlOrigin();
   const isSmall = useIsBreakpointsDown('sm');
+  const [viewportSize, setViewportSize] = useState<'small' | 'large'>();
+
+  // isSmall의 initial value가 부정확하기 때문에 마운트 이후에 size를 정한다.
+  // viewportSize가 small일 경우 infinite hook을 사용한다.
+  useEffect(() => {
+    setViewportSize(isSmall ? 'small' : 'large');
+  }, [isSmall]);
 
   const { user, logout } = useAuth();
 
@@ -53,13 +61,33 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({
     data: lexioDivinasData,
     isLoading: lexioDivinasLoading,
     isError: lexioDivinasError,
+  } = useLexioDivinas(
+    {
+      skip: (page - 1) * countPerPage,
+      limit: countPerPage,
+      userId: filter?.userId,
+    },
+    {
+      enabled: viewportSize === 'large',
+    }
+  );
+
+  const {
+    data: lexioDivinasInfiniteData,
+    isLoading: lexioDivinasInfiniteLoading,
+    isError: lexioDivinasInfiniteError,
     hasNextPage,
     fetchNextPage,
     refetch,
-  } = useLexioDivinasInfinite({
-    limit: countPerPage,
-    userId: filter?.userId,
-  });
+  } = useLexioDivinasInfinite(
+    {
+      limit: countPerPage,
+      userId: filter?.userId,
+    },
+    {
+      enabled: viewportSize === 'small',
+    }
+  );
 
   const { ref } = useInView({
     onChange: (inView) => {
@@ -68,7 +96,10 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({
     skip: !isSmall,
   });
 
-  const lexioDivinas = lexioDivinasData?.lexioDivinas ?? [];
+  const lexioDivinas =
+    (isSmall
+      ? lexioDivinasInfiniteData?.lexioDivinas
+      : lexioDivinasData?.lexioDivinas) ?? [];
 
   const handleEdit = (id: string) => {
     router.push(`/lexio-divinas/${id}/edit`);
@@ -141,7 +172,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({
     router.push(`/users/${id}`);
   };
 
-  if (lexioDivinasError) {
+  if (lexioDivinasError || lexioDivinasInfiniteError) {
     return (
       <Box p={2}>
         <ErrorMessage />
@@ -153,7 +184,7 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({
     <>
       {isSmall ? (
         <Stack spacing={2} sx={{ p: 2 }}>
-          {lexioDivinasLoading ? (
+          {lexioDivinasInfiniteLoading ? (
             <>
               <LexioDivinaLoadingCard lineCount={16} />
               <LexioDivinaLoadingCard lineCount={16} />
@@ -295,16 +326,6 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({
               ))
             )}
           </Masonry>
-          {hasNextPage ? (
-            <Box display="flex" justifyContent="center">
-              <IconButton size="large" onClick={() => fetchNextPage()}>
-                <AddCircleOutlineIcon
-                  fontSize="large"
-                  sx={{ color: (theme) => theme.palette.text.secondary }}
-                />
-              </IconButton>
-            </Box>
-          ) : null}
         </Box>
       )}
 
