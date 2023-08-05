@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getLexioDivinas, GetLexioDivinasParams } from 'helpers/axios';
 
-type UseLexioDivinasInfiniteOptions = {
+type Options = {
   enabled?: boolean;
 };
 
@@ -9,7 +9,7 @@ export const LEXIO_DIVINAS_INFINITE_QUERY_KEY = 'lexio-divinas-infinite';
 
 const useLexioDivinasInfinite = (
   params: Pick<GetLexioDivinasParams, 'userId' | 'limit'>,
-  options?: UseLexioDivinasInfiniteOptions
+  options?: Options
 ) => {
   const query = useInfiniteQuery({
     queryKey: [LEXIO_DIVINAS_INFINITE_QUERY_KEY, params],
