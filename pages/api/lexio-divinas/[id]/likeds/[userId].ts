@@ -1,7 +1,7 @@
 import { CollectionName } from 'constants/mongodb';
 import { ObjectId, UpdateResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { blockNotLoggedIn } from 'utils/auth';
+import { blockNotLoggedIn, isMyId } from 'utils/auth';
 import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
@@ -18,6 +18,11 @@ const handler = async (
     try {
       const accessToken = req.headers.authorization;
       blockNotLoggedIn(accessToken);
+      if (!isMyId(userId, accessToken)) {
+        return res.status(400).json({
+          error: { message: 'Not yourself.' },
+        });
+      }
 
       const db = new Mongodb();
       const result = await db.updateOne(
