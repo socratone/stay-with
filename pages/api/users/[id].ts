@@ -1,8 +1,8 @@
 import { CollectionName } from 'constants/mongodb';
-import jwtDecode from 'jwt-decode';
 import { ObjectId, UpdateResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { User, UserPatchPayload, userPatchSchema } from 'schemas';
+import { blockNotLoggedIn, isMyId } from 'utils/auth';
 import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
@@ -38,19 +38,18 @@ const handler = async (
 
   if (req.method === 'PATCH') {
     const accessToken = req.headers.authorization;
-    const user: User = jwtDecode(accessToken as string);
-
-    // 본인이 요청하지 않은 경우
-    if (id !== user._id) {
-      db.close();
-      return res.status(400).json({
-        error: { message: 'Not yourself.' },
-      });
-    }
-
     const payload: UserPatchPayload = req.body;
 
     try {
+      blockNotLoggedIn(accessToken);
+
+      if (!isMyId(id, accessToken)) {
+        db.close();
+        return res.status(400).json({
+          error: { message: 'Not yourself.' },
+        });
+      }
+
       const validatedUser = await userPatchSchema.validate(payload);
 
       // name 수정 요청을 한 경우에만 중복 검사
