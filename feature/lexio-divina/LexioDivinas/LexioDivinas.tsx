@@ -11,7 +11,9 @@ import {
   deleteLikedInLexioDivina,
   postLikedToLexioDivina,
 } from 'helpers/axios';
-import useLexioDivinas from 'hooks/api/useLexioDivinas';
+import useLexioDivinas, {
+  LEXIO_DIVINAS_QUERY_KEY,
+} from 'hooks/api/useLexioDivinas';
 import { LEXIO_DIVINAS_COUNT_QUERY_KEY } from 'hooks/api/useLexioDivinasCount';
 import useLexioDivinasInfinite, {
   LEXIO_DIVINAS_INFINITE_QUERY_KEY,
@@ -131,13 +133,20 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({
       await postLikedToLexioDivina(id, {
         userId: user._id,
       });
-      const lexioDivinaIndex = lexioDivinas.findIndex(
-        (lexioDivina) => String(lexioDivina._id) === id
-      );
-      const pageIndex = Math.ceil((lexioDivinaIndex + 1) / countPerPage) - 1;
-      refetch({
-        refetchPage: (page, index) => index === pageIndex,
-      });
+
+      if (isSmall) {
+        const lexioDivinaIndex = lexioDivinas.findIndex(
+          (lexioDivina) => String(lexioDivina._id) === id
+        );
+        const pageIndex = Math.ceil((lexioDivinaIndex + 1) / countPerPage) - 1;
+        refetch({
+          refetchPage: (page, index) => index === pageIndex,
+        });
+      } else {
+        queryClient.invalidateQueries({
+          queryKey: [LEXIO_DIVINAS_QUERY_KEY],
+        });
+      }
     } catch {
       //
     }
@@ -148,13 +157,20 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({
 
     try {
       await deleteLikedInLexioDivina(id, user._id);
-      const lexioDivinaIndex = lexioDivinas.findIndex(
-        (lexioDivina) => String(lexioDivina._id) === id
-      );
-      const pageIndex = Math.ceil((lexioDivinaIndex + 1) / countPerPage) - 1;
-      refetch({
-        refetchPage: (page, index) => index === pageIndex,
-      });
+
+      if (isSmall) {
+        const lexioDivinaIndex = lexioDivinas.findIndex(
+          (lexioDivina) => String(lexioDivina._id) === id
+        );
+        const pageIndex = Math.ceil((lexioDivinaIndex + 1) / countPerPage) - 1;
+        refetch({
+          refetchPage: (page, index) => index === pageIndex,
+        });
+      } else {
+        queryClient.invalidateQueries({
+          queryKey: [LEXIO_DIVINAS_QUERY_KEY],
+        });
+      }
     } catch (error: any) {
       const status = error?.response?.status;
       if (status === 401) {
