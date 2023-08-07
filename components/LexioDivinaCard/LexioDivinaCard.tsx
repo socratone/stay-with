@@ -12,7 +12,6 @@ import SmallMenu from 'components/SmallMenu';
 import { Bible, BIBLE_LABEL } from 'constants/bible';
 import { motion } from 'framer-motion';
 import { isNewTestament } from 'helpers/bible';
-import Link from 'next/link';
 import { useState } from 'react';
 import { FormattedDate } from 'react-intl';
 import { useDebounce } from 'react-use';
@@ -42,9 +41,10 @@ type LexioDivinaCardProps = {
   endVerse?: number;
   /** 묵상 내용 */
   content: string;
-  /** 더 보기 링크 */
-  moreHref?: string;
-  /** 최대 묵상 내용 글자 수 */
+  /**
+   * 최대 묵상 내용 글자 수
+   * 넘어갈 경우 '더 보기'를 보여줌
+   */
   maxContentLength?: number;
   /** 사용자가 좋아요를 누른 경우 */
   isLiked: boolean;
@@ -84,7 +84,6 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
   endChapter,
   endVerse,
   content,
-  moreHref,
   maxContentLength,
   isLiked,
   isMine,
@@ -101,6 +100,7 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const [contentExpaned, setContentExpaned] = useState(false);
   const theme = useTheme();
 
   const [isTempLiked, setIsTempLiked] = useState(isLiked);
@@ -240,7 +240,7 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
       </Typography>
 
       {/* content */}
-      {maxContentLength ? (
+      {maxContentLength && !contentExpaned ? (
         <Typography
           color="text.secondary"
           px={2}
@@ -249,17 +249,17 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
           {content.length > maxContentLength ? (
             <>
               {content.substring(0, maxContentLength + 1) + '... '}
-              {moreHref ? (
-                <Link href={moreHref}>
-                  <Typography
-                    component="span"
-                    color="text.primary"
-                    fontWeight={500}
-                  >
-                    더 보기
-                  </Typography>
-                </Link>
-              ) : null}
+              <Typography
+                component="span"
+                color="text.primary"
+                fontWeight={500}
+                sx={{
+                  cursor: 'pointer',
+                }}
+                onClick={() => setContentExpaned(true)}
+              >
+                더 보기
+              </Typography>
             </>
           ) : (
             content
