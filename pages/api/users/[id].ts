@@ -42,7 +42,6 @@ const handler = async (
 
     try {
       blockNotLoggedIn(accessToken);
-
       if (!isMyId(id, accessToken)) {
         db.close();
         return res.status(400).json({

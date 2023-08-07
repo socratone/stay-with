@@ -1,7 +1,7 @@
 import { CollectionName } from 'constants/mongodb';
 import { ObjectId, UpdateResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { blockNotLoggedIn } from 'utils/auth';
+import { blockNotLoggedIn, isMyId } from 'utils/auth';
 import { sendServerError, ServerError } from 'utils/error';
 import Mongodb from 'utils/mongodb';
 
@@ -18,19 +18,25 @@ const handler = async (
   if (req.method === 'POST') {
     try {
       const accessToken = req.headers.authorization;
+      const id = String(req.query.id);
+      const { userId }: LexioDivinaLikedPostPayload = req.body;
+
       blockNotLoggedIn(accessToken);
+      if (!isMyId(userId, accessToken)) {
+        return res.status(400).json({
+          error: { message: 'Not yourself.' },
+        });
+      }
 
       const db = new Mongodb();
-      const id = String(req.query.id);
-      // TODO: validate
-      const payload: LexioDivinaLikedPostPayload = req.body;
+
       const result = await db.updateOne(
         CollectionName.LexioDivinas,
         { _id: new ObjectId(id) },
         {
           // https://www.mongodb.com/docs/manual/reference/operator/update/addToSet/
           $addToSet: {
-            likedUserIds: new ObjectId(payload.userId),
+            likedUserIds: new ObjectId(userId),
           },
         }
       );
