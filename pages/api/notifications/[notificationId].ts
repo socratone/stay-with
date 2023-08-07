@@ -38,7 +38,7 @@ const handler = async (
       // 본인이 요청하지 않은 경우
       if (String(notification?.userId) !== user._id) {
         db.close();
-        return res.status(400).json({
+        return res.status(403).json({
           error: { message: 'Not yourself.' },
         });
       }

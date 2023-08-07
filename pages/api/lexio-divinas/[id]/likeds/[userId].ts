@@ -19,7 +19,7 @@ const handler = async (
       const accessToken = req.headers.authorization;
       blockNotLoggedIn(accessToken);
       if (!isMyId(userId, accessToken)) {
-        return res.status(400).json({
+        return res.status(403).json({
           error: { message: 'Not yourself.' },
         });
       }

@@ -44,7 +44,7 @@ const handler = async (
       blockNotLoggedIn(accessToken);
       if (!isMyId(id, accessToken)) {
         db.close();
-        return res.status(400).json({
+        return res.status(403).json({
           error: { message: 'Not yourself.' },
         });
       }
