@@ -67,24 +67,22 @@ const Home: NextPage = () => {
 
   return (
     <>
-      {!isSmall ? (
-        <Box
-          component={motion.div}
-          {...popUp()}
-          maxWidth="xl"
-          sx={{
-            px: 2,
-            mx: 'auto',
-            mt: 2,
-          }}
-        >
-          <Link href="/blogs/lexio-divina">
-            <Button disableRipple variant="outlined" size="small">
-              렉시오 디비나 기도 방법
-            </Button>
-          </Link>
-        </Box>
-      ) : null}
+      <Box
+        component={motion.div}
+        {...popUp()}
+        maxWidth="xl"
+        sx={{
+          px: 2,
+          mx: 'auto',
+          mt: 2,
+        }}
+      >
+        <Link href="/blogs/lexio-divina">
+          <Button disableRipple variant="outlined" size="small">
+            렉시오 디비나 기도 방법
+          </Button>
+        </Link>
+      </Box>
 
       <LexioDivinas page={page} countPerPage={ITEM_COUNT_PER_PAGE} />
 
