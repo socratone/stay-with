@@ -99,7 +99,7 @@ const SettingsProfile = () => {
     }
   }, [code, router, setValue]);
 
-  const handleScriptLoad = () => {
+  const handleScriptReady = () => {
     const { Kakao }: any = window;
     Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY);
     kakaoRef.current = Kakao;
@@ -306,7 +306,7 @@ const SettingsProfile = () => {
         )}
       </SettingsLayout>
 
-      <KakaoSdkScript onLoad={handleScriptLoad} />
+      <KakaoSdkScript onReady={handleScriptReady} />
     </>
   );
 };
