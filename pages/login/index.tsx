@@ -30,7 +30,7 @@ const Login = () => {
     };
   }, [isRequested]);
 
-  const handleScriptLoad = () => {
+  const handleScriptReady = () => {
     const { Kakao }: any = window;
     Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY);
     kakaoRef.current = Kakao;
@@ -94,7 +94,7 @@ const Login = () => {
         </Box>
       </Box>
 
-      <KakaoSdkScript onLoad={handleScriptLoad} />
+      <KakaoSdkScript onReady={handleScriptReady} />
     </>
   );
 };
