@@ -1,8 +1,10 @@
 import { CollectionName } from 'constants/mongodb';
+import jwtDecode from 'jwt-decode';
 import { ObjectId, UpdateResult } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { blockNotLoggedIn, isMyId } from 'utils/auth';
 import { sendServerError, ServerError } from 'utils/error';
+import { sendCustomLog } from 'utils/log';
 import Mongodb from 'utils/mongodb';
 
 type LexioDivinaLikedDeleteResult = UpdateResult;
@@ -35,6 +37,14 @@ const handler = async (
           },
         }
       );
+
+      sendCustomLog({
+        message: 'Who delete like',
+        metadata: {
+          user: jwtDecode(accessToken ?? ''),
+          accessToken,
+        },
+      });
 
       db.close();
       return res.status(200).json(result);

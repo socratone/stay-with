@@ -90,6 +90,10 @@ Notification {
 - [Vercel](https://vercel.com/socratone/stay-with)
 - [Mongodb Atlas](https://cloud.mongodb.com/v2/63e7a20d3a6c87733d5ab363#/clusters)
 
+## Log
+
+- [Logflare](https://logflare.app/sources/28243)
+
 ## Stacks
 
 - NextJS
@@ -150,6 +154,8 @@ KAKAO_REST_API_KEY="????"
 KAKAO_CLIENT_SECRET="????"
 AUTH_SECRET="????"
 MONGO_CLIENT_URL="????"
+LOGFLARE_SOURCE_ID="????"
+LOGFLARE_API_KEY="????"
 ```
 
 ## Folder Structure
