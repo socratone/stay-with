@@ -5,6 +5,7 @@ const ACCESS_TOKEN = 'access-token';
 export const saveAccessToken = (accessToken: string) => {
   Cookies.set(ACCESS_TOKEN, accessToken, {
     expires: 1,
+    secure: true,
   });
 };
 
