@@ -58,6 +58,7 @@ LexioDivina {
     userId: string;
     message: string;
   }[];
+  deleted?: boolean;
 }
 ```
 
