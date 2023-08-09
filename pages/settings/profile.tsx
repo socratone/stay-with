@@ -32,7 +32,7 @@ const SettingsProfile = () => {
   const code =
     typeof router.query.code === 'string' ? router.query.code : undefined;
 
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { data: userData } = useUser(user?._id);
 
   const kakaoRef = useRef<any | null>(null);
@@ -140,6 +140,12 @@ const SettingsProfile = () => {
         enqueueSnackbar(formatMessage({ id: 'error.message.duplicateName' }), {
           variant: 'error',
         });
+      }
+
+      const status = error?.response?.status;
+      if (status === 401) {
+        logout();
+        router.push('/expired');
       }
     }
   };

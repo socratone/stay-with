@@ -121,8 +121,12 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({
       queryClient.invalidateQueries({
         queryKey: [LEXIO_DIVINAS_COUNT_QUERY_KEY],
       });
-    } catch {
-      //
+    } catch (error: any) {
+      const status = error?.response?.status;
+      if (status === 401) {
+        logout();
+        router.push('/expired');
+      }
     }
   };
 
@@ -147,8 +151,12 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({
           queryKey: [LEXIO_DIVINAS_QUERY_KEY],
         });
       }
-    } catch {
-      //
+    } catch (error: any) {
+      const status = error?.response?.status;
+      if (status === 401) {
+        logout();
+        router.push('/expired');
+      }
     }
   };
 

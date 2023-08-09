@@ -72,6 +72,10 @@ axiosInstance.interceptors.response.use(
       enqueueSnackbar('허용치를 초과한 값이 있어요 😅', {
         variant: 'error',
       });
+    } else if (status === 401 && errorMessage === 'Unauthorized.') {
+      enqueueSnackbar('토큰이 만료됐어요 😥 다시 로그인을 해주세요', {
+        variant: 'error',
+      });
     } else if (status === 401 && errorMessage === 'Unregistered user.') {
       // pass
     } else if (status === 404) {

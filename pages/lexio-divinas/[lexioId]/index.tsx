@@ -96,8 +96,12 @@ const LexioDivinaDetail = () => {
         queryKey: [LEXIO_DIVINAS_COUNT_QUERY_KEY],
       });
       router.push('/');
-    } catch {
-      //
+    } catch (error: any) {
+      const status = error?.response?.status;
+      if (status === 401) {
+        logout();
+        router.push('/expired');
+      }
     }
   };
 
@@ -116,8 +120,12 @@ const LexioDivinaDetail = () => {
         userId: me._id,
       });
       queryClient.invalidateQueries({ queryKey: [LEXIO_DIVINA_QUERY_KEY] });
-    } catch {
-      //
+    } catch (error: any) {
+      const status = error?.response?.status;
+      if (status === 401) {
+        logout();
+        router.push('/expired');
+      }
     }
   };
 
