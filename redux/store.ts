@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 
+import authReducer from './authSlice';
 import colorReducer from './colorSlice';
 import tempLexioDivinaReducer from './tempLexioDivinaSlice';
 import userReducer from './userSlice';
@@ -7,9 +8,10 @@ import videoReducer from './videoSlice';
 
 export const store = configureStore({
   reducer: {
-    user: userReducer,
+    auth: authReducer,
     color: colorReducer,
     tempLexioDivina: tempLexioDivinaReducer,
+    user: userReducer,
     video: videoReducer,
   },
 });
