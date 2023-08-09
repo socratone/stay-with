@@ -32,7 +32,9 @@ const Login = () => {
 
   const handleScriptReady = () => {
     const { Kakao }: any = window;
-    Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY);
+    if (!Kakao.isInitialized()) {
+      Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY);
+    }
     kakaoRef.current = Kakao;
   };
 
