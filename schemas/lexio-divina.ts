@@ -1,5 +1,5 @@
 import { Bible } from 'constants/bible';
-import { array, InferType, mixed, number, object, string } from 'yup';
+import { array, boolean, InferType, mixed, number, object, string } from 'yup';
 
 import {
   BIBLE_CHAPTER_MAX_NUMBER,
@@ -39,6 +39,7 @@ export const lexioDivinaSchema = object({
   userId: string().required().max(ID_MAX_LENGTH),
   likedUserIds: array().required().of(string().required()),
   comments: array().required().of(lexioDivinaCommentSchema),
+  deleted: boolean(),
 });
 
 export const lexioDivinaPostSchema = lexioDivinaSchema.omit(['_id']);

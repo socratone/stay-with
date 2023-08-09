@@ -31,6 +31,12 @@ const handler = async (
       typeof req.query?.cursor === 'string' ? req.query.cursor : null;
 
     const pipeline: Document[] = [
+      // 삭제된 lexio divina 제외
+      {
+        $match: {
+          deleted: null,
+        },
+      },
       { $match: userId ? { userId: new ObjectId(userId) } : null },
       {
         // https://www.mongodb.com/docs/v6.0/reference/operator/aggregation/lookup/#syntax

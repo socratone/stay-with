@@ -140,9 +140,17 @@ const handler = async (
 
   if (req.method === 'DELETE') {
     try {
-      const result = await db.deleteOne(CollectionName.LexioDivinas, {
-        _id: new ObjectId(id),
-      });
+      const result = await db.updateOne(
+        CollectionName.LexioDivinas,
+        {
+          _id: new ObjectId(id),
+        },
+        {
+          $set: {
+            deleted: true,
+          },
+        }
+      );
       db.close();
       return res.status(200).json(result);
     } catch (error) {
