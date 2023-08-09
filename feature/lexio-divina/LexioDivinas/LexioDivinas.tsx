@@ -115,9 +115,16 @@ const LexioDivinas: React.FC<LexioDivinasProps> = ({
 
     try {
       await deleteLexioDivina(lexioDivinaId);
-      queryClient.invalidateQueries({
-        queryKey: [LEXIO_DIVINAS_INFINITE_QUERY_KEY],
-      });
+
+      if (isSmall) {
+        queryClient.invalidateQueries({
+          queryKey: [LEXIO_DIVINAS_INFINITE_QUERY_KEY],
+        });
+      } else {
+        queryClient.invalidateQueries({
+          queryKey: [LEXIO_DIVINAS_QUERY_KEY],
+        });
+      }
       queryClient.invalidateQueries({
         queryKey: [LEXIO_DIVINAS_COUNT_QUERY_KEY],
       });
