@@ -107,20 +107,20 @@ const SettingsProfile = () => {
     kakaoRef.current = Kakao;
   };
 
-  const handleKakaoProfileImageLoad = () => {
-    if (kakaoRef.current?.Auth) {
-      kakaoRef.current.Auth.authorize({
-        redirectUri: `${process.env.NEXT_PUBLIC_BASE_URL}/settings/profile`,
-      });
-    } else {
-      enqueueSnackbar(
-        'Kakao SDK를 불러오는 중에 에러가 발생하여 로그인을 할 수 없습니다. 새로고침을 해주세요.',
-        {
-          variant: 'error',
-        }
-      );
-    }
-  };
+  // const handleKakaoProfileImageLoad = () => {
+  //   if (kakaoRef.current?.Auth) {
+  //     kakaoRef.current.Auth.authorize({
+  //       redirectUri: `${process.env.NEXT_PUBLIC_BASE_URL}/settings/profile`,
+  //     });
+  //   } else {
+  //     enqueueSnackbar(
+  //       'Kakao SDK를 불러오는 중에 에러가 발생하여 로그인을 할 수 없습니다. 새로고침을 해주세요.',
+  //       {
+  //         variant: 'error',
+  //       }
+  //     );
+  //   }
+  // };
 
   const handleProfileSubmit: SubmitHandler<ProfileFormValues> = async ({
     name,
@@ -286,12 +286,13 @@ const SettingsProfile = () => {
               </Box>
 
               <Stack direction="row" gap={1} flexWrap="wrap">
-                <Button
+                {/* FIXME: 카카오 로그인을 거쳐서 작동 안 됨 */}
+                {/* <Button
                   variant="outlined"
                   onClick={handleKakaoProfileImageLoad}
                 >
                   카카오 프로필 이미지 불러오기
-                </Button>
+                </Button> */}
                 <Button
                   variant="contained"
                   type="submit"
