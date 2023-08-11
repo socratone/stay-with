@@ -1,6 +1,6 @@
 # https://docs.github.com/ko/actions/learn-github-actions/understanding-github-actions#understanding-the-workflow-file
 name: test-actions
-run-name: ${{ github.actor }} is learning GitHub Actions
+run-name: ${{ github.actor }} push commits
 on: [push]
 jobs:
   run-jest:
@@ -13,3 +13,4 @@ jobs:
           node-version: '14'
       - run: yarn
       - run: yarn test
+      - run: yarn build
