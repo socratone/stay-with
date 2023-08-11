@@ -1,0 +1,15 @@
+# https://docs.github.com/ko/actions/learn-github-actions/understanding-github-actions#understanding-the-workflow-file
+name: test-actions
+run-name: ${{ github.actor }} is learning GitHub Actions
+on: [push]
+jobs:
+  run-jest:
+    runs-on: ubuntu-latest
+    steps:
+      # You should use the checkout action any time your workflow will use the repository's code.
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      - run: yarn
+      - run: yarn test
