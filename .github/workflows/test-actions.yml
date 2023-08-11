@@ -13,5 +13,7 @@ jobs:
           node-version: '16'
       - run: yarn
       - run: yarn test
+      # github에 설정해놓은 secrets file을 불러와서 .env.staging 파일을 만든다.
+      # https://github.com/socratone/stay-with/settings/secrets/actions
       - run: echo "${{ secrets.STAGING_ENV_FILE }}" > .env.staging
       - run: yarn build:stag
