@@ -11,17 +11,19 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
-      - name: Restore cache
+      - name: Cache node_modules
         uses: actions/cache@v3
         with:
           path: node_modules
           # Generate a new cache whenever packages or source files change.
           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}
       - name: Install dependencies
-        run: yarn
-      - run: yarn test
-      # github에 설정해놓은 secrets file을 불러와서 .env.staging 파일을 만든다.
-      # https://github.com/socratone/stay-with/settings/secrets/actions
-      - run: |
+        run: yarn install
+      - name: Test jest
+        run: yarn test
+      - name: Test build
+        # github에 설정해놓은 secrets file을 불러와서 .env.staging 파일을 만든다.
+        # https://github.com/socratone/stay-with/settings/secrets/actions
+        run: |
           echo "${{ secrets.STAGING_ENV_FILE }}" > .env.staging
           yarn build:stag
