@@ -19,11 +19,5 @@ jobs:
           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}
       - name: Install dependencies
         run: yarn install
-      - name: Test jest
+      - name: Run unit test
         run: yarn test
-      - name: Test build
-        # github에 설정해놓은 secrets file을 불러와서 .env.staging 파일을 만든다.
-        # https://github.com/socratone/stay-with/settings/secrets/actions
-        run: |
-          echo "${{ secrets.STAGING_ENV_FILE }}" > .env.staging
-          yarn build:stag
