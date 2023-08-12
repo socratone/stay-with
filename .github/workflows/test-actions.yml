@@ -3,7 +3,7 @@ name: test-actions
 run-name: ${{ github.actor }} push commits
 on: [push]
 jobs:
-  run-jest:
+  test:
     runs-on: ubuntu-latest
     steps:
       # You should use the checkout action any time your workflow will use the repository's code.
@@ -14,8 +14,7 @@ jobs:
       - name: Restore cache
         uses: actions/cache@v3
         with:
-          path: |
-            .next/cache
+          path: node_modules
           # Generate a new cache whenever packages or source files change.
           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}
       - name: Install dependencies
