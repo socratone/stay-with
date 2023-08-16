@@ -5,7 +5,6 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useQueryClient } from '@tanstack/react-query';
-import KakaoSdkScript from 'components/KakaoSdkScript';
 import LoginMessage from 'components/LoginMessage';
 import SettingsLayout from 'feature/setting/SettingsLayout';
 import { patchUser, postKakaoProfile } from 'helpers/axios';
@@ -14,7 +13,7 @@ import useUser, { USER_QUERY_KEY } from 'hooks/api/useUser';
 import useAuth from 'hooks/auth/useAuth';
 import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { removeQuery } from 'utils/url';
@@ -35,7 +34,6 @@ const SettingsProfile = () => {
   const { user, logout } = useAuth();
   const { data: userData } = useUser(user?._id);
 
-  const kakaoRef = useRef<any | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [imageLoadingError, setImageLoadingError] = useState(false);
 
@@ -99,14 +97,6 @@ const SettingsProfile = () => {
     }
   }, [code, router, setValue]);
 
-  const handleScriptReady = () => {
-    const { Kakao }: any = window;
-    if (!Kakao.isInitialized()) {
-      Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY);
-    }
-    kakaoRef.current = Kakao;
-  };
-
   // const handleKakaoProfileImageLoad = () => {
   //   if (kakaoRef.current?.Auth) {
   //     kakaoRef.current.Auth.authorize({
@@ -153,170 +143,166 @@ const SettingsProfile = () => {
   };
 
   return (
-    <>
-      <SettingsLayout>
-        {user ? (
-          <Box
-            component="form"
-            onSubmit={handleSubmit(handleProfileSubmit)}
-            py={1.5}
-          >
-            <Stack spacing={1.5}>
-              <Box component="label">
-                <Typography
-                  color="text.primary"
-                  component="h2"
-                  fontWeight={500}
-                  variant="body1"
-                  mb={0.5}
-                >
-                  이름
+    <SettingsLayout>
+      {user ? (
+        <Box
+          component="form"
+          onSubmit={handleSubmit(handleProfileSubmit)}
+          py={1.5}
+        >
+          <Stack spacing={1.5}>
+            <Box component="label">
+              <Typography
+                color="text.primary"
+                component="h2"
+                fontWeight={500}
+                variant="body1"
+                mb={0.5}
+              >
+                이름
+              </Typography>
+              <Controller
+                control={control}
+                name="name"
+                rules={{
+                  required: true,
+                  maxLength: 30,
+                }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    error={!!errors.name}
+                    size="small"
+                    fullWidth
+                    sx={{ maxWidth: 250 }}
+                  />
+                )}
+              />
+            </Box>
+
+            <Box component="label">
+              <Typography
+                color="text.primary"
+                component="h2"
+                fontWeight={500}
+                variant="body1"
+                mb={0.5}
+              >
+                소개
+              </Typography>
+              <Controller
+                control={control}
+                name="description"
+                rules={{
+                  maxLength: 50,
+                }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    error={!!errors.description}
+                    size="small"
+                    multiline
+                    rows={4}
+                    fullWidth
+                  />
+                )}
+              />
+            </Box>
+
+            {isLoading ? (
+              <Skeleton
+                variant="rectangular"
+                width={200}
+                height={200}
+                sx={{ borderRadius: '50%' }}
+              />
+            ) : imageLoadingError ? (
+              <Box
+                width={200}
+                height={200}
+                borderRadius="50%"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <Typography color="text.primary">
+                  이미지를 불러올 수 없어요.
                 </Typography>
-                <Controller
-                  control={control}
-                  name="name"
-                  rules={{
-                    required: true,
-                    maxLength: 30,
-                  }}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      error={!!errors.name}
-                      size="small"
-                      fullWidth
-                      sx={{ maxWidth: 250 }}
-                    />
-                  )}
-                />
               </Box>
+            ) : (
+              <Box
+                component="img"
+                src={watchedImageUrl}
+                alt="profile"
+                width={200}
+                height={200}
+                borderRadius="50%"
+                onError={() => setImageLoadingError(true)}
+                sx={{ objectFit: 'cover' }}
+              />
+            )}
 
-              <Box component="label">
-                <Typography
-                  color="text.primary"
-                  component="h2"
-                  fontWeight={500}
-                  variant="body1"
-                  mb={0.5}
-                >
-                  소개
-                </Typography>
-                <Controller
-                  control={control}
-                  name="description"
-                  rules={{
-                    maxLength: 50,
-                  }}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      error={!!errors.description}
-                      size="small"
-                      multiline
-                      rows={4}
-                      fullWidth
-                    />
-                  )}
-                />
-              </Box>
+            <Box component="label">
+              <Typography
+                color="text.primary"
+                component="h2"
+                fontWeight={500}
+                variant="body1"
+                mb={0.5}
+              >
+                프로필 이미지 URL
+              </Typography>
+              <Controller
+                control={control}
+                name="imageUrl"
+                rules={{
+                  required: true,
+                  maxLength: 300,
+                }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    onChange={(event) => {
+                      setImageLoadingError(false);
+                      field.onChange(event);
+                    }}
+                    error={!!errors.imageUrl}
+                    size="small"
+                    fullWidth
+                  />
+                )}
+              />
+            </Box>
 
-              {isLoading ? (
-                <Skeleton
-                  variant="rectangular"
-                  width={200}
-                  height={200}
-                  sx={{ borderRadius: '50%' }}
-                />
-              ) : imageLoadingError ? (
-                <Box
-                  width={200}
-                  height={200}
-                  borderRadius="50%"
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                >
-                  <Typography color="text.primary">
-                    이미지를 불러올 수 없어요.
-                  </Typography>
-                </Box>
-              ) : (
-                <Box
-                  component="img"
-                  src={watchedImageUrl}
-                  alt="profile"
-                  width={200}
-                  height={200}
-                  borderRadius="50%"
-                  onError={() => setImageLoadingError(true)}
-                  sx={{ objectFit: 'cover' }}
-                />
-              )}
-
-              <Box component="label">
-                <Typography
-                  color="text.primary"
-                  component="h2"
-                  fontWeight={500}
-                  variant="body1"
-                  mb={0.5}
-                >
-                  프로필 이미지 URL
-                </Typography>
-                <Controller
-                  control={control}
-                  name="imageUrl"
-                  rules={{
-                    required: true,
-                    maxLength: 300,
-                  }}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      onChange={(event) => {
-                        setImageLoadingError(false);
-                        field.onChange(event);
-                      }}
-                      error={!!errors.imageUrl}
-                      size="small"
-                      fullWidth
-                    />
-                  )}
-                />
-              </Box>
-
-              <Stack direction="row" gap={1} flexWrap="wrap">
-                {/* FIXME: 카카오 로그인을 거쳐서 작동 안 됨 */}
-                {/* <Button
+            <Stack direction="row" gap={1} flexWrap="wrap">
+              {/* FIXME: 카카오 로그인을 거쳐서 작동 안 됨 */}
+              {/* <Button
                   variant="outlined"
                   onClick={handleKakaoProfileImageLoad}
                 >
                   카카오 프로필 이미지 불러오기
                 </Button> */}
-                <Button
-                  variant="contained"
-                  type="submit"
-                  disabled={Object.keys(errors).length > 0}
-                >
-                  저장하기
-                </Button>
-              </Stack>
+              <Button
+                variant="contained"
+                type="submit"
+                disabled={Object.keys(errors).length > 0}
+              >
+                저장하기
+              </Button>
             </Stack>
-          </Box>
-        ) : (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            minHeight="50vh"
-          >
-            <LoginMessage />
-          </Box>
-        )}
-      </SettingsLayout>
-
-      <KakaoSdkScript onReady={handleScriptReady} />
-    </>
+          </Stack>
+        </Box>
+      ) : (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          minHeight="50vh"
+        >
+          <LoginMessage />
+        </Box>
+      )}
+    </SettingsLayout>
   );
 };
 
