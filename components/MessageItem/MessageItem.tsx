@@ -27,7 +27,7 @@ const MessageItem: React.FC<MessageItemProps> = ({
   onDelete,
 }) => {
   return (
-    <Stack direction="row" gap={1} flexWrap="wrap">
+    <Stack direction="row" gap={1}>
       <ProfileAvatar src={profileImageUrl} size="2.125rem" />
       <Box>
         <Typography display="flex" gap={1} alignItems="center" flexWrap="wrap">
