@@ -83,12 +83,12 @@ LOGFLARE_API_KEY="????"
 각 폴더 안에 컴포넌트에 필요한 모든 요소들을 둔다.
 
 ```
-AlertDialog/
-  index.ts
-  AlertDialog.tsx
-  Button.tsx
-  constants.ts
-  helpers.ts
+AlertDialog
+├─ index.ts
+├─ AlertDialog.tsx
+├─ Button.tsx
+├─ constants.ts
+└─ helpers.ts
 ```
 
 index.ts를 이용해서 import시 path를 깔끔하게 한다.\
