@@ -1,7 +1,6 @@
 import 'styles/globals.css';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import KakaoSdkScript from 'components/KakaoSdkScript';
 import Layout from 'components/Layout';
 import Snackbar from 'components/Snackbar';
 import VideoPlayer from 'components/VideoPlayer';
@@ -54,7 +53,6 @@ function MyApp({ Component, pageProps }: AppProps) {
               <VideoPlayer />
               <Layout>
                 <Component {...pageProps} />
-                <KakaoSdkScript />
               </Layout>
             </IntlProvider>
           </SnackbarProvider>
