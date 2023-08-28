@@ -2,6 +2,7 @@ import * as Sentry from '@sentry/nextjs';
 import { postLoginWithKakao } from 'helpers/axios';
 import useAuth from 'hooks/auth/useAuth';
 import { useRouter } from 'next/router';
+import { enqueueSnackbar } from 'notistack';
 import { KakaoLoginError } from 'pages/api/login/kakao';
 import { useEffect, useRef, useState } from 'react';
 
@@ -30,9 +31,20 @@ const useKakaoLoginRedirect = (code: string) => {
           router.push(
             `/signup?kakao_id=${kakaoUser.id}&email=${kakaoUser.kakao_account.email}&image_url=${kakaoUser.kakao_account.profile.profile_image_url}`
           );
-        } else {
-          Sentry.captureException(error);
-          setIsError(true);
+          return;
+        }
+
+        Sentry.captureException(error);
+        setIsError(true);
+
+        if (status === 400) {
+          router.push('/');
+          enqueueSnackbar(
+            '카카오 로그인 요청 중에 에러가 발생했어요 😭 새로 고침 후 다시 시도해 주세요',
+            {
+              variant: 'error',
+            }
+          );
         }
       }
     })();
