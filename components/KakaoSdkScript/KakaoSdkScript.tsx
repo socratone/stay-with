@@ -14,8 +14,8 @@ const KakaoSdkScript: React.FC<KakaoSdkScriptProps> = ({ onLoad }) => {
 
   return (
     <Script
-      src="https://t1.kakaocdn.net/kakao_js_sdk/2.1.0/kakao.min.js"
-      integrity="sha384-dpu02ieKC6NUeKFoGMOKz6102CLEWi9+5RQjWSV0ikYSFFd8M3Wp2reIcquJOemx"
+      src="https://t1.kakaocdn.net/kakao_js_sdk/2.3.0/kakao.min.js"
+      integrity="sha384-70k0rrouSYPWJt7q9rSTKpiTfX6USlMYjZUtr1Du+9o4cGvhPAWxngdtVZDdErlh"
       crossOrigin="anonymous"
       onLoad={onLoad}
       onError={handleScriptError}
