@@ -1,3 +1,4 @@
+import ArticleIcon from '@mui/icons-material/Article';
 import CloseIcon from '@mui/icons-material/Close';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import ImportContactsIcon from '@mui/icons-material/ImportContacts';
@@ -53,6 +54,11 @@ const GlobalHeaderDrawer: React.FC<GlobalHeaderDrawerProps> = ({
             href="/downloads"
             icon={<FileDownloadIcon />}
             label="다운로드"
+          />
+          <ListLinkItem
+            href="/blogs/lexio-divina"
+            icon={<ArticleIcon />}
+            label="블로그"
           />
           <ListLinkItem
             href="/settings/profile"
