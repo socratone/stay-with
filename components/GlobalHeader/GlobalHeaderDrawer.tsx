@@ -2,8 +2,8 @@ import ArticleIcon from '@mui/icons-material/Article';
 import CloseIcon from '@mui/icons-material/Close';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import ImportContactsIcon from '@mui/icons-material/ImportContacts';
-import NearMeIcon from '@mui/icons-material/NearMe';
 import SettingsIcon from '@mui/icons-material/Settings';
+import WhatshotIcon from '@mui/icons-material/Whatshot';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
@@ -47,7 +47,7 @@ const GlobalHeaderDrawer: React.FC<GlobalHeaderDrawerProps> = ({
           />
           <ListLinkItem
             href="/arrows"
-            icon={<NearMeIcon />}
+            icon={<WhatshotIcon />}
             label="화살 기도"
           />
           <ListLinkItem
