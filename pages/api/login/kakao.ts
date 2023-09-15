@@ -1,43 +1,23 @@
-import axios, { AxiosResponse } from 'axios';
 import { CollectionName } from 'constants/mongodb';
 import jwt from 'jsonwebtoken';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { User } from 'schemas';
 import { sendServerError, ServerError } from 'utils/error';
+import { getKakaoUserMe, KakaoUser } from 'utils/kakao';
 import Mongodb from 'utils/mongodb';
 
 export type KakaoLoginPostPayload = {
-  code: string;
+  accessToken: string;
 };
 
 export type KakaoLoginPostResult = {
   accessToken: string;
 };
 
-type KakaoUser = {
-  id: number;
-  connected_at: Date;
-  properties: {
-    profile_image: string;
-    thumbnail_image: string;
-  };
-  kakao_account: {
-    profile_image_needs_agreement: boolean;
-    profile: {
-      thumbnail_image_url: string;
-      profile_image_url: string;
-      is_default_image: boolean;
-    };
-    has_email: boolean;
-    email_needs_agreement: boolean;
-    is_email_valid: boolean;
-    is_email_verified: boolean;
-    email: string;
-  };
-};
 export interface KakaoLoginError extends ServerError {
   error: {
     message: string;
+    code?: number;
     kakaoUser: KakaoUser;
   };
 }
@@ -47,51 +27,11 @@ const handler = async (
   res: NextApiResponse<KakaoLoginPostResult | ServerError | KakaoLoginError>
 ) => {
   if (req.method === 'POST') {
-    let kakaoAccessToken: string;
-
-    // 카카오 로그인 페이지에서 이동 후 받은 code
-    const { code }: KakaoLoginPostPayload = req.body;
-
-    try {
-      const { data: authData } = await axios.post<{ access_token: string }>(
-        'https://kauth.kakao.com/oauth/token',
-        {
-          grant_type: 'authorization_code',
-          client_id: process.env.KAKAO_REST_API_KEY,
-          redirect_uri: `${process.env.NEXT_PUBLIC_BASE_URL}/login/redirect`,
-          client_secret: process.env.KAKAO_CLIENT_SECRET,
-          code,
-        },
-        {
-          headers: {
-            'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
-          },
-        }
-      );
-
-      kakaoAccessToken = authData.access_token;
-    } catch (error: any) {
-      if (error?.response?.status === 400) {
-        return res.status(400).json({
-          error: { message: 'Bad request.' },
-        });
-      }
-
-      return sendServerError(res, error);
-    }
-
+    const { accessToken: kakaoAccessToken }: KakaoLoginPostPayload = req.body;
     const db = new Mongodb();
 
     try {
-      const { data: kakaoUser }: AxiosResponse<KakaoUser> = await axios.get(
-        'https://kapi.kakao.com/v2/user/me',
-        {
-          headers: {
-            Authorization: `Bearer ${kakaoAccessToken}`,
-            'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
-          },
-        }
-      );
+      const kakaoUser = await getKakaoUserMe(kakaoAccessToken);
 
       // 가입된 유저인지 확인
       const user = await db.findOne<User>(CollectionName.Users, {
@@ -115,6 +55,15 @@ const handler = async (
       db.close();
       return res.status(200).json({ accessToken });
     } catch (error: any) {
+      if (error?.code) {
+        return res.status(500).json({
+          error: {
+            message: error.message,
+            code: error.code,
+          },
+        });
+      }
+
       if (error?.response?.status === 400) {
         return res.status(400).json({
           error: { message: 'Bad request.' },

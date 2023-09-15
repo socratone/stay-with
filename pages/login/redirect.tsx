@@ -7,7 +7,15 @@ import useQueryString from 'hooks/url/useQueryString';
 
 const LoginRedirect = () => {
   const { code } = useQueryString();
-  const { isError } = useKakaoLoginRedirect(String(code));
+  const { error } = useKakaoLoginRedirect(String(code));
+
+  const parseToErrorMessage = () => {
+    let message = '😱 에러가 발생했어요. 관리자에게 문의해주세요.';
+    if (error?.message) message += `\nmessage: ${error.message}`;
+    if (error?.type) message += `\ntype: ${error.type}`;
+    if (error?.code) message += `\ncode: ${error.code}`;
+    return message;
+  };
 
   return (
     <Box
@@ -16,7 +24,11 @@ const LoginRedirect = () => {
       justifyContent="center"
       alignItems="center"
     >
-      {isError ? <ErrorMessage /> : <WaitingMessage />}
+      {error ? (
+        <ErrorMessage content={parseToErrorMessage()} />
+      ) : (
+        <WaitingMessage />
+      )}
     </Box>
   );
 };

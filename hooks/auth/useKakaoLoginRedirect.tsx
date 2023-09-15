@@ -2,23 +2,46 @@ import * as Sentry from '@sentry/nextjs';
 import { postLoginWithKakao } from 'helpers/axios';
 import useAuth from 'hooks/auth/useAuth';
 import { useRouter } from 'next/router';
-import { enqueueSnackbar } from 'notistack';
 import { KakaoLoginError } from 'pages/api/login/kakao';
 import { useEffect, useRef, useState } from 'react';
+import { postKakaoOAuthToken } from 'utils/kakao';
+
+type LoginError = {
+  type: 'o-auth-token' | 'login-with-kakao';
+  code: number | string;
+  message: string;
+};
 
 const useKakaoLoginRedirect = (code: string) => {
   const router = useRouter();
   const { login } = useAuth();
-  const [isError, setIsError] = useState(false);
   const isRequestedRef = useRef(false);
+  const [error, setError] = useState<LoginError | null>(null);
 
   useEffect(() => {
     (async () => {
       if (isRequestedRef.current) return;
+      isRequestedRef.current = true;
+
+      let kakaoAccessToken = '';
 
       try {
-        isRequestedRef.current = true;
-        const { accessToken } = await postLoginWithKakao(code);
+        const { data } = await postKakaoOAuthToken(code);
+        kakaoAccessToken = data.access_token;
+      } catch (error: any) {
+        Sentry.captureException(error);
+        const code = error?.response?.data?.error_code;
+        const message = error?.response?.data?.error_description;
+        setError({
+          type: 'o-auth-token',
+          code,
+          message,
+        });
+        return;
+      }
+
+      try {
+        const { accessToken } = await postLoginWithKakao(kakaoAccessToken);
         login(accessToken);
         router.replace('/');
       } catch (error: any) {
@@ -35,22 +58,18 @@ const useKakaoLoginRedirect = (code: string) => {
         }
 
         Sentry.captureException(error);
-        setIsError(true);
-
-        if (status === 400) {
-          router.push('/');
-          enqueueSnackbar(
-            '카카오 로그인 요청 중에 에러가 발생했어요 😭 새로 고침 후 다시 시도해 주세요',
-            {
-              variant: 'error',
-            }
-          );
-        }
+        const code = error?.response?.data?.error?.code;
+        const message = error?.response?.data?.error?.message;
+        setError({
+          type: 'login-with-kakao',
+          code,
+          message,
+        });
       }
     })();
   }, [code, login, router]);
 
-  return { isError };
+  return { error };
 };
 
 export default useKakaoLoginRedirect;
