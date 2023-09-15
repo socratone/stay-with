@@ -7,6 +7,11 @@ type KakaoLoginButtonProps = {
   onClick?: () => void;
 };
 
+const CLIENT_ID = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
+const REDIRECT_URI = encodeURI(
+  `${process.env.NEXT_PUBLIC_BASE_URL}/login/redirect`
+);
+
 const KakaoIcon = () => (
   <svg
     width="20"
@@ -28,6 +33,9 @@ const KakaoLoginButton: React.FC<KakaoLoginButtonProps> = ({
 }) => {
   return (
     <ButtonBase
+      // 인가 코드 받기
+      // https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#request-code
+      href={`https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`}
       onClick={onClick}
       disabled={disabled}
       sx={{

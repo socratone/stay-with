@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+// client
+
 /**
  * 토큰 받기
  * https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#request-token
@@ -21,6 +23,8 @@ export const postKakaoOAuthToken = (code: string) => {
     }
   );
 };
+
+// server
 
 export type KakaoUser = {
   id: number;
