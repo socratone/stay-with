@@ -1,12 +1,10 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import ErrorMessage from 'components/ErrorMessage/ErrorMessage';
+import ErrorMessage from 'components/ErrorMessage';
 import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/constants';
-import KakaoLoginButton from 'components/KakaoLoginButton/KakaoLoginButton';
-import KakaoSdkScript from 'components/KakaoSdkScript';
+import KakaoLoginButton from 'components/KakaoLoginButton';
 import Link from 'next/link';
-import { enqueueSnackbar } from 'notistack';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type Error = {
   message: string;
@@ -18,7 +16,6 @@ const REDIRECT_URI = encodeURI(
 );
 
 const Login = () => {
-  const kakaoRef = useRef<any | null>(null);
   const [isRequested, setIsRequested] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
@@ -36,31 +33,6 @@ const Login = () => {
     };
   }, [isRequested]);
 
-  const handleScriptLoad = () => {
-    const { Kakao }: any = window;
-    if (!Kakao.isInitialized()) {
-      Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY);
-    }
-    kakaoRef.current = Kakao;
-  };
-
-  const handleKakaoLoginClick = () => {
-    if (kakaoRef.current?.Auth) {
-      kakaoRef.current.Auth.authorize({
-        redirectUri: `${process.env.NEXT_PUBLIC_BASE_URL}/login/redirect`,
-      });
-
-      setIsRequested(true);
-    } else {
-      enqueueSnackbar(
-        'Kakao SDK를 불러오는 중에 에러가 발생하여 로그인을 할 수 없습니다. 새로고침을 해주세요.',
-        {
-          variant: 'error',
-        }
-      );
-    }
-  };
-
   if (error) {
     return (
       <Box
@@ -75,44 +47,38 @@ const Login = () => {
   }
 
   return (
-    <>
+    <Box
+      height={`calc(100vh - ${GLOBAL_HEADER_HEIGHT})`}
+      display="flex"
+      flexDirection="column"
+    >
       <Box
-        height={`calc(100vh - ${GLOBAL_HEADER_HEIGHT})`}
+        flexGrow={1}
         display="flex"
         flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        gap={1}
+        p={2}
       >
-        <Box
-          flexGrow={1}
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-          gap={1}
-          p={2}
+        <Typography color="text.primary" textAlign="center">
+          {isRequested
+            ? '카카오 로그인을 시도중입니다 🥰'
+            : '서비스를 이용하려면 카카오 계정이 필요해요 🙂'}
+        </Typography>
+        <Link
+          href={`https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`}
+          onClick={() => setIsRequested(true)}
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            width: '100%',
+          }}
         >
-          <Typography color="text.primary" textAlign="center">
-            {isRequested
-              ? '카카오 로그인을 시도중입니다 🥰'
-              : '서비스를 이용하려면 카카오 계정이 필요해요 🙂'}
-          </Typography>
-          <Link
-            href={`https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`}
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              width: '100%',
-            }}
-          >
-            <KakaoLoginButton
-              disabled={isRequested}
-              onClick={handleKakaoLoginClick}
-            />
-          </Link>
-        </Box>
+          <KakaoLoginButton disabled={isRequested} />
+        </Link>
       </Box>
-
-      <KakaoSdkScript onLoad={handleScriptLoad} />
-    </>
+    </Box>
   );
 };
 
