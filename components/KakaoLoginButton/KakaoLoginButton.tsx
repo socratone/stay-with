@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 
 type KakaoLoginButtonProps = {
   disabled?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
 };
 
 const KakaoIcon = () => (

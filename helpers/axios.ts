@@ -101,12 +101,12 @@ export const postSignUp = (
     .then((response) => response.data);
 };
 
-export const postLoginWithKakao = (code: string) => {
+export const postLoginWithKakao = (accessToken: string) => {
   return axiosInstance
     .post<any, AxiosResponse<KakaoLoginPostResult>, KakaoLoginPostPayload>(
       '/api/login/kakao',
       {
-        code,
+        accessToken,
       }
     )
     .then((response) => response.data);
