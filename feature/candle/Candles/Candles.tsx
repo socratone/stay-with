@@ -2,17 +2,15 @@ import 'swiper/css';
 
 import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
-import { useQueryClient } from '@tanstack/react-query';
 import AlertDialog from 'components/AlertDialog/AlertDialog';
 import FloatingButton from 'components/FloatingButton/FloatingButton';
 import { deleteArrow, postArrow, putArrow } from 'helpers/axios';
-import { ARROWS_QUERY_KEY } from 'hooks/api/useArrows';
-import useArrowsInfinite from 'hooks/api/useArrowsInfinite';
+import useArrows from 'hooks/api/useArrows';
 import useAuth from 'hooks/auth/useAuth';
 import cloneDeep from 'lodash/cloneDeep';
 import { useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { Swiper, SwiperClass, SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { assignValue, assignValues, createEmptyBoard } from 'utils/board';
 
 import MessageDialog from '../MessageDialog';
@@ -27,13 +25,11 @@ type Dialog = {
 
 const Candles: React.FC = () => {
   const { formatMessage } = useIntl();
-  const queryClient = useQueryClient();
   const { user: me } = useAuth();
 
   const divRef = useRef<HTMLDivElement>(null);
 
-  const [boards, setBoards] = useState<(Candle | null)[][][]>([]);
-  const [page, setPage] = useState(1);
+  const [board, setBoard] = useState<(Candle | null)[][]>([]);
 
   const [messageDialog, setMessageDialog] = useState<Dialog | null>(null);
   const [deleteDialog, setDeleteDialog] = useState<Dialog | null>(null);
@@ -44,26 +40,20 @@ const Candles: React.FC = () => {
       ? Math.round(columnCount * rowCount * 0.4)
       : undefined;
 
-  const { data: arrowsData, fetchNextPage } = useArrowsInfinite({
-    limit: maxCandleCount,
-  });
-
-  // 다음 페이지 데이터 호출
-  useEffect(() => {
-    if (arrowsData && arrowsData.pages.length <= page) {
-      fetchNextPage();
-    }
-  }, [arrowsData, page, fetchNextPage]);
+  const { data: arrowsData } = useArrows(
+    {
+      skip: 0,
+      limit: maxCandleCount as number,
+    },
+    { enabled: !!maxCandleCount }
+  );
 
   // arrowsData 또는 화면 크기가 달라지면 board를 새로 생성한다.
   useEffect(() => {
     if (arrowsData && rowCount && columnCount) {
-      const boards = arrowsData.pages.map((arrowData) => {
-        const board = createEmptyBoard(rowCount, columnCount);
-        assignValues(board, arrowData.arrows);
-        return board;
-      });
-      setBoards(boards);
+      const board = createEmptyBoard(rowCount, columnCount);
+      assignValues(board, arrowsData.arrows);
+      setBoard(board);
     }
   }, [rowCount, columnCount, arrowsData]);
 
@@ -98,12 +88,6 @@ const Candles: React.FC = () => {
     }
   };
 
-  const refetch = () => {
-    queryClient.invalidateQueries({
-      queryKey: [ARROWS_QUERY_KEY],
-    });
-  };
-
   const addCandle = async (message: string) => {
     if (!me || message.length === 0) return;
     setMessageDialog(null);
@@ -114,10 +98,9 @@ const Candles: React.FC = () => {
         message: trimedMessage,
         userId: me._id,
       });
-      refetch();
-      setBoards((boards) => {
-        const newBoards = cloneDeep(boards);
-        const newBoard = newBoards[0];
+      // TODO: refetch for history view
+      setBoard((board) => {
+        const newBoard = cloneDeep(board);
         assignValue(newBoard, {
           _id: String(result.insertedId),
           message: trimedMessage,
@@ -125,7 +108,7 @@ const Candles: React.FC = () => {
           userId: me._id,
           createdAt: new Date(),
         });
-        return newBoards;
+        return newBoard;
       });
     } catch {
       //
@@ -143,12 +126,11 @@ const Candles: React.FC = () => {
       await putArrow(arrowId, {
         message: trimedMessage,
       });
-      refetch();
-      setBoards((boards) => {
-        const newBoards = cloneDeep(boards);
-        const newBoard = newBoards[page - 1];
+      // TODO: refetch for history view
+      setBoard((board) => {
+        const newBoard = cloneDeep(board);
         changeCandleMessage(newBoard, arrowId, trimedMessage);
-        return newBoards;
+        return newBoard;
       });
     } catch {
       //
@@ -163,20 +145,15 @@ const Candles: React.FC = () => {
 
     try {
       await deleteArrow(arrowId);
-      refetch();
-      setBoards((boards) => {
-        const newBoards = cloneDeep(boards);
-        const newBoard = newBoards[page - 1];
+      // TODO: refetch for history view
+      setBoard((board) => {
+        const newBoard = cloneDeep(board);
         changeCandle(newBoard, arrowId, null);
-        return newBoards;
+        return newBoard;
       });
     } catch {
       //
     }
-  };
-
-  const handleSlideChange = (swiper: SwiperClass) => {
-    setPage(swiper.activeIndex + 1);
   };
 
   const handleEdit = (id: string) => {
@@ -201,16 +178,17 @@ const Candles: React.FC = () => {
           },
         }}
       >
-        <Swiper onSlideChange={handleSlideChange}>
-          {boards.map((board, index) => (
-            <SwiperSlide key={index}>
-              <CandlesSlide
-                board={board}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-              />
-            </SwiperSlide>
-          ))}
+        <Swiper
+        // TODO: ArrowHistories의 page와 sync 되도록 수정
+        // onSlideChange={handleSlideChange}
+        >
+          <SwiperSlide>
+            <CandlesSlide
+              board={board}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
+          </SwiperSlide>
         </Swiper>
       </Box>
 
