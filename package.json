@@ -10,7 +10,8 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
-    "clone-database": "ts-node ./scripts/clone-database.ts"
+    "clone-database": "ts-node ./scripts/clone-database.ts",
+    "add-thumbnail": "ts-node ./scripts/add-thumbnail.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.10.0",
