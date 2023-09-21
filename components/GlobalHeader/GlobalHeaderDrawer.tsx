@@ -1,6 +1,7 @@
 import ArticleIcon from '@mui/icons-material/Article';
 import CloseIcon from '@mui/icons-material/Close';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import HeadphonesIcon from '@mui/icons-material/Headphones';
 import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 import SettingsIcon from '@mui/icons-material/Settings';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
@@ -50,6 +51,7 @@ const GlobalHeaderDrawer: React.FC<GlobalHeaderDrawerProps> = ({
             icon={<WhatshotIcon />}
             label="화살 기도"
           />
+          <ListLinkItem href="/musics" icon={<HeadphonesIcon />} label="음악" />
           <ListLinkItem
             href="/downloads"
             icon={<FileDownloadIcon />}
