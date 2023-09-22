@@ -10,6 +10,9 @@ const nextConfig = {
     locales: ['ko', 'en'],
     defaultLocale: 'ko',
   },
+  images: {
+    domains: ['i.ytimg.com', 'picsum.photos'],
+  },
   async redirects() {
     return [
       {
