@@ -25,7 +25,7 @@ const opts = {
   width: WIDTH,
 };
 
-const VideoPlayer = () => {
+const FloatingVideoPlayer = () => {
   const dispatch = useAppDispatch();
   const open = useAppSelector((state) => state.video.open);
   const globalHeaderHeight = useRemToPxNumber(GLOBAL_HEADER_HEIGHT);
@@ -189,4 +189,4 @@ const VideoPlayer = () => {
   );
 };
 
-export default VideoPlayer;
+export default FloatingVideoPlayer;
