@@ -51,7 +51,12 @@ const GlobalHeaderDrawer: React.FC<GlobalHeaderDrawerProps> = ({
             icon={<WhatshotIcon />}
             label="화살 기도"
           />
-          <ListLinkItem href="/musics" icon={<HeadphonesIcon />} label="음악" />
+          <ListLinkItem
+            href="/musics"
+            icon={<HeadphonesIcon />}
+            label="음악"
+            beta
+          />
           <ListLinkItem
             href="/downloads"
             icon={<FileDownloadIcon />}
