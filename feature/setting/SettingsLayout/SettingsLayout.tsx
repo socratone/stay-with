@@ -31,7 +31,7 @@ const SettingsLayout: React.FC<SettingsLayoutProps> = ({ children }) => {
               디스플레이
             </SideNavLinkItem>
             <SideNavLinkItem href="/settings/music" icon={<PianoIcon />}>
-              음악
+              배경 음악
             </SideNavLinkItem>
           </List>
         </Box>

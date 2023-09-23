@@ -2,21 +2,134 @@
   {
     "videoId": "aQvYvTjCflg",
     "title": "처음과 같이 끝에서도",
-    "thumbnailUrl": "https://i.ytimg.com/vi/aQvYvTjCflg/maxresdefault.jpg"
+    "artist": "열일곱이다",
+    "thumbnailUrl": "https://i.ytimg.com/vi/aQvYvTjCflg/maxresdefault.jpg",
+    "duration": 309
   },
   {
     "videoId": "pxrMdVsw6E0",
     "title": "아무것도 너를",
-    "thumbnailUrl": "https://i.ytimg.com/vi/pxrMdVsw6E0/maxresdefault.jpg"
+    "artist": "열일곱이다",
+    "thumbnailUrl": "https://i.ytimg.com/vi/pxrMdVsw6E0/maxresdefault.jpg",
+    "duration": 270
   },
   {
     "videoId": "pXeSg6f5mpI",
     "title": "소명",
-    "thumbnailUrl": "https://i.ytimg.com/vi/pXeSg6f5mpI/maxresdefault.jpg"
+    "artist": "열일곱이다",
+    "thumbnailUrl": "https://i.ytimg.com/vi/pXeSg6f5mpI/maxresdefault.jpg",
+    "duration": 375
   },
   {
     "videoId": "PgjSLM-5yYk",
     "title": "사제의 기도",
-    "thumbnailUrl": "https://i.ytimg.com/vi/PgjSLM-5yYk/maxresdefault.jpg"
+    "artist": "열일곱이다",
+    "thumbnailUrl": "https://i.ytimg.com/vi/PgjSLM-5yYk/maxresdefault.jpg",
+    "duration": 376
+  },
+  {
+    "videoId": "bnrZVhT7nXU",
+    "title": "사랑은 하느님에게서 오는 것이니",
+    "artist": "나정신",
+    "thumbnailUrl": "https://i.ytimg.com/vi/bnrZVhT7nXU/maxresdefault.jpg",
+    "duration": 256
+  },
+  {
+    "videoId": "W_eJbUyjFPM",
+    "title": "성체 앞에서",
+    "artist": "Nobis Cum",
+    "thumbnailUrl": "https://i.ytimg.com/vi/W_eJbUyjFPM/maxresdefault.jpg",
+    "duration": 295
+  },
+  {
+    "videoId": "swyqu_0gxwg",
+    "title": "천사들보단 못하게 만드셨어도",
+    "artist": "Nobis Cum",
+    "thumbnailUrl": "https://i.ytimg.com/vi/swyqu_0gxwg/maxresdefault.jpg",
+    "duration": 302
+  },
+  {
+    "videoId": "jmeQctdqa7o",
+    "title": "아버지 뜻대로",
+    "artist": "갓등 중창단",
+    "thumbnailUrl": "https://i.ytimg.com/vi/jmeQctdqa7o/maxresdefault.jpg",
+    "duration": 242
+  },
+  {
+    "videoId": "Gcpl5zZzmAk",
+    "title": "사랑한다는 말은",
+    "artist": "갓등 중창단",
+    "thumbnailUrl": "https://i.ytimg.com/vi/Gcpl5zZzmAk/maxresdefault.jpg",
+    "duration": 205
+  },
+  {
+    "videoId": "8TDZ831GScA",
+    "title": "내 발을 씻으신 예수",
+    "artist": "갓등 중창단",
+    "thumbnailUrl": "https://i.ytimg.com/vi/8TDZ831GScA/maxresdefault.jpg",
+    "duration": 267
+  },
+  {
+    "videoId": "pBArtFml3-o",
+    "title": "딜레마",
+    "artist": "갓등 중창단",
+    "thumbnailUrl": "https://i.ytimg.com/vi/pBArtFml3-o/maxresdefault.jpg",
+    "duration": 302
+  },
+  {
+    "videoId": "QF_oqUc76hk",
+    "title": "로고스 찬가",
+    "artist": "갓등 중창단",
+    "thumbnailUrl": "https://i.ytimg.com/vi/QF_oqUc76hk/maxresdefault.jpg",
+    "duration": 247
+  },
+  {
+    "videoId": "ygiMHAyDDhs",
+    "title": "봉헌",
+    "artist": "갓등 중창단",
+    "thumbnailUrl": "https://i.ytimg.com/vi/ygiMHAyDDhs/maxresdefault.jpg",
+    "duration": 255
+  },
+  {
+    "videoId": "XC9HpNnI84A",
+    "title": "사랑 이 한 마디만을",
+    "artist": "갓등 중창단",
+    "thumbnailUrl": "https://i.ytimg.com/vi/XC9HpNnI84A/maxresdefault.jpg",
+    "duration": 197
+  },
+  {
+    "videoId": "91TEM4snAl4",
+    "title": "그 소리 들었네",
+    "artist": "갓등 중창단",
+    "thumbnailUrl": "https://i.ytimg.com/vi/91TEM4snAl4/maxresdefault.jpg",
+    "duration": 207
+  },
+  {
+    "videoId": "zRU2FjAsfQA",
+    "title": "하느님 당신은 나의 모든 것",
+    "artist": "이노주사",
+    "thumbnailUrl": "https://i.ytimg.com/vi/zRU2FjAsfQA/maxresdefault.jpg",
+    "duration": 296
+  },
+  {
+    "videoId": "cAmq9LH46Xg",
+    "title": "요게벳의 노래",
+    "artist": "조찬미",
+    "thumbnailUrl": "https://i.ytimg.com/vi/cAmq9LH46Xg/maxresdefault.jpg",
+    "duration": 371
+  },
+  {
+    "videoId": "XvQsTYly7Vg",
+    "title": "사명",
+    "artist": "동방현주",
+    "thumbnailUrl": "https://i.ytimg.com/vi/XvQsTYly7Vg/maxresdefault.jpg",
+    "duration": 263
+  },
+  {
+    "videoId": "rSHIzFg3fig",
+    "title": "Benedicamus Domino",
+    "artist": "하늘바라기",
+    "thumbnailUrl": "https://i.ytimg.com/vi/rSHIzFg3fig/maxresdefault.jpg",
+    "duration": 350
   }
 ]
