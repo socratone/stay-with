@@ -21,12 +21,6 @@ const YoutubeItem: React.FC<YoutubeItemProps> = ({
         borderRadius: 6,
         position: 'relative',
         cursor: 'pointer',
-        iframe: {
-          width: '100%',
-          height: '100%',
-          display: 'block',
-          border: 0,
-        },
       }}
     >
       <Image src={imageUrl} alt={title} fill />
