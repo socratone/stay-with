@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react';
 import YouTube, { YouTubeEvent, YouTubePlayer } from 'react-youtube';
 
 import ArrowIcon from './ArrowIcon';
+import { PlaybackState, YOUTUBE_OPTS } from './constants';
 import NextIcon from './NextIcon';
 import PauseIcon from './PauseIcon';
 import PlayIcon from './PlayIcon';
@@ -16,19 +17,7 @@ import PreviousIcon from './PreviousIcon';
 import RepeatIcon from './RepeatIcon';
 import ShuffleIcon from './ShuffleIcon';
 import TimeProgress from './TimeProgress';
-
-const OPTS = {
-  height: 1080,
-  width: 1920,
-};
-
-export type MusicItem = {
-  title: string;
-  artist: string;
-  videoId: string;
-  thumbnailUrl: string;
-  duration: number;
-};
+import { MusicItem } from './types';
 
 type YoutubeMusicPlayerProps = {
   selectedItem: MusicItem | null;
@@ -45,7 +34,6 @@ const YoutubeMusicPlayer: React.FC<YoutubeMusicPlayerProps> = ({
   useEffect(() => {
     if (player && selectedItem?.videoId) {
       player.playVideo();
-      setIsPlaying(true);
     }
   }, [player, selectedItem?.videoId]);
 
@@ -68,20 +56,36 @@ const YoutubeMusicPlayer: React.FC<YoutubeMusicPlayerProps> = ({
   const handlePlay = () => {
     if (player) {
       player.playVideo();
-      setIsPlaying(true);
     }
   };
 
   const handlePause = () => {
     if (player) {
       player.pauseVideo();
-      setIsPlaying(false);
     }
   };
 
   const handleClose = () => {
     setPlayer(null);
     onClose();
+  };
+
+  const handleStateChange = (event: YouTubeEvent<number>) => {
+    const playbackState = event.data;
+
+    switch (playbackState) {
+      case PlaybackState.Playing:
+      case PlaybackState.Buffering:
+        setIsPlaying(true);
+        break;
+
+      case PlaybackState.Unstarted:
+      case PlaybackState.Ended:
+      case PlaybackState.Paused:
+      case PlaybackState.VideoCued:
+        setIsPlaying(false);
+        break;
+    }
   };
 
   return (
@@ -123,9 +127,10 @@ const YoutubeMusicPlayer: React.FC<YoutubeMusicPlayerProps> = ({
             <YouTube
               key={selectedItem.videoId}
               videoId={selectedItem?.videoId}
-              opts={OPTS}
+              opts={YOUTUBE_OPTS}
               onReady={handleReady}
               onEnd={handleEnd}
+              onStateChange={handleStateChange}
             />
           ) : null}
         </Box>

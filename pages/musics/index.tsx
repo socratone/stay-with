@@ -3,7 +3,7 @@ import Stack from '@mui/material/Stack';
 import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/constants';
 import YoutubeItem from 'components/YoutubeItem';
 import YoutubeMusicPlayer from 'components/YoutubeMusicPlayer';
-import { MusicItem } from 'components/YoutubeMusicPlayer/YoutubeMusicPlayer';
+import { MusicItem } from 'components/YoutubeMusicPlayer/types';
 import { motion } from 'framer-motion';
 import fs from 'fs';
 import useIsBreakpointsDown from 'hooks/theme/useIsBreakpointsDown';
