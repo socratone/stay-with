@@ -1,4 +1,3 @@
-import CloseIcon from '@mui/icons-material/Close';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import QueueMusicIcon from '@mui/icons-material/QueueMusic';
@@ -9,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import React, { useEffect, useState } from 'react';
 import YouTube, { YouTubeEvent, YouTubePlayer } from 'react-youtube';
 
+import ArrowIcon from './ArrowIcon';
 import NextIcon from './NextIcon';
 import PauseIcon from './PauseIcon';
 import PlayIcon from './PlayIcon';
@@ -97,7 +97,7 @@ const YoutubeMusicPlayer: React.FC<YoutubeMusicPlayerProps> = ({
         mx={-1}
       >
         <IconButton onClick={handleClose}>
-          <CloseIcon />
+          <ArrowIcon />
         </IconButton>
         <Typography color="text.primary" fontWeight={500} variant="body2">
           Now Playing
