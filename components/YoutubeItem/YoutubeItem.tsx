@@ -30,6 +30,7 @@ const YoutubeItem: React.FC<YoutubeItemProps> = ({
           overflow: 'hidden',
           borderRadius: 6,
           position: 'relative',
+          boxShadow: (theme) => theme.shadows[1],
         }}
       >
         <Image
