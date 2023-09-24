@@ -68,6 +68,7 @@ const Musics: NextPage<MusicsProps> = ({ items }) => {
                 <YoutubeItem
                   title={item.title}
                   imageUrl={item.thumbnailUrl}
+                  thumbnailShape={item.thumbnailShape}
                   onClick={() => handleClick(item)}
                 />
               </Box>
@@ -113,6 +114,7 @@ const Musics: NextPage<MusicsProps> = ({ items }) => {
             <YoutubeItem
               title={item.title}
               imageUrl={item.thumbnailUrl}
+              thumbnailShape={item.thumbnailShape}
               onClick={() => handleClick(item)}
             />
           </Box>

@@ -31,6 +31,8 @@ const YoutubeMusicPlayer: React.FC<YoutubeMusicPlayerProps> = ({
   const [player, setPlayer] = useState<YouTubePlayer | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
+  const isSquare = selectedItem?.thumbnailShape === 'square';
+
   useEffect(() => {
     if (player && selectedItem?.videoId) {
       player.playVideo();
@@ -110,16 +112,16 @@ const YoutubeMusicPlayer: React.FC<YoutubeMusicPlayerProps> = ({
           <QueueMusicIcon />
         </IconButton>
       </Stack>
-      <Box px="3%" mb={4}>
+      <Box px={isSquare ? '16%' : '3%'} mb={4}>
         <Box
           borderRadius={6}
           overflow="hidden"
           sx={{
-            aspectRatio: '1920 / 1080',
+            aspectRatio: isSquare ? '1 / 1' : '1920 / 1080',
             iframe: {
               width: '100%',
               height: '100%',
-              aspectRatio: '1920 / 1080',
+              aspectRatio: isSquare ? '1 / 1' : '1920 / 1080',
             },
           }}
         >

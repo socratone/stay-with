@@ -3,5 +3,6 @@ export type MusicItem = {
   artist: string;
   videoId: string;
   thumbnailUrl: string;
+  thumbnailShape?: 'square';
   duration: number;
 };
