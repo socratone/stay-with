@@ -37,4 +37,8 @@ export enum PlaybackState {
 export const YOUTUBE_OPTS = {
   height: 1080,
   width: 1920,
+  playerVars: {
+    /** Set to 0 to hide the controls */
+    controls: 0,
+  },
 };
