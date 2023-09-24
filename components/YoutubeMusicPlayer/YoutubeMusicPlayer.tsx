@@ -2,8 +2,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import QueueMusicIcon from '@mui/icons-material/QueueMusic';
-import RepeatRoundedIcon from '@mui/icons-material/RepeatRounded';
-import ShuffleRoundedIcon from '@mui/icons-material/ShuffleRounded';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
@@ -15,6 +13,8 @@ import NextIcon from './NextIcon';
 import PauseIcon from './PauseIcon';
 import PlayIcon from './PlayIcon';
 import PreviousIcon from './PreviousIcon';
+import RepeatIcon from './RepeatIcon';
+import ShuffleIcon from './ShuffleIcon';
 import TimeProgress from './TimeProgress';
 
 const OPTS = {
@@ -177,8 +177,8 @@ const YoutubeMusicPlayer: React.FC<YoutubeMusicPlayerProps> = ({
         mx={-1}
         pb={2} // bottom padding
       >
-        <IconButton disabled sx={{ transform: 'rotate(-90deg)' }}>
-          <ShuffleRoundedIcon />
+        <IconButton disabled>
+          <ShuffleIcon />
         </IconButton>
         <IconButton disabled>
           <PreviousIcon />
@@ -213,7 +213,7 @@ const YoutubeMusicPlayer: React.FC<YoutubeMusicPlayerProps> = ({
           <NextIcon />
         </IconButton>
         <IconButton disabled>
-          <RepeatRoundedIcon />
+          <RepeatIcon />
         </IconButton>
       </Stack>
     </Box>

@@ -14,6 +14,10 @@ export const lightPalette: PaletteOptions = {
     main: '#ff9903',
     contrastText: '#fff',
   },
+  action: {
+    /** default는 opacity가 포함 된다. */
+    disabled: '#bdbdbd',
+  },
 };
 
 export const darkPalette: PaletteOptions = {
@@ -27,5 +31,9 @@ export const darkPalette: PaletteOptions = {
   kakao: { main: '#f2d00f', contrastText: '#1a1a1c' },
   primary: {
     main: '#ff9903',
+  },
+  action: {
+    /** default는 opacity가 포함 된다. */
+    disabled: '#4d4d4d',
   },
 };
