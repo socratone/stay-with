@@ -1,3 +1,4 @@
+import { Masonry } from '@mui/lab';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/constants';
@@ -97,28 +98,31 @@ const Musics: NextPage<MusicsProps> = ({ items }) => {
       </Box>
 
       <Box
-        flexGrow={1}
-        component={motion.div}
-        {...popUpContainer}
-        display="grid"
-        gridTemplateColumns="repeat(auto-fill, minmax(300px, 1fr))"
-        gap={2}
         p={2}
+        pr={0}
+        flexGrow={1}
         sx={{
           ml: open ? undefined : `-${PLAYER_WIDTH}`,
           transition: TRANSITION,
         }}
       >
-        {items.map((item) => (
-          <Box component={motion.div} {...popUpItem} key={item.videoId}>
-            <YoutubeItem
-              title={item.title}
-              imageUrl={item.thumbnailUrl}
-              thumbnailShape={item.thumbnailShape}
-              onClick={() => handleClick(item)}
-            />
-          </Box>
-        ))}
+        <Masonry
+          component={motion.div}
+          {...popUpContainer}
+          spacing={2}
+          columns={{ sm: 1, md: 2, lg: 3, xl: 4 }}
+        >
+          {items.map((item) => (
+            <Box component={motion.div} {...popUpItem} key={item.videoId}>
+              <YoutubeItem
+                title={item.title}
+                imageUrl={item.thumbnailUrl}
+                thumbnailShape={item.thumbnailShape}
+                onClick={() => handleClick(item)}
+              />
+            </Box>
+          ))}
+        </Masonry>
       </Box>
     </Box>
   );
