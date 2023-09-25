@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import YouTube, { YouTubeEvent, YouTubePlayer } from 'react-youtube';
 
 import ArrowIcon from './ArrowIcon';
@@ -28,6 +28,8 @@ const YoutubeMusicPlayer: React.FC<YoutubeMusicPlayerProps> = ({
   selectedItem,
   onClose,
 }) => {
+  const playerRef = useRef<YouTube>(null);
+
   const [player, setPlayer] = useState<YouTubePlayer | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -41,6 +43,8 @@ const YoutubeMusicPlayer: React.FC<YoutubeMusicPlayerProps> = ({
 
   const handleReady = (event: YouTubeEvent) => {
     setPlayer(event.target);
+    // 아래 코드를 넣으면 ios mobile에서도 두 번째 재생시에 자동으로 재생된다.
+    playerRef.current?.internalPlayer.playVideo();
   };
 
   const handleEnd = () => {
@@ -127,6 +131,7 @@ const YoutubeMusicPlayer: React.FC<YoutubeMusicPlayerProps> = ({
         >
           {selectedItem ? (
             <YouTube
+              ref={playerRef}
               key={selectedItem.videoId}
               videoId={selectedItem?.videoId}
               opts={YOUTUBE_OPTS}
