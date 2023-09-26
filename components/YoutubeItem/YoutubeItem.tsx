@@ -1,4 +1,5 @@
-import { Typography } from '@mui/material';
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
+import { IconButton, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Image from 'next/image';
@@ -7,25 +8,23 @@ type YoutubeItemProps = {
   title: string;
   thumbnailShape?: 'square';
   imageUrl: string;
-  onClick: () => void;
+  onPlay: () => void;
+  onListAdd: () => void;
 };
 
 const YoutubeItem: React.FC<YoutubeItemProps> = ({
   title,
   thumbnailShape,
   imageUrl,
-  onClick,
+  onPlay,
+  onListAdd,
 }) => {
   return (
-    <Stack
-      gap={1}
-      onClick={onClick}
-      sx={{
-        cursor: 'pointer',
-      }}
-    >
+    <Stack gap={1}>
       <Box
+        onClick={onPlay}
         sx={{
+          cursor: 'pointer',
           aspectRatio: thumbnailShape === 'square' ? '1 / 1' : '640 / 360',
           overflow: 'hidden',
           borderRadius: 6,
@@ -42,14 +41,21 @@ const YoutubeItem: React.FC<YoutubeItemProps> = ({
           }}
         />
       </Box>
-      <Typography
-        color="text.primary"
-        fontWeight={500}
-        variant="h6"
-        textAlign="center"
-      >
-        {title}
-      </Typography>
+      <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <Typography
+          color="text.primary"
+          fontWeight={500}
+          variant="h6"
+          textOverflow="ellipsis"
+          overflow="hidden"
+          noWrap
+        >
+          {title}
+        </Typography>
+        <IconButton onClick={onListAdd} sx={{ my: -1 }}>
+          <PlaylistAddIcon />
+        </IconButton>
+      </Stack>
     </Stack>
   );
 };
