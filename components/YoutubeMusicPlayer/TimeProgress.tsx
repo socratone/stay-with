@@ -2,8 +2,10 @@ import { LinearProgress } from '@mui/material';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
 import { YouTubePlayer } from 'react-youtube';
+import { parseSecondsToMMSS } from 'utils/date';
+
+import useCurrentPlayTime from './useCurrentPlayTime';
 
 type TimeProgressProps = {
   player: YouTubePlayer | null;
@@ -11,27 +13,7 @@ type TimeProgressProps = {
 };
 
 const TimeProgress: React.FC<TimeProgressProps> = ({ player, duration }) => {
-  const [currentPlayTime, setCurrentPlayTime] = useState(0);
-
-  useEffect(() => {
-    // Use a setInterval to periodically update the current play time
-    const interval = setInterval(() => {
-      if (player) {
-        const currentTime = player.getCurrentTime();
-        setCurrentPlayTime(currentTime);
-      }
-    }, 1000); // Update every 1 second
-
-    // Clean up the interval when the component unmounts
-    return () => clearInterval(interval);
-  }, [player]);
-
-  const parseSecondsToMMSS = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = Math.floor(seconds % 60);
-    const secondsString = String(remainingSeconds).padStart(2, '0');
-    return `${minutes}:${secondsString}`;
-  };
+  const { currentPlayTime } = useCurrentPlayTime(player);
 
   const handleProgressClick = (event: React.MouseEvent<HTMLDivElement>) => {
     const div = event.target as HTMLDivElement;
