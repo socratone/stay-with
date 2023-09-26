@@ -9,14 +9,14 @@ const PauseIcon = () => (
     <path
       d="M8 6L8 18"
       stroke="currentColor"
-      stroke-width="4"
-      stroke-linecap="round"
+      strokeWidth="4"
+      strokeLinecap="round"
     />
     <path
       d="M16 6V18"
       stroke="currentColor"
-      stroke-width="4"
-      stroke-linecap="round"
+      strokeWidth="4"
+      strokeLinecap="round"
     />
   </svg>
 );

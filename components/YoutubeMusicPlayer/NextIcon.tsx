@@ -14,8 +14,8 @@ const NextIcon = () => (
       <path
         d="M21 4.5L21 20"
         stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
+        strokeWidth="2"
+        strokeLinecap="round"
       />
     </g>
   </svg>
