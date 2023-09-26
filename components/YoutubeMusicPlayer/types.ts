@@ -1,4 +1,4 @@
-export type MusicItem = {
+export type YoutubeVideo = {
   title: string;
   artist: string;
   videoId: string;
@@ -6,3 +6,5 @@ export type MusicItem = {
   thumbnailShape?: 'square';
   duration: number;
 };
+
+export type PlayerSize = 'full' | 'small';

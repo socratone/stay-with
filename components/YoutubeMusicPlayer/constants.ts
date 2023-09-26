@@ -42,3 +42,5 @@ export const YOUTUBE_OPTS = {
     controls: 0,
   },
 };
+
+export const PLAYER_SMALL_HEIGHT = '4rem';
