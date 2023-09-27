@@ -98,20 +98,20 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark, backButton }) => {
                 onClick={handleBack}
                 sx={{ color: dark ? '#fff' : undefined }}
               >
-                <ArrowBackIcon />
+                <ArrowBackIcon aria-label="Back" />
               </IconButton>
             ) : (
               <IconButton
                 onClick={handleMenuOpen}
                 sx={{ color: dark ? '#fff' : undefined }}
               >
-                <MenuIcon />
+                <MenuIcon aria-label="Menu" />
               </IconButton>
             )}
           </Box>
           <Stack direction="row" alignItems="center" height="100%">
             <IconButton size="small" onClick={handleVideoClick}>
-              <MusicNoteIcon />
+              <MusicNoteIcon aria-label="Background music" />
             </IconButton>
             {!dark ? (
               <DarkModeSwitch
@@ -131,7 +131,7 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark, backButton }) => {
                       : 'default'
                   }
                 >
-                  <NotificationsIcon />
+                  <NotificationsIcon aria-label="Notifications" />
                 </Badge>
               </IconButton>
             ) : null}

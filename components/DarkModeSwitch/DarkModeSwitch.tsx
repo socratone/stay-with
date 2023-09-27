@@ -19,7 +19,11 @@ const DarkModeSwitch: React.FC<DarkModeSwitchProps> = ({
 }) => {
   return (
     <IconButton size="small" disabled={disabled} onClick={onClick} sx={sx}>
-      {checked ? <DarkModeIcon /> : <LightModeIcon />}
+      {checked ? (
+        <DarkModeIcon aria-label="Dark mode" />
+      ) : (
+        <LightModeIcon aria-label="Light mode" />
+      )}
     </IconButton>
   );
 };
