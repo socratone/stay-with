@@ -1,3 +1,4 @@
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { alpha } from '@mui/material';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -101,7 +102,10 @@ const SmallPlayer: React.FC<SmallPlayerProps> = ({
             {video?.artist}
           </Typography>
         </Stack>
-        <Box pr={2}>
+        <Stack direction="row" gap={1.5} pr={2}>
+          <IconButton disabled>
+            <FavoriteBorderIcon />
+          </IconButton>
           {isPlaying ? (
             <IconButton
               onClick={onPause}
@@ -131,7 +135,7 @@ const SmallPlayer: React.FC<SmallPlayerProps> = ({
               <PlayIcon />
             </IconButton>
           )}
-        </Box>
+        </Stack>
       </Stack>
     </Box>
   );
