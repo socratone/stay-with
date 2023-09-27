@@ -278,6 +278,7 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
       {/* footer */}
       <Stack direction="row" alignItems="center" p={1}>
         <IconButton
+          aria-label="Like"
           disabled={likeButtonDisabled}
           size="small"
           onClick={handleLikeButtonClick}
@@ -307,6 +308,7 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
           </Typography>
         ) : null}
         <IconButton
+          aria-label="Comments"
           size="small"
           onClick={onCommentButtonClick}
           sx={footerIconSx}
