@@ -70,19 +70,29 @@ const Musics: NextPage<MusicsProps> = ({ items }) => {
 
   const handlePlay = (video: YoutubeVideo) => {
     setVideo(video);
-    setPlayList((playList) => [...playList, video]);
+    setPlayList((playList) => {
+      const filteredPlayList = playList.filter(
+        (item) => item.videoId !== video.videoId
+      );
+      return [...filteredPlayList, video];
+    });
   };
 
-  const handleSizeChange = (size: PlayerSize) => {
-    setPlayerSize(size);
+  const handleListAdd = (video: YoutubeVideo) => {
+    setPlayList((playList) => {
+      const filteredPlayList = playList.filter(
+        (item) => item.videoId !== video.videoId
+      );
+      return [...filteredPlayList, video];
+    });
   };
 
   const handleChange = (video: YoutubeVideo) => {
     setVideo(video);
   };
 
-  const handleListAdd = (video: YoutubeVideo) => {
-    setPlayList((playList) => [...playList, video]);
+  const handleSizeChange = (size: PlayerSize) => {
+    setPlayerSize(size);
   };
 
   if (isMediumOrSmaller) {
