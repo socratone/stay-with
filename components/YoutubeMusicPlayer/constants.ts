@@ -43,4 +43,4 @@ export const YOUTUBE_OPTS = {
   },
 };
 
-export const PLAYER_SMALL_HEIGHT = '4rem';
+export const PLAYER_SMALL_HEIGHT = '4.5rem';

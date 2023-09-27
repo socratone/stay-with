@@ -109,9 +109,9 @@ const Musics: NextPage<MusicsProps> = ({ items }) => {
             sx={{
               transition: 'all .5s ease',
               borderTopLeftRadius: (theme) =>
-                playerSize === 'full' ? undefined : theme.spacing(3),
+                playerSize === 'full' ? undefined : theme.spacing(2),
               borderTopRightRadius: (theme) =>
-                playerSize === 'full' ? undefined : theme.spacing(3),
+                playerSize === 'full' ? undefined : theme.spacing(2),
               boxShadow: (theme) => theme.shadows[1],
               overflow: 'hidden',
             }}

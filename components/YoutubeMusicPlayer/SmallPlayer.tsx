@@ -103,7 +103,7 @@ const SmallPlayer: React.FC<SmallPlayerProps> = ({
           </Typography>
         </Stack>
         <Stack direction="row" gap={1.5} pr={2}>
-          <IconButton disabled>
+          <IconButton size="small" disabled>
             <FavoriteBorderIcon />
           </IconButton>
           {isPlaying ? (
@@ -112,9 +112,9 @@ const SmallPlayer: React.FC<SmallPlayerProps> = ({
               sx={{
                 color: (theme) => theme.palette.common.white,
                 bgcolor: (theme) => theme.palette.primary.main,
-                width: 40,
-                height: 40,
-                borderRadius: 3,
+                width: 48,
+                height: 48,
+                borderRadius: 4,
               }}
               size="small"
             >
@@ -126,9 +126,9 @@ const SmallPlayer: React.FC<SmallPlayerProps> = ({
               sx={{
                 color: (theme) => theme.palette.common.white,
                 bgcolor: (theme) => theme.palette.primary.main,
-                width: 40,
-                height: 40,
-                borderRadius: 3,
+                width: 48,
+                height: 48,
+                borderRadius: 4,
               }}
               size="small"
             >
