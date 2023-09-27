@@ -1,6 +1,5 @@
 import { Masonry } from '@mui/lab';
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
 import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/constants';
 import YoutubeItem from 'components/YoutubeItem';
 import YoutubeMusicPlayer from 'components/YoutubeMusicPlayer';
@@ -136,19 +135,26 @@ const Musics: NextPage<MusicsProps> = ({ items }) => {
           </Box>
         ) : null}
 
-        <Stack component={motion.div} {...popUpContainer} gap={2} padding={2}>
-          {items.map((item) => (
-            <Box component={motion.div} {...popUpItem} key={item.videoId}>
-              <YoutubeItem
-                title={item.title}
-                imageUrl={item.thumbnailUrl}
-                thumbnailShape={item.thumbnailShape}
-                onPlay={() => handlePlay(item)}
-                onListAdd={() => handleListAdd(item)}
-              />
-            </Box>
-          ))}
-        </Stack>
+        <Box p={2} pr={0} pb={PLAYER_SMALL_HEIGHT}>
+          <Masonry
+            component={motion.div}
+            {...popUpContainer}
+            spacing={2}
+            columns={{ xs: 1, sm: 2 }}
+          >
+            {items.map((item) => (
+              <Box component={motion.div} {...popUpItem} key={item.videoId}>
+                <YoutubeItem
+                  title={item.title}
+                  imageUrl={item.thumbnailUrl}
+                  thumbnailShape={item.thumbnailShape}
+                  onPlay={() => handlePlay(item)}
+                  onListAdd={() => handleListAdd(item)}
+                />
+              </Box>
+            ))}
+          </Masonry>
+        </Box>
       </>
     );
   }
