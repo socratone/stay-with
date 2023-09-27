@@ -4,6 +4,7 @@ type IconProps = {
 
 const OutlinedLikedIcon: React.FC<IconProps> = ({ color }) => (
   <svg
+    aria-label="Delete like"
     xmlns="http://www.w3.org/2000/svg"
     width="24"
     height="24"

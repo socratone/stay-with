@@ -215,7 +215,7 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
                 size="small"
                 sx={{ boxShadow: PRIMARY_SHADOW }}
               >
-                <MoreHorizIcon />
+                <MoreHorizIcon aria-label="Option menu" />
               </IconButton>
               <SmallMenu anchorEl={anchorEl} open={open} onClose={handleClose}>
                 <MenuItem onClick={handleEdit}>수정</MenuItem>
@@ -325,6 +325,7 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
             sx={{ ml: 'auto' }}
           >
             <ShareIcon
+              aria-label="Share lexio divina link"
               sx={{
                 color: theme.palette.text.secondary,
                 fontSize: '1.65rem',

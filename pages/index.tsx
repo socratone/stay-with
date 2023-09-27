@@ -74,7 +74,7 @@ const Home: NextPage = () => {
 
       {isLoggedIn ? (
         <FloatingButton
-          icon={<AddIcon />}
+          icon={<AddIcon aria-label="New lexio divina" />}
           hidden={scrollDirection === 'down'}
           onClick={handleAdd}
         />
