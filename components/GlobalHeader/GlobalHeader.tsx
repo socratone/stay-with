@@ -95,23 +95,29 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark, backButton }) => {
           <Box display="flex" alignItems="center" ml={-1}>
             {backButton ? (
               <IconButton
+                aria-label="Back"
                 onClick={handleBack}
                 sx={{ color: dark ? '#fff' : undefined }}
               >
-                <ArrowBackIcon aria-label="Back" />
+                <ArrowBackIcon />
               </IconButton>
             ) : (
               <IconButton
+                aria-label="Menu"
                 onClick={handleMenuOpen}
                 sx={{ color: dark ? '#fff' : undefined }}
               >
-                <MenuIcon aria-label="Menu" />
+                <MenuIcon />
               </IconButton>
             )}
           </Box>
           <Stack direction="row" alignItems="center" height="100%">
-            <IconButton size="small" onClick={handleVideoClick}>
-              <MusicNoteIcon aria-label="Background music" />
+            <IconButton
+              aria-label="Background music"
+              size="small"
+              onClick={handleVideoClick}
+            >
+              <MusicNoteIcon />
             </IconButton>
             {!dark ? (
               <DarkModeSwitch
@@ -120,7 +126,11 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark, backButton }) => {
               />
             ) : null}
             {user ? (
-              <IconButton size="small" onClick={handleNotificationClick}>
+              <IconButton
+                aria-label="Notifications"
+                size="small"
+                onClick={handleNotificationClick}
+              >
                 <Badge
                   overlap="circular"
                   anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
@@ -131,7 +141,7 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = ({ dark, backButton }) => {
                       : 'default'
                   }
                 >
-                  <NotificationsIcon aria-label="Notifications" />
+                  <NotificationsIcon />
                 </Badge>
               </IconButton>
             ) : null}

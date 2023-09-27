@@ -320,12 +320,12 @@ const LexioDivinaCard: React.FC<LexioDivinaCardProps> = ({
         ) : null}
         {onShareButtonClick ? (
           <IconButton
+            aria-label="Share lexio divina link"
             size="small"
             onClick={onShareButtonClick}
             sx={{ ml: 'auto' }}
           >
             <ShareIcon
-              aria-label="Share lexio divina link"
               sx={{
                 color: theme.palette.text.secondary,
                 fontSize: '1.65rem',
