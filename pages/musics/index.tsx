@@ -106,14 +106,23 @@ const Musics: NextPage<MusicsProps> = ({ items }) => {
               boxShadow: (theme) => theme.shadows[1],
               overflow: 'hidden',
             }}
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
           >
-            <YoutubeMusicPlayer
-              video={video}
-              playList={playList}
-              onChange={handleChange}
-              size={playerSize}
-              onSizeChange={handleSizeChange}
-            />
+            <Box
+              width="100%"
+              height="100%"
+              maxWidth={playerSize === 'full' ? PLAYER_WIDTH : undefined}
+            >
+              <YoutubeMusicPlayer
+                video={video}
+                playList={playList}
+                onChange={handleChange}
+                size={playerSize}
+                onSizeChange={handleSizeChange}
+              />
+            </Box>
           </Box>
         ) : null}
 
