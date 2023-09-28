@@ -47,14 +47,9 @@ const YoutubeMusicPlayer: React.FC<YoutubeMusicPlayerProps> = ({
 
   const isSquare = video?.thumbnailShape === 'square';
 
-  useEffect(() => {
-    if (player?.playVideo && video?.videoId) {
-      player?.playVideo();
-    }
-  }, [player, video?.videoId]);
-
   const handleReady = (event: YouTubeEvent) => {
     setPlayer(event.target);
+    event.target?.playVideo();
     // 아래 코드를 넣으면 ios mobile에서도 두 번째 재생시에 자동으로 재생된다.
     playerRef.current?.internalPlayer.playVideo();
   };
