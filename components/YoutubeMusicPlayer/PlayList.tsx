@@ -14,7 +14,6 @@ type PlayListProps = {
   player: YouTubePlayer;
 };
 
-// TODO: scroll
 const PlayList: React.FC<PlayListProps> = ({
   items,
   video,
@@ -24,8 +23,7 @@ const PlayList: React.FC<PlayListProps> = ({
   const { currentPlayTime } = useCurrentPlayTime(player);
 
   return (
-    <Stack pl="6%" pr="3%">
-      {/* TODO: key 수정 */}
+    <Stack pl="6%" pr="3%" pb={1}>
       {items.map((item, index) => {
         const order = index + 1;
 

@@ -130,6 +130,7 @@ const Musics: NextPage<MusicsProps> = ({ items }) => {
                 onChange={handleChange}
                 size={playerSize}
                 onSizeChange={handleSizeChange}
+                height={`calc(100vh - ${GLOBAL_HEADER_HEIGHT})`}
               />
             </Box>
           </Box>
@@ -173,6 +174,7 @@ const Musics: NextPage<MusicsProps> = ({ items }) => {
             video={video}
             playList={playList}
             onChange={handleChange}
+            height={`calc(100vh - ${GLOBAL_HEADER_HEIGHT})`}
           />
         </Box>
       </Box>

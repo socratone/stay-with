@@ -27,6 +27,7 @@ type YoutubeMusicPlayerProps = {
   onChange: (video: YoutubeVideo) => void;
   size?: PlayerSize;
   onSizeChange?: (size: PlayerSize) => void;
+  height?: string;
 };
 
 const YoutubeMusicPlayer: React.FC<YoutubeMusicPlayerProps> = ({
@@ -35,6 +36,7 @@ const YoutubeMusicPlayer: React.FC<YoutubeMusicPlayerProps> = ({
   onChange,
   size,
   onSizeChange,
+  height,
 }) => {
   const playerRef = useRef<YouTube>(null);
 
@@ -116,7 +118,7 @@ const YoutubeMusicPlayer: React.FC<YoutubeMusicPlayerProps> = ({
   };
 
   return (
-    <Box position="relative">
+    <Box position="relative" height={height} overflow="auto">
       {size === 'small' ? (
         <SmallPlayer
           video={video}
