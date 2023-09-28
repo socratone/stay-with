@@ -1,8 +1,11 @@
 import { styled } from '@mui/material';
 import Box from '@mui/material/Box';
+import { ElementType } from 'react';
 
 type NotionStyleHtmlContentProps = {
-  html: string;
+  html?: string;
+  component?: ElementType<any>;
+  children?: React.ReactNode;
 };
 
 const StyledBox = styled(Box)`
@@ -35,6 +38,7 @@ const StyledBox = styled(Box)`
     font-weight: ${({ theme }) => theme.typography.mh3.fontWeight};
     padding: ${({ theme }) => theme.typography.mh3.padding};
     margin: ${({ theme }) => theme.typography.mh3.margin};
+    margin-top: 1rem; /* 16px */
   }
 
   p {
@@ -59,25 +63,55 @@ const StyledBox = styled(Box)`
     padding-left: 1.375rem; /* 22px */
   }
 
+  li {
+    line-height: 1.8;
+  }
+
   a {
     color: dodgerblue;
   }
 
+  /* single line code */
+
   code {
     font-family: inherit;
+    font-size: 85%;
     color: #eb5757;
     background: rgba(135, 131, 120, 0.15);
     border-radius: 3px;
-    font-size: 85%;
     padding: 2.72px 5.44px;
+  }
+
+  /* multi line code */
+
+  pre {
+    padding: 34px 16px 32px 32px;
+    background: rgb(247, 246, 243);
+    overflow-x: auto;
+  }
+
+  pre > code {
+    font-family: inherit;
+    font-size: ${({ theme }) => theme.typography.mp.fontSize};
+    color: #690;
+    background: unset;
+    border-radius: unset;
+    padding: unset;
   }
 `;
 
 const NotionStyleHtmlContent: React.FC<NotionStyleHtmlContentProps> = ({
   html,
+  component,
+  children,
 }) => {
   return (
-    <StyledBox component="article" dangerouslySetInnerHTML={{ __html: html }} />
+    <StyledBox
+      component={component}
+      dangerouslySetInnerHTML={html ? { __html: html } : undefined}
+    >
+      {children}
+    </StyledBox>
   );
 };
 
