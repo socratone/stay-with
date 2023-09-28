@@ -1,3 +1,4 @@
+import EqualizerIcon from '@mui/icons-material/Equalizer';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -21,6 +22,20 @@ const PlayList: React.FC<PlayListProps> = ({
   player,
 }) => {
   const { currentPlayTime } = useCurrentPlayTime(player);
+
+  const renderOrder = (order: number, isPlaying: boolean) => {
+    if (isPlaying) {
+      return (
+        <EqualizerIcon sx={{ color: (theme) => theme.palette.text.primary }} />
+      );
+    }
+
+    return (
+      <Typography color="text.primary" fontWeight={500}>
+        {order < 10 ? '0' + order : order}
+      </Typography>
+    );
+  };
 
   return (
     <Stack pl="6%" pr="3%" pb={1}>
@@ -60,9 +75,7 @@ const PlayList: React.FC<PlayListProps> = ({
               />
             ) : null}
             <Box display="flex" alignItems="center" width={32}>
-              <Typography color="text.primary" fontWeight={500}>
-                {order < 10 ? '0' + order : order}
-              </Typography>
+              {renderOrder(order, item.videoId === video?.videoId)}
             </Box>
             <Stack>
               <Typography color="text.primary" fontWeight={500}>

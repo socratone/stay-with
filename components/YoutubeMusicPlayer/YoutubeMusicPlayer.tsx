@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import YouTube, { YouTubeEvent, YouTubePlayer } from 'react-youtube';
 
 import ArrowIcon from './ArrowIcon';
@@ -281,7 +281,6 @@ const YoutubeMusicPlayer: React.FC<YoutubeMusicPlayerProps> = ({
                 <PlayIcon />
               </IconButton>
             )}
-
             <IconButton
               onClick={next}
               disabled={
