@@ -113,7 +113,7 @@ const YoutubeMusicPlayer: React.FC<YoutubeMusicPlayerProps> = ({
   };
 
   return (
-    <Box position="relative" height={height} overflow="auto">
+    <Box position="relative" height={height} sx={{ overflowY: 'auto' }}>
       {size === 'small' ? (
         <SmallPlayer
           video={video}
@@ -130,6 +130,7 @@ const YoutubeMusicPlayer: React.FC<YoutubeMusicPlayerProps> = ({
         mb={1}
         pt={1}
         pb={0.5}
+        width="100%" // remove x scroll
         px="6%"
         mx={-1}
       >
@@ -200,6 +201,7 @@ const YoutubeMusicPlayer: React.FC<YoutubeMusicPlayerProps> = ({
             alignItems="center"
             direction="row"
             px="6%"
+            width="100%" // remove x scroll
             mx={-1}
           >
             <IconButton disabled>
@@ -239,6 +241,7 @@ const YoutubeMusicPlayer: React.FC<YoutubeMusicPlayerProps> = ({
             justifyContent="space-between"
             alignItems="center"
             px="6%"
+            width="100%" // remove x scroll
             mx={-1}
             pb={2} // bottom padding
           >
