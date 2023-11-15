@@ -9,7 +9,6 @@ import { GLOBAL_HEADER_HEIGHT } from 'components/GlobalHeader/constants';
 import LexioDivinaForm, {
   LexioDivinaFormValues,
 } from 'components/LexioDivinaForm/LexioDivinaForm';
-import LoginMessage from 'components/LoginMessage';
 import { Bible, BIBLE_LABEL } from 'constants/bible';
 import { postLexioDivina } from 'helpers/axios';
 import useAuth from 'hooks/auth/useAuth';
@@ -113,20 +112,6 @@ const LexioDivinaCreate = () => {
     }
   };
 
-  // 로그인을 하지 않았을 경우
-  if (!user) {
-    return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="100vh"
-      >
-        <LoginMessage />
-      </Box>
-    );
-  }
-
   return (
     <>
       {!isMediumOrSmaller ? (
@@ -148,6 +133,7 @@ const LexioDivinaCreate = () => {
                 <Box position="sticky" top={GLOBAL_HEADER_HEIGHT} py={2}>
                   <LexioDivinaForm
                     form={form}
+                    isAccessible={!!user}
                     isRequested={isRequested}
                     contentRows={15}
                     onCancel={handleCancel}
@@ -193,6 +179,7 @@ const LexioDivinaCreate = () => {
             <Box ref={ref}>
               <LexioDivinaForm
                 form={form}
+                isAccessible={!!user}
                 isRequested={isRequested}
                 contentRows={2}
                 onCancel={handleCancel}
