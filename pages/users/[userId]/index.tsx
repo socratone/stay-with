@@ -7,7 +7,6 @@ import LexioDivinas from 'feature/lexio-divina/LexioDivinas';
 import LexioDivinasPagination from 'feature/lexio-divina/LexioDivinasPagination';
 import UserInfo from 'feature/lexio-divina/UserInfo';
 import useUser from 'hooks/api/useUser';
-import useAuth from 'hooks/auth/useAuth';
 import useScrollDirection from 'hooks/dom/useScrollDirection';
 import useScrollRestoration from 'hooks/dom/useScrollRestoration';
 import useIsBreakpointsDown from 'hooks/theme/useIsBreakpointsDown';
@@ -19,8 +18,6 @@ const ITEM_COUNT_PER_PAGE = 40;
 const UserId = () => {
   const router = useRouter();
 
-  const { user } = useAuth();
-  const isLoggedIn = !!user;
   const { scrollDirection } = useScrollDirection();
   const userId =
     typeof router.query.userId === 'string' ? router.query.userId : undefined;
@@ -79,13 +76,11 @@ const UserId = () => {
         />
       ) : null}
 
-      {isLoggedIn ? (
-        <FloatingButton
-          icon={<AddIcon />}
-          hidden={scrollDirection === 'down'}
-          onClick={handleAdd}
-        />
-      ) : null}
+      <FloatingButton
+        icon={<AddIcon />}
+        hidden={scrollDirection === 'down'}
+        onClick={handleAdd}
+      />
     </>
   );
 };
