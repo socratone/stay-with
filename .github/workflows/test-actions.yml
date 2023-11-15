@@ -1,0 +1,23 @@
+# https://docs.github.com/ko/actions/learn-github-actions/understanding-github-actions#understanding-the-workflow-file
+name: test-actions
+run-name: ${{ github.actor }} push commits
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      # You should use the checkout action any time your workflow will use the repository's code.
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          # Generate a new cache whenever packages or source files change.
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}
+      - name: Install dependencies
+        run: yarn install
+      - name: Run unit test
+        run: yarn test
