@@ -79,13 +79,11 @@ const UserId = () => {
         />
       ) : null}
 
-      {isLoggedIn ? (
-        <FloatingButton
-          icon={<AddIcon />}
-          hidden={scrollDirection === 'down'}
-          onClick={handleAdd}
-        />
-      ) : null}
+      <FloatingButton
+        icon={<AddIcon />}
+        hidden={scrollDirection === 'down'}
+        onClick={handleAdd}
+      />
     </>
   );
 };

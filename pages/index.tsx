@@ -3,7 +3,6 @@ import FloatingButton from 'components/FloatingButton/FloatingButton';
 import SelectorDialog from 'components/SelectorDialog/SelectorDialog';
 import LexioDivinas from 'feature/lexio-divina/LexioDivinas';
 import LexioDivinasPagination from 'feature/lexio-divina/LexioDivinasPagination';
-import useAuth from 'hooks/auth/useAuth';
 import useScrollDirection from 'hooks/dom/useScrollDirection';
 import useScrollRestoration from 'hooks/dom/useScrollRestoration';
 import useTempLexioDivinaStatus from 'hooks/form/useTempLexioDivinaStatus';
@@ -20,8 +19,6 @@ const Home: NextPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const { user } = useAuth();
-  const isLoggedIn = !!user;
   const { status, id } = useTempLexioDivinaStatus();
   const { scrollDirection } = useScrollDirection();
   const isSmall = useIsBreakpointsDown('sm');
@@ -72,13 +69,11 @@ const Home: NextPage = () => {
         />
       ) : null}
 
-      {isLoggedIn ? (
-        <FloatingButton
-          icon={<AddIcon aria-label="New lexio divina" />}
-          hidden={scrollDirection === 'down'}
-          onClick={handleAdd}
-        />
-      ) : null}
+      <FloatingButton
+        icon={<AddIcon aria-label="New lexio divina" />}
+        hidden={scrollDirection === 'down'}
+        onClick={handleAdd}
+      />
 
       <SelectorDialog
         title="임시 저장글 확인"
